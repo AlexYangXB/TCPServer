@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NodeServerAndManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServerIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PictureIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DeviceIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LocalIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="ServerDbPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9306</Value>
+    </Setting>
+    <Setting Name="DeviceDbPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9304</Value>
+    </Setting>
+    <Setting Name="PicturtDbPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9305</Value>
+    </Setting>
+    <Setting Name="PushPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9303</Value>
+    </Setting>
+    <Setting Name="PushIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FileIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Date" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

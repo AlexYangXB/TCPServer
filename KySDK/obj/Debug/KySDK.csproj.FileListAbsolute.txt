@@ -1,0 +1,17 @@
+D:\Work\vs2010\TCPServerTest\KySDK\bin\Debug\KySDK.dll
+D:\Work\vs2010\TCPServerTest\KySDK\bin\Debug\KySDK.pdb
+D:\Work\vs2010\TCPServerTest\KySDK\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Work\vs2010\TCPServerTest\KySDK\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\vs2010\TCPServerTest\KySDK\obj\Debug\KySDK.dll
+D:\Work\vs2010\TCPServerTest\KySDK\obj\Debug\KySDK.pdb
+E:\TCPServerTest\KySDK\bin\Debug\KySDK.dll
+E:\TCPServerTest\KySDK\bin\Debug\KySDK.pdb
+E:\TCPServerTest\KySDK\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\TCPServerTest\KySDK\obj\Debug\KySDK.dll
+E:\TCPServerTest\KySDK\obj\Debug\KySDK.pdb
+E:\Project\TCPServerTest\KySDK\bin\Debug\KySDK.dll
+E:\Project\TCPServerTest\KySDK\bin\Debug\KySDK.pdb
+E:\Project\TCPServerTest\KySDK\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\Project\TCPServerTest\KySDK\obj\Debug\ResolveAssemblyReference.cache
+E:\Project\TCPServerTest\KySDK\obj\Debug\KySDK.dll
+E:\Project\TCPServerTest\KySDK\obj\Debug\KySDK.pdb
