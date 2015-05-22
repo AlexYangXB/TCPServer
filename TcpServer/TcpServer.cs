@@ -10,7 +10,7 @@ using KyData;
 using KyData.DataBase;
 using KyData.DbTable;
 using Utility;
-
+using KyModel;
 namespace MyTcpServer
 {
     public class TcpServer
@@ -59,73 +59,34 @@ namespace MyTcpServer
         public int PictureServerId = 0;
         public bool IsRunning = false;
         //机器信息集合，key为IP地址，Value为机具信息
-        public Dictionary<string,KyData.DbTable.machineData>  machine=new Dictionary<string, machineData>();
+        public Dictionary<string, ky_machine> machine = new Dictionary<string, ky_machine>();
         //machine表
-        private DataTable dt;
+        private List<ky_machine> dt;
 
-        public DataTable DTable
+        public List<ky_machine>  DTable
         {
             set
             {
                 dt = value;
                 machine.Clear();
-                for(int i=0;i<dt.Rows.Count;i++)
+                foreach (ky_machine m in dt)
                 {
-                    if (!machine.ContainsKey(dt.Rows[i]["kIpAddress"].ToString()))
+                    if (!machine.ContainsKey(m.kIpAddress))
                     {
-                        machineData data=new machineData();
-                        data.id =Convert.ToInt32(dt.Rows[i]["kId"]);
-                        data.machineNumber = dt.Rows[i]["kMachineNumber"].ToString();
-                        data.machineModel = dt.Rows[i]["kMachineModel"].ToString();
-                        data.machineType = dt.Rows[i]["kMachineType"].ToString();
-                        data.stause = dt.Rows[i]["kStatus"].ToString();
-                        data.nodeId = Convert.ToInt32(dt.Rows[i]["kNodeId"]);
-                        data.factoryId =Convert.ToInt32(dt.Rows[i]["kFactoryId"]);
-                        data.ipAddress = dt.Rows[i]["kIpAddress"].ToString();
-                        machine.Add(data.ipAddress,data);
+                        machineData data = new machineData();
+                        machine.Add(m.kIpAddress, m);
                     }
                 }
             }
             get { return dt; }
         }
 
-        public void UpdateMachineTable(DataTable dt)
+        public void UpdateMachineTable(List<ky_machine> dt)
         {
-            Dictionary<string, KyData.DbTable.machineData> machineTmp = new Dictionary<string, machineData>();
-            
-            for (int i = 0; i < dt.Rows.Count; i++)
+            Dictionary<string, ky_machine> machineTmp = new Dictionary<string, ky_machine>();
+            foreach (var m in dt)
             {
-                bool isCanFind = false;
-                foreach (var m in machine)
-                {
-                    string ip = m.Key;
-                    if (ip == dt.Rows[i]["kIpAddress"].ToString())
-                    {
-                        isCanFind = true;
-                        machineData data = m.Value;
-                        data.id = Convert.ToInt32(dt.Rows[i]["kId"]);
-                        data.machineNumber = dt.Rows[i]["kMachineNumber"].ToString();
-                        data.machineType = dt.Rows[i]["kMachineType"].ToString();
-                        data.stause = dt.Rows[i]["kStatus"].ToString();
-                        data.nodeId = Convert.ToInt32(dt.Rows[i]["kNodeId"]);
-                        data.factoryId = Convert.ToInt32(dt.Rows[i]["kFactoryId"]);
-                        data.ipAddress = dt.Rows[i]["kIpAddress"].ToString();
-                        machineTmp.Add(data.ipAddress, data);
-                        break;
-                    }
-                }
-                if (!isCanFind)
-                {
-                    machineData data = new machineData();
-                    data.id = Convert.ToInt32(dt.Rows[i]["kId"]);
-                    data.machineNumber = dt.Rows[i]["kMachineNumber"].ToString();
-                    data.machineType = dt.Rows[i]["kMachineType"].ToString();
-                    data.stause = dt.Rows[i]["kStatus"].ToString();
-                    data.nodeId = Convert.ToInt32(dt.Rows[i]["kNodeId"]);
-                    data.factoryId = Convert.ToInt32(dt.Rows[i]["kFactoryId"]);
-                    data.ipAddress = dt.Rows[i]["kIpAddress"].ToString();
-                    machineTmp.Add(data.ipAddress, data);
-                }
+                machineTmp.Add(m.kIpAddress, m);
             }
             machine = machineTmp;
         }
@@ -190,18 +151,10 @@ namespace MyTcpServer
                 }
                 else
                 {
-                    DataTable dt = Utility.KyDataOperation.GetMachineWithIp(ipPort[0]);
-                    if(dt.Rows.Count>0)
+                    ky_machine newmachine = Utility.KyDataOperation.GetMachineWithIp(ipPort[0]);
+                    if (newmachine!=null)
                     {
-                        machineData data = new machineData();
-                        data.id = Convert.ToInt32(dt.Rows[0]["kId"]);
-                        data.machineNumber = dt.Rows[0]["kMachineNumber"].ToString();
-                        data.machineType = dt.Rows[0]["kMachineType"].ToString();
-                        data.stause = dt.Rows[0]["kStatus"].ToString();
-                        data.nodeId = Convert.ToInt32(dt.Rows[0]["kNodeId"]);
-                        data.factoryId = Convert.ToInt32(dt.Rows[0]["kFactoryId"]);
-                        data.ipAddress = dt.Rows[0]["kIpAddress"].ToString();
-                        machine.Add(data.ipAddress, data);
+                        machine.Add(newmachine.kIpAddress, newmachine);
 
 
                         // 将与客户端连接的 套接字 对象添加到集合中；
@@ -230,6 +183,7 @@ namespace MyTcpServer
             string[] ip= ipAndPort.Split(":".ToCharArray());
             while(true)
             {
+               // Thread.Sleep(300);
                 try
                 {
                     byte[] readBuf = new byte[4];
@@ -327,14 +281,10 @@ namespace MyTcpServer
                                     string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                                     if (str.Length == 3)
                                         machineNumber = str[2];
-                                    if (machine[ip[0]].machineNumber != machineNumber && machineNumber != "" || machine[ip[0]].machineModel != machineModel && machineModel != "")
-                                        KyDataOperation.UpdateMachine(machine[ip[0]].ipAddress, machineNumber, machineModel);
-                                    else
-                                        KyDataOperation.UpdateMachine(machine[ip[0]].ipAddress, "", "");
-                                    if (machineNumber != machine[ip[0]].machineNumber)
-                                        machine[ip[0]].machineNumber = machineNumber;
-                                    if (machine[ip[0]].machineModel != machineModel)
-                                        machine[ip[0]].machineModel = machineModel;
+                                    if (machine[ip[0]].kMachineNumber != machineNumber && machineNumber != "" || machine[ip[0]].kMachineModel != machineModel && machineModel != "")
+                                        KyDataOperation.UpdateMachine(machine[ip[0]].kId, machineNumber, machineModel);
+                                    machine[ip[0]].kMachineNumber = machineNumber;
+                                    machine[ip[0]].kMachineModel = machineModel;
                                 }
                                 else//没有进行交易控制
                                 {
@@ -350,14 +300,10 @@ namespace MyTcpServer
                                     string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                                     if (str.Length == 3)
                                         machineNumber = str[2];
-                                    if (machine[ip[0]].machineNumber != machineNumber && machineNumber != "" || machine[ip[0]].machineModel != machineModel && machineModel != "")
-                                        KyDataOperation.UpdateMachine(machine[ip[0]].ipAddress, machineNumber, machineModel);
-                                    else
-                                        KyDataOperation.UpdateMachine(machine[ip[0]].ipAddress, "", "");
-                                    if (machineNumber != machine[ip[0]].machineNumber)
-                                        machine[ip[0]].machineNumber = machineNumber;
-                                    if (machine[ip[0]].machineModel != machineModel)
-                                        machine[ip[0]].machineModel = machineModel;
+                                    if (machine[ip[0]].kMachineNumber != machineNumber && machineNumber != "" || machine[ip[0]].kMachineModel != machineModel && machineModel != "")
+                                        KyDataOperation.UpdateMachine(machine[ip[0]].kId, machineNumber, machineModel);
+                                    machine[ip[0]].kMachineNumber = machineNumber;
+                                    machine[ip[0]].kMachineModel = machineModel;
 
                                     //删除文件
                                     if (File.Exists(fileName))
@@ -485,8 +431,8 @@ namespace MyTcpServer
                     {
                         machine[bControl.ip].startBusinessCtl = false;
                         machine[bControl.ip].bussinessNumber = bControl.bussinessNumber;
-                        machine[bControl.ip].atmId = bControl.atmId;
-                        machine[bControl.ip].cashBoxId = bControl.cashBoxId;
+                        machine[bControl.ip].atmId =Convert.ToInt32(bControl.atmId);
+                        machine[bControl.ip].cashBoxId = Convert.ToInt32(bControl.cashBoxId);
                         //是否清分中心、包号
                         machine[bControl.ip].isClearCenter = bControl.isClearCenter;
                         machine[bControl.ip].packageNumber = bControl.packageNumber;
@@ -503,7 +449,7 @@ namespace MyTcpServer
                                 DateTime date = DateTime.Now;
                                 Utility.SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", bControl.isClearCenter, bControl.packageNumber,
                                                               PictureServerId, machine[bControl.ip].userId,
-                                                              machine[bControl.ip].nodeId,1, date);
+                                                              machine[bControl.ip].kNodeId,1, date);
                                 //删除文件
                                 if(Directory.Exists(DataSaveFolder + "\\tmp"))
                                 {
@@ -527,8 +473,8 @@ namespace MyTcpServer
                         machine[bControl.ip].business = "";
                         machine[bControl.ip].startBusinessCtl = false;
                         machine[bControl.ip].bussinessNumber = "";
-                        machine[bControl.ip].atmId = "";
-                        machine[bControl.ip].cashBoxId = "";
+                        machine[bControl.ip].atmId = 0;
+                        machine[bControl.ip].cashBoxId = 0;
                         machine[bControl.ip].fileName = "";
                         machine[bControl.ip].userId = 0;
                     }

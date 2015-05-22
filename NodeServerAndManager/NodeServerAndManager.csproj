@@ -9,11 +9,10 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NodeServerAndManager</RootNamespace>
-    <AssemblyName>8888</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AssemblyName>康艺系统采集端</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -151,6 +150,10 @@
     <ProjectReference Include="..\KyData\KyData.csproj">
       <Project>{0E821D10-AADD-4946-8E21-22C9F70A0C4A}</Project>
       <Name>KyData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KyModel\KyModel.csproj">
+      <Project>{F673D7A2-1D23-4B21-B7BE-22C5CF4E83EF}</Project>
+      <Name>KyModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\TcpServer\MyTcpServer.csproj">
       <Project>{B0778505-ED62-4D28-866C-7E29C0E78F79}</Project>

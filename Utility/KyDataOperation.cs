@@ -5,7 +5,11 @@ using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
 using Utility.DBUtility;
-
+using ServiceStack.OrmLite.MySql;
+using ServiceStack.OrmLite;
+using KyModel;
+using System.Linq;
+using System.Data.Entity;
 namespace Utility
 {
     public class KyDataOperation
@@ -144,30 +148,28 @@ namespace Utility
         /// </summary>
         /// <param name="bindIpAddress"></param>
         /// <returns></returns>
-        public static DataTable GetNodeWithBindIp(string bindIpAddress)
+        public static List<ky_node> GetNodeWithBindIp(string bindIpAddress)
         {
-            string strSql = string.Format("SELECT * FROM ky_node where kBindIpAddress='{0}'", bindIpAddress);
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_node> nodes;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                nodes = conn.Select<ky_node>(q=>q.kBindIpAddress==bindIpAddress);
+            }
+            return nodes;
         }
         /// <summary>
         /// 根据ID获取ky_node 表
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static DataTable GetNodeWithIds(int[] id)
+        public static List<ky_node> GetNodeWithIds(List<int> id)
         {
-            string strSql = "";
-            for(int i=0;i<id.Length;i++)
+            List<ky_node> nodes;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                if (i == 0)
-                    strSql = string.Format("SELECT * FROM ky_node where kId={0} ", id[i]);
-                else
-                    strSql += string.Format("or kId={0} ", id[i]);
+                nodes = conn.Select<ky_node>(q => Sql.In(q.kId,id));
             }
-            strSql += ";";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            return nodes;
         }
 
 
@@ -177,23 +179,27 @@ namespace Utility
         /// <param name="ids"></param>
         /// <param name="bindIpAdress"></param>
         /// <returns></returns>
-        public static bool UpdateNodeTable(int[] ids, string bindIpAdress)
+        public static bool UpdateNodeTable(List<int> ids, string bindIpAdress)
         {
-            List<string>  ListSql=new List<string>();
-            for(int i=0;i<ids.Length;i++)
+            try
             {
-                string strSql = string.Format("UPDATE ky_Node set kBindIpAddress='{0}' where kId={1};", bindIpAdress,
-                                              ids[i]);
-                ListSql.Add(strSql);
-            }
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DbHelperMySQL.ExecuteSqlTran(ListSql);
-            if(result>0)
-            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    var selectNodes = conn.SelectByIds<ky_node>(ids);
+                    foreach (ky_node selectNode in selectNodes)
+                    {
+                        selectNode.kBindIpAddress = bindIpAdress;
+
+                    }
+                    if(selectNodes!=null)
+                        conn.UpdateAll(selectNodes);
+
+                }
                 return true;
             }
-            else
+            catch (Exception e)
             {
+                Log.DataBaseException("更新绑定IP地址异常,"+e.ToString());
                 return false;
             }
         }
@@ -205,17 +211,15 @@ namespace Utility
         /// <returns></returns>
         public static int GetNodeId(string nodeNumber)
         {
-            string strSql = "SELECT kid FROM ky_node where kNodeNumber='" + nodeNumber + "';";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_node node;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+               node = conn.Single<ky_node>(q => q.kNodeNumber == nodeNumber);
             }
+            if (node != null)
+                return node.kId;
             else
-            {
                 return 0;
-            }
         }
 
         /// <summary>
@@ -225,30 +229,32 @@ namespace Utility
         /// <returns></returns>
         public static int GetBranchId(string branchNumber)
         {
-            string strSql = "SELECT kId FROM ky_branch where kBranchNumber ='" + branchNumber + "';";
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_branch branch;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                branch = conn.Single<ky_branch>(q => q.kBranchNumber == branchNumber);
             }
+            if (branch != null)
+                return branch.kId;
             else
-            {
                 return 0;
-            }
         }
-
+        /// <summary>
+        /// 根据网点Id获取银行Id
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
         public static int GetBranchIdWithNodeId(int nodeId)
         {
-            string strSql = "SELECT kBranchId FROM ky_node where kId = " + nodeId + " ;";
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_node node;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                node = conn.Single<ky_node>(q => q.kId == nodeId);
             }
+            if (node != null)
+                return node.kBranchId;
             else
-            {
                 return 0;
-            }
         }
 
         /// <summary>
@@ -258,17 +264,15 @@ namespace Utility
         /// <returns></returns>
         public static int GetFactoryId(string factoryNumber)
         {
-            string strSql = "SELECT kid FROM ky_factory where kFactoryCode='" + factoryNumber + "';";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
-            { 
-                return int.Parse(dt.Rows[0][0].ToString());
-            }
-            else
+            ky_factory factory;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return 0;
+                factory = conn.Single<ky_factory>(q => q.kFactoryCode == factoryNumber);
             }
+            if (factory != null)
+                return factory.kId;
+            else
+                return 0;
         }
         
         /// <summary>
@@ -279,14 +283,19 @@ namespace Utility
         /// <returns></returns>
         public static bool InsertFactory(string factoryName,string factoryNumber)
         {
-            string strSql = string.Format("Insert into ky_factory(kFactoryName,kFactoryCode)value('{0}','{1}')",
-                                          factoryName, factoryNumber);
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.Insert(new ky_factory { kFactoryName = factoryName, kFactoryCode = factoryNumber });
+                }
                 return true;
-            else
+            }
+            catch(Exception e)
+            {
+                Log.DataBaseException("添加厂家信息异常，"+e.ToString());
                 return false;
+            }
         }
 
         /// <summary>
@@ -294,19 +303,14 @@ namespace Utility
         /// </summary>
         /// <param name="nodeIds"></param>
         /// <returns></returns>
-        public static DataTable GetMachineWithNodeIds(int[] nodeIds)
+        public static List<ky_machine> GetMachineWithNodeIds(int[] nodeIds)
         {
-            string strSql = "";
-            for (int i = 0; i < nodeIds.Length; i++)
+            List<ky_machine> machines;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                if (i == 0)
-                    strSql = string.Format("SELECT * FROM ky_machine where kNodeId={0} ", nodeIds[i]);
-                else
-                    strSql += string.Format("or kNodeId={0} ", nodeIds[i]);
+                machines = conn.Select<ky_machine>(q => Sql.In(q.kNodeId, nodeIds));
             }
-            strSql += ";";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            return machines;
         }
 
         /// <summary>
@@ -316,17 +320,15 @@ namespace Utility
         /// <returns></returns>
         public static int GetMachineId(string machineNumber)
         {
-            string strSql = "SELECT kid FROM ky_machine where kMachineNumber='" + machineNumber + "';";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_machine machine;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                machine = conn.Single<ky_machine>(q=>q.kMachineNumber==machineNumber);
             }
+            if (machine != null)
+                return machine.kId;
             else
-            {
                 return 0;
-            }
         }
         /// <summary>
         /// 通过用户编号获取用户ID
@@ -335,17 +337,15 @@ namespace Utility
         /// <returns></returns>
         public static int GetUserId(string userNumber)
         {
-            string strSql = "SELECT kid FROM ky_user where kUserNumber='" + userNumber + "';";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_user user;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                user = conn.Single<ky_user>(q => q.kUserNumber == userNumber);
             }
+            if (user != null)
+                return user.kId;
             else
-            {
                 return 0;
-            }
         }
 
         /// <summary>
@@ -355,17 +355,15 @@ namespace Utility
         /// <returns></returns>
         public static int GetPictureServerId(string ip)
         {
-            string strSql = "SELECT kid FROM ky_imgserver WHERE kIpAddress='" + ip + "';";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_imgserver imgserver;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                imgserver = conn.Single<ky_imgserver>(q => q.kIpAddress == ip);
             }
+            if (imgserver != null)
+                return imgserver.kId;
             else
-            {
                 return 0;
-            }
         }
 
 
@@ -374,22 +372,14 @@ namespace Utility
         /// </summary>
         /// <param name="UserNumber"></param>
         /// <returns></returns>
-        public static DataTable GetUser(string UserNumber)
+        public static ky_user GetUser(string UserNumber)
         {
-            string strSql = "select * from ky_user where kUserNumber ='" + UserNumber + "';";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
-        }
-
-        /// <summary>
-        /// 查询机器列表获得所有的机器数据。
-        /// </summary>
-        /// <returns></returns>
-        public static DataTable GetAllMachine()
-        {
-            string strSql = "select * from ky_machine;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            ky_user user;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                user = conn.Single<ky_user>(q => q.kUserNumber == UserNumber);
+            }
+            return user;
         }
 
         /// <summary>
@@ -397,11 +387,14 @@ namespace Utility
         /// </summary>
         /// <param name="ip"></param>
         /// <returns></returns>
-        public static DataTable GetMachineWithIp(string ip)
+        public static ky_machine GetMachineWithIp(string ip)
         {
-            string strSql = string.Format("select * from ky_machine where kIpAddress = '{0}';", ip);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            ky_machine machine;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                machine = conn.Single<ky_machine>(q => q.kIpAddress == ip);
+            }
+            return machine;
         }
 
         /// <summary>
@@ -409,60 +402,52 @@ namespace Utility
         /// </summary>
         /// <param name="nodeId"></param>
         /// <returns></returns>
-        public static DataTable GetMachineWithNodeId(int nodeId)
+        public static List<ky_machine> GetMachineWithNodeId(int nodeId)
         {
-            string strSql = string.Format("select * from ky_machine where kNodeId = {0};", nodeId);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_machine> machines;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                machines = conn.Select<ky_machine>(q => q.kNodeId == nodeId);
+            }
+            return machines;
         }
 
         /// <summary>
         /// 更新机器的最后上传时间和机具编号
         /// </summary>
-        /// <param name="ip"></param>
+        /// <param name="id"></param>
         /// <param name="machineNumber"></param>
         /// <param name="machineModel"> </param>
         /// <returns></returns>
-        public static bool UpdateMachine(string ip, string machineNumber,string machineModel)
+        public static bool UpdateMachine(int id, string machineNumber,string machineModel)
         {
-            string strSql = "";
-            if (machineNumber != "")
-                //strSql = "UPDATE ky_machine SET kMachineNumber='" + machineNumber + "',kUpdateTime='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE kIpAddress='" + ip +
-                //            "';";
-            strSql =
-                string.Format(
-                    "UPDATE ky_machine SET kMachineNumber='{0}',kMachineModel='{1}', kUpdateTime='{2}' WHERE kIpAddress='{3}' ;",
-                    machineNumber, machineModel, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), ip);
-            else
-                strSql = "UPDATE ky_machine SET kUpdateTime='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE kIpAddress='" + ip + "';";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.Update(new ky_machine { kId = id, kMachineNumber = machineNumber, kMachineModel = machineModel, kUpdateTime = DateTime.Now });
+                }
                 return true;
-            else
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e.ToString());
                 return false;
+            }
         }
 
         /// <summary>
         /// 获取机器的 ID，IP，最后上传时间、状态。用于设备监控
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetMachineStatus()
+        public static List<ky_machine> GetMachineStatus(List<int> nodeIds)
         {
-            string strSql = "SELECT kId, kIpAddress,kUpdateTime,kStatus FROM ky_machine;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
-        }
-
-        /// <summary>
-        /// 获取全部ATM信息
-        /// </summary>
-        /// <returns></returns>
-        public static DataTable GetAllAtm()
-        {
-            string strSql = "SELECT * FROM ky_atm;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_machine> machines;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                machines = conn.Select<ky_machine>(q => Sql.In(q.kNodeId, nodeIds));
+            }
+            return machines;
         }
 
         /// <summary>
@@ -470,76 +455,126 @@ namespace Utility
         /// </summary>
         /// <param name="nodeId"></param>
         /// <returns></returns>
-        public static DataTable GetAtmWithNodeId(int nodeId)
+        public static List<ky_atm> GetAtmWithNodeId(List<int> nodeIds)
         {
-            string strSql = string.Format("select * from ky_atm where kNodeId = {0}", nodeId);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_atm> atms;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                atms = conn.Select<ky_atm>(q => Sql.In(q.kNodeId, nodeIds));
+            }
+            return atms;
         }
 
+        /// <summary>
+        /// 通过网点Id获取该网点下的所有ATM数据
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
+        public static List<ky_cashbox> GetCashBoxWithNodeId(List<int> nodeIds)
+        {
+            List<ky_cashbox> cashboxs;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                cashboxs = conn.Select<ky_cashbox>(q => Sql.In(q.kNodeId, nodeIds));
+            }
+            return cashboxs;
+        }
         /// <summary>
         /// 获取全部钞箱信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetAllCashBox()
+        public static List<ky_cashbox> GetAllCashBox()
         {
-            string strSql = "SELECT * FROM ky_cashbox;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_cashbox> cashboxs;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                cashboxs = conn.Select<ky_cashbox>();
+            }
+            return cashboxs;
         }
 
         /// <summary>
         /// 获取全部网点信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetAllNode()
+        public static List<ky_node> GetAllNode()
         {
-            string strSql = "SELECT * FROM ky_node;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_node> nodes;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                nodes = conn.Select<ky_node>();
+            }
+            return nodes;
         }
 
         /// <summary>
         /// 获取全部厂家信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetAllFactory()
+        public static List<ky_factory> GetAllFactory()
         {
-            string strSql = "SELECT * FROM ky_factory;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_factory> factorys;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                factorys = conn.Select<ky_factory>();
+            }
+            return factorys;
         }
 
         /// <summary>
         /// 获取表ky_import_machine内的全部信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetAllImportMachine()
+        public static List<ky_import_machine> GetAllImportMachine()
         {
-            string strSql = "SELECT * FROM ky_import_machine;";
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_import_machine> importmachines;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                importmachines = conn.Select<ky_import_machine>();
+            }
+            return importmachines;
+        }
+        /// <summary>
+        /// 根据机具编号获取(导入文件的)机具id
+        /// </summary>
+        /// <returns></returns>
+        public static int GetMachineIdFromImportMachine(string machineNumber)
+        {
+            ky_import_machine machine;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                machine = conn.Single<ky_import_machine>(p => p.kMachineNumber == machineNumber);
+            }
+            if (machine != null)
+                return machine.kId;
+            else
+                return 0;
         }
 
         /// <summary>
-        /// 往表ky_import_machine中插入数据
+        /// 往表ky_import_machine中插入数据，并返回id
         /// </summary>
         /// <param name="machineNumber"></param>
         /// <param name="nodeId"></param>
         /// <param name="factoryId"></param>
         /// <returns></returns>
-        public static bool InsertMachineToImportMachine(string machineNumber, int nodeId, int factoryId)
+        public static int InsertMachineToImportMachine(string machineNumber, int nodeId, int factoryId)
         {
-            string strSql =
-                string.Format(
-                    "INSERT INTO ky_import_machine(kMachineType,kMachineNumber,kNodeId,kFactoryId)value('{0}','{1}',{2},{3})",
-                    "其他", machineNumber, nodeId, factoryId);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
-                return true;
-            else
-                return false;
+            int id = 0;
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    ky_import_machine machine =new ky_import_machine{ kMachineType = 0, kMachineNumber = machineNumber, kNodeId = nodeId, kFactoryId = factoryId };
+                     id=Convert.ToInt32(conn.Insert(machine, selectIdentity: true));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException("导入机具异常，"+e.ToString());
+               
+            }
+            return id;
         }
 
         /// <summary>
@@ -551,26 +586,40 @@ namespace Utility
         /// <param name="business"></param>
         /// <param name="nodeId"></param>
         /// <returns></returns>
-        public static bool InsertImportFile(long bactchId, string fileName, string importTime, string business, int nodeId)
+        public static bool InsertImportFile(long bactchId, string fileName, DateTime importTime, string business, int nodeId)
         {
-            string strSql =
-                string.Format(
-                    "INSERT INTO ky_import_file(kBatchId,kFileName,kImportTime,kType,kNodeId)value({0},'{1}','{2}','{3}',{4})",
-                    bactchId, fileName, importTime, business, nodeId);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    ky_import_file file = new ky_import_file
+                    {
+                        kBatchId = bactchId,
+                        kFileName = fileName,
+                        kImportTime = importTime,
+                        kType = business,
+                        kNodeId = nodeId
+                    };
+                    Convert.ToInt32(conn.Insert(file));
+                }
                 return true;
-            else
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException("上传文件异常，" + e.ToString());
                 return false;
+            }
         }
 
         //获取所有的图片服务器
-        public static DataTable GetAllImageServer()
+        public static List<ky_imgserver> GetAllImageServer()
         {
-            string strSql = string.Format("select * from ky_imgserver;");
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            return DbHelperMySQL.Query(strSql).Tables[0];
+            List<ky_imgserver> imgservers;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                imgservers = conn.Select<ky_imgserver>();
+            }
+            return imgservers;
         }
 
         /// <summary>
@@ -582,15 +631,26 @@ namespace Utility
         /// <returns></returns>
         public static bool InsertGzhBundle(string bundleNumber,long batchId,string fileName)
         {
-            string strSql =
-                string.Format("Insert into ky_gzh_bundle(kBundleNumber,kBatchId,kFileName)value('{0}',{1},'{2}')",
-                              bundleNumber, batchId, fileName);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    ky_gzh_bundle file = new ky_gzh_bundle
+                    {
+                        kBatchId = batchId,
+                        kFileName = fileName,
+                        kBundleNumber = bundleNumber
+                    };
+                    Convert.ToInt32(conn.Insert(file));
+                }
                 return true;
-            else
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException("上传GZH文件异常，" + e.ToString());
                 return false;
+
+            }
         }
 
         /// <summary>
@@ -601,62 +661,33 @@ namespace Utility
         /// <returns></returns>
         public static int GetGzhBundleId(string bundleNumber,long batchId)
         {
-            string strSql = string.Format("Select kId From ky_gzh_bundle where kBundleNumber='{0}' and kBatchId={1};",
-                                          bundleNumber, batchId);
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            ky_gzh_bundle gzh_bundle;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                return int.Parse(dt.Rows[0][0].ToString());
+                gzh_bundle=conn.Single<ky_gzh_bundle>(p=>p.kBatchId==batchId&&p.kBundleNumber==bundleNumber);
             }
+            if (gzh_bundle != null)
+                return gzh_bundle.kId;
             else
-            {
                 return 0;
-            }
         }
 
         /// <summary>
-        /// 保存GZH package信息
+        /// 保存GZH package信息，并返回id
         /// </summary>
         /// <param name="gzhLayer2"></param>
         /// <returns></returns>
-        public static bool InsertGzhPackage(KyData.DataBase.KYDataLayer1.GzhLayer2 gzhLayer2)
+        public static int InsertGzhPackage(ky_gzh_package gzh)
         {
-            string strSql =
-                string.Format(
-                    "Insert into ky_gzh_package(kDate,kBranchId,kNodeId,kType,kFSNNumber,kCashCenter,kVersion,kPackageNumber,kCurrency,kFileName,kUserId,kTotalNumber,kTotalValue)value('{0}',{1},{2},{3},{4},'{5}','{6}','{7}','{8}','{9}',{10},{11},{12})",
-                    gzhLayer2.Date.ToString("yyyy-MM-dd HH:mm:ss"), gzhLayer2.BranchId, gzhLayer2.NodeId,
-                    gzhLayer2.Business, gzhLayer2.FileCnt, gzhLayer2.IsCashCenter, gzhLayer2.FileVersion,
-                    gzhLayer2.PackageNumber, gzhLayer2.Currency, gzhLayer2.FileName,gzhLayer2.UserId,gzhLayer2.TotalNumber,gzhLayer2.TotalValue);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
-                return true;
-            else
-                return false;
+            int id = 0;
+            using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                id=Convert.ToInt32(conn.Insert(gzh,selectIdentity: true));
+            }
+            return id;
         }
         
-        /// <summary>
-        /// 获取GzhPackage的Id
-        /// </summary>
-        /// <param name="gzhLayer2"></param>
-        /// <returns></returns>
-        public static int GetGzhPackageId(KyData.DataBase.KYDataLayer1.GzhLayer2 gzhLayer2)
-        {
-            string strSql = string.Format("Select kId From ky_gzh_package where kDate='{0}' and kPackageNumber='{1}'",
-                                          gzhLayer2.Date.ToString("yyyy-MM-dd HH:mm:ss"), gzhLayer2.PackageNumber);
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
-            {
-                return int.Parse(dt.Rows[0][0].ToString());
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
+      
         /// <summary>
         /// 保存packageBundle信息
         /// </summary>
@@ -665,14 +696,20 @@ namespace Utility
         /// <returns></returns>
         public static bool SavePackageBundle(int bundleId,int packageId)
         {
-            string strSql = string.Format("Insert into ky_package_bundle(kBundleId,kPackageId)value({0},{1})", bundleId,
-                                          packageId);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    ky_package_bundle pack_bundle = new ky_package_bundle { kBundleId = bundleId, kPackageId = packageId };
+                    conn.Insert(pack_bundle);
+                }
                 return true;
-            else
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException("保存GZH捆钞异常," + e.ToString());
                 return false;
+            }
         }
 
         #endregion

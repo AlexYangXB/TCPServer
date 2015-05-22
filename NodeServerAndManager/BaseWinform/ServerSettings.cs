@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using Utility.DBUtility;
-
+using KyModel;
+using System.Linq;
 namespace NodeServerAndManager.BaseWinform
 {
     public partial class ServerSettings : Form
@@ -42,23 +43,23 @@ namespace NodeServerAndManager.BaseWinform
                 bool result = Utility.KyDataOperation.TestConnectDevice();
                 if (result)
                 {
-                    DataTable dt = Utility.KyDataOperation.GetAllImageServer();
+                    List<ky_imgserver> dt = Utility.KyDataOperation.GetAllImageServer();
                     cmb_imageServer.DataSource = dt;
                     cmb_imageServer.DisplayMember = "kIpAddress";
 
-                    DataTable dtNode = Utility.KyDataOperation.GetAllNode();
+                    List<ky_node> dtNode = Utility.KyDataOperation.GetAllNode();
                     chkList_Node.DataSource = dtNode;
                     chkList_Node.DisplayMember = "kNodeName";
                     chkList_Node.ValueMember = "kId";
                     if(LocalIp!=""&&LocalIp!="0.0.0.0")
                     {
                         string strMessage = "";
-                        for (int i = 0; i < dtNode.Rows.Count; i++)
+                        foreach (var node in dtNode)
                         {
-                            if(LocalIp==dtNode.Rows[i]["kBindIpAddress"].ToString())
+                            if (LocalIp == node.kBindIpAddress)
                             {
-                                chkList_Node.SetItemChecked(i, true);
-                                strMessage += dtNode.Rows[i]["kNodeName"].ToString() + ";";
+                                chkList_Node.SetItemChecked(node.kId, true);
+                                strMessage += node.kNodeName + ";";
                             }
                         }
                         txb_BindNode.Text = strMessage;
@@ -93,37 +94,31 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             Properties.Settings.Default.Save();
             //先清除已绑定的项
-            DataTable dTable = Utility.KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
-            int[] ids = new int[dTable.Rows.Count];
-            for (int j = 0; j < dTable.Rows.Count; j++)
-            {
-                ids[j] = Convert.ToInt32(dTable.Rows[j]["kId"]);
-            }
-            Utility.KyDataOperation.UpdateNodeTable(ids, "");
+            //List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
+            //int[] ids = (from node in nodes select node.kId).ToArray();
+            //Utility.KyDataOperation.UpdateNodeTable(ids, "");
 
             //获取被选中的项
-            ids=new int[chkList_Node.CheckedItems.Count];
-            int i = 0;
+            List<int> ids=new List<int>();
             foreach (DataRowView dr in chkList_Node.CheckedItems)
             {
-                ids[i] = Convert.ToInt32(dr["kId"]);
-                i++;
+                ids.Add(Convert.ToInt32(dr["kId"]));
             }
-            if(ids.Length>0)
+            if(ids.Count>0)
             {
-                DataTable dt = Utility.KyDataOperation.GetNodeWithIds(ids);
+                List<ky_node> selectNodes = Utility.KyDataOperation.GetNodeWithIds(ids);
                 string strMessage = "";
                 List<int> IDS = new List<int>();
-                for (int j = 0; j < dt.Rows.Count; j++)
+                foreach (ky_node selectNode in selectNodes)
                 {
-                    string bindIp = dt.Rows[j]["kBindIpAddress"].ToString();
+                    string bindIp = selectNode.kBindIpAddress;
                     if (bindIp != "" && bindIp != ipControl_Local.Text)
                     {
-                        strMessage += string.Format("{0} 已经绑定了IP：{1}", dt.Rows[j]["kNodeName"], bindIp) + Environment.NewLine;
+                        strMessage += string.Format("{0} 已经绑定了IP：{1}", selectNode.kNodeName, bindIp) + Environment.NewLine;
                     }
                     else
                     {
-                        IDS.Add( Convert.ToInt32(dt.Rows[j]["kId"]));
+                        IDS.Add(Convert.ToInt32(selectNode.kId));
                     }
                 }
                 if (strMessage != "")
@@ -198,10 +193,10 @@ namespace NodeServerAndManager.BaseWinform
             if (result)
             {
                 MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DataTable dt = Utility.KyDataOperation.GetAllImageServer();
+                List<ky_imgserver> dt = Utility.KyDataOperation.GetAllImageServer();
                 cmb_imageServer.DataSource = dt;
                 cmb_imageServer.DisplayMember = "kIpAddress";
-                DataTable dtNode = Utility.KyDataOperation.GetAllNode();
+                List<ky_node> dtNode = Utility.KyDataOperation.GetAllNode();
                 chkList_Node.DataSource = dtNode;
                 chkList_Node.DisplayMember = "kNodeName";
                 chkList_Node.ValueMember = "kId";

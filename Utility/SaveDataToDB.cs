@@ -5,7 +5,7 @@ using System.IO;
 using KyData;
 using KyData.DataBase;
 using KyData.DbTable;
-
+using KyModel;
 namespace Utility
 {
     
@@ -22,7 +22,7 @@ namespace Utility
         /// <param name="isBusinessControl"></param>
         /// <param name="machineNumber"></param>
         /// <param name="machineModel"> </param>
-        public static void SaveFsn(string fsnName,int pictureServerId,machineData machine,bool isBusinessControl)
+        public static void SaveFsn(string fsnName,int pictureServerId,ky_machine machine,bool isBusinessControl)
         {
             try
             {
@@ -77,8 +77,8 @@ namespace Utility
                         id = batchId,
                         type = machine.business,
                         date = date,
-                        node = (uint)machine.nodeId,
-                        factory = (uint)machine.factoryId,
+                        node = (uint)machine.kNodeId,
+                        factory = (uint)machine.kFactoryId,
                         imgipaddress = (uint)pictureServerId,
                         totalnumber = (uint)totalCount,
                         totalvalue = (uint)totalValue,
@@ -90,7 +90,7 @@ namespace Utility
                         batch.recorduser = 0;
                     }
                     batch.machine = new uint[1];
-                    batch.machine[0] = (uint)machine.id;
+                    batch.machine[0] = (uint)machine.kId;
                     string hjson = "";
                     if (machine.bussinessNumber != "")
                     {
@@ -141,7 +141,6 @@ namespace Utility
         public static bool UploadFsn(string fsnName, int pictureServerId, machineData machine,int machineId2)
         {
             bool result = false;
-            string importTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             //machineNumner = "";
             FileInfo fileInfo = new FileInfo(fsnName);
@@ -236,7 +235,7 @@ namespace Utility
                 if(result)
                 {
                     string fileName = Path.GetFileName(fsnName);
-                    result=KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, importTime, machine.business, machine.nodeId);
+                    result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, DateTime.Now, machine.business, machine.nodeId);
                 }
             }
             return result;
@@ -250,11 +249,10 @@ namespace Utility
         /// <param name="machine"></param>
         /// <param name="machineId2"></param>
         /// <returns></returns>
-        public static long UploadFsnBatchId(string fsnName, int pictureServerId, machineData machine, int machineId2)
+        public static long UploadFsnBatchId(string fsnName, int pictureServerId, ky_machine machine, int machineId2)
         {
             bool result = false;
             Int64 returnId = 0; 
-            string importTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             //machineNumner = "";
             FileInfo fileInfo = new FileInfo(fsnName);
@@ -308,8 +306,8 @@ namespace Utility
                     id = batchId,
                     type = machine.business,
                     date = date,
-                    node = (uint)machine.nodeId,
-                    factory = (uint)machine.factoryId,
+                    node = (uint)machine.kNodeId,
+                    factory = (uint)machine.kFactoryId,
                     imgipaddress = (uint)pictureServerId,
                     totalnumber = (uint)totalCount,
                     totalvalue = (uint)totalValue,
@@ -320,8 +318,8 @@ namespace Utility
                     batch.type = "HM";
                 }
                 batch.machine = new uint[1];
-                batch.machine[0] = (uint)machine.id;
-                if (machine.id != 0)
+                batch.machine[0] = (uint)machine.kId;
+                if (machine.kId != 0)
                 {
                     if (machine.startBusinessCtl && (batch.type == "ATM" || batch.type == "CAQK" || batch.type == "CACK"))
                     {
@@ -354,7 +352,7 @@ namespace Utility
                 if (result)
                 {
                     string fileName = Path.GetFileName(fsnName);
-                    result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, importTime, machine.business, machine.nodeId);
+                    result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, DateTime.Now, machine.business, machine.kNodeId);
                 }
             }
             if (result)
@@ -365,45 +363,28 @@ namespace Utility
             }
         }
         /// <summary>
-        /// 转换Gzh到GzhLayer2
+        /// 转换Gzh到ky_gzh_package
         /// </summary>
         /// <param name="gzh"></param>
         /// <returns></returns>
-        public static KYDataLayer1.GzhLayer2 Gzh(KYDataLayer1.Gzh gzh)
+        public static ky_gzh_package Gzh(KYDataLayer1.Gzh gzh)
         {
-            KYDataLayer1.GzhLayer2 gzhLayer2 = new KYDataLayer1.GzhLayer2()
+            ky_gzh_package gzhLayer2 = new ky_gzh_package()
                                                    {
-                                                       Date = gzh.date,
-                                                       Business = int.Parse(gzh.business),
-                                                       FileCnt = gzh.fileCnt,
-                                                       IsCashCenter = gzh.isCashCenter,
-                                                       FileVersion = gzh.fileVersion,
-                                                       PackageNumber = gzh.packageNumber,
-                                                       Currency = gzh.currency,
-                                                       FileName = gzh.fileName,
+                                                       kDate = gzh.date,
+                                                       kType = int.Parse(gzh.business),
+                                                       kFSNNumber = gzh.fileCnt,
+                                                       kCashCenter = gzh.isCashCenter,
+                                                       kVersion = gzh.fileVersion,
+                                                       kPackageNumber = gzh.packageNumber,
+                                                       kCurrency = gzh.currency,
+                                                       kFileName = gzh.fileName,
                                                    };
-            gzhLayer2.BranchId = KyDataOperation.GetBranchId(gzh.branchNumber);
-            gzhLayer2.NodeId = KyDataOperation.GetNodeId(gzh.nodeNumber);
+            gzhLayer2.kBranchId = KyDataOperation.GetBranchId(gzh.branchNumber);
+            gzhLayer2.kNodeId = KyDataOperation.GetNodeId(gzh.nodeNumber);
             return gzhLayer2;
         }
 
-        /// <summary>
-        /// 保存GZH Package信息并获取ID
-        /// </summary>
-        /// <param name="gzhLayer2"></param>
-        /// <returns></returns>
-        public static int SaveGzhPackage(KYDataLayer1.GzhLayer2 gzhLayer2)
-        {
-            bool result = KyDataOperation.InsertGzhPackage(gzhLayer2);
-            if(result)
-            {
-                return KyDataOperation.GetGzhPackageId(gzhLayer2);
-            }
-            else
-            {
-                return 0;
-            }
-        }
         
         /// <summary>
         /// 保存GZH bundle信息并获取ID
@@ -434,7 +415,7 @@ namespace Utility
         /// <param name="gzhLayer2"> </param>
         /// <param name="machineData"> </param>
         /// <returns></returns>
-        public static long UploadFsn(string file,int pictureServerId,KYDataLayer1.GzhLayer2 gzhLayer2,machineData machineData)
+        public static long UploadFsn(string file,int pictureServerId,ky_gzh_package gzhLayer2,ky_machine machineData)
         {
             //获取FSN文件内的机具编号
             string machineModel = "";
@@ -459,51 +440,24 @@ namespace Utility
 
             int machineId = 0;
             int machineId2 = 0;
-            //获取数据库内的机具列表
-            DataTable dtMachine = Utility.KyDataOperation.GetAllMachine();
-            for (int i = 0; i < dtMachine.Rows.Count; i++)
-            {
-                if (machineMac == dtMachine.Rows[i]["kMachineNumber"].ToString())
-                {
-                    machineId = Convert.ToInt32(dtMachine.Rows[i]["kId"]);
-                    break;
-                }
-            }
+            machineId = Utility.KyDataOperation.GetMachineId(machineMac);
             if (machineId == 0)//未在机具列表中找到该机具编号
             {
                 //获取数据库内的上传文件的机具列表
-                DataTable dtImportMachine = Utility.KyDataOperation.GetAllImportMachine();
-                for (int i = 0; i < dtImportMachine.Rows.Count; i++)
-                {
-                    if (machineMac == dtImportMachine.Rows[i]["kMachineNumber"].ToString())
-                    {
-                        machineId2 = Convert.ToInt32(dtImportMachine.Rows[i]["kId"]);
-                        break;
-                    }
-                }
+                machineId2 = Utility.KyDataOperation.GetMachineIdFromImportMachine(machineMac);
                 if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
                 {
-                    bool success = Utility.KyDataOperation.InsertMachineToImportMachine(machineMac, gzhLayer2.NodeId, factoryId);
-                    if (success)
-                    {
-                        dtImportMachine = Utility.KyDataOperation.GetAllImportMachine();
-                        for (int i = 0; i < dtImportMachine.Rows.Count; i++)
-                        {
-                            if (machineMac == dtImportMachine.Rows[i]["kMachineNumber"].ToString())
-                            {
-                                machineId2 = Convert.ToInt32(dtImportMachine.Rows[i]["kId"]);
-                                break;
-                            }
-                        }
-                    }
+                    int id = Utility.KyDataOperation.InsertMachineToImportMachine(machineMac, gzhLayer2.kNodeId, factoryId);
+                    if (id>0)
+                        machineId2 = id;
                 }
             }
 
-            machineData.machineNumber = machineMac;                 //机具编号
-            machineData.nodeId = gzhLayer2.NodeId;                  //网点Id
-            machineData.factoryId = factoryId;                      //厂家Id
+            machineData.kMachineNumber = machineMac;                 //机具编号
+            machineData.kNodeId = gzhLayer2.kNodeId;                  //网点Id
+            machineData.kFactoryId = factoryId;                      //厂家Id
             machineData.business = "KHDK";                          //业务类型
-            machineData.id = machineId;                             //机具Id
+            machineData.kId = machineId;                             //机具Id
             return UploadFsnBatchId(file, pictureServerId, machineData, machineId2);
         }
 
@@ -521,13 +475,13 @@ namespace Utility
             string[] Gzhfiles = Directory.GetFiles(gzhDirectory, "*.GZH");
             //获取后缀名为FSN、fsn的文件
             string[] FsnFiles = Directory.GetFiles(gzhDirectory, "*.FSN");
-            KYDataLayer1.GzhLayer2 gzhLayer2 = new KYDataLayer1.GzhLayer2();
+            ky_gzh_package gzhLayer2 = new ky_gzh_package();
             
             if(Gzhfiles.Length==1) //表示只有一个GZH文件
             {
                 //读取GZH文件信息
                 gzhLayer2 = Gzh(KyDataLayer2.ReadGzh(Gzhfiles[0]));
-                if (gzhLayer2.FileCnt == FsnFiles.Length)//表示GZH文件中的记录数=实际的FSN文件的总数
+                if (gzhLayer2.kFSNNumber == FsnFiles.Length)//表示GZH文件中的记录数=实际的FSN文件的总数
                 {
                     //①保存GzhPackage信息，并获得packageId
                     //获取总张数，总金额
@@ -539,10 +493,10 @@ namespace Utility
                         TotalValue += amount.TotalValue;
                         TotalNumber += amount.TotalCnt;
                     }
-                    gzhLayer2.TotalNumber = TotalNumber;
-                    gzhLayer2.TotalValue = TotalValue;
-                    gzhLayer2.UserId = userId;
-                    int packageId = SaveGzhPackage(gzhLayer2);
+                    gzhLayer2.kTotalNumber = TotalNumber;
+                    gzhLayer2.kTotalValue = TotalValue;
+                    gzhLayer2.kUserId = userId;
+                    int packageId = KyDataOperation.InsertGzhPackage(gzhLayer2);
 
                     for(int i=0;i<FsnFiles.Length;i++)
                     {
@@ -551,7 +505,7 @@ namespace Utility
                         if(str.Length==2)
                         {
                             string bundleNumber = str[1];
-                            machineData machine = new machineData()
+                            ky_machine machine = new ky_machine()
                                                       {
                                                           userId = userId,
                                                           startBusinessCtl=false,
@@ -596,20 +550,20 @@ namespace Utility
             bool result = false;
             //获取后缀名为FSN、fsn的文件
             string[] FsnFiles = Directory.GetFiles(gzhDirectory, "*.FSN");
-            KYDataLayer1.GzhLayer2 gzhLayer2 = new KYDataLayer1.GzhLayer2();
+            ky_gzh_package gzhLayer2 = new ky_gzh_package();
             
             //赋值
-            gzhLayer2.Date = fileTime;
-            gzhLayer2.BranchId = KyDataOperation.GetBranchIdWithNodeId(nodeId);
-            gzhLayer2.NodeId = nodeId;
-            gzhLayer2.Business = 3;
-            gzhLayer2.FileCnt = FsnFiles.Length;
-            gzhLayer2.IsCashCenter = isClearCenter;
-            gzhLayer2.FileVersion = "1";
-            gzhLayer2.PackageNumber = packageNumber;
-            gzhLayer2.Currency = "CNY";
+            gzhLayer2.kDate = fileTime;
+            gzhLayer2.kBranchId = KyDataOperation.GetBranchIdWithNodeId(nodeId);
+            gzhLayer2.kNodeId = nodeId;
+            gzhLayer2.kType = 3;
+            gzhLayer2.kFSNNumber = FsnFiles.Length;
+            gzhLayer2.kCashCenter = isClearCenter;
+            gzhLayer2.kVersion = "1";
+            gzhLayer2.kPackageNumber = packageNumber;
+            gzhLayer2.kCurrency = "CNY";
 
-            if (gzhLayer2.FileCnt == FsnFiles.Length)//表示GZH文件中的记录数=实际的FSN文件的总数
+            if (gzhLayer2.kFSNNumber == FsnFiles.Length)//表示GZH文件中的记录数=实际的FSN文件的总数
             {
                 //①保存GzhPackage信息，并获得packageId
                 //获取总张数，总金额
@@ -621,15 +575,15 @@ namespace Utility
                     TotalValue += amount.TotalValue;
                     TotalNumber += amount.TotalCnt;
                 }
-                gzhLayer2.TotalNumber = TotalNumber;
-                gzhLayer2.TotalValue = TotalValue;
-                gzhLayer2.UserId = userId;
-                int packageId = SaveGzhPackage(gzhLayer2);
+                gzhLayer2.kTotalNumber = TotalNumber;
+                gzhLayer2.kTotalValue = TotalValue;
+                gzhLayer2.kUserId = userId;
+                int packageId = KyDataOperation.InsertGzhPackage(gzhLayer2);
 
                 for (int i = 0; i < FsnFiles.Length; i++)
                 {
                     string bundleNumber = string.Format("{0}{1,4}", fileTime.ToString("yyMMdd"), startIndex + i).Replace(" ","0");
-                    machineData machine = new machineData()
+                    ky_machine machine = new ky_machine()
                     {
                         userId = userId,
                         startBusinessCtl = false,

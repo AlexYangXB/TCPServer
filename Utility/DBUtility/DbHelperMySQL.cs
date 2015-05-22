@@ -3,7 +3,8 @@ using System.Collections;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-
+using ServiceStack.OrmLite.MySql;
+using ServiceStack.OrmLite;
 namespace Utility.DBUtility
 {
     /// <summary>
@@ -45,6 +46,14 @@ namespace Utility.DBUtility
                     connectionString = connectionStringToImage;
                     break;
             }
+        }
+        //获取机构设备的连接数据库对象。MySqlConnection
+        public static IDbConnection OpenDeviceConnection()
+        {
+            var dbFactory = new OrmLiteConnectionFactory(connectionStringToDevice,MySqlDialectProvider.Instance);
+            OrmLiteConfig.DialectProvider=MySqlDialect.Provider;
+            IDbConnection dbConn = dbFactory.OpenDbConnection();
+            return dbConn;
         }
 
         #region 公用方法

@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Objects;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Linq;
+using System.Configuration;
 namespace MyTest
 {
+
     public partial class Form2Test : Form
     {
         public List<string> PicName=new List<string>();
         public Form2Test()
         {
             InitializeComponent();
+            
         }
 
         private void btn_Scan_Click(object sender, EventArgs e)
@@ -70,10 +74,6 @@ namespace MyTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //string[] files = Directory.GetFiles(txb_Folder.Text, "*.FSN");
-            //MessageBox.Show(files.Length.ToString());
-
-            
         }
     }
 }

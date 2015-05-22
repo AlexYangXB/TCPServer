@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F673D7A2-1D23-4B21-B7BE-22C5CF4E83EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KyModel</RootNamespace>
+    <AssemblyName>KyModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\Lib\ORM\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ky_atm.cs" />
+    <Compile Include="ky_atmtype.cs" />
+    <Compile Include="ky_branch.cs" />
+    <Compile Include="ky_cashbox.cs" />
+    <Compile Include="ky_cashstatus.cs" />
+    <Compile Include="ky_currency.cs" />
+    <Compile Include="ky_factory.cs" />
+    <Compile Include="ky_fakeregist.cs" />
+    <Compile Include="ky_fakesign.cs" />
+    <Compile Include="ky_gzh_bundle.cs" />
+    <Compile Include="ky_gzh_package.cs" />
+    <Compile Include="ky_imgserver.cs" />
+    <Compile Include="ky_import_file.cs" />
+    <Compile Include="ky_import_machine.cs" />
+    <Compile Include="ky_machine.cs" />
+    <Compile Include="ky_node.cs" />
+    <Compile Include="ky_package_bundle.cs" />
+    <Compile Include="ky_perm_user_node.cs" />
+    <Compile Include="ky_user.cs" />
+    <Compile Include="ky_version.cs" />
+    <Compile Include="permissions.cs" />
+    <Compile Include="permission_role.cs" />
+    <Compile Include="roles.cs" />
+    <Compile Include="role_user.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <UsingTask TaskName="ProcessorTask" AssemblyFile="$(DbEntryPath)\Leafing.MSBuild.dll" />
+  <Target Name="AfterCompile">
+    <ProcessorTask KeyFile="$(KeyOriginatorFile)" ProjectDir="$(ProjectDir)" AssemblyName="@(IntermediateAssembly)" ReferenceFiles="@(ReferencePath)" />
+  </Target>
+</Project>

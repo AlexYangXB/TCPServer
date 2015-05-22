@@ -1,0 +1,6 @@
+E:\TCPServer\KyModel\bin\Debug\KyModel.dll
+E:\TCPServer\KyModel\bin\Debug\KyModel.pdb
+E:\TCPServer\KyModel\obj\Debug\KyModel.dll
+E:\TCPServer\KyModel\obj\Debug\KyModel.pdb
+E:\TCPServer\KyModel\obj\Debug\KyModel.csprojResolveAssemblyReference.cache
+E:\TCPServer\KyModel\bin\Debug\ServiceStack.Interfaces.dll

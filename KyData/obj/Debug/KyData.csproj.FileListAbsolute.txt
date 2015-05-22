@@ -12,3 +12,7 @@ E:\Project\TCPServerTest\KyData\bin\Debug\KyData.pdb
 E:\Project\TCPServerTest\KyData\obj\Debug\ResolveAssemblyReference.cache
 E:\Project\TCPServerTest\KyData\obj\Debug\KyData.dll
 E:\Project\TCPServerTest\KyData\obj\Debug\KyData.pdb
+E:\TCPServer\KyData\bin\Debug\KyData.dll
+E:\TCPServer\KyData\bin\Debug\KyData.pdb
+E:\TCPServer\KyData\obj\Debug\KyData.dll
+E:\TCPServer\KyData\obj\Debug\KyData.pdb

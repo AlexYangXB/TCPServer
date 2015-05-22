@@ -13,7 +13,8 @@ using System.Runtime.InteropServices;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
 using Utility.DBUtility;
-
+using KyModel;
+using System.Linq;
 namespace NodeServerAndManager
 {
     public partial class NodeManager : Form
@@ -112,24 +113,20 @@ namespace NodeServerAndManager
                 {
                     //获取绑定的网点ID
                     bindNodeId.Clear();
-                    DataTable nodeDt = Utility.KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
-                    for (int i = 0; i < nodeDt.Rows.Count; i++)
-                    {
-                        bindNodeId.Add(Convert.ToInt32(nodeDt.Rows[i]["kId"]));
-                    }
-                    DataTable machineDt = new DataTable();
+                    List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
+                    bindNodeId = (from node in nodes select node.kId).ToList();
+                    List<ky_machine> machineDt=new List<ky_machine>();
                     //获取绑定网点内的机器
                     if (bindNodeId.Count > 0)
                     {
-                        int[] nodeIds = new int[bindNodeId.Count];
-                        bindNodeId.CopyTo(nodeIds);
+                        int[] nodeIds = bindNodeId.ToArray();
                         machineDt = Utility.KyDataOperation.GetMachineWithNodeIds(nodeIds);
                     }
                     idIp.Clear();
-                    for (int i = 0; i < machineDt.Rows.Count; i++)
+                    foreach (ky_machine machine in machineDt)
                     {
-                        int machineId =Convert.ToInt32(machineDt.Rows[i]["kId"]);
-                        string ip = machineDt.Rows[i]["kIpAddress"].ToString();
+                        int machineId = Convert.ToInt32(machine.kId);
+                        string ip = machine.kIpAddress.Trim();
                         if (!idIp.ContainsKey(machineId))
                         {
                             idIp.Add(machineId, ip);
@@ -177,14 +174,14 @@ namespace NodeServerAndManager
             //加密
             passWord=Utility.KyDataOperation.Md5(passWord);
 
-            DataTable dt = Utility.KyDataOperation.GetUser(user);
-            if(dt.Rows.Count>0)
+            ky_user dt = Utility.KyDataOperation.GetUser(user);
+            if (dt!=null)
             {
-                if (dt.Rows[0]["kPassWord"].ToString() == passWord)
+                if (dt.kPassWord == passWord)
                 {
                     //localNodeId = Convert.ToInt32( dt.Rows[0]["kNodeId"]);
                     userNumber = user;
-                    userId = Convert.ToInt32( dt.Rows[0]["kId"]);
+                    userId = Convert.ToInt32( dt.kId);
                     txb_User.Text = "";
                     txb_PassWord.Text = "";
                     tabControl1.SelectedIndex = 1;
@@ -287,46 +284,43 @@ namespace NodeServerAndManager
                 case 2:
                     lab_Tital.Text = "冠字号文件上传";
                     //所属厂家
-                    DataTable dtFactory = Utility.KyDataOperation.GetAllFactory();
+                    List<ky_factory> dtFactory = Utility.KyDataOperation.GetAllFactory();
                     cmb_Factory.Items.Clear();
-                    for(int i=0;i<dtFactory.Rows.Count;i++)
+                    foreach (var factory in dtFactory)
                     {
-                        string str = string.Format("{0},{1}", dtFactory.Rows[i]["kId"].ToString(),
-                                                   dtFactory.Rows[i]["kFactoryName"].ToString());
+                        string str = string.Format("{0},{1}", factory.kId,
+                                                   factory.kFactoryName.Trim());
                         cmb_Factory.Items.Add(str);
                     }
                     //所属网点
-                    DataTable dtNode = Utility.KyDataOperation.GetAllNode();
+                    List<ky_node> dtNode = Utility.KyDataOperation.GetNodeWithIds(bindNodeId);
                     cmb_Node.Items.Clear();
-                    for(int i=0;i<dtNode.Rows.Count;i++)
+                    foreach (var node in dtNode)
                     {
-                        string str = string.Format("{0},{1}", dtNode.Rows[i]["kId"].ToString(),
-                                                   dtNode.Rows[i]["kNodeName"].ToString());
+                        string str = string.Format("{0},{1}", node.kId,node.kNodeName.Trim());
                         cmb_Node.Items.Add(str);
                     }
                     //ATM编号
-                    DataTable dtATM2 = Utility.KyDataOperation.GetAllAtm();
+                    List<ky_atm> dtATM2 = Utility.KyDataOperation.GetAtmWithNodeId(bindNodeId);
                     cmb_ATM2.Items.Clear();
-                    for (int i = 0; i < dtATM2.Rows.Count;i++ )
+                    foreach (var atm in dtATM2)
                     {
-                        string str = string.Format("{0},{1}", dtATM2.Rows[i]["kId"].ToString(),
-                                                   dtATM2.Rows[i]["kATMNumber"].ToString());
+                        string str = string.Format("{0},{1}", atm.kId,atm.kATMNumber.Trim());
                         cmb_ATM2.Items.Add(str);
                     }
                     //钞箱编号
-                    DataTable dtCashBox2 = Utility.KyDataOperation.GetAllCashBox();
+                    List<ky_cashbox> dtCashBox2 = Utility.KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
                     cmb_CashBox2.Items.Clear();
-                    for (int i = 0; i < dtCashBox2.Rows.Count;i++ )
+                    foreach (var cashbox in dtCashBox2)
                     {
-                        string str = string.Format("{0},{1}", dtCashBox2.Rows[i]["kId"].ToString(),
-                                                   dtCashBox2.Rows[i]["kCashBoxNumber"].ToString());
+                        string str = string.Format("{0},{1}", cashbox.kId,cashbox.kCashBoxNumber.Trim());
                         cmb_CashBox2.Items.Add(str);
                     }
                     break;
                 case 3:
                     lab_Tital.Text = "设备监控";
-                    DataTable dtMachine = Utility.KyDataOperation.GetMachineStatus();
-                    if(dtMachine.Rows.Count>0)
+                    List<ky_machine> dtMachine = Utility.KyDataOperation.GetMachineStatus(bindNodeId);
+                    if(dtMachine!=null)
                     {
                         dgv_machine.DataSource = dtMachine;
                     }
@@ -514,43 +508,16 @@ namespace NodeServerAndManager
 
                     int machineId = 0;
                     int machineId2 = 0;
-                    //获取数据库内的机具列表
-                    DataTable dtMachine = Utility.KyDataOperation.GetAllMachine();
-                    for (int i = 0; i < dtMachine.Rows.Count; i++)
-                    {
-                        if (machineMac == dtMachine.Rows[i]["kMachineNumber"].ToString())
-                        {
-                            machineId = Convert.ToInt32(dtMachine.Rows[i]["kId"]);
-                            break;
-                        }
-                    }
+                    machineId = Utility.KyDataOperation.GetMachineId(machineMac);
                     if (machineId == 0)//未在机具列表中找到该机具编号
                     {
                         //获取数据库内的上传文件的机具列表
-                        DataTable dtImportMachine = Utility.KyDataOperation.GetAllImportMachine();
-                        for (int i = 0; i < dtImportMachine.Rows.Count; i++)
-                        {
-                            if (machineMac == dtImportMachine.Rows[i]["kMachineNumber"].ToString())
-                            {
-                                machineId2 = Convert.ToInt32(dtImportMachine.Rows[i]["kId"]);
-                                break;
-                            }
-                        }
+                        machineId2 = Utility.KyDataOperation.GetMachineIdFromImportMachine(machineMac);
                         if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
                         {
-                            bool success = Utility.KyDataOperation.InsertMachineToImportMachine(machineMac, nodeId, factoryId);
-                            if (success)
-                            {
-                                dtImportMachine = Utility.KyDataOperation.GetAllImportMachine();
-                                for (int i = 0; i < dtImportMachine.Rows.Count; i++)
-                                {
-                                    if (machineMac == dtImportMachine.Rows[i]["kMachineNumber"].ToString())
-                                    {
-                                        machineId2 = Convert.ToInt32(dtImportMachine.Rows[i]["kId"]);
-                                        break;
-                                    }
-                                }
-                            }
+                            int id = Utility.KyDataOperation.InsertMachineToImportMachine(machineMac, nodeId, factoryId);
+                            if (id > 0)
+                                machineId2 = id;
                         }
                     }
                     machineData machineDataTmp = new machineData();
@@ -623,14 +590,15 @@ namespace NodeServerAndManager
             if (cmb_Node.Text != "")
             {
                 string[] strNode = cmb_Node.Text.Split(",".ToCharArray());
-                int nodeId = int.Parse(strNode[0]);
+                List<int> nodeId = new List<int>();
+                nodeId.Add(int.Parse(strNode[0]));
                 //ATM编号
-                DataTable dtATM2 = Utility.KyDataOperation.GetAtmWithNodeId(nodeId);
+                List<ky_atm> dtATM2 = Utility.KyDataOperation.GetAtmWithNodeId(nodeId);
                 cmb_ATM2.Items.Clear();
-                for (int i = 0; i < dtATM2.Rows.Count; i++)
+                foreach (var atm in dtATM2)
                 {
-                    string str = string.Format("{0},{1}", dtATM2.Rows[i]["kId"].ToString(),
-                                               dtATM2.Rows[i]["kATMNumber"].ToString());
+                    string str = string.Format("{0},{1}", atm.kId,
+                                              atm.kATMNumber.Trim());
                     cmb_ATM2.Items.Add(str);
                 }
             }
@@ -674,13 +642,13 @@ namespace NodeServerAndManager
                 //获取绑定网点内的机器
                 int[] nodeIds = new int[bindNodeId.Count];
                 bindNodeId.CopyTo(nodeIds);
-                DataTable machineDt = Utility.KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                List<ky_machine> machineDt = Utility.KyDataOperation.GetMachineWithNodeIds(nodeIds);
                 myTcpServer.UpdateMachineTable(machineDt);
                 idIp.Clear();
-                for (int i = 0; i < machineDt.Rows.Count; i++)
+                foreach (var m in machineDt)
                 {
-                    int machineId = Convert.ToInt32(machineDt.Rows[i]["kId"]);
-                    string ip = machineDt.Rows[i]["kIpAddress"].ToString();
+                    int machineId = Convert.ToInt32(m.kId);
+                    string ip = m.kIpAddress.Trim();
                     if (!idIp.ContainsKey(machineId))
                     {
                         idIp.Add(machineId, ip);

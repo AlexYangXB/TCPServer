@@ -62,98 +62,6 @@ namespace KyData
 
 
         #region  解析文件
-        /// <summary>
-        /// 解析DAT文件
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static List<KYDataLayer1.SignTypeL2> ReadFromDAT(string filePath)
-        {
-            List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                //解析头文件
-                byte[] buf = new byte[DatHead];
-                fs.Read(buf, 0, buf.Length);
-                KYDataLayer1.DataHead dataHead = KYDataLayer1.unPack_DataHead_L1(buf);
-
-                //解析数据
-                byte[] bBuf = new byte[DatSize];
-                for (int i = 0; i < dataHead.Count; i++)
-                {
-                    try
-                    {
-                        if (fs.Read(bBuf, 0, bBuf.Length) > 0)
-                        {
-                            //KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.unPack_SignType_L1(bBuf));
-                            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.unPack_SignType_L1(bBuf));
-                            signList.Add(sign);
-                        }
-                        else
-                        {
-                            break;
-                        }
-
-                    }
-                    catch (Exception)
-                    {
-                        //string strErr = e.ToString();
-                        //throw;
-                    }
-
-                }
-
-            }
-            return signList;
-        }
-
-        /// <summary>
-        /// 分页解析DAT文件
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="page"> </param>
-        /// <param name="numPerPage"> </param>
-        /// <param name="totalPage"> </param>
-        /// <param name="count"> </param>
-        /// <returns></returns>
-        public static List<KYDataLayer1.SignTypeL2> ReadFromDATInPage(string filePath, int page, int numPerPage, out int totalPage, out int count)
-        {
-            //数据记录数
-            FileInfo fileInfo = new FileInfo(filePath);
-            count = Convert.ToInt32((fileInfo.Length - DatHead) / DatSize);
-            totalPage = Convert.ToInt32((count + (numPerPage - 1)) / numPerPage);
-
-            List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                //解析头文件
-                byte[] bufhead = new byte[DatHead];
-                fs.Read(bufhead, 0, bufhead.Length);
-                KYDataLayer1.DataHead dataHead = KYDataLayer1.unPack_DataHead_L1(bufhead);
-
-                //解析数据
-                byte[] bBuf = new byte[DatSize];
-                long offset = (page - 1) * numPerPage * DatSize;
-                fs.Seek(offset, SeekOrigin.Current);
-                for (long i = (page - 1) * numPerPage; i < dataHead.Count && i < page * numPerPage; i++)
-                {
-                    try
-                    {
-                        if (fs.Read(bBuf, 0, bBuf.Length) > 0)
-                        {
-                            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.unPack_SignType_L1(bBuf));
-                            signList.Add(sign);
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
-
-            }
-            return signList;
-        }
 
         /// <summary>
         /// 解析标准FSN文件
@@ -199,57 +107,7 @@ namespace KyData
             }
             return signList;
         }
-        /// <summary>
-        /// 解析KY0文件
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static List<KYDataLayer1.SignTypeL2> ReadFromKY0(string filePath)
-        {
-            List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                //解析头文件
-                byte[] buf = new byte[Ky0Head];
-                fs.Read(buf, 0, buf.Length);
-                KYDataLayer1.FSNHead_L2 dataHead = KYDataLayer1.UnPack_FSNHead_L2(KYDataLayer1.UnPack_FSNHead_L1(buf));
-
-                //解析数据
-                byte[] bBuf = new byte[Ky0Size];
-                if (dataHead.IsFsnFile)
-                {
-                    if (!dataHead.HaveImg)
-                    {
-                        bBuf = new byte[100];
-                    }
-
-                    for (int i = 0; i < dataHead.Count; i++)
-                    {
-                        if (fs.Read(bBuf, 0, bBuf.Length) > 0)
-                        {
-                            try
-                            {
-                                KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, "JPG"));
-                                signList.Add(sign);
-                            }
-                            catch (Exception)
-                            {
-                            }
-
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    signList = null;
-                }
-            }
-            return signList;
-        }
+        
 
         /// <summary>
         /// 分页解析标准FSN文件
@@ -304,57 +162,7 @@ namespace KyData
             return signList;
         }
 
-        /// <summary>
-        /// 分页解析KY0文件
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static List<KYDataLayer1.SignTypeL2> ReadFromKY0InPage(string filePath, int page, int numPerPage, out int totalPage, out int count)
-        {
-            //数据记录数
-            FileInfo fileInfo = new FileInfo(filePath);
-            count = Convert.ToInt32((fileInfo.Length - Ky0Head) / Ky0Size);
-            totalPage = Convert.ToInt32((count + (numPerPage - 1)) / numPerPage);
-
-
-            List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                //解析文件头
-                byte[] buf = new byte[Ky0Head];
-                fs.Read(buf, 0, buf.Length);
-                KYDataLayer1.FSNHead_L2 dataHead = KYDataLayer1.UnPack_FSNHead_L2(KYDataLayer1.UnPack_FSNHead_L1(buf));
-
-                //解析数据
-                byte[] bBuf = new byte[Ky0Size];
-                if (dataHead.IsFsnFile)
-                {
-                    if (!dataHead.HaveImg)
-                    {
-                        bBuf = new byte[100];
-                    }
-
-                    //count = Convert.ToInt32(dataHead.Count);
-                    long offset = (page - 1) * numPerPage * Ky0Size;
-                    fs.Seek(offset, SeekOrigin.Current);
-                    for (long i = (page - 1) * numPerPage; i < dataHead.Count && i < page * numPerPage; i++)
-                    {
-                        if (fs.Read(bBuf, 0, bBuf.Length) > 0)
-                        {
-                            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, "JPG"));
-                            signList.Add(sign);
-                        }
-                    }
-                }
-                else
-                {
-                    signList = null;
-                    totalPage = 0;
-                    count = 0;
-                }
-            }
-            return signList;
-        }
+       
 
         /// <summary>
         /// 从FSN文件中获取统计数据
