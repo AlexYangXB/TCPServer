@@ -88,23 +88,22 @@ namespace MyTest
             //string str=String.Format("{0}\"katm\":[{1}],\"kcashbox\":[{2}]{3}", "{", 1,2, "}");
             //MessageBox.Show(str);
 
-            DataContractJsonSerializer data = new DataContractJsonSerializer(typeof(Hashtable));
-            KyModel.ky_user user = new KyModel.ky_user { kUserName="123",updated_at=DateTime.Now};
-            Hashtable hashtable = new Hashtable();   //实例化Hashtable对象
-            hashtable.Add("id", "600719");     //向Hashtable哈希表中添加元素
-            hashtable.Add("name", "denylau");
-            hashtable.Add("sex", "男");
+            //DataContractJsonSerializer data = new DataContractJsonSerializer(typeof(Hashtable));
+            //Hashtable hashtable = new Hashtable();   //实例化Hashtable对象
+            //hashtable.Add("id", "600719");     //向Hashtable哈希表中添加元素
+            //hashtable.Add("name", "denylau");
+            //hashtable.Add("sex", "男");
 
-            JObject jo = new JObject();
-            jo["katm"] = 1;
-            string str = JsonConvert.SerializeObject(jo);
-            using (MemoryStream stream = new MemoryStream())
-            {
-                data.WriteObject(stream, hashtable);
-                string szJson = Encoding.UTF8.GetString(stream.ToArray());
+            //JObject jo = new JObject();
+            //jo["katm"] = 1;
+            //string str = JsonConvert.SerializeObject(jo);
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    data.WriteObject(stream, hashtable);
+            //    string szJson = Encoding.UTF8.GetString(stream.ToArray());
                 
-                MessageBox.Show(szJson);
-            }
+            //    MessageBox.Show(szJson);
+            //}
             
         }
     }

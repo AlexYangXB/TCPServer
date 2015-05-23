@@ -1,0 +1,67 @@
+2015-05-23 13:52:08：****************************异常文本****************************
+【呈现时候】：2015-05-23 13:52:08
+【异常类型】：MySqlException
+【异常信息】：Table 'kydb.ky_user' doesn't exist
+【堆栈调用】：   在 MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   在 MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   在 MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   在 System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader()
+   在 ServiceStack.OrmLite.OrmLiteCommand.ExecuteReader()
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.ExecReader(IDbCommand dbCmd, String sql)
+   在 ServiceStack.OrmLite.OrmLiteResultsFilterExtensions.ConvertToList[T](IDbCommand dbCmd, String sql)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.SelectFmt[T](IDbCommand dbCmd, String sqlFilter, Object[] filterParams)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.Select[T](IDbCommand dbCmd)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.<Select>b__0[T](IDbCommand dbCmd)
+   在 ServiceStack.OrmLite.OrmLiteExecFilter.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadExpressionsApi.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.Select[T](IDbConnection dbConn)
+   在 Utility.KyDataOperation.TestConnectImage() 位置 E:\TCPServer\Utility\KyDataOperation.cs:行号 786
+【异常办法】：MySql.Data.MySqlClient.MySqlPacket ReadPacket()
+***************************************************************
+
+2015-05-23 14:49:49：****************************异常文本****************************
+【呈现时候】：2015-05-23 14:49:48
+【异常类型】：OverflowException
+【异常信息】：值对于 Int32 太大或太小。
+【堆栈调用】：   在 System.Convert.ToInt32(Int64 value)
+   在 System.Int64.System.IConvertible.ToInt32(IFormatProvider provider)
+   在 System.Convert.ToInt32(Object value)
+   在 ServiceStack.OrmLite.OrmLiteDialectProviderBase`1.ConvertDbValue(Object value, Type type)
+   在 ServiceStack.OrmLite.MySql.MySqlDialectProvider.ConvertDbValue(Object value, Type type)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.ToScalar[T](IOrmLiteDialectProvider dialectProvider, Object oValue)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.Scalar[T](IDataReader reader, IOrmLiteDialectProvider dialectProvider)
+   在 ServiceStack.OrmLite.OrmLiteResultsFilterExtensions.Scalar[T](IDbCommand dbCmd, String sql)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.Scalar[T](IDbCommand dbCmd, String sql, Object anonType)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.<>c__DisplayClass3f`1.<Scalar>b__3e(IDbCommand dbCmd)
+   在 ServiceStack.OrmLite.OrmLiteExecFilter.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadExpressionsApi.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.Scalar[T](IDbConnection dbConn, String sql, Object anonType)
+   在 Utility.KyDataOperation.TestConnectServer() 位置 E:\TCPServer\Utility\KyDataOperation.cs:行号 726
+【异常办法】：Int32 ToInt32(Int64)
+***************************************************************
+
+2015-05-23 14:50:03：****************************异常文本****************************
+【呈现时候】：2015-05-23 14:50:03
+【异常类型】：OverflowException
+【异常信息】：值对于 Int32 太大或太小。
+【堆栈调用】：   在 System.Convert.ToInt32(Int64 value)
+   在 System.Int64.System.IConvertible.ToInt32(IFormatProvider provider)
+   在 System.Convert.ToInt32(Object value)
+   在 ServiceStack.OrmLite.OrmLiteDialectProviderBase`1.ConvertDbValue(Object value, Type type)
+   在 ServiceStack.OrmLite.MySql.MySqlDialectProvider.ConvertDbValue(Object value, Type type)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.ToScalar[T](IOrmLiteDialectProvider dialectProvider, Object oValue)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.Scalar[T](IDataReader reader, IOrmLiteDialectProvider dialectProvider)
+   在 ServiceStack.OrmLite.OrmLiteResultsFilterExtensions.Scalar[T](IDbCommand dbCmd, String sql)
+   在 ServiceStack.OrmLite.OrmLiteReadCommandExtensions.Scalar[T](IDbCommand dbCmd, String sql, Object anonType)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.<>c__DisplayClass3f`1.<Scalar>b__3e(IDbCommand dbCmd)
+   在 ServiceStack.OrmLite.OrmLiteExecFilter.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadExpressionsApi.Exec[T](IDbConnection dbConn, Func`2 filter)
+   在 ServiceStack.OrmLite.OrmLiteReadApi.Scalar[T](IDbConnection dbConn, String sql, Object anonType)
+   在 Utility.KyDataOperation.TestConnectServer() 位置 E:\TCPServer\Utility\KyDataOperation.cs:行号 726
+【异常办法】：Int32 ToInt32(Int64)
+***************************************************************
+

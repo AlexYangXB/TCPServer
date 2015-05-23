@@ -73,7 +73,6 @@ namespace MyTcpServer
                 {
                     if (!machine.ContainsKey(m.kIpAddress))
                     {
-                        machineData data = new machineData();
                         machine.Add(m.kIpAddress, m);
                     }
                 }
@@ -414,44 +413,47 @@ namespace MyTcpServer
         //交易控制
         public void BusinessControl(MyBusinessStatus myBusinessStatus, businessControl bControl)
         {
+            ky_machine currentMachine = new ky_machine();
+            if (machine.ContainsKey(bControl.ip))
+            {
+                currentMachine = machine[bControl.ip];
+            }
+
             switch (myBusinessStatus)
             {
                 case MyBusinessStatus.Start:
                     if(machine.ContainsKey(bControl.ip))
                     {
-                        machine[bControl.ip].startBusinessCtl = true;
-                        machine[bControl.ip].fileName = "";
-                        machine[bControl.ip].dateTime = bControl.dateTime;
-                        machine[bControl.ip].business = bControl.business;
-                        machine[bControl.ip].bundleCount = bControl.bundleCount;//每捆的张数  2015.05.05
-                        machine[bControl.ip].userId = bControl.userId;//2015.05.08
+                        currentMachine.startBusinessCtl = true;
+                        currentMachine.fileName = "";
+                        currentMachine.dateTime = bControl.dateTime;
+                        currentMachine.business = bControl.business;
+                        currentMachine.bundleCount = bControl.bundleCount;//每捆的张数  2015.05.05
+                        currentMachine.userId = bControl.userId;//2015.05.08
                     }
                     break;
                 case MyBusinessStatus.End:
 
                     if (machine.ContainsKey(bControl.ip))
                     {
-                        machine[bControl.ip].startBusinessCtl = false;
-                        machine[bControl.ip].bussinessNumber = bControl.bussinessNumber;
-                        machine[bControl.ip].atmId =Convert.ToInt32(bControl.atmId);
-                        machine[bControl.ip].cashBoxId = Convert.ToInt32(bControl.cashBoxId);
-                        machine[bControl.ip].isClearCenter = bControl.isClearCenter;
-                        machine[bControl.ip].packageNumber = bControl.packageNumber;
-                        machine[bControl.ip].imgServerId = PictureServerId;
-                        if (machine[bControl.ip].fileName != "" && File.Exists(machine[bControl.ip].fileName))
+                        currentMachine.startBusinessCtl = false;
+                        currentMachine.bussinessNumber = bControl.bussinessNumber;
+                        currentMachine.atmId = Convert.ToInt32(bControl.atmId);
+                        currentMachine.cashBoxId = Convert.ToInt32(bControl.cashBoxId);
+                        currentMachine.isClearCenter = bControl.isClearCenter;
+                        currentMachine.packageNumber = bControl.packageNumber;
+                        currentMachine.imgServerId = PictureServerId;
+                        if (currentMachine.fileName != "" && File.Exists(currentMachine.fileName))
                         {
-                            if(machine[bControl.ip].business=="KHDK")
+                            if(currentMachine.business=="KHDK")
                             {
                                 if(!Directory.Exists(DataSaveFolder+"\\tmp"))
                                 {
                                     Directory.CreateDirectory(DataSaveFolder + "\\tmp");
                                 }
-                                KyDataLayer2.DecompositionFile(machine[bControl.ip].fileName, DataSaveFolder + "\\tmp",
-                                                               machine[bControl.ip].bundleCount);
-                                DateTime date = DateTime.Now;
-                                Utility.SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", bControl.isClearCenter, bControl.packageNumber,
-                                                              PictureServerId, machine[bControl.ip].userId,
-                                                              machine[bControl.ip].kNodeId,1, date);
+                                KyDataLayer2.DecompositionFile(currentMachine.fileName, DataSaveFolder + "\\tmp",
+                                                               currentMachine.bundleCount);
+                                Utility.SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", currentMachine);
                                 //删除文件
                                 if(Directory.Exists(DataSaveFolder + "\\tmp"))
                                 {
@@ -464,24 +466,25 @@ namespace MyTcpServer
                             }
                             else
                             {
-                                Utility.SaveDataToDB.SaveFsn(machine[bControl.ip].fileName, machine[bControl.ip]);
+                                Utility.SaveDataToDB.SaveFsn(currentMachine.fileName, currentMachine);
                             }
                             //删除文件
-                            if(File.Exists(machine[bControl.ip].fileName))
+                            if(File.Exists(currentMachine.fileName))
                             {
-                                File.Delete(machine[bControl.ip].fileName);
+                                File.Delete(currentMachine.fileName);
                             }
                         }
-                        machine[bControl.ip].business = "";
-                        machine[bControl.ip].startBusinessCtl = false;
-                        machine[bControl.ip].bussinessNumber = "";
-                        machine[bControl.ip].atmId = 0;
-                        machine[bControl.ip].cashBoxId = 0;
-                        machine[bControl.ip].fileName = "";
-                        machine[bControl.ip].userId = 0;
+                        currentMachine.business = "";
+                        currentMachine.startBusinessCtl = false;
+                        currentMachine.bussinessNumber = "";
+                        currentMachine.atmId = 0;
+                        currentMachine.cashBoxId = 0;
+                        currentMachine.fileName = "";
+                        currentMachine.userId = 0;
                     }
                     break;
             }
+            machine[bControl.ip] = currentMachine;
         }
     }
 }

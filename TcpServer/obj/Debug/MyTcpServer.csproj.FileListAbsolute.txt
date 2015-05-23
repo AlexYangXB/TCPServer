@@ -45,3 +45,4 @@ E:\TCPServer\TcpServer\bin\Debug\ServiceStack.OrmLite.MySql.dll
 E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Common.dll
 E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Interfaces.dll
 E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Text.dll
+E:\TCPServer\TcpServer\bin\Debug\Newtonsoft.Json.dll

@@ -80,39 +80,13 @@ namespace NodeServerAndManager
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MessageBox.Show(null, "未知错误: " + ((Exception)e.ExceptionObject).ToString(), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            string str = GetExceptionMsg(e.ExceptionObject as Exception, e.ToString());
-            Log.UnHandleException(str);
+            Log.UnHandleException(e.ExceptionObject as Exception,e.ToString());
         }
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             MessageBox.Show(null, "未知错误: " + e.Exception, "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            string str = GetExceptionMsg(e.Exception, e.ToString());
-            Log.UnHandleException(str);
+            Log.UnHandleException(e.Exception, e.ToString());
         }
-        /// <summary>
-        /// 生成自定义异常消息
-        /// </summary>
-        /// <param name="ex">异常对象</param>
-        /// <param name="backStr">备用异常消息：当ex为null时有效</param>
-        /// <returns>异常字符串文本</returns>
-        public static string GetExceptionMsg(Exception ex, string backStr)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("****************************异常文本****************************");
-            sb.AppendLine("【呈现时候】：" + DateTime.Now.ToString());
-            if (ex != null)
-            {
-                sb.AppendLine("【异常类型】：" + ex.GetType().Name);
-                sb.AppendLine("【异常信息】：" + ex.Message);
-                sb.AppendLine("【堆栈调用】：" + ex.StackTrace);
-                sb.AppendLine("【异常办法】：" + ex.TargetSite);
-            }
-            else
-            {
-                sb.AppendLine("【未处理惩罚异常】：" + backStr);
-            }
-            sb.AppendLine("***************************************************************");
-            return sb.ToString();
-        }
+       
     }
 }

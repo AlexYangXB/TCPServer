@@ -55,10 +55,18 @@ namespace Utility.DBUtility
             IDbConnection dbConn = dbFactory.OpenDbConnection();
             return dbConn;
         }
-        //获取机构设备的连接数据库对象。MySqlConnection
+        //获取SPHINX的连接数据库对象。MySqlConnection
         public static IDbConnection OpenSphinxConnection()
         {
             var dbFactory = new OrmLiteConnectionFactory(connectionStringToSphinx, MySqlDialectProvider.Instance);
+            OrmLiteConfig.DialectProvider = MySqlDialect.Provider;
+            IDbConnection dbConn = dbFactory.OpenDbConnection();
+            return dbConn;
+        }
+        //获取图像的连接数据库对象。MySqlConnection
+        public static IDbConnection OpenImageConnection()
+        {
+            var dbFactory = new OrmLiteConnectionFactory(connectionStringToImage, MySqlDialectProvider.Instance);
             OrmLiteConfig.DialectProvider = MySqlDialect.Provider;
             IDbConnection dbConn = dbFactory.OpenDbConnection();
             return dbConn;

@@ -10,6 +10,8 @@ using ServiceStack.OrmLite;
 using KyModel;
 using System.Linq;
 using System.Data.Entity;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 namespace Utility
 {
     public class KyDataOperation
@@ -38,17 +40,24 @@ namespace Utility
         /// <returns></returns>
         public static bool InsertSignBatch(ky_batch batch)
         {
+            batch.kmachine = "(1,23)";
             try
             {
                 using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    conn.Insert(batch);
+                    try
+                    {
+                      conn.Insert(batch);
+                    }
+                    catch (Exception e) { 
+                        string sdd = e.ToString();
+                    }
                 }
                 return true;
             } 
             catch (Exception e)
             {
-                Log.DataBaseException("保存冠字号码异常," + e.ToString());
+                Log.DataBaseException(e, "保存冠字号码异常");
                 return false;
             }
         }
@@ -193,7 +202,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新绑定IP地址异常,"+e.ToString());
+                Log.DataBaseException(e, "更新绑定IP地址异常");
                 return false;
             }
         }
@@ -287,7 +296,7 @@ namespace Utility
             }
             catch(Exception e)
             {
-                Log.DataBaseException("添加厂家信息异常，"+e.ToString());
+                Log.DataBaseException(e, "添加厂家信息异常");
                 return false;
             }
         }
@@ -425,7 +434,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e.ToString());
+                Log.DataBaseException(e, "更新机器时间和机具编号异常");
                 return false;
             }
         }
@@ -565,8 +574,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException("导入机具异常，"+e.ToString());
-               
+                Log.DataBaseException(e, "导入机具异常");
             }
             return id;
         }
@@ -600,7 +608,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传文件异常，" + e.ToString());
+                Log.DataBaseException(e, "上传文件异常");
                 return false;
             }
         }
@@ -641,7 +649,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传GZH文件异常，" + e.ToString());
+                Log.DataBaseException(e, "上传GZH文件异常");
                 return false;
 
             }
@@ -690,6 +698,8 @@ namespace Utility
         /// <returns></returns>
         public static bool SavePackageBundle(int bundleId,int packageId)
         {
+            if (bundleId == 0 || packageId == 0)
+                return false;
             try
             {
                 using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
@@ -701,7 +711,7 @@ namespace Utility
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存GZH捆钞异常," + e.ToString());
+                Log.DataBaseException(e, "保存GZH捆钞异常");
                 return false;
             }
         }
@@ -717,16 +727,19 @@ namespace Utility
         /// <returns></returns>
         public static bool TestConnectServer()
         {
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Sphinx);
-            return DbHelperMySQL.ConnectTest();
-            //string strSql =
-            //    "select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='kydb' and TABLE_NAME='ky_sign' ;";
-            //DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Sphinx);
-            //DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            //if (dt.Rows.Count > 0)
-            //    return true;
-            //else
-            //    return false;
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
+                {
+                       conn.Select<ky_batch>().FirstOrDefault();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "测试数据服务器连接失败");
+                return false;
+            }
         }
 
         /// <summary>
@@ -735,14 +748,19 @@ namespace Utility
         /// <returns></returns>
         public static bool TestConnectDevice()
         {
-            string strSql =
-                "select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='kydb' and TABLE_NAME='ky_user' ;";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Device);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.Select<ky_machine>().FirstOrDefault();
+                }
                 return true;
-            else
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "测试设备数据库连接失败");
                 return false;
+            }
         }
         /// <summary>
         /// 测试推送服务器的连接
@@ -758,8 +776,9 @@ namespace Utility
                 tcpClient.Connect(IpEndPoint);
                 return true;
             }
-            catch 
+            catch (Exception e)
             {
+                Log.DataBaseException(e, "测试推送服务器连接失败");
                 return false;
             }
         }
@@ -769,14 +788,19 @@ namespace Utility
         /// <returns></returns>
         public static bool TestConnectImage()
         {
-            string strSql =
-                "select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='kydb' and TABLE_NAME='ky_picture' ;";
-            DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Image);
-            DataTable dt = DbHelperMySQL.Query(strSql).Tables[0];
-            if (dt.Rows.Count > 0)
+            try
+            {
+                using (IDbConnection conn = DbHelperMySQL.OpenImageConnection())
+                {
+                    conn.Select<ky_picture>().FirstOrDefault();
+                }
                 return true;
-            else
+            }
+            catch(Exception e)
+            {
+                Log.DataBaseException(e,"测试图像数据库连接失败");
                 return false;
+            }
         }
 
         #endregion

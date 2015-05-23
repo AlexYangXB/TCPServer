@@ -47,7 +47,7 @@
       <Name>KyData</Name>
     </ProjectReference>
     <ProjectReference Include="..\KyModel\KyModel.csproj">
-      <Project>{F673D7A2-1D23-4B21-B7BE-22C5CF4E83EF}</Project>
+      <Project>{04B5D60D-70E2-424D-9501-BB0850A09F64}</Project>
       <Name>KyModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">

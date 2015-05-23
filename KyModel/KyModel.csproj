@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F673D7A2-1D23-4B21-B7BE-22C5CF4E83EF}</ProjectGuid>
+    <ProjectGuid>{04B5D60D-70E2-424D-9501-BB0850A09F64}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KyModel</RootNamespace>
     <AssemblyName>KyModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,14 +63,15 @@
     <Compile Include="ky_node.cs" />
     <Compile Include="ky_package_bundle.cs" />
     <Compile Include="ky_perm_user_node.cs" />
+    <Compile Include="ky_picture.cs" />
     <Compile Include="ky_sign.cs" />
     <Compile Include="ky_user.cs" />
     <Compile Include="ky_version.cs" />
     <Compile Include="permissions.cs" />
     <Compile Include="permission_role.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="roles.cs" />
     <Compile Include="role_user.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -79,8 +81,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <UsingTask TaskName="ProcessorTask" AssemblyFile="$(DbEntryPath)\Leafing.MSBuild.dll" />
-  <Target Name="AfterCompile">
-    <ProcessorTask KeyFile="$(KeyOriginatorFile)" ProjectDir="$(ProjectDir)" AssemblyName="@(IntermediateAssembly)" ReferenceFiles="@(ReferencePath)" />
-  </Target>
 </Project>

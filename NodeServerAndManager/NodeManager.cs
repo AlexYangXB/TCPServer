@@ -15,6 +15,8 @@ using Quobject.SocketIoClientDotNet.Client;
 using Utility.DBUtility;
 using KyModel;
 using System.Linq;
+using Newtonsoft.Json;
+using Utility;
 namespace NodeServerAndManager
 {
     public partial class NodeManager : Form
@@ -28,12 +30,12 @@ namespace NodeServerAndManager
         private string path = Application.StartupPath + "\\FsnFloder";
 
         //当前网点ID，登录的时候获取的用户所在网点
-        private List<int> bindNodeId=new List<int>();  //绑定的网点ID
-        private Dictionary<int,string> idIp=new Dictionary<int, string>();
+        private List<int> bindNodeId = new List<int>();  //绑定的网点ID
+        private Dictionary<int, string> idIp = new Dictionary<int, string>();
         private string userNumber = "";//当前登录的用户编号
         private int userId = 0;//当前登录的用户的ID
 
-        #region 无边框窗体   移动  添加右键菜单 
+        #region 无边框窗体   移动  添加右键菜单
         //http://blog.csdn.net/ku_cha_cha/article/details/6697131 详情参考该网址
         //移动
         [DllImport("user32.dll")]
@@ -46,7 +48,7 @@ namespace NodeServerAndManager
         private void panel2_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
-            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0); 
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
         }
 
         //添加右键菜单
@@ -64,7 +66,7 @@ namespace NodeServerAndManager
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
             string localIp = Properties.Settings.Default.LocalIp;
             int port = Properties.Settings.Default.Port;
-            
+
             //记录推送IP与端口号，当推送IP与端口号发生改变时，
             string pushIp = Properties.Settings.Default.PushIp;
             int pushPort = Properties.Settings.Default.PushPort;
@@ -73,9 +75,9 @@ namespace NodeServerAndManager
             frm.ShowDialog();
 
             //设置数据库连接字符串
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp,Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp,Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //本地IP或者端口号改过之后，要重新启动 TcpServer端
             if (localIp != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
             {
@@ -91,7 +93,7 @@ namespace NodeServerAndManager
             }
 
             //当推送IP或端口号发生改变时
-            if(pushIp!=Properties.Settings.Default.PushIp||pushPort!=Properties.Settings.Default.PushPort)
+            if (pushIp != Properties.Settings.Default.PushIp || pushPort != Properties.Settings.Default.PushPort)
             {
                 //停止socket
                 if (socket != null)
@@ -104,18 +106,40 @@ namespace NodeServerAndManager
         //启动TcpServer 接收数据
         private bool StartTcpServer()
         {
-            bool success = false;
+            bool result = false;
             if (Properties.Settings.Default.ServerIp != "" && Properties.Settings.Default.DeviceIp != "" && Properties.Settings.Default.PictureIp != "" && Properties.Settings.Default.LocalIp != "")
             {
-                bool result = Utility.KyDataOperation.TestConnectDevice();
-                //可以连接Device数据库
-                if(result)
+                //SPHINX数据服务器连接
+                result = KyDataOperation.TestConnectServer();
+                if (!result)
+                {
+                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                    return false;
+                }
+                result = KyDataOperation.TestConnectDevice();
+                //Device数据库连接
+                if (!result)
+                {
+                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                    return false;
+                }
+                //图像数据库
+                result = KyDataOperation.TestConnectImage();
+                if (!result)
+                {
+                    MessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                    return false;
+                }
+                try
                 {
                     //获取绑定的网点ID
                     bindNodeId.Clear();
                     List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
                     bindNodeId = (from node in nodes select node.kId).ToList();
-                    List<ky_machine> machineDt=new List<ky_machine>();
+                    List<ky_machine> machineDt = new List<ky_machine>();
                     //获取绑定网点内的机器
                     if (bindNodeId.Count > 0)
                     {
@@ -133,55 +157,42 @@ namespace NodeServerAndManager
                         }
                     }
                     //启动TcpServer线程接收数据
-                    try
+
+                    if (result)
                     {
-                        result = Utility.KyDataOperation.TestConnectImage();
-                        if(result)
-                        {
-                            myTcpServer.DTable = machineDt;
-                            myTcpServer.DataSaveFolder = path;
-                            int pictureServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
-                            myTcpServer.PictureServerId = pictureServerId;
-                            myTcpServer.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
-                            success = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
-                                            MessageBoxIcon.Information);
-                        }
-                        
-                    }
-                    catch (Exception exe)
-                    {
-                        MessageBox.Show("服务器未正常启动，请查看‘服务器设置’是否正确？"+exe.ToString(), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        myTcpServer.DTable = machineDt;
+                        myTcpServer.DataSaveFolder = path;
+                        int pictureServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                        myTcpServer.PictureServerId = pictureServerId;
+                        myTcpServer.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
+                        result = true;
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    MessageBox.Show("无法连接‘设备数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                    Log.ConnectionException(e, "启动连接服务器异常！");
+                    return false;
                 }
             }
-            return success;
+            return true;
         }
 
         //登录
         private void btn_Login_Click(object sender, EventArgs e)
         {
             string user = txb_User.Text.Trim();
-            string passWord = txb_PassWord.Text.Trim(); 
+            string passWord = txb_PassWord.Text.Trim();
             //加密
-            passWord=Utility.KyDataOperation.Md5(passWord);
+            passWord = Utility.KyDataOperation.Md5(passWord);
 
             ky_user dt = Utility.KyDataOperation.GetUser(user);
-            if (dt!=null)
+            if (dt != null)
             {
                 if (dt.kPassWord == passWord)
                 {
                     //localNodeId = Convert.ToInt32( dt.Rows[0]["kNodeId"]);
                     userNumber = user;
-                    userId = Convert.ToInt32( dt.kId);
+                    userId = Convert.ToInt32(dt.kId);
                     txb_User.Text = "";
                     txb_PassWord.Text = "";
                     tabControl1.SelectedIndex = 1;
@@ -209,7 +220,7 @@ namespace NodeServerAndManager
             //int WS_MINIMIZEBOX = 0x20000; // 最大最小化按钮
             //int windowLong = (GetWindowLong(new HandleRef(this, this.Handle), -16));
             //SetWindowLong(new HandleRef(this, this.Handle), -16, windowLong | WS_SYSMENU | WS_MINIMIZEBOX);
-            
+
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
 
@@ -225,16 +236,16 @@ namespace NodeServerAndManager
             btn_Minimize.Region = new Region(gp);
 
             //设置数据库连接字符串
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp,Properties.Settings.Default.ServerDbPort,DbHelperMySQL.DataBaseServer.Sphinx);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort,DbHelperMySQL.DataBaseServer.Device);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp,Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //判断路径是否存在，不存在就建立
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
             //设置收数据的Server端
-            bool success=StartTcpServer();
+            bool success = StartTcpServer();
             //if(!success)
             //{
             //    MessageBox.Show("false");
@@ -254,7 +265,7 @@ namespace NodeServerAndManager
                     break;
                 }
             }
-            if(id!=0)
+            if (id != 0)
             {
                 var obj = new JObject();
                 obj["MachineId"] = id;       //机具ID
@@ -297,7 +308,7 @@ namespace NodeServerAndManager
                     cmb_Node.Items.Clear();
                     foreach (var node in dtNode)
                     {
-                        string str = string.Format("{0},{1}", node.kId,node.kNodeName.Trim());
+                        string str = string.Format("{0},{1}", node.kId, node.kNodeName.Trim());
                         cmb_Node.Items.Add(str);
                     }
                     //ATM编号
@@ -305,7 +316,7 @@ namespace NodeServerAndManager
                     cmb_ATM2.Items.Clear();
                     foreach (var atm in dtATM2)
                     {
-                        string str = string.Format("{0},{1}", atm.kId,atm.kATMNumber.Trim());
+                        string str = string.Format("{0},{1}", atm.kId, atm.kATMNumber.Trim());
                         cmb_ATM2.Items.Add(str);
                     }
                     //钞箱编号
@@ -313,14 +324,14 @@ namespace NodeServerAndManager
                     cmb_CashBox2.Items.Clear();
                     foreach (var cashbox in dtCashBox2)
                     {
-                        string str = string.Format("{0},{1}", cashbox.kId,cashbox.kCashBoxNumber.Trim());
+                        string str = string.Format("{0},{1}", cashbox.kId, cashbox.kCashBoxNumber.Trim());
                         cmb_CashBox2.Items.Add(str);
                     }
                     break;
                 case 3:
                     lab_Tital.Text = "设备监控";
                     List<ky_machine> dtMachine = Utility.KyDataOperation.GetMachineStatus(bindNodeId);
-                    if(dtMachine!=null)
+                    if (dtMachine != null)
                     {
                         dgv_machine.DataSource = dtMachine;
                     }
@@ -335,13 +346,13 @@ namespace NodeServerAndManager
             {
                 case 0:
                     if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                        this.Close();;
+                        this.Close(); ;
                     break;
                 case 1:
                     if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                         this.Close();
                     break;
-                
+
                 default: tabControl1.SelectedIndex = 1;
                     break;
             }
@@ -352,7 +363,7 @@ namespace NodeServerAndManager
             this.WindowState = FormWindowState.Minimized;
         }
         #endregion
-        
+
         #region 主界面
         //注销
         private void btn_Logout_Click(object sender, EventArgs e)
@@ -385,7 +396,7 @@ namespace NodeServerAndManager
         private string[] uploadFiles;
         private void btn_Scan_Click(object sender, EventArgs e)
         {
-            if(rad_FSN.Checked)
+            if (rad_FSN.Checked)
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Filter = "纸币冠字号码文件*.FSN|*.FSN";
@@ -401,25 +412,25 @@ namespace NodeServerAndManager
                     }
                 }
             }
-            else if(rad_GZH.Checked)
+            else if (rad_GZH.Checked)
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Filter = "GZH压缩文件*.ZIP|*.ZIP";
-                if(DialogResult.OK == ofd.ShowDialog())
+                if (DialogResult.OK == ofd.ShowDialog())
                 {
                     string file = ofd.FileName;
                     txb_FilePath.Text = file;
-                    uploadFiles=new string[1];
+                    uploadFiles = new string[1];
                     uploadFiles[0] = file;
                 }
             }
 
         }
-        
+
         //交易类型
         private void cmb_BusinessType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmb_BusinessType.Text.IndexOf("ATM")!=-1)
+            if (cmb_BusinessType.Text.IndexOf("ATM") != -1)
             {
                 cmb_ATM2.Enabled = true;
                 cmb_CashBox2.Enabled = true;
@@ -433,7 +444,7 @@ namespace NodeServerAndManager
         //确定
         private void btn_Ok_Click(object sender, EventArgs e)
         {
-            if(rad_FSN.Checked)
+            if (rad_FSN.Checked)
             {
                 if (cmb_Factory.Text == "")
                 {
@@ -470,7 +481,7 @@ namespace NodeServerAndManager
                 //ATM Id
                 strTmp = cmb_ATM2.Text.Trim().Split(",".ToCharArray());
                 if (strTmp.Length > 1)
-                    AtmId =Convert.ToInt32(strTmp[0]);
+                    AtmId = Convert.ToInt32(strTmp[0]);
                 //钞箱Id
                 strTmp = cmb_CashBox2.Text.Trim().Split(",".ToCharArray());
                 if (strTmp.Length > 1)
@@ -547,15 +558,15 @@ namespace NodeServerAndManager
                 }
                 txb_FilePath.Text = "";
             }
-            else if(rad_GZH.Checked)
+            else if (rad_GZH.Checked)
             {
-                if(uploadFiles.Length>0)
+                if (uploadFiles.Length > 0)
                 {
-                    KyBll.GzhInput bll=new GzhInput();
+                    KyBll.GzhInput bll = new GzhInput();
                     int pictureServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
-                    bool success=bll.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
+                    bool success = bll.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
                     string strMessage = "";
-                    if(success)
+                    if (success)
                     {
                         //删除文件
                         if (Directory.Exists(Application.StartupPath + "\\GZH"))
@@ -566,7 +577,7 @@ namespace NodeServerAndManager
                                 File.Delete(file);
                             }
                         }
-                        strMessage = string.Format("{0} 导入成功\n",Path.GetFileName(uploadFiles[0]));
+                        strMessage = string.Format("{0} 导入成功\n", Path.GetFileName(uploadFiles[0]));
                         txb_FilePath.Text = "";
                     }
                     else
@@ -575,7 +586,7 @@ namespace NodeServerAndManager
                     }
                     txb_Message.Text = strMessage;
                 }
-                
+
             }
 
         }
@@ -606,7 +617,7 @@ namespace NodeServerAndManager
 
         private void rad_FSN_CheckedChanged(object sender, EventArgs e)
         {
-            if(rad_FSN.Checked)
+            if (rad_FSN.Checked)
             {
                 groupBox1.Enabled = true;
             }
@@ -637,7 +648,7 @@ namespace NodeServerAndManager
         /// <param name="e"></param>
         private void timer_UpdateMachine_Tick(object sender, EventArgs e)
         {
-            if(Properties.Settings.Default.DeviceIp!=""&&Utility.KyDataOperation.TestConnectDevice())
+            if (Properties.Settings.Default.DeviceIp != "" && Utility.KyDataOperation.TestConnectDevice())
             {
                 //获取绑定网点内的机器
                 int[] nodeIds = new int[bindNodeId.Count];
@@ -687,24 +698,8 @@ namespace NodeServerAndManager
         {
             try
             {
-                string node = "[";
-                if (bindNodeId.Count > 0)
-                {
-                    for (int i = 0; i < bindNodeId.Count; i++)
-                    {
-                        if (i == 0)
-                            node += string.Format("{0}", bindNodeId[i]);
-                        else
-                            node += string.Format(",{0}", bindNodeId[i]);
-                    }
-                    node += "]";
-                }
-                else
-                {
-                    node = "";
-                }
-
-                if(node!="")
+                string node = JsonConvert.SerializeObject(bindNodeId);
+                if (node != "")
                 {
                     var options = CreateOptions();
                     var uri = CreateUri();
@@ -715,61 +710,57 @@ namespace NodeServerAndManager
                     });
                     socket.On("SetStart",
                        (data) =>
+                       {
+                           var d = (JObject)data;
+                           int machineId = Convert.ToInt32(d["MachineId"]);
+                           if (idIp.ContainsKey(machineId))
                            {
-                               var d = (JObject)data;
-                               int machineId = int.Parse((string) d["MachineId"]);
-                               if(idIp.ContainsKey(machineId))
+                               KyData.DbTable.businessControl bControl = new businessControl();
+                               bControl.dateTime = DateTime.Now;
+                               bControl.ip = idIp[machineId];
+                               if (d["Type"] != null)
+                                   bControl.business = d["Type"].ToString();
+                               else
+                                   bControl.business = "";
+                               if (d["UserId"] != null)
+                                   bControl.userId = Convert.ToInt32(d["UserId"]);
+                               else
+                                   bControl.userId = 0;
+                               if (bControl.business == "KHDK")
                                {
-                                   KyData.DbTable.businessControl bControl = new businessControl();
-                                   bControl.dateTime = DateTime.Now;
-                                   bControl.ip = idIp[machineId];
-                                   if (d["Type"] != null)
-                                       bControl.business = (string)d["Type"];
-                                   else
-                                       bControl.business = "";
-                                   if (d["UserId"] != null)
-                                       bControl.userId = Convert.ToInt32(d["UserId"]);
-                                   else
-                                       bControl.userId = 0;
-                                   if (bControl.business == "KHDK")
-                                   {
-                                       int bundleCount = 100;
-                                       if (d["BundleCount"] != null)
-                                           bundleCount = Convert.ToInt32( d["BundleCount"]);
-                                       bControl.bundleCount = bundleCount;
-                                   }
-                                   myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.Start, bControl);
+                                   int bundleCount = 100;
+                                   if (d["BundleCount"] != null)
+                                       bundleCount = Convert.ToInt32(d["BundleCount"]);
+                                   bControl.bundleCount = bundleCount;
                                }
-                           });
+                               myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.Start, bControl);
+                           }
+                       });
                     socket.On("SetEnd",
                                   (data) =>
                                   {
                                       var d = (JObject)data;
                                       int machineId = Convert.ToInt32(d["MachineId"]);
-                                      if(idIp.ContainsKey(machineId))
+                                      if (idIp.ContainsKey(machineId))
                                       {
                                           KyData.DbTable.businessControl bControl = new businessControl();
                                           bControl.ip = idIp[machineId];
                                           if (d["BussinessNumber"] != null)
-                                              bControl.bussinessNumber = (string)d["BussinessNumber"];
+                                              bControl.bussinessNumber = d["BussinessNumber"].ToString();
                                           else
                                               bControl.bussinessNumber = "";
-                                          //if (d["Type"] != null)
-                                          //    bControl.business = (string)d["Type"];
-                                          //else
-                                          //    bControl.business = "";
                                           if (d["ATMId"] != null)
-                                              bControl.atmId = (string)d["ATMId"];
+                                              bControl.atmId = d["ATMId"].ToString();
                                           else
                                               bControl.atmId = "";
                                           if (d["CashBoxId"] != null)
-                                              bControl.cashBoxId = (string) d["CashBoxId"];
+                                              bControl.cashBoxId = d["CashBoxId"].ToString();
                                           else
                                               bControl.cashBoxId = "";
                                           bool isClearCenter = false;
                                           if (d["ClearCenter"] != null)
                                           {
-                                              isClearCenter = (bool)d["ClearCenter"];
+                                              isClearCenter = Convert.ToBoolean(d["ClearCenter"]);
                                               if (isClearCenter)
                                                   bControl.isClearCenter = "T";
                                               else
@@ -778,7 +769,7 @@ namespace NodeServerAndManager
                                           else
                                               bControl.isClearCenter = "";
                                           if (d["PackageNumber"] != null)
-                                              bControl.packageNumber = (string)d["PackageNumber"];
+                                              bControl.packageNumber = d["PackageNumber"].ToString();
                                           else
                                               bControl.packageNumber = "";
                                           myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.End, bControl);
@@ -790,7 +781,7 @@ namespace NodeServerAndManager
                 {
                     MessageBox.Show("该客户端未绑定网点，请先绑定网点！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                
+
             }
             catch (Exception)
             {
@@ -832,10 +823,10 @@ namespace NodeServerAndManager
                               });
                 socket.On("NoMachine", (data) => { });
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
-            
+
         }
         private void ben_Send_Click(object sender, EventArgs e)
         {
@@ -858,18 +849,18 @@ namespace NodeServerAndManager
 
 
         #endregion
-        
+
         //SetEnd :
         //obj["MachineId"];
         //obj["BussinessNumber"];
         //obj["Type"];
         //obj["ATMId"];
         //obj["CashBoxId"];                         不存在的项为null d["MachineId1"]==null
-        
 
-        
 
-        
+
+
+
 
 
     }

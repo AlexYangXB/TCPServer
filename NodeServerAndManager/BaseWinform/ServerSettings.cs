@@ -54,12 +54,12 @@ namespace NodeServerAndManager.BaseWinform
                     if(LocalIp!=""&&LocalIp!="0.0.0.0")
                     {
                         string strMessage = "";
-                        foreach (var node in dtNode)
+                        for (var i = 0; i < dtNode.Count;i++ )
                         {
-                            if (LocalIp == node.kBindIpAddress)
+                            if (LocalIp == dtNode[i].kBindIpAddress)
                             {
-                                chkList_Node.SetItemChecked(node.kId, true);
-                                strMessage += node.kNodeName + ";";
+                                chkList_Node.SetItemChecked(i, true);
+                                strMessage += dtNode[i].kNodeName + ";";
                             }
                         }
                         txb_BindNode.Text = strMessage;
@@ -97,12 +97,11 @@ namespace NodeServerAndManager.BaseWinform
             //List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
             //int[] ids = (from node in nodes select node.kId).ToArray();
             //Utility.KyDataOperation.UpdateNodeTable(ids, "");
-
             //获取被选中的项
             List<int> ids=new List<int>();
-            foreach (DataRowView dr in chkList_Node.CheckedItems)
+            foreach (ky_node dr in chkList_Node.CheckedItems)
             {
-                ids.Add(Convert.ToInt32(dr["kId"]));
+                ids.Add(Convert.ToInt32(dr.kId));
             }
             if(ids.Count>0)
             {
