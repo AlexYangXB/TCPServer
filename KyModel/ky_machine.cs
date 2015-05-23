@@ -49,6 +49,16 @@ namespace KyModel
         [Ignore]
         public int userId { get; set; }
         /// <summary>
+        /// 图像数据库ID
+        /// </summary>
+        [Ignore]
+        public int imgServerId { get; set; }
+        /// <summary>
+        /// 导入文件机具ID
+        /// </summary>
+        [Ignore]
+        public int importMachineId { get; set; }
+        /// <summary>
         /// 业务流水号
         /// </summary>
         [Ignore]

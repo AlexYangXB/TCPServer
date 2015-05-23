@@ -21,6 +21,7 @@ namespace KyData
         /// <returns></returns>
         public static bool IsCorrectFileFormat(string fileName, string fileExtensions)
         {
+
             bool result = false;
             if (fileExtensions == ".FSN" || fileExtensions == ".KY0")
             {

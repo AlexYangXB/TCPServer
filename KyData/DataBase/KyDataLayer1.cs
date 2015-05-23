@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
-
+using System.Text.RegularExpressions;
 namespace KyData.DataBase
 {
     public class KYDataLayer1
@@ -563,6 +563,9 @@ namespace KyData.DataBase
                 sign.Value = BitConverter.ToUInt16(bBuffer, 22);
                 int SignNum = BitConverter.ToUInt16(bBuffer, 24);
                 sign.Sign = Encoding.ASCII.GetString(bBuffer, 26, 24).Replace('\0', ' ').Replace(" ", "");
+                //2015.5.22 将所有数字字母之外的字符替换为'_'
+                var regex = new Regex(@"([^a-zA-z0-9\s])");
+                sign.Sign = regex.Replace(sign.Sign, "_");
                 //sign.MachineMac = Encoding.ASCII.GetString(bBuffer, 50, 48).Replace('\0', ' ').Replace(" ", "");
                 byte[] machineMacByte = new byte[48];
                 byte[] mac = new byte[24];

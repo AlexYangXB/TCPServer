@@ -57,3 +57,4 @@ E:\TCPServer\KyBll\bin\Debug\ServiceStack.OrmLite.MySql.dll
 E:\TCPServer\KyBll\bin\Debug\ServiceStack.Common.dll
 E:\TCPServer\KyBll\bin\Debug\ServiceStack.Interfaces.dll
 E:\TCPServer\KyBll\bin\Debug\ServiceStack.Text.dll
+E:\TCPServer\KyBll\bin\Debug\Newtonsoft.Json.dll

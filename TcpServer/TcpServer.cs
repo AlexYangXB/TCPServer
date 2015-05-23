@@ -293,7 +293,9 @@ namespace MyTcpServer
                                         fs.Write(Fsn, 0, Fsn.Length);
                                         fs.Close();
                                     }
-                                    Utility.SaveDataToDB.SaveFsn(fileName, PictureServerId, machine[ip[0]], false);
+                                    machine[ip[0]].imgServerId = PictureServerId;
+                                    machine[ip[0]].business = "HM";
+                                    Utility.SaveDataToDB.SaveFsn(fileName,machine[ip[0]]);
                                     //更新机具列表
                                     //机器最后上传时间和机具编号
                                     string machineNumber = "", machineModel = "";
@@ -433,9 +435,9 @@ namespace MyTcpServer
                         machine[bControl.ip].bussinessNumber = bControl.bussinessNumber;
                         machine[bControl.ip].atmId =Convert.ToInt32(bControl.atmId);
                         machine[bControl.ip].cashBoxId = Convert.ToInt32(bControl.cashBoxId);
-                        //是否清分中心、包号
                         machine[bControl.ip].isClearCenter = bControl.isClearCenter;
                         machine[bControl.ip].packageNumber = bControl.packageNumber;
+                        machine[bControl.ip].imgServerId = PictureServerId;
                         if (machine[bControl.ip].fileName != "" && File.Exists(machine[bControl.ip].fileName))
                         {
                             if(machine[bControl.ip].business=="KHDK")
@@ -462,7 +464,7 @@ namespace MyTcpServer
                             }
                             else
                             {
-                                Utility.SaveDataToDB.SaveFsn(machine[bControl.ip].fileName, PictureServerId, machine[bControl.ip], true);
+                                Utility.SaveDataToDB.SaveFsn(machine[bControl.ip].fileName, machine[bControl.ip]);
                             }
                             //删除文件
                             if(File.Exists(machine[bControl.ip].fileName))

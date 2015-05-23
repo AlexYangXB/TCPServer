@@ -9,6 +9,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 using System.Configuration;
+using System.Text.RegularExpressions;
+using System.Runtime.Serialization.Json;
+using System.Collections;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 namespace MyTest
 {
 
@@ -74,6 +79,33 @@ namespace MyTest
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //string inputReplaced = null;
+            //var regex = new Regex(@"([^a-zA-z0-9\s])");
+
+            //inputReplaced = regex.Replace("1234的?ADFCVD.,.2!!@#$", "_");
+            //MessageBox.Show(inputReplaced);
+
+            //string str=String.Format("{0}\"katm\":[{1}],\"kcashbox\":[{2}]{3}", "{", 1,2, "}");
+            //MessageBox.Show(str);
+
+            DataContractJsonSerializer data = new DataContractJsonSerializer(typeof(Hashtable));
+            KyModel.ky_user user = new KyModel.ky_user { kUserName="123",updated_at=DateTime.Now};
+            Hashtable hashtable = new Hashtable();   //实例化Hashtable对象
+            hashtable.Add("id", "600719");     //向Hashtable哈希表中添加元素
+            hashtable.Add("name", "denylau");
+            hashtable.Add("sex", "男");
+
+            JObject jo = new JObject();
+            jo["katm"] = 1;
+            string str = JsonConvert.SerializeObject(jo);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                data.WriteObject(stream, hashtable);
+                string szJson = Encoding.UTF8.GetString(stream.ToArray());
+                
+                MessageBox.Show(szJson);
+            }
+            
         }
     }
 }

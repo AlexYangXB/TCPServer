@@ -55,6 +55,14 @@ namespace Utility.DBUtility
             IDbConnection dbConn = dbFactory.OpenDbConnection();
             return dbConn;
         }
+        //获取机构设备的连接数据库对象。MySqlConnection
+        public static IDbConnection OpenSphinxConnection()
+        {
+            var dbFactory = new OrmLiteConnectionFactory(connectionStringToSphinx, MySqlDialectProvider.Instance);
+            OrmLiteConfig.DialectProvider = MySqlDialect.Provider;
+            IDbConnection dbConn = dbFactory.OpenDbConnection();
+            return dbConn;
+        }
 
         #region 公用方法
         /// <summary>

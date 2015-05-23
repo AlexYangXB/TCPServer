@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ky_atm.cs" />
     <Compile Include="ky_atmtype.cs" />
+    <Compile Include="ky_batch.cs" />
     <Compile Include="ky_branch.cs" />
     <Compile Include="ky_cashbox.cs" />
     <Compile Include="ky_cashstatus.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="ky_node.cs" />
     <Compile Include="ky_package_bundle.cs" />
     <Compile Include="ky_perm_user_node.cs" />
+    <Compile Include="ky_sign.cs" />
     <Compile Include="ky_user.cs" />
     <Compile Include="ky_version.cs" />
     <Compile Include="permissions.cs" />

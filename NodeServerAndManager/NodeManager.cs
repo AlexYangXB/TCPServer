@@ -465,16 +465,16 @@ namespace NodeServerAndManager
                 //所属网点Id
                 int nodeId = int.Parse(strTmp[0]);
 
-                string AtmId = "", cashBoxId = "";
+                int AtmId = 0, cashBoxId = 0;
 
                 //ATM Id
                 strTmp = cmb_ATM2.Text.Trim().Split(",".ToCharArray());
                 if (strTmp.Length > 1)
-                    AtmId = strTmp[0];
+                    AtmId =Convert.ToInt32(strTmp[0]);
                 //钞箱Id
                 strTmp = cmb_CashBox2.Text.Trim().Split(",".ToCharArray());
                 if (strTmp.Length > 1)
-                    cashBoxId = strTmp[0];
+                    cashBoxId = Convert.ToInt32(strTmp[0]);
 
                 //交易类型
                 string business = "";
@@ -520,18 +520,18 @@ namespace NodeServerAndManager
                                 machineId2 = id;
                         }
                     }
-                    machineData machineDataTmp = new machineData();
-                    machineDataTmp.machineNumber = machineMac;
-                    machineDataTmp.nodeId = nodeId;
-                    machineDataTmp.factoryId = factoryId;
-                    machineDataTmp.business = business;
-                    machineDataTmp.id = machineId;
-                    machineDataTmp.atmId = AtmId;
-                    machineDataTmp.cashBoxId = cashBoxId;
-                    machineDataTmp.userId = userId;
-                    int serverId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
-                    //string machineNum = "";
-                    bool result = Utility.SaveDataToDB.UploadFsn(uploadFile, serverId, machineDataTmp, machineId2);
+                    ky_machine machineTmp = new ky_machine();
+                    machineTmp.kMachineNumber = machineMac;
+                    machineTmp.kNodeId = nodeId;
+                    machineTmp.kFactoryId = factoryId;
+                    machineTmp.business = business;
+                    machineTmp.kId = machineId;
+                    machineTmp.atmId = AtmId;
+                    machineTmp.cashBoxId = cashBoxId;
+                    machineTmp.userId = userId;
+                    machineTmp.imgServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    machineTmp.importMachineId = machineId2;
+                    bool result = Utility.SaveDataToDB.UploadFsn(uploadFile, machineTmp);
                     if (result)
                     {
                         string strMessage = string.Format("{0},{1}导入成功\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),

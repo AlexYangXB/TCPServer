@@ -43,3 +43,4 @@ E:\TCPServer\MyTest\bin\Debug\KyModel.dll
 E:\TCPServer\MyTest\bin\Debug\KyModel.pdb
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.Form2Test.resources
 E:\TCPServer\MyTest\bin\Debug\ServiceStack.Interfaces.dll
+E:\TCPServer\MyTest\bin\Debug\Newtonsoft.Json.dll

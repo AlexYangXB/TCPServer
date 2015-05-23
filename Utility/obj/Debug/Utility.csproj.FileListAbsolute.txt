@@ -37,3 +37,4 @@ E:\TCPServer\Utility\bin\Debug\ServiceStack.Interfaces.dll
 E:\TCPServer\Utility\bin\Debug\ServiceStack.OrmLite.dll
 E:\TCPServer\Utility\bin\Debug\ServiceStack.OrmLite.MySql.dll
 E:\TCPServer\Utility\bin\Debug\ServiceStack.Text.dll
+E:\TCPServer\Utility\bin\Debug\Newtonsoft.Json.dll

@@ -36,27 +36,21 @@ namespace Utility
         /// </summary>
         /// <param name="batch"></param>
         /// <returns></returns>
-        public static bool InsertSignBatch(KyData.DbTable.ky_batch_sphinx batch)
+        public static bool InsertSignBatch(ky_batch batch)
         {
-            string machine = "";
-            for (int i = 0; i < batch.machine.Length; i++)
+            try
             {
-                if (i == batch.machine.Length - 1)
-                    machine += batch.machine[i].ToString();
-                else
-                    machine += batch.machine[i].ToString() + ",";
-            }
-            string strSql =
-                string.Format(
-                    "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
-                    batch.id, batch.type, batch.date, batch.node, batch.factory, machine, batch.totalnumber,
-                    batch.totalvalue, batch.recorduser, batch.imgipaddress, batch.hjson);
-            DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Sphinx);
-            int result = DBUtility.DbHelperMySQL.ExecuteSql(strSql);
-            if (result > 0)
+                using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
+                {
+                    conn.Insert(batch);
+                }
                 return true;
-            else
+            } 
+            catch (Exception e)
+            {
+                Log.DataBaseException("保存冠字号码异常," + e.ToString());
                 return false;
+            }
         }
 
 
