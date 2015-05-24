@@ -129,3 +129,5 @@ E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.OrmLite.MySql.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Common.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Interfaces.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Text.dll
+F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.exe.config
+F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.pdb

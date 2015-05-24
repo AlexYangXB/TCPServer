@@ -12,33 +12,37 @@ namespace KyModel
         /// </summary>
         public long id { get; set; }
         /// <summary>
+        /// 批次序号
+        /// </summary>
+        public int knumber { get; set; }
+        /// <summary>
         /// 时间戳
         /// </summary>
-        public int date { get; set; }
+        public int kdate { get; set; }
         /// <summary>
         /// 冠字号码
         /// </summary>
-        public string sign { get; set; }
+        public string ksign { get; set; }
         /// <summary>
         /// 批次Id
         /// </summary>
-        public long batchId { get; set; }
+        public long kbatchid { get; set; }
         /// <summary>
         /// 面额
         /// </summary>
-        public int value { get; set; }
+        public uint kvalue { get; set; }
         /// <summary>
         /// 版本
         /// </summary>
-        public int version { get; set; }
+        public uint kversion { get; set; }
         /// <summary>
         /// 币种ID
         /// </summary>
-        public int currency { get; set; }
+        public uint kcurrency { get; set; }
         /// <summary>
         /// 钞票状态
         /// </summary>
-        public int status { get; set; }
+        public uint kstatus { get; set; }
         /// <summary>
         /// JSON字段，可扩展
         /// </summary>

@@ -40,24 +40,27 @@ namespace Utility
         /// <returns></returns>
         public static bool InsertSignBatch(ky_batch batch)
         {
-            batch.kmachine = "(1,23)";
             try
             {
+                string machine = JsonConvert.SerializeObject(batch.kmachine).Trim(new char[] { '[', ']' });
                 using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    try
+                    using (IDbTransaction trans = conn.OpenTransaction(IsolationLevel.ReadCommitted))
                     {
-                      conn.Insert(batch);
-                    }
-                    catch (Exception e) { 
-                        string sdd = e.ToString();
+                        string strSql = string.Format(
+                            "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
+                            batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, machine, batch.ktotalnumber, batch.ktotalvalue,
+                            batch.kuser, batch.kimgserver, batch.hjson);
+                        conn.ExecuteSql(strSql);
+                        trans.Commit();
                     }
                 }
+
                 return true;
-            } 
+            }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "保存冠字号码异常");
+                Log.DataBaseException(e, "保存批次异常");
                 return false;
             }
         }
@@ -83,58 +86,56 @@ namespace Utility
         /// <returns></returns>
         public static bool InsertSign(Int64 batchId, int startIndex, List<KyData.DataBase.KYDataLayer1.SignTypeL2> signs)
         {
-            if (signs.Count > 0)
+            try
             {
-                string strSQL =
-                    "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
-                //用于图像数据库
-                string strSqlImage = "INSERT INTO ky_picture(kId,kInsertTime,kImageType,kImageSNo) values";
-                List<string> lstSQL = new List<string>();
-                List<MySqlParameter[]> lstSQLpara = new List<MySqlParameter[]>();
-                MySqlParameter[] para = new MySqlParameter[signs.Count];
-
-                for (int i = 0; i < signs.Count; i++)
+                if (signs.Count > 0)
                 {
-                    if (i != 0)
+                    List<ky_picture> pictures = new List<ky_picture>();
+                    List<ky_sign> only_signs = new List<ky_sign>();
+                    DateTime now = DateTime.Now;
+                    int count = 0;
+                    foreach (var sign in signs)
                     {
-                        strSQL += ",";
-                        strSqlImage += ",";
+                        int time = KyData.DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
+                        Int64 id = KyData.KyDataLayer2.GuidToLongID();
+                        ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now };
+                        pictures.Add(picture);
+                        ky_sign only_sign = new ky_sign
+                        {
+                            id = id,
+                            kbatchid = batchId,
+                            ksign = sign.Sign,
+                            kdate = time,
+                            kvalue = sign.Value,
+                            kversion = sign.Version,
+                            kcurrency = sign.Currency,
+                            kstatus = sign.True,
+                            knumber = startIndex + count
+                        };
+                        count++;
                     }
-                    Int64 id = KyData.KyDataLayer2.GuidToLongID();
-                    int time = KyData.DateTimeAndTimeStamp.ConvertDateTimeInt(signs[i].Date);
-                    string strSql = string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
-                                                  signs[i].Sign, batchId, signs[i].Value, signs[i].Version,
-                                                  signs[i].Currency, signs[i].True, startIndex + i, 0);
-                    strSQL += strSql;
-
-                    //图片数据库
-                    para[i] = new MySqlParameter();
-                    para[i].MySqlDbType = MySqlDbType.MediumBlob;
-                    para[i].ParameterName = "?imgbindata" + i.ToString();
-                    para[i].Size = signs[i].imageData.Length;
-                    para[i].Value = signs[i].imageData;
-                    string strImageSql = string.Format("({0},'{1}','{2}',{3})", id,
-                                                       DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), signs[i].ImageType,
-                                                       para[i].ParameterName);
-                    strSqlImage += strImageSql;
+                    using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
+                    {
+                        using (IDbTransaction trans = conn.OpenTransaction(IsolationLevel.ReadCommitted))
+                        {
+                            conn.SaveAll(only_signs);
+                            trans.Commit();
+                        }
+                    }
+                    using (IDbConnection conn = DbHelperMySQL.OpenImageConnection())
+                    {
+                        using (IDbTransaction trans = conn.OpenTransaction(IsolationLevel.ReadCommitted))
+                        {
+                            conn.SaveAll(pictures);
+                            trans.Commit();
+                        }
+                    }
                 }
-                //sphinx sign
-                DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Sphinx);
-                int result = DBUtility.DbHelperMySQL.ExecuteSql(strSQL);
-
-                //imageDb
-                lstSQL.Add(strSqlImage);
-                lstSQLpara.Add(para);
-                DBUtility.DbHelperMySQL.SetCurrentDb(DbHelperMySQL.DataBaseServer.Image);
-                //if (DbHelperMySQL.ExecuteSqlTran(lstSQL, lstSQLpara) > 0)
-                DbHelperMySQL.ExecuteSqlTran(lstSQL, lstSQLpara);
-                if (result > 0)
-                    return true;
-                else
-                    return false;
+                return true;
             }
-            else
+            catch (Exception e)
             {
+                Log.DataBaseException(e, "保存冠字号码或图像异常");
                 return false;
             }
 
@@ -156,7 +157,7 @@ namespace Utility
             List<ky_node> nodes;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.Select<ky_node>(q=>q.kBindIpAddress==bindIpAddress);
+                nodes = conn.Select<ky_node>(q => q.kBindIpAddress == bindIpAddress);
             }
             return nodes;
         }
@@ -170,7 +171,7 @@ namespace Utility
             List<ky_node> nodes;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.Select<ky_node>(q => Sql.In(q.kId,id));
+                nodes = conn.Select<ky_node>(q => Sql.In(q.kId, id));
             }
             return nodes;
         }
@@ -194,7 +195,7 @@ namespace Utility
                         selectNode.kBindIpAddress = bindIpAdress;
 
                     }
-                    if(selectNodes!=null)
+                    if (selectNodes != null)
                         conn.UpdateAll(selectNodes);
 
                 }
@@ -217,7 +218,7 @@ namespace Utility
             ky_node node;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-               node = conn.Single<ky_node>(q => q.kNodeNumber == nodeNumber);
+                node = conn.Single<ky_node>(q => q.kNodeNumber == nodeNumber);
             }
             if (node != null)
                 return node.kId;
@@ -277,14 +278,14 @@ namespace Utility
             else
                 return 0;
         }
-        
+
         /// <summary>
         /// 添加厂家信息
         /// </summary>
         /// <param name="factoryName"></param>
         /// <param name="factoryNumber"></param>
         /// <returns></returns>
-        public static bool InsertFactory(string factoryName,string factoryNumber)
+        public static bool InsertFactory(string factoryName, string factoryNumber)
         {
             try
             {
@@ -294,7 +295,7 @@ namespace Utility
                 }
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.DataBaseException(e, "添加厂家信息异常");
                 return false;
@@ -326,7 +327,7 @@ namespace Utility
             ky_machine machine;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machine = conn.Single<ky_machine>(q=>q.kMachineNumber==machineNumber);
+                machine = conn.Single<ky_machine>(q => q.kMachineNumber == machineNumber);
             }
             if (machine != null)
                 return machine.kId;
@@ -422,7 +423,7 @@ namespace Utility
         /// <param name="machineNumber"></param>
         /// <param name="machineModel"> </param>
         /// <returns></returns>
-        public static bool UpdateMachine(int id, string machineNumber,string machineModel)
+        public static bool UpdateMachine(int id, string machineNumber, string machineModel)
         {
             try
             {
@@ -568,8 +569,8 @@ namespace Utility
             {
                 using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    ky_import_machine machine =new ky_import_machine{ kMachineType = 0, kMachineNumber = machineNumber, kNodeId = nodeId, kFactoryId = factoryId };
-                     id=Convert.ToInt32(conn.Insert(machine, selectIdentity: true));
+                    ky_import_machine machine = new ky_import_machine { kMachineType = 0, kMachineNumber = machineNumber, kNodeId = nodeId, kFactoryId = factoryId };
+                    id = Convert.ToInt32(conn.Insert(machine, selectIdentity: true));
                 }
             }
             catch (Exception e)
@@ -631,7 +632,7 @@ namespace Utility
         /// <param name="batchId"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool InsertGzhBundle(string bundleNumber,long batchId,string fileName)
+        public static bool InsertGzhBundle(string bundleNumber, long batchId, string fileName)
         {
             try
             {
@@ -661,12 +662,12 @@ namespace Utility
         /// <param name="bundleNumber"></param>
         /// <param name="batchId"></param>
         /// <returns></returns>
-        public static int GetGzhBundleId(string bundleNumber,long batchId)
+        public static int GetGzhBundleId(string bundleNumber, long batchId)
         {
             ky_gzh_bundle gzh_bundle;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                gzh_bundle=conn.Single<ky_gzh_bundle>(p=>p.kBatchId==batchId&&p.kBundleNumber==bundleNumber);
+                gzh_bundle = conn.Single<ky_gzh_bundle>(p => p.kBatchId == batchId && p.kBundleNumber == bundleNumber);
             }
             if (gzh_bundle != null)
                 return gzh_bundle.kId;
@@ -684,19 +685,19 @@ namespace Utility
             int id = 0;
             using (IDbConnection conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                id=Convert.ToInt32(conn.Insert(gzh,selectIdentity: true));
+                id = Convert.ToInt32(conn.Insert(gzh, selectIdentity: true));
             }
             return id;
         }
-        
-      
+
+
         /// <summary>
         /// 保存packageBundle信息
         /// </summary>
         /// <param name="bundleId"></param>
         /// <param name="packageId"></param>
         /// <returns></returns>
-        public static bool SavePackageBundle(int bundleId,int packageId)
+        public static bool SavePackageBundle(int bundleId, int packageId)
         {
             if (bundleId == 0 || packageId == 0)
                 return false;
@@ -731,7 +732,7 @@ namespace Utility
             {
                 using (IDbConnection conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                       conn.Select<ky_batch>().FirstOrDefault();
+                    conn.Select<ky_batch>().FirstOrDefault();
                 }
                 return true;
             }
@@ -766,7 +767,7 @@ namespace Utility
         /// 测试推送服务器的连接
         /// </summary>
         /// <returns></returns>
-        public static bool TestConnectPush(string Ip,int Port)
+        public static bool TestConnectPush(string Ip, int Port)
         {
             System.Net.IPAddress IpAddress = System.Net.IPAddress.Parse(Ip);
             System.Net.IPEndPoint IpEndPoint = new System.Net.IPEndPoint(IpAddress, Port);
@@ -796,9 +797,9 @@ namespace Utility
                 }
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Log.DataBaseException(e,"测试图像数据库连接失败");
+                Log.DataBaseException(e, "测试图像数据库连接失败");
                 return false;
             }
         }
