@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using KyData;
-
+using KyModel;
 namespace MyTcpServer
 {
     public class MyTcpServerSimple

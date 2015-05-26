@@ -12,8 +12,8 @@ using NodeServerAndManager.BaseWinform;
 using System.Runtime.InteropServices;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
-using Utility.DBUtility;
 using KyModel;
+using KyModel.Models;
 using System.Linq;
 using Newtonsoft.Json;
 using Utility;
@@ -75,9 +75,9 @@ namespace NodeServerAndManager
             frm.ShowDialog();
 
             //设置数据库连接字符串
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //本地IP或者端口号改过之后，要重新启动 TcpServer端
             if (localIp != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
             {
@@ -121,7 +121,7 @@ namespace NodeServerAndManager
                 //Device数据库连接
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
+                    MessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
                                         MessageBoxIcon.Information);
                     return false;
                 }
@@ -137,14 +137,14 @@ namespace NodeServerAndManager
                 {
                     //获取绑定的网点ID
                     bindNodeId.Clear();
-                    List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
+                    List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
                     bindNodeId = (from node in nodes select node.kId).ToList();
                     List<ky_machine> machineDt = new List<ky_machine>();
                     //获取绑定网点内的机器
                     if (bindNodeId.Count > 0)
                     {
                         int[] nodeIds = bindNodeId.ToArray();
-                        machineDt = Utility.KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                        machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
                     }
                     idIp.Clear();
                     foreach (ky_machine machine in machineDt)
@@ -162,7 +162,7 @@ namespace NodeServerAndManager
                     {
                         myTcpServer.DTable = machineDt;
                         myTcpServer.DataSaveFolder = path;
-                        int pictureServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                        int pictureServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
                         myTcpServer.PictureServerId = pictureServerId;
                         myTcpServer.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
                         result = true;
@@ -183,9 +183,9 @@ namespace NodeServerAndManager
             string user = txb_User.Text.Trim();
             string passWord = txb_PassWord.Text.Trim();
             //加密
-            passWord = Utility.KyDataOperation.Md5(passWord);
+            passWord = KyDataOperation.Md5(passWord);
 
-            ky_user dt = Utility.KyDataOperation.GetUser(user);
+            ky_user dt = KyDataOperation.GetUser(user);
             if (dt != null)
             {
                 if (dt.kPassWord == passWord)
@@ -236,9 +236,9 @@ namespace NodeServerAndManager
             btn_Minimize.Region = new Region(gp);
 
             //设置数据库连接字符串
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            Utility.DBUtility.DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //判断路径是否存在，不存在就建立
             if (!Directory.Exists(path))
             {
@@ -295,7 +295,7 @@ namespace NodeServerAndManager
                 case 2:
                     lab_Tital.Text = "冠字号文件上传";
                     //所属厂家
-                    List<ky_factory> dtFactory = Utility.KyDataOperation.GetAllFactory();
+                    List<ky_factory> dtFactory = KyDataOperation.GetAllFactory();
                     cmb_Factory.Items.Clear();
                     foreach (var factory in dtFactory)
                     {
@@ -304,7 +304,7 @@ namespace NodeServerAndManager
                         cmb_Factory.Items.Add(str);
                     }
                     //所属网点
-                    List<ky_node> dtNode = Utility.KyDataOperation.GetNodeWithIds(bindNodeId);
+                    List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
                     cmb_Node.Items.Clear();
                     foreach (var node in dtNode)
                     {
@@ -312,7 +312,7 @@ namespace NodeServerAndManager
                         cmb_Node.Items.Add(str);
                     }
                     //ATM编号
-                    List<ky_atm> dtATM2 = Utility.KyDataOperation.GetAtmWithNodeId(bindNodeId);
+                    List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
                     cmb_ATM2.Items.Clear();
                     foreach (var atm in dtATM2)
                     {
@@ -320,7 +320,7 @@ namespace NodeServerAndManager
                         cmb_ATM2.Items.Add(str);
                     }
                     //钞箱编号
-                    List<ky_cashbox> dtCashBox2 = Utility.KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
+                    List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
                     cmb_CashBox2.Items.Clear();
                     foreach (var cashbox in dtCashBox2)
                     {
@@ -330,7 +330,7 @@ namespace NodeServerAndManager
                     break;
                 case 3:
                     lab_Tital.Text = "设备监控";
-                    List<ky_machine> dtMachine = Utility.KyDataOperation.GetMachineStatus(bindNodeId);
+                    List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
                     if (dtMachine != null)
                     {
                         dgv_machine.DataSource = dtMachine;
@@ -512,21 +512,21 @@ namespace NodeServerAndManager
                 {
                     txb_Message.Text = "";
                     string machineModel = "";
-                    string[] str = KyData.KyDataLayer2.GetMachineNumberFromFSN(uploadFile, out machineModel).Split("/".ToCharArray());
+                    string[] str = KyDataLayer2.GetMachineNumberFromFSN(uploadFile, out machineModel).Split("/".ToCharArray());
                     string machineMac = str[str.Length - 1];
                     if (machineMac == "")
                         continue;
 
                     int machineId = 0;
                     int machineId2 = 0;
-                    machineId = Utility.KyDataOperation.GetMachineId(machineMac);
+                    machineId = KyDataOperation.GetMachineId(machineMac);
                     if (machineId == 0)//未在机具列表中找到该机具编号
                     {
                         //获取数据库内的上传文件的机具列表
-                        machineId2 = Utility.KyDataOperation.GetMachineIdFromImportMachine(machineMac);
+                        machineId2 = KyDataOperation.GetMachineIdFromImportMachine(machineMac);
                         if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
                         {
-                            int id = Utility.KyDataOperation.InsertMachineToImportMachine(machineMac, nodeId, factoryId);
+                            int id = KyDataOperation.InsertMachineToImportMachine(machineMac, nodeId, factoryId);
                             if (id > 0)
                                 machineId2 = id;
                         }
@@ -540,9 +540,9 @@ namespace NodeServerAndManager
                     machineTmp.atmId = AtmId;
                     machineTmp.cashBoxId = cashBoxId;
                     machineTmp.userId = userId;
-                    machineTmp.imgServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    machineTmp.imgServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
                     machineTmp.importMachineId = machineId2;
-                    bool result = Utility.SaveDataToDB.UploadFsn(uploadFile, machineTmp);
+                    bool result = SaveDataToDB.UploadFsn(uploadFile, machineTmp);
                     if (result)
                     {
                         string strMessage = string.Format("{0},{1}导入成功\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -562,8 +562,8 @@ namespace NodeServerAndManager
             {
                 if (uploadFiles.Length > 0)
                 {
-                    KyBll.GzhInput bll = new GzhInput();
-                    int pictureServerId = Utility.KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    GzhInput bll = new GzhInput();
+                    int pictureServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
                     bool success = bll.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
                     string strMessage = "";
                     if (success)
@@ -604,7 +604,7 @@ namespace NodeServerAndManager
                 List<int> nodeId = new List<int>();
                 nodeId.Add(int.Parse(strNode[0]));
                 //ATM编号
-                List<ky_atm> dtATM2 = Utility.KyDataOperation.GetAtmWithNodeId(nodeId);
+                List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(nodeId);
                 cmb_ATM2.Items.Clear();
                 foreach (var atm in dtATM2)
                 {
@@ -648,12 +648,12 @@ namespace NodeServerAndManager
         /// <param name="e"></param>
         private void timer_UpdateMachine_Tick(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.DeviceIp != "" && Utility.KyDataOperation.TestConnectDevice())
+            if (Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
             {
                 //获取绑定网点内的机器
                 int[] nodeIds = new int[bindNodeId.Count];
                 bindNodeId.CopyTo(nodeIds);
-                List<ky_machine> machineDt = Utility.KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
                 myTcpServer.UpdateMachineTable(machineDt);
                 idIp.Clear();
                 foreach (var m in machineDt)

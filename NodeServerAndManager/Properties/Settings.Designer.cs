@@ -25,7 +25,7 @@ namespace NodeServerAndManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
         public string ServerIp {
             get {
                 return ((string)(this["ServerIp"]));
@@ -37,7 +37,7 @@ namespace NodeServerAndManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
         public string PictureIp {
             get {
                 return ((string)(this["PictureIp"]));
@@ -49,7 +49,7 @@ namespace NodeServerAndManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
         public string DeviceIp {
             get {
                 return ((string)(this["DeviceIp"]));
@@ -61,7 +61,7 @@ namespace NodeServerAndManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
         public string LocalIp {
             get {
                 return ((string)(this["LocalIp"]));
@@ -133,7 +133,7 @@ namespace NodeServerAndManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
         public string PushIp {
             get {
                 return ((string)(this["PushIp"]));

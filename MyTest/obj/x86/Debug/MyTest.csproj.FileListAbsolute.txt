@@ -39,8 +39,5 @@ E:\TCPServer\MyTest\obj\x86\Debug\MyTest.Properties.Resources.resources
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.csproj.GenerateResource.Cache
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb
-E:\TCPServer\MyTest\bin\Debug\KyModel.dll
-E:\TCPServer\MyTest\bin\Debug\KyModel.pdb
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.Form2Test.resources
-E:\TCPServer\MyTest\bin\Debug\ServiceStack.Interfaces.dll
 E:\TCPServer\MyTest\bin\Debug\Newtonsoft.Json.dll

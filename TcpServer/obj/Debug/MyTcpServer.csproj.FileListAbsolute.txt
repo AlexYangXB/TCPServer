@@ -32,7 +32,6 @@ E:\TCPServer\TcpServer\bin\Debug\TcpServer.dll
 E:\TCPServer\TcpServer\bin\Debug\TcpServer.pdb
 E:\TCPServer\TcpServer\bin\Debug\KyData.dll
 E:\TCPServer\TcpServer\bin\Debug\Utility.dll
-E:\TCPServer\TcpServer\bin\Debug\MySql.Data.dll
 E:\TCPServer\TcpServer\bin\Debug\KyData.pdb
 E:\TCPServer\TcpServer\bin\Debug\Utility.pdb
 E:\TCPServer\TcpServer\obj\Debug\MyTcpServer.csprojResolveAssemblyReference.cache
@@ -40,9 +39,10 @@ E:\TCPServer\TcpServer\obj\Debug\TcpServer.dll
 E:\TCPServer\TcpServer\obj\Debug\TcpServer.pdb
 E:\TCPServer\TcpServer\bin\Debug\KyModel.dll
 E:\TCPServer\TcpServer\bin\Debug\KyModel.pdb
-E:\TCPServer\TcpServer\bin\Debug\ServiceStack.OrmLite.dll
-E:\TCPServer\TcpServer\bin\Debug\ServiceStack.OrmLite.MySql.dll
-E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Common.dll
-E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Interfaces.dll
-E:\TCPServer\TcpServer\bin\Debug\ServiceStack.Text.dll
 E:\TCPServer\TcpServer\bin\Debug\Newtonsoft.Json.dll
+E:\TCPServer\TcpServer\bin\Debug\EntityFramework.dll
+E:\TCPServer\TcpServer\bin\Debug\KyBll.dll
+E:\TCPServer\TcpServer\bin\Debug\KySDK.dll
+E:\TCPServer\TcpServer\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\TCPServer\TcpServer\bin\Debug\KyBll.pdb
+E:\TCPServer\TcpServer\bin\Debug\KySDK.pdb

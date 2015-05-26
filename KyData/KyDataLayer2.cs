@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using KyData.DataBase;
+using KyModel.DataBase;
 
-namespace KyData
+namespace KyModel
 {
     public class KyDataLayer2
     {

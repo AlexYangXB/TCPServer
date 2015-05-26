@@ -37,17 +37,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GzhInput.cs" />
+    <Compile Include="Base\FtpClient.cs" />
+    <Compile Include="FtpOperation.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KySDK\KySDK.csproj">
       <Project>{A843939F-72A7-43B4-BD6F-A299301259F5}</Project>
       <Name>KySDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{CDF78796-AE5A-4260-A657-80AA0767232F}</Project>
-      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

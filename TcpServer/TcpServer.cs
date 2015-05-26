@@ -7,10 +7,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using KyData;
-using KyData.DataBase;
+using KyModel.DataBase;
 using KyData.DbTable;
-using Utility;
 using KyModel;
+using KyModel.Models;
 namespace MyTcpServer
 {
     public class TcpServer
@@ -40,7 +40,7 @@ namespace MyTcpServer
             //    Machine = machine;
             //}
             public readonly string IP;
-            public readonly KyData.DataBase.KYDataLayer1.Amount Amount;
+            public readonly KYDataLayer1.Amount Amount;
             public CmdEventArgs(string ip,KYDataLayer1.Amount amount)
             {
                 IP = ip;
@@ -150,7 +150,7 @@ namespace MyTcpServer
                 }
                 else
                 {
-                    ky_machine newmachine = Utility.KyDataOperation.GetMachineWithIp(ipPort[0]);
+                    ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
                     if (newmachine!=null)
                     {
                         machine.Add(newmachine.kIpAddress, newmachine);
@@ -269,8 +269,8 @@ namespace MyTcpServer
                                             fs.Close();
                                         }
                                     }
-                                    KyData.DataBase.KYDataLayer1.Amount amount;
-                                    KyData.KyDataLayer2.GetTotalValueFromFSN(fileName,out amount);
+                                    KYDataLayer1.Amount amount;
+                                    KyDataLayer2.GetTotalValueFromFSN(fileName,out amount);
                                     CmdEventArgs e = new CmdEventArgs(ip[0], amount);
                                     OnCmd(this, e);
 
@@ -294,7 +294,7 @@ namespace MyTcpServer
                                     }
                                     machine[ip[0]].imgServerId = PictureServerId;
                                     machine[ip[0]].business = "HM";
-                                    Utility.SaveDataToDB.SaveFsn(fileName,machine[ip[0]]);
+                                    SaveDataToDB.SaveFsn(fileName,machine[ip[0]]);
                                     //更新机具列表
                                     //机器最后上传时间和机具编号
                                     string machineNumber = "", machineModel = "";
@@ -453,7 +453,7 @@ namespace MyTcpServer
                                 }
                                 KyDataLayer2.DecompositionFile(currentMachine.fileName, DataSaveFolder + "\\tmp",
                                                                currentMachine.bundleCount);
-                                Utility.SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", currentMachine);
+                                SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", currentMachine);
                                 //删除文件
                                 if(Directory.Exists(DataSaveFolder + "\\tmp"))
                                 {
@@ -466,7 +466,7 @@ namespace MyTcpServer
                             }
                             else
                             {
-                                Utility.SaveDataToDB.SaveFsn(currentMachine.fileName, currentMachine);
+                               SaveDataToDB.SaveFsn(currentMachine.fileName, currentMachine);
                             }
                             //删除文件
                             if(File.Exists(currentMachine.fileName))

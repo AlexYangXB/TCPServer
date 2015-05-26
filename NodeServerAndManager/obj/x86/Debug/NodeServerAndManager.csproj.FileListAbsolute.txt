@@ -93,7 +93,6 @@ E:\TCPServerTest\NodeServerAndManager\bin\Debug\8888.exe
 E:\TCPServerTest\NodeServerAndManager\bin\Debug\8888.pdb
 E:\TCPServerTest\NodeServerAndManager\obj\x86\Debug\8888.exe
 E:\TCPServerTest\NodeServerAndManager\obj\x86\Debug\8888.pdb
-E:\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.exe.config
 E:\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.exe
 E:\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.pdb
 E:\TCPServer\NodeServerAndManager\bin\Debug\EngineIoClientDotNet.dll
@@ -101,12 +100,9 @@ E:\TCPServer\NodeServerAndManager\bin\Debug\KyBll.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\KyData.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\Newtonsoft.Json.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\SocketIoClientDotNet.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\System.Threading.Tasks.NET35.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\TcpServer.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\Utility.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\WebSocket4Net.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\KySDK.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\MySql.Data.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\ICSharpCode.SharpZipLib.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\KyBll.pdb
 E:\TCPServer\NodeServerAndManager\bin\Debug\KyData.pdb
@@ -124,10 +120,8 @@ E:\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.exe
 E:\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.pdb
 E:\TCPServer\NodeServerAndManager\bin\Debug\KyModel.dll
 E:\TCPServer\NodeServerAndManager\bin\Debug\KyModel.pdb
-E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.OrmLite.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.OrmLite.MySql.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Common.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Interfaces.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\ServiceStack.Text.dll
 F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.exe.config
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.pdb
+E:\TCPServer\NodeServerAndManager\bin\Debug\MySql.Data.dll
+E:\TCPServer\NodeServerAndManager\bin\Debug\EntityFramework.dll
+E:\TCPServer\NodeServerAndManager\bin\Debug\康艺系统采集端.exe.config

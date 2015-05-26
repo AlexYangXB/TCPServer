@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{04B5D60D-70E2-424D-9501-BB0850A09F64}</ProjectGuid>
+    <ProjectGuid>{9B783E31-459C-49CD-A681-B94460AE90A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KyModel</RootNamespace>
@@ -32,10 +32,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Lib\ORM\ServiceStack.Interfaces.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\ORM\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\ORM\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\ORM\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,34 +57,85 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ky_atm.cs" />
-    <Compile Include="ky_atmtype.cs" />
-    <Compile Include="ky_batch.cs" />
-    <Compile Include="ky_branch.cs" />
-    <Compile Include="ky_cashbox.cs" />
-    <Compile Include="ky_cashstatus.cs" />
-    <Compile Include="ky_currency.cs" />
-    <Compile Include="ky_factory.cs" />
-    <Compile Include="ky_fakeregist.cs" />
-    <Compile Include="ky_fakesign.cs" />
-    <Compile Include="ky_gzh_bundle.cs" />
-    <Compile Include="ky_gzh_package.cs" />
-    <Compile Include="ky_imgserver.cs" />
-    <Compile Include="ky_import_file.cs" />
-    <Compile Include="ky_import_machine.cs" />
-    <Compile Include="ky_machine.cs" />
-    <Compile Include="ky_node.cs" />
-    <Compile Include="ky_package_bundle.cs" />
-    <Compile Include="ky_perm_user_node.cs" />
-    <Compile Include="ky_picture.cs" />
-    <Compile Include="ky_sign.cs" />
-    <Compile Include="ky_user.cs" />
-    <Compile Include="ky_version.cs" />
-    <Compile Include="permissions.cs" />
-    <Compile Include="permission_role.cs" />
+    <Compile Include="DBUtility\CommandInfo.cs" />
+    <Compile Include="DBUtility\DbHelperMySQL.cs" />
+    <Compile Include="GzhInput.cs" />
+    <Compile Include="KyDataOperation.cs" />
+    <Compile Include="Models\DeviceContext.cs" />
+    <Compile Include="Models\ImageContext.cs" />
+    <Compile Include="Models\ky_atm.cs" />
+    <Compile Include="Models\ky_atmtype.cs" />
+    <Compile Include="Models\ky_batch.cs" />
+    <Compile Include="Models\ky_branch.cs" />
+    <Compile Include="Models\ky_cashbox.cs" />
+    <Compile Include="Models\ky_cashstatus.cs" />
+    <Compile Include="Models\ky_currency.cs" />
+    <Compile Include="Models\ky_factory.cs" />
+    <Compile Include="Models\ky_fakeregist.cs" />
+    <Compile Include="Models\ky_fakesign.cs" />
+    <Compile Include="Models\ky_gzh_bundle.cs" />
+    <Compile Include="Models\ky_gzh_package.cs" />
+    <Compile Include="Models\ky_imgserver.cs" />
+    <Compile Include="Models\ky_import_file.cs" />
+    <Compile Include="Models\ky_import_machine.cs" />
+    <Compile Include="Models\ky_machine.cs" />
+    <Compile Include="Models\ky_node.cs" />
+    <Compile Include="Models\ky_package_bundle.cs" />
+    <Compile Include="Models\ky_perm_user_node.cs" />
+    <Compile Include="Models\ky_picture.cs" />
+    <Compile Include="Models\ky_sign.cs" />
+    <Compile Include="Models\ky_user.cs" />
+    <Compile Include="Models\ky_version.cs" />
+    <Compile Include="Models\Mapping\ky_atmMap.cs" />
+    <Compile Include="Models\Mapping\ky_atmtypeMap.cs" />
+    <Compile Include="Models\Mapping\ky_batchMap.cs" />
+    <Compile Include="Models\Mapping\ky_branchMap.cs" />
+    <Compile Include="Models\Mapping\ky_cashboxMap.cs" />
+    <Compile Include="Models\Mapping\ky_cashstatusMap.cs" />
+    <Compile Include="Models\Mapping\ky_currencyMap.cs" />
+    <Compile Include="Models\Mapping\ky_factoryMap.cs" />
+    <Compile Include="Models\Mapping\ky_fakeregistMap.cs" />
+    <Compile Include="Models\Mapping\ky_fakesignMap.cs" />
+    <Compile Include="Models\Mapping\ky_gzh_bundleMap.cs" />
+    <Compile Include="Models\Mapping\ky_gzh_packageMap.cs" />
+    <Compile Include="Models\Mapping\ky_imgserverMap.cs" />
+    <Compile Include="Models\Mapping\ky_import_fileMap.cs" />
+    <Compile Include="Models\Mapping\ky_import_machineMap.cs" />
+    <Compile Include="Models\Mapping\ky_machineMap.cs" />
+    <Compile Include="Models\Mapping\ky_nodeMap.cs" />
+    <Compile Include="Models\Mapping\ky_package_bundleMap.cs" />
+    <Compile Include="Models\Mapping\ky_perm_user_nodeMap.cs" />
+    <Compile Include="Models\Mapping\ky_pictureMap.cs" />
+    <Compile Include="Models\Mapping\ky_signMap.cs" />
+    <Compile Include="Models\Mapping\ky_userMap.cs" />
+    <Compile Include="Models\Mapping\ky_versionMap.cs" />
+    <Compile Include="Models\Mapping\migrationMap.cs" />
+    <Compile Include="Models\Mapping\permissionMap.cs" />
+    <Compile Include="Models\Mapping\roleMap.cs" />
+    <Compile Include="Models\SphinxContext.cs" />
+    <Compile Include="Models\migration.cs" />
+    <Compile Include="Models\permission.cs" />
+    <Compile Include="Models\role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="roles.cs" />
-    <Compile Include="role_user.cs" />
+    <Compile Include="SaveDataToDB.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KyBll\KyBll.csproj">
+      <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
+      <Name>KyBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KyData\KyData.csproj">
+      <Project>{0E821D10-AADD-4946-8E21-22C9F70A0C4A}</Project>
+      <Name>KyData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KySDK\KySDK.csproj">
+      <Project>{A843939F-72A7-43B4-BD6F-A299301259F5}</Project>
+      <Name>KySDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

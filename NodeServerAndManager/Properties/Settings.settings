@@ -3,16 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="ServerIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">192.168.1.1</Value>
     </Setting>
     <Setting Name="PictureIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">192.168.1.1</Value>
     </Setting>
     <Setting Name="DeviceIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">192.168.1.1</Value>
     </Setting>
     <Setting Name="LocalIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">192.168.1.1</Value>
     </Setting>
     <Setting Name="Port" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">9303</Value>
     </Setting>
     <Setting Name="PushIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">192.168.1.1</Value>
     </Setting>
     <Setting Name="FileIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

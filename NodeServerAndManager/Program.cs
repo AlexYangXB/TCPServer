@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
 using Utility;
+using KyBll;
 namespace NodeServerAndManager
 {
     static class Program

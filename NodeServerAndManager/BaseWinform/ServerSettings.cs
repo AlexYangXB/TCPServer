@@ -4,8 +4,8 @@ using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using Utility.DBUtility;
 using KyModel;
+using KyModel.Models;
 using System.Linq;
 namespace NodeServerAndManager.BaseWinform
 {
@@ -40,14 +40,14 @@ namespace NodeServerAndManager.BaseWinform
             if(DeviceIp!="0.0.0.0"&&DeviceIp!="")
             {
                 DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-                bool result = Utility.KyDataOperation.TestConnectDevice();
+                bool result = KyDataOperation.TestConnectDevice();
                 if (result)
                 {
-                    List<ky_imgserver> dt = Utility.KyDataOperation.GetAllImageServer();
+                    List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
                     cmb_imageServer.DataSource = dt;
                     cmb_imageServer.DisplayMember = "kIpAddress";
 
-                    List<ky_node> dtNode = Utility.KyDataOperation.GetAllNode();
+                    List<ky_node> dtNode = KyDataOperation.GetAllNode();
                     chkList_Node.DataSource = dtNode;
                     chkList_Node.DisplayMember = "kNodeName";
                     chkList_Node.ValueMember = "kId";
@@ -94,9 +94,9 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             Properties.Settings.Default.Save();
             //先清除已绑定的项
-            //List<ky_node> nodes = Utility.KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
+            //List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
             //int[] ids = (from node in nodes select node.kId).ToArray();
-            //Utility.KyDataOperation.UpdateNodeTable(ids, "");
+            //KyDataOperation.UpdateNodeTable(ids, "");
             //获取被选中的项
             List<int> ids=new List<int>();
             foreach (ky_node dr in chkList_Node.CheckedItems)
@@ -105,7 +105,7 @@ namespace NodeServerAndManager.BaseWinform
             }
             if(ids.Count>0)
             {
-                List<ky_node> selectNodes = Utility.KyDataOperation.GetNodeWithIds(ids);
+                List<ky_node> selectNodes = KyDataOperation.GetNodeWithIds(ids);
                 string strMessage = "";
                 List<int> IDS = new List<int>();
                 foreach (ky_node selectNode in selectNodes)
@@ -125,7 +125,7 @@ namespace NodeServerAndManager.BaseWinform
                     strMessage += "是否继续？";
                     if (DialogResult.Yes == MessageBox.Show(strMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                     {
-                        bool success = Utility.KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
+                        bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
                         if (success)
                             MessageBox.Show("绑定成功！");
                         else
@@ -138,7 +138,7 @@ namespace NodeServerAndManager.BaseWinform
                 }
                 else
                 {
-                    bool success = Utility.KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
+                    bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
                     if (success)
                         MessageBox.Show("绑定成功！");
                     else
@@ -165,7 +165,7 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.Save();
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp,Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
 
-            bool result=Utility.KyDataOperation.TestConnectServer();
+            bool result=KyDataOperation.TestConnectServer();
             if (result)
                 MessageBox.Show("数据库服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
@@ -188,14 +188,14 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             Properties.Settings.Default.Save();
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            bool result = Utility.KyDataOperation.TestConnectDevice();
+            bool result = KyDataOperation.TestConnectDevice();
             if (result)
             {
                 MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                List<ky_imgserver> dt = Utility.KyDataOperation.GetAllImageServer();
+                List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
                 cmb_imageServer.DataSource = dt;
                 cmb_imageServer.DisplayMember = "kIpAddress";
-                List<ky_node> dtNode = Utility.KyDataOperation.GetAllNode();
+                List<ky_node> dtNode = KyDataOperation.GetAllNode();
                 chkList_Node.DataSource = dtNode;
                 chkList_Node.DisplayMember = "kNodeName";
                 chkList_Node.ValueMember = "kId";
@@ -218,7 +218,7 @@ namespace NodeServerAndManager.BaseWinform
             }
             string PushIp = ipControl_Push.Text;
             int PushPort = int.Parse(txb_PushPort.Text);
-            bool result = Utility.KyDataOperation.TestConnectPush(PushIp, PushPort);
+            bool result = KyDataOperation.TestConnectPush(PushIp, PushPort);
             if (result)
             {
                 MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -240,7 +240,7 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             Properties.Settings.Default.Save();
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp,Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
-            bool result = Utility.KyDataOperation.TestConnectImage();
+            bool result = KyDataOperation.TestConnectImage();
             if (result)
                 MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else

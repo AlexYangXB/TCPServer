@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace KyData.DataBase
+namespace KyModel.DataBase
 {
     public class KYDataLayer1
     {
