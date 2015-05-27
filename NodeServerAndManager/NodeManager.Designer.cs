@@ -35,9 +35,6 @@
             this.btn_MachineMonitoring = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btn_Close = new System.Windows.Forms.Button();
-            this.ben_Send = new System.Windows.Forms.Button();
-            this.btn_Connect = new System.Windows.Forms.Button();
             this.lab_ServerSettings = new System.Windows.Forms.Label();
             this.lab_Version = new System.Windows.Forms.Label();
             this.btn_Login = new System.Windows.Forms.Button();
@@ -78,6 +75,7 @@
             this.btn_Exit = new System.Windows.Forms.Button();
             this.btn_Minimize = new System.Windows.Forms.Button();
             this.lab_Tital = new System.Windows.Forms.Label();
+            this.lab_LogDetail = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -127,9 +125,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.btn_Close);
-            this.tabPage1.Controls.Add(this.ben_Send);
-            this.tabPage1.Controls.Add(this.btn_Connect);
+            this.tabPage1.Controls.Add(this.lab_LogDetail);
             this.tabPage1.Controls.Add(this.lab_ServerSettings);
             this.tabPage1.Controls.Add(this.lab_Version);
             this.tabPage1.Controls.Add(this.btn_Login);
@@ -137,46 +133,13 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.txb_PassWord);
             this.tabPage1.Controls.Add(this.txb_User);
-            this.tabPage1.Location = new System.Drawing.Point(4, 21);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(573, 360);
+            this.tabPage1.Size = new System.Drawing.Size(573, 359);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "登录界面";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // btn_Close
-            // 
-            this.btn_Close.Location = new System.Drawing.Point(248, 300);
-            this.btn_Close.Name = "btn_Close";
-            this.btn_Close.Size = new System.Drawing.Size(75, 23);
-            this.btn_Close.TabIndex = 11;
-            this.btn_Close.Text = "结束连接";
-            this.btn_Close.UseVisualStyleBackColor = true;
-            this.btn_Close.Visible = false;
-            this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);
-            // 
-            // ben_Send
-            // 
-            this.ben_Send.Location = new System.Drawing.Point(248, 271);
-            this.ben_Send.Name = "ben_Send";
-            this.ben_Send.Size = new System.Drawing.Size(75, 23);
-            this.ben_Send.TabIndex = 10;
-            this.ben_Send.Text = "发送张数";
-            this.ben_Send.UseVisualStyleBackColor = true;
-            this.ben_Send.Visible = false;
-            this.ben_Send.Click += new System.EventHandler(this.ben_Send_Click);
-            // 
-            // btn_Connect
-            // 
-            this.btn_Connect.Location = new System.Drawing.Point(248, 242);
-            this.btn_Connect.Name = "btn_Connect";
-            this.btn_Connect.Size = new System.Drawing.Size(75, 23);
-            this.btn_Connect.TabIndex = 9;
-            this.btn_Connect.Text = "连接";
-            this.btn_Connect.UseVisualStyleBackColor = true;
-            this.btn_Connect.Visible = false;
-            this.btn_Connect.Click += new System.EventHandler(this.btn_Connect_Click);
             // 
             // lab_ServerSettings
             // 
@@ -252,10 +215,10 @@
             this.tabPage2.Controls.Add(this.btn_MachineMonitoring);
             this.tabPage2.Controls.Add(this.btn_BusinessControl);
             this.tabPage2.Controls.Add(this.btn_InsertData);
-            this.tabPage2.Location = new System.Drawing.Point(4, 21);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(573, 360);
+            this.tabPage2.Size = new System.Drawing.Size(573, 359);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "主界面";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -293,9 +256,9 @@
             this.tabPage4.Controls.Add(this.txb_Message);
             this.tabPage4.Controls.Add(this.btn_Scan);
             this.tabPage4.Controls.Add(this.txb_FilePath);
-            this.tabPage4.Location = new System.Drawing.Point(4, 21);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(573, 360);
+            this.tabPage4.Size = new System.Drawing.Size(573, 359);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "冠字号码上传";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -338,7 +301,8 @@
             "柜面取款",
             "柜面存款",
             "ATM配钞",
-            "ATM清钞"});
+            "ATM清钞",
+            "跨行调款"});
             this.cmb_BusinessType.Location = new System.Drawing.Point(85, 68);
             this.cmb_BusinessType.Name = "cmb_BusinessType";
             this.cmb_BusinessType.Size = new System.Drawing.Size(314, 22);
@@ -516,9 +480,9 @@
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.dgv_machine);
-            this.tabPage5.Location = new System.Drawing.Point(4, 21);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(573, 360);
+            this.tabPage5.Size = new System.Drawing.Size(573, 359);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "设备监控";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -548,7 +512,7 @@
             this.dgv_machine.ReadOnly = true;
             this.dgv_machine.RowHeadersVisible = false;
             this.dgv_machine.RowTemplate.Height = 23;
-            this.dgv_machine.Size = new System.Drawing.Size(573, 360);
+            this.dgv_machine.Size = new System.Drawing.Size(573, 359);
             this.dgv_machine.TabIndex = 0;
             // 
             // kId
@@ -646,6 +610,18 @@
             this.lab_Tital.TabIndex = 0;
             this.lab_Tital.Text = "登录";
             // 
+            // lab_LogDetail
+            // 
+            this.lab_LogDetail.AutoSize = true;
+            this.lab_LogDetail.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_LogDetail.ForeColor = System.Drawing.Color.Blue;
+            this.lab_LogDetail.Location = new System.Drawing.Point(498, 288);
+            this.lab_LogDetail.Name = "lab_LogDetail";
+            this.lab_LogDetail.Size = new System.Drawing.Size(35, 14);
+            this.lab_LogDetail.TabIndex = 7;
+            this.lab_LogDetail.Text = "日志";
+            this.lab_LogDetail.Click += new System.EventHandler(this.lab_LogDetail_Click);
+            // 
             // NodeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -723,10 +699,8 @@
         private System.Windows.Forms.Timer timer_UpdateMachine;
         private System.Windows.Forms.RadioButton rad_GZH;
         private System.Windows.Forms.RadioButton rad_FSN;
-        private System.Windows.Forms.Button btn_Connect;
-        private System.Windows.Forms.Button ben_Send;
-        private System.Windows.Forms.Button btn_Close;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lab_LogDetail;
     }
 }
 

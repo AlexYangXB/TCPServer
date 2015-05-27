@@ -4,9 +4,10 @@ using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using KyModel;
 using KyModel.Models;
 using System.Linq;
+using KyBll;
+using KyBll.DBUtility;
 namespace NodeServerAndManager.BaseWinform
 {
     public partial class ServerSettings : Form
@@ -295,9 +296,9 @@ namespace NodeServerAndManager.BaseWinform
             if (chkList_Node.CheckedItems.Count > 0)
             {
                 string txt = "";
-                foreach (DataRowView dr in chkList_Node.CheckedItems)
+                foreach (ky_node dr in chkList_Node.CheckedItems)
                 {
-                    txt += dr["kNodeName"].ToString() + ";";
+                    txt += dr.kNodeName.ToString() + ";";
                 }
                 txb_BindNode.Text = txt;
             }

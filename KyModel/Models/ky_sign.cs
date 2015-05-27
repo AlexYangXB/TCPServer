@@ -30,19 +30,19 @@ namespace KyModel.Models
         /// <summary>
         /// 面额
         /// </summary>
-        public uint kvalue { get; set; }
+        public int kvalue { get; set; }
         /// <summary>
         /// 版本
         /// </summary>
-        public uint kversion { get; set; }
+        public int kversion { get; set; }
         /// <summary>
         /// 币种ID
         /// </summary>
-        public uint kcurrency { get; set; }
+        public int kcurrency { get; set; }
         /// <summary>
         /// 钞票状态
         /// </summary>
-        public uint kstatus { get; set; }
+        public int kstatus { get; set; }
         /// <summary>
         /// JSON字段，可扩展
         /// </summary>

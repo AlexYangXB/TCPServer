@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,33 +37,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ORM\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ORM\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ORM\MySql.Data.Entity.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBUtility\CommandInfo.cs" />
-    <Compile Include="DBUtility\DbHelperMySQL.cs" />
-    <Compile Include="GzhInput.cs" />
-    <Compile Include="KyDataOperation.cs" />
-    <Compile Include="Models\DeviceContext.cs" />
-    <Compile Include="Models\ImageContext.cs" />
+    <Compile Include="businessControl.cs" />
+    <Compile Include="BussinessType.cs" />
+    <Compile Include="KyDataLayer1.cs" />
+    <Compile Include="KyDataLayer2.cs" />
     <Compile Include="Models\ky_atm.cs" />
     <Compile Include="Models\ky_atmtype.cs" />
     <Compile Include="Models\ky_batch.cs" />
@@ -86,56 +73,36 @@
     <Compile Include="Models\ky_sign.cs" />
     <Compile Include="Models\ky_user.cs" />
     <Compile Include="Models\ky_version.cs" />
-    <Compile Include="Models\Mapping\ky_atmMap.cs" />
-    <Compile Include="Models\Mapping\ky_atmtypeMap.cs" />
-    <Compile Include="Models\Mapping\ky_batchMap.cs" />
-    <Compile Include="Models\Mapping\ky_branchMap.cs" />
-    <Compile Include="Models\Mapping\ky_cashboxMap.cs" />
-    <Compile Include="Models\Mapping\ky_cashstatusMap.cs" />
-    <Compile Include="Models\Mapping\ky_currencyMap.cs" />
-    <Compile Include="Models\Mapping\ky_factoryMap.cs" />
-    <Compile Include="Models\Mapping\ky_fakeregistMap.cs" />
-    <Compile Include="Models\Mapping\ky_fakesignMap.cs" />
-    <Compile Include="Models\Mapping\ky_gzh_bundleMap.cs" />
-    <Compile Include="Models\Mapping\ky_gzh_packageMap.cs" />
-    <Compile Include="Models\Mapping\ky_imgserverMap.cs" />
-    <Compile Include="Models\Mapping\ky_import_fileMap.cs" />
-    <Compile Include="Models\Mapping\ky_import_machineMap.cs" />
-    <Compile Include="Models\Mapping\ky_machineMap.cs" />
-    <Compile Include="Models\Mapping\ky_nodeMap.cs" />
-    <Compile Include="Models\Mapping\ky_package_bundleMap.cs" />
-    <Compile Include="Models\Mapping\ky_perm_user_nodeMap.cs" />
-    <Compile Include="Models\Mapping\ky_pictureMap.cs" />
-    <Compile Include="Models\Mapping\ky_signMap.cs" />
-    <Compile Include="Models\Mapping\ky_userMap.cs" />
-    <Compile Include="Models\Mapping\ky_versionMap.cs" />
-    <Compile Include="Models\Mapping\migrationMap.cs" />
-    <Compile Include="Models\Mapping\permissionMap.cs" />
-    <Compile Include="Models\Mapping\roleMap.cs" />
-    <Compile Include="Models\SphinxContext.cs" />
+    <Compile Include="Mapping\ky_atmMap.cs" />
+    <Compile Include="Mapping\ky_atmtypeMap.cs" />
+    <Compile Include="Mapping\ky_batchMap.cs" />
+    <Compile Include="Mapping\ky_branchMap.cs" />
+    <Compile Include="Mapping\ky_cashboxMap.cs" />
+    <Compile Include="Mapping\ky_cashstatusMap.cs" />
+    <Compile Include="Mapping\ky_currencyMap.cs" />
+    <Compile Include="Mapping\ky_factoryMap.cs" />
+    <Compile Include="Mapping\ky_fakeregistMap.cs" />
+    <Compile Include="Mapping\ky_fakesignMap.cs" />
+    <Compile Include="Mapping\ky_gzh_bundleMap.cs" />
+    <Compile Include="Mapping\ky_gzh_packageMap.cs" />
+    <Compile Include="Mapping\ky_imgserverMap.cs" />
+    <Compile Include="Mapping\ky_import_fileMap.cs" />
+    <Compile Include="Mapping\ky_import_machineMap.cs" />
+    <Compile Include="Mapping\ky_machineMap.cs" />
+    <Compile Include="Mapping\ky_nodeMap.cs" />
+    <Compile Include="Mapping\ky_package_bundleMap.cs" />
+    <Compile Include="Mapping\ky_perm_user_nodeMap.cs" />
+    <Compile Include="Mapping\ky_pictureMap.cs" />
+    <Compile Include="Mapping\ky_signMap.cs" />
+    <Compile Include="Mapping\ky_userMap.cs" />
+    <Compile Include="Mapping\ky_versionMap.cs" />
+    <Compile Include="Mapping\migrationMap.cs" />
+    <Compile Include="Mapping\permissionMap.cs" />
+    <Compile Include="Mapping\roleMap.cs" />
     <Compile Include="Models\migration.cs" />
     <Compile Include="Models\permission.cs" />
     <Compile Include="Models\role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveDataToDB.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KyBll\KyBll.csproj">
-      <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
-      <Name>KyBll</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KyData\KyData.csproj">
-      <Project>{0E821D10-AADD-4946-8E21-22C9F70A0C4A}</Project>
-      <Name>KyData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KySDK\KySDK.csproj">
-      <Project>{A843939F-72A7-43B4-BD6F-A299301259F5}</Project>
-      <Name>KySDK</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

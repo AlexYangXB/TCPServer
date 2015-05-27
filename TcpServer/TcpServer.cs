@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using KyData;
-using KyModel.DataBase;
-using KyData.DbTable;
+using KyBll;
 using KyModel;
 using KyModel.Models;
 namespace MyTcpServer
@@ -30,21 +27,32 @@ namespace MyTcpServer
         //时间参数定义
         public class CmdEventArgs : EventArgs
         {
-            //public readonly int Cmd;
-            //public readonly string IP;
-            //public readonly string Machine;
-            //public CmdEventArgs(int cmd, string ip,string machine)
-            //{
-            //    Cmd = cmd;
-            //    IP = ip;
-            //    Machine = machine;
-            //}
             public readonly string IP;
             public readonly KYDataLayer1.Amount Amount;
             public CmdEventArgs(string ip,KYDataLayer1.Amount amount)
             {
                 IP = ip;
                 Amount = amount;
+            }
+
+        }
+        public delegate void LogEventHandler(Object sender, LogEventArgs e);
+        //事件
+        public event EventHandler<LogEventArgs> LogEvent;
+        protected virtual void OnLog(Object sender, LogEventArgs e)
+        {
+            if (LogEvent != null)    // 如果有对象注册
+            {
+                LogEvent(this, e);  // 调用所有注册对象的方法
+            }
+        }
+        //时间参数定义
+        public class LogEventArgs : EventArgs
+        {
+            public readonly string LogText;
+            public LogEventArgs(string Log)
+            {
+                LogText = Log;
             }
 
         }
@@ -109,9 +117,9 @@ namespace MyTcpServer
                 // 将负责监听的套接字绑定到唯一的ip和端口上；  
                 socketWatch.Bind(endPoint);
             }
-            catch (SocketException se)
+            catch (SocketException e)
             {
-                //MessageBox.Show("异常：" + se.Message);
+                OnLog(this, new LogEventArgs("启动监听服务异常"+e.ToString()));
                 return;
             }
             // 设置监听队列的长度；  
@@ -133,7 +141,7 @@ namespace MyTcpServer
                 // 想列表控件中添加客户端的IP信息；  
                 //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
                 string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                
+                OnLog(this, new LogEventArgs("新连接，对方信息是是"+sokConnection.RemoteEndPoint));
                 //IP地址在数据库中，才会接收数据
                 if(machine.ContainsKey(ipPort[0]))
                 {
@@ -142,7 +150,6 @@ namespace MyTcpServer
                         dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
                     //ShowMsg("客户端连接成功！");
                     Thread thr = new Thread(RecMsg);
-
                     thr.IsBackground = true;
                     thr.Start(sokConnection);
                     if (!dictThread.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
@@ -169,6 +176,7 @@ namespace MyTcpServer
                     }
                     else
                     {
+                        OnLog(this, new LogEventArgs(sokConnection.RemoteEndPoint+"是尚未添加的机具IP，请添加后再重试！"));
                         sokConnection.Close();
                     }
                 }
@@ -180,6 +188,7 @@ namespace MyTcpServer
             Socket sokClient = sokConnectionparn as Socket;
             string ipAndPort = sokClient.RemoteEndPoint.ToString();
             string[] ip= ipAndPort.Split(":".ToCharArray());
+            OnLog(this, new LogEventArgs(ipAndPort + "连接成功!"));
             while(true)
             {
                // Thread.Sleep(300);
@@ -188,9 +197,11 @@ namespace MyTcpServer
                     byte[] readBuf = new byte[4];
                     int length = -1;
                     length = sokClient.Receive(readBuf);
+                    OnLog(this, new LogEventArgs(ipAndPort + "发送命令" + TCP.ByteToStringX2(readBuf) + ",长度是" + length));
                     if (length == 4 && BitConverter.ToInt32(readBuf, 0) == 0x4C4A4040)
                     {
                         length = sokClient.Receive(readBuf);
+                        OnLog(this, new LogEventArgs(ipAndPort + "发送命令" + TCP.ByteToStringX2(readBuf) + ",长度是" + length));
                         if (length == 4)
                         {
                             int msgLen = BitConverter.ToInt32(readBuf, 0);
@@ -293,7 +304,7 @@ namespace MyTcpServer
                                         fs.Close();
                                     }
                                     machine[ip[0]].imgServerId = PictureServerId;
-                                    machine[ip[0]].business = "HM";
+                                    machine[ip[0]].business = BussinessType.HM;
                                     SaveDataToDB.SaveFsn(fileName,machine[ip[0]]);
                                     //更新机具列表
                                     //机器最后上传时间和机具编号
@@ -437,15 +448,21 @@ namespace MyTcpServer
                     if (machine.ContainsKey(bControl.ip))
                     {
                         currentMachine.startBusinessCtl = false;
-                        currentMachine.bussinessNumber = bControl.bussinessNumber;
-                        currentMachine.atmId = Convert.ToInt32(bControl.atmId);
-                        currentMachine.cashBoxId = Convert.ToInt32(bControl.cashBoxId);
-                        currentMachine.isClearCenter = bControl.isClearCenter;
-                        currentMachine.packageNumber = bControl.packageNumber;
+                        if (currentMachine.business ==BussinessType.CK || currentMachine.business == BussinessType.QK)
+                             currentMachine.bussinessNumber = bControl.bussinessNumber;
+                        if (currentMachine.business ==BussinessType.ATMP || currentMachine.business == BussinessType.ATMQ)
+                             currentMachine.atmId = Convert.ToInt32(bControl.atmId);
+                        if (currentMachine.business == BussinessType.ATMP)
+                             currentMachine.cashBoxId = Convert.ToInt32(bControl.cashBoxId);
+                        if (currentMachine.business == BussinessType.KHDK)
+                        {
+                            currentMachine.isClearCenter = bControl.isClearCenter;
+                            currentMachine.packageNumber = bControl.packageNumber;
+                        }
                         currentMachine.imgServerId = PictureServerId;
                         if (currentMachine.fileName != "" && File.Exists(currentMachine.fileName))
                         {
-                            if(currentMachine.business=="KHDK")
+                            if(currentMachine.business==BussinessType.KHDK)
                             {
                                 if(!Directory.Exists(DataSaveFolder+"\\tmp"))
                                 {
@@ -474,7 +491,7 @@ namespace MyTcpServer
                                 File.Delete(currentMachine.fileName);
                             }
                         }
-                        currentMachine.business = "";
+                        currentMachine.business =BussinessType.HM;
                         currentMachine.startBusinessCtl = false;
                         currentMachine.bussinessNumber = "";
                         currentMachine.atmId = 0;

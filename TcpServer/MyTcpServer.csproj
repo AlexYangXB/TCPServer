@@ -42,17 +42,13 @@
     <Compile Include="TcpServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KyData\KyData.csproj">
-      <Project>{0E821D10-AADD-4946-8E21-22C9F70A0C4A}</Project>
-      <Name>KyData</Name>
+    <ProjectReference Include="..\KyBll\KyBll.csproj">
+      <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
+      <Name>KyBll</Name>
     </ProjectReference>
     <ProjectReference Include="..\KyModel\KyModel.csproj">
       <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
       <Name>KyModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{CDF78796-AE5A-4260-A657-80AA0767232F}</Project>
-      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

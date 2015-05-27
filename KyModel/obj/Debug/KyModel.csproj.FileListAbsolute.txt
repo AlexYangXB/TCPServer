@@ -1,16 +1,5 @@
-E:\TCPServer\KyModel\bin\Debug\KyModel.dll.config
 E:\TCPServer\KyModel\bin\Debug\KyModel.dll
 E:\TCPServer\KyModel\bin\Debug\KyModel.pdb
 E:\TCPServer\KyModel\bin\Debug\EntityFramework.dll
-E:\TCPServer\KyModel\bin\Debug\MySql.Data.Entity.EF6.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.pdb
-E:\TCPServer\KyModel\obj\Debug\KyModel.csprojResolveAssemblyReference.cache
-E:\TCPServer\KyModel\bin\Debug\KyBll.dll
-E:\TCPServer\KyModel\bin\Debug\KyData.dll
-E:\TCPServer\KyModel\bin\Debug\KySDK.dll
-E:\TCPServer\KyModel\bin\Debug\Newtonsoft.Json.dll
-E:\TCPServer\KyModel\bin\Debug\ICSharpCode.SharpZipLib.dll
-E:\TCPServer\KyModel\bin\Debug\KyBll.pdb
-E:\TCPServer\KyModel\bin\Debug\KyData.pdb
-E:\TCPServer\KyModel\bin\Debug\KySDK.pdb

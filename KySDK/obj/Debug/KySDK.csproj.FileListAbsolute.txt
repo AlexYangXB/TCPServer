@@ -20,3 +20,4 @@ E:\TCPServer\KySDK\bin\Debug\KySDK.pdb
 E:\TCPServer\KySDK\bin\Debug\ICSharpCode.SharpZipLib.dll
 E:\TCPServer\KySDK\obj\Debug\KySDK.dll
 E:\TCPServer\KySDK\obj\Debug\KySDK.pdb
+E:\TCPServer\KySDK\obj\Debug\KySDK.csprojResolveAssemblyReference.cache

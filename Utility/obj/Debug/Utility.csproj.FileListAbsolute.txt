@@ -33,9 +33,3 @@ E:\TCPServer\Utility\obj\Debug\Utility.dll
 E:\TCPServer\Utility\obj\Debug\Utility.pdb
 E:\TCPServer\Utility\bin\Debug\EntityFramework.dll
 E:\TCPServer\Utility\bin\Debug\Utility.dll.config
-E:\TCPServer\Utility\bin\Debug\KyBll.dll
-E:\TCPServer\Utility\bin\Debug\Newtonsoft.Json.dll
-E:\TCPServer\Utility\bin\Debug\KySDK.dll
-E:\TCPServer\Utility\bin\Debug\ICSharpCode.SharpZipLib.dll
-E:\TCPServer\Utility\bin\Debug\KyBll.pdb
-E:\TCPServer\Utility\bin\Debug\KySDK.pdb

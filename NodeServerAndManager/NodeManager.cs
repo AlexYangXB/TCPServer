@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KyBll;
-using KyData.DbTable;
-using MyTcpServer;
-using Newtonsoft.Json.Linq;
-using NodeServerAndManager.BaseWinform;
-using System.Runtime.InteropServices;
-using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.SocketIoClientDotNet.Client;
+using KyBll.DBUtility;
 using KyModel;
 using KyModel.Models;
-using System.Linq;
+using MyTcpServer;
 using Newtonsoft.Json;
-using Utility;
+using Newtonsoft.Json.Linq;
+using NodeServerAndManager.BaseWinform;
+using Quobject.EngineIoClientDotNet.Modules;
+using Quobject.SocketIoClientDotNet.Client;
 namespace NodeServerAndManager
 {
     public partial class NodeManager : Form
@@ -223,7 +221,7 @@ namespace NodeServerAndManager
 
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
-
+            myTcpServer.LogEvent += new EventHandler<TcpServer.LogEventArgs>(myTcpServer_LogEvent);
             //打开定时器
             timer_UpdateMachine.Start();
 
@@ -246,10 +244,7 @@ namespace NodeServerAndManager
             }
             //设置收数据的Server端
             bool success = StartTcpServer();
-            //if(!success)
-            //{
-            //    MessageBox.Show("false");
-            //}
+
             //连接socket.IO
             SocketIoConnect();
         }
@@ -276,6 +271,12 @@ namespace NodeServerAndManager
                 obj["Last"] = e.Amount.LastSign;   //末张冠字号码
                 socket.Emit("SetCount", obj);
             }
+        }
+        void myTcpServer_LogEvent(object sender, TcpServer.LogEventArgs e)
+        {
+          //日志记录
+            MessageBox.Show(e.LogText);
+            
         }
         private void NodeManager_Activated(object sender, EventArgs e)
         {
@@ -430,7 +431,7 @@ namespace NodeServerAndManager
         //交易类型
         private void cmb_BusinessType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmb_BusinessType.Text.IndexOf("ATM") != -1)
+            if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMP || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMQ)
             {
                 cmb_ATM2.Enabled = true;
                 cmb_CashBox2.Enabled = true;
@@ -461,7 +462,7 @@ namespace NodeServerAndManager
                     MessageBox.Show("请选择交易类型", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                if (cmb_BusinessType.Text.IndexOf("ATM") != -1)
+                if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMP || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMQ)
                 {
                     if (cmb_ATM2.Text == "" || cmb_CashBox2.Text == "")
                     {
@@ -488,25 +489,8 @@ namespace NodeServerAndManager
                     cashBoxId = Convert.ToInt32(strTmp[0]);
 
                 //交易类型
-                string business = "";
-                switch (cmb_BusinessType.SelectedIndex)
-                {
-                    case 0:
-                        business = "HM";
-                        break;
-                    case 1:
-                        business = "QK";
-                        break;
-                    case 2:
-                        business = "CK";
-                        break;
-                    case 3:
-                        business = "ATMP";
-                        break;
-                    case 4:
-                        business = "ATMQ";
-                        break;
-                }
+                BussinessType business = (BussinessType)cmb_BusinessType.SelectedIndex;
+            
 
                 foreach (var uploadFile in uploadFiles)
                 {
@@ -669,9 +653,6 @@ namespace NodeServerAndManager
         }
 
 
-        #region 设备监控
-        #endregion
-
         #region socket.IO
         protected IO.Options CreateOptions()
         {
@@ -715,18 +696,18 @@ namespace NodeServerAndManager
                            int machineId = Convert.ToInt32(d["MachineId"]);
                            if (idIp.ContainsKey(machineId))
                            {
-                               KyData.DbTable.businessControl bControl = new businessControl();
+                               businessControl bControl = new businessControl();
                                bControl.dateTime = DateTime.Now;
                                bControl.ip = idIp[machineId];
                                if (d["Type"] != null)
-                                   bControl.business = d["Type"].ToString();
+                                   bControl.business =  (BussinessType) Enum.Parse(typeof(BussinessType), d["Type"].ToString(), true);
                                else
-                                   bControl.business = "";
+                                   bControl.business = BussinessType.HM;
                                if (d["UserId"] != null)
                                    bControl.userId = Convert.ToInt32(d["UserId"]);
                                else
                                    bControl.userId = 0;
-                               if (bControl.business == "KHDK")
+                               if (bControl.business == BussinessType.KHDK)
                                {
                                    int bundleCount = 100;
                                    if (d["BundleCount"] != null)
@@ -743,7 +724,7 @@ namespace NodeServerAndManager
                                       int machineId = Convert.ToInt32(d["MachineId"]);
                                       if (idIp.ContainsKey(machineId))
                                       {
-                                          KyData.DbTable.businessControl bControl = new businessControl();
+                                          businessControl bControl = new businessControl();
                                           bControl.ip = idIp[machineId];
                                           if (d["BussinessNumber"] != null)
                                               bControl.bussinessNumber = d["BussinessNumber"].ToString();
@@ -783,8 +764,9 @@ namespace NodeServerAndManager
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.ConnectionException(e, "推送服务器异常");
             }
         }
 
@@ -795,67 +777,15 @@ namespace NodeServerAndManager
         }
 
 
-        private void btn_Connect_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var options = CreateOptions();
-                var uri = CreateUri();
-                socket = IO.Socket(uri, options);
-                socket.On(Socket.EVENT_CONNECT, () =>
-                {
-                    socket.Emit("SetNodeId", "[1,2,3]");
-                });
-                socket.On("SetStart",
-                   (data) =>
-                   {
-                       //AddMessage(Convert.ToString(data));
-                       var d = (JObject)data;
-                       MessageBox.Show(d["MachineId"].ToString());
-                   });
-                socket.On("SetEnd",
-                              (data) =>
-                              {
-                                  var d = (JObject)data;
-                                  //if(d["Type"]==null)
-
-                                  MessageBox.Show("点钞结束了,机具id和业务流水号为" + d["MachineId"] + "," + d["BussinessNumber"]);
-                              });
-                socket.On("NoMachine", (data) => { });
-            }
-            catch (Exception)
-            {
-            }
-
-        }
-        private void ben_Send_Click(object sender, EventArgs e)
-        {
-            var obj = new JObject();
-            obj["MachineId"] = 2;       //机具ID
-            obj["Fake"] = 2;            //假币张数
-            obj["Real"] = 1;            //真币张数
-            obj["Total"] = 3;           //总金额
-            obj["First"] = "1234567DF"; //首张冠字号码
-            obj["Last"] = "SDF23434";   //末张冠字号码
-            socket.Emit("SetCount", obj);
-            //socket.Emit("SetCount", "[2,3,100,\"ADFDFJDF\",0]");//机具Id，可疑币总数，总张数，首张冠字号码（不存在填 0）、末张冠字号码（不存在填 0）
-            //socket.Emit("SetCount", "[2,3,100,0,\"ADFDFJDF\"]");//机具Id，可疑币总数，总张数，首张冠字号码（不存在填 0）、末张冠字号码（不存在填 0）
-        }
-
-        private void btn_Close_Click(object sender, EventArgs e)
-        {
-            socket.Close();
-        }
-
 
         #endregion
 
-        //SetEnd :
-        //obj["MachineId"];
-        //obj["BussinessNumber"];
-        //obj["Type"];
-        //obj["ATMId"];
-        //obj["CashBoxId"];                         不存在的项为null d["MachineId1"]==null
+        private void lab_LogDetail_Click(object sender, EventArgs e)
+        {
+            BaseWinform.LogForm frm = new LogForm();
+            frm.ShowDialog();
+        }
+
 
 
 

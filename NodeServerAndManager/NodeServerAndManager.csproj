@@ -77,10 +77,22 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Threading.Tasks.NET35">
+      <HintPath>..\Lib\System.Threading.Tasks.NET35.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebSocket4Net">
+      <HintPath>..\Lib\WebSocket4Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseWinform\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseWinform\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="BaseWinform\ServerSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +119,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BaseWinform\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BaseWinform\ServerSettings.resx">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,10 +162,6 @@
       <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
       <Name>KyBll</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KyData\KyData.csproj">
-      <Project>{0E821D10-AADD-4946-8E21-22C9F70A0C4A}</Project>
-      <Name>KyData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KyModel\KyModel.csproj">
       <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
       <Name>KyModel</Name>
@@ -158,10 +169,6 @@
     <ProjectReference Include="..\TcpServer\MyTcpServer.csproj">
       <Project>{B0778505-ED62-4D28-866C-7E29C0E78F79}</Project>
       <Name>MyTcpServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{CDF78796-AE5A-4260-A657-80AA0767232F}</Project>
-      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
