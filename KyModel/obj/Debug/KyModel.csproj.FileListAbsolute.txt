@@ -3,3 +3,4 @@ E:\TCPServer\KyModel\bin\Debug\KyModel.pdb
 E:\TCPServer\KyModel\bin\Debug\EntityFramework.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.pdb
+E:\TCPServer\KyModel\obj\Debug\KyModel.csprojResolveAssemblyReference.cache

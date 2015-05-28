@@ -221,7 +221,7 @@ namespace NodeServerAndManager
 
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
-            myTcpServer.LogEvent += new EventHandler<TcpServer.LogEventArgs>(myTcpServer_LogEvent);
+            
             //打开定时器
             timer_UpdateMachine.Start();
 
@@ -272,12 +272,7 @@ namespace NodeServerAndManager
                 socket.Emit("SetCount", obj);
             }
         }
-        void myTcpServer_LogEvent(object sender, TcpServer.LogEventArgs e)
-        {
-          //日志记录
-            MessageBox.Show(e.LogText);
-            
-        }
+        
         private void NodeManager_Activated(object sender, EventArgs e)
         {
             txb_User.Focus();
@@ -782,8 +777,17 @@ namespace NodeServerAndManager
 
         private void lab_LogDetail_Click(object sender, EventArgs e)
         {
-            BaseWinform.LogForm frm = new LogForm();
-            frm.ShowDialog();
+            try
+            {
+                BaseWinform.LogForm logForm = new LogForm();
+                myTcpServer.ClearLogEvent();
+                myTcpServer.LogEvent +=new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
+                logForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
 

@@ -33,9 +33,9 @@
             // 
             // LogRichTextBox
             // 
-            this.LogRichTextBox.Location = new System.Drawing.Point(36, 28);
+            this.LogRichTextBox.Location = new System.Drawing.Point(12, 24);
             this.LogRichTextBox.Name = "LogRichTextBox";
-            this.LogRichTextBox.Size = new System.Drawing.Size(549, 369);
+            this.LogRichTextBox.Size = new System.Drawing.Size(1261, 413);
             this.LogRichTextBox.TabIndex = 0;
             this.LogRichTextBox.Text = "";
             // 
@@ -43,9 +43,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 424);
+            this.ClientSize = new System.Drawing.Size(1285, 464);
             this.Controls.Add(this.LogRichTextBox);
+            this.MaximizeBox = false;
             this.Name = "LogForm";
+            this.ShowIcon = false;
             this.Text = "日志";
             this.ResumeLayout(false);
 

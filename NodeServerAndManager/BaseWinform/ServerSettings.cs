@@ -93,6 +93,10 @@ namespace NodeServerAndManager.BaseWinform
             //图片服务器IP 端口号
             Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
+            //修改自动更新配置文件
+            IniFile g = new IniFile(Environment.CurrentDirectory + "/config.ini");
+            string url = g.ReadString("NETWORK", "URL", "");
+            g.WriteString("NETWORK", "URL", "http://"+Properties.Settings.Default.DeviceIp.ToString()+":8888/update/");
             Properties.Settings.Default.Save();
             //先清除已绑定的项
             //List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
