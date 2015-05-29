@@ -10,7 +10,7 @@ namespace KyModel
         public string IpAndPort { get; set; }
         public byte[] Command { get; set; }
         public TCPMessageType MessageType { get; set; }
-
+        
     }
     public enum TCPMessageType
     {
@@ -33,4 +33,5 @@ namespace KyModel
         /// </summary>
         NET_TIME=5
     }
+    
 }

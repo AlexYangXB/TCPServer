@@ -35,7 +35,7 @@
             // 
             this.LogRichTextBox.Location = new System.Drawing.Point(12, 24);
             this.LogRichTextBox.Name = "LogRichTextBox";
-            this.LogRichTextBox.Size = new System.Drawing.Size(1261, 413);
+            this.LogRichTextBox.Size = new System.Drawing.Size(672, 413);
             this.LogRichTextBox.TabIndex = 0;
             this.LogRichTextBox.Text = "";
             // 
@@ -43,7 +43,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1285, 464);
+            this.ClientSize = new System.Drawing.Size(701, 464);
             this.Controls.Add(this.LogRichTextBox);
             this.MaximizeBox = false;
             this.Name = "LogForm";

@@ -13,10 +13,10 @@ namespace KyBll
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void UnHandleException(Exception ex,string backStr)
+        public static void UnHandleException(Exception ex, string backStr)
         {
             string str = GetExceptionMsg(ex, backStr);
-            string path = System.Environment.CurrentDirectory + "\\Err" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -24,7 +24,7 @@ namespace KyBll
             string time = DateTime.Now.ToString("yyyyMMdd");
             using (StreamWriter sw = new StreamWriter(path + "\\" + time + "_unhandle.log", true, Encoding.Default))
             {
-                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：")+str);
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + str);
             }
         }
         /// <summary>
@@ -32,10 +32,10 @@ namespace KyBll
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void DataBaseException(Exception ex,string backStr)
+        public static void DataBaseException(Exception ex, string backStr)
         {
             string str = GetExceptionMsg(ex, backStr);
-            string path = System.Environment.CurrentDirectory + "\\Err" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -54,7 +54,7 @@ namespace KyBll
         public static void ConnectionException(Exception ex, string backStr)
         {
             string str = GetExceptionMsg(ex, backStr);
-            string path = System.Environment.CurrentDirectory + "\\Err" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -66,18 +66,37 @@ namespace KyBll
             }
         }
         /// <summary>
-        /// 清除Err目录下的访问日期小于当前10天的日志文件
+        /// 连接的命令信息  日期_command.log
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="str"></param>
+        public static void CommandLog(string backStr)
+        {
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string time = DateTime.Now.ToString("yyyyMMdd");
+            using (StreamWriter sw = new StreamWriter(path + "\\" + time + "_command.log", true, Encoding.Default))
+            {
+                sw.Write(backStr);
+            }
+        }
+        /// <summary>
+        /// 清除Err目录下的访问日期小于当前5天的文件夹
         /// </summary>
         public static void CleanLogs()
         {
-            string path = System.Environment.CurrentDirectory + "\\Err";
-            string[] files = Directory.GetFiles(path);
-            foreach (string file in files)
+            int CleanDay = 5;
+            string path = System.Environment.CurrentDirectory + "\\Log";
+            string[] dirs = Directory.GetDirectories(path);
+            foreach (var dir in dirs)
             {
-                FileInfo fi = new FileInfo(file);
-                if ((DateTime.Now - fi.LastAccessTime).Days > 10)
+                DirectoryInfo di = new DirectoryInfo(dir);
+                if ((DateTime.Now - di.CreationTime).Days > CleanDay)
                 {
-                    fi.Delete();
+                    di.Delete(true);
                 }
             }
         }

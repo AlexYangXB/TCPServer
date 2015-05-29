@@ -8,6 +8,7 @@ using System.Threading;
 using KyBll;
 using KyModel;
 using KyModel.Models;
+using System.Linq;
 namespace MyTcpServer
 {
     public class TcpServer
@@ -49,6 +50,8 @@ namespace MyTcpServer
             {
                 LogEvent(this, e);  // 调用所有注册对象的方法
             }
+            string message = TCP.TCPMessageFormat(e.TCPMessage);
+            Log.CommandLog(message);
         }
         //日志参数定义
         public class LogEventArgs : EventArgs
@@ -204,20 +207,23 @@ namespace MyTcpServer
                 Thread.Sleep(500);
                 try
                 {
-                    byte[] readBuf = new byte[4];
+                    byte[] startBuf = new byte[4];
                     int length = -1;
-                    length = sokClient.Receive(readBuf);
+                    length = sokClient.Receive(startBuf);
                     if (length > 0)
                     {
-                        if (length == 4 && BitConverter.ToInt32(readBuf, 0) == 0x4C4A4040)
+                        if (length == 4 && BitConverter.ToInt32(startBuf, 0) == 0x4C4A4040)
                         {
+                            byte[] readBuf = new byte[4];
                             length = sokClient.Receive(readBuf);
                             if (length == 4)
                             {
                                 int msgLen = BitConverter.ToInt32(readBuf, 0);
-                                byte[] bBuffer = new byte[msgLen - 8];
+                                byte[] bBuffer = new byte[msgLen];
+                                Array.Copy(startBuf, 0, bBuffer, 0, 4);
+                                Array.Copy(readBuf, 0, bBuffer, 4, 4);
                                 readBuf = new byte[1024 * 1024];
-                                for (int i = 0; i < msgLen - 8; )
+                                for (int i = 8; i < msgLen; )
                                 {
                                     length = sokClient.Receive(readBuf);
                                     Array.Copy(readBuf, 0, bBuffer, i, length);
@@ -225,25 +231,25 @@ namespace MyTcpServer
                                     if (length == 0)
                                         throw new Exception("网速过慢");
                                 }
-                                Int16 cmd = BitConverter.ToInt16(bBuffer, 2);
+                                Int16 cmd = BitConverter.ToInt16(bBuffer, 10);
                                 string machineNo = "";
-                                machineNo = Encoding.ASCII.GetString(bBuffer, 4, 28).Replace("\0", "");
+                                machineNo = Encoding.ASCII.GetString(bBuffer, 12, 28).Replace("\0", "");
                                 if (cmd == 0x00A1)//传输数据请求命令
                                 {
                                     OnLog(this, new LogEventArgs(
                                         new TCPMessage
                                         {
                                             IpAndPort = sokClient.RemoteEndPoint.ToString(),
-                                            Command = readBuf,
+                                            Command = bBuffer.Take(54).ToArray(),
                                             MessageType = TCPMessageType.NET_SIMPLE
                                         }));
                                     //请求回复
                                     byte[] returnBytes = new byte[46];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
                                     Array.Copy(msg_length, 0, returnBytes, 4, msg_length.Length);
-                                    Array.Copy(bBuffer, 0, returnBytes, 8, 2);//协议版本、requestCmd
+                                    Array.Copy(bBuffer, 8, returnBytes, 8, 2);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
-                                    Array.Copy(bBuffer, 4, returnBytes, 14, 28);
+                                    Array.Copy(bBuffer, 12, returnBytes, 14, 28);
                                     sokClient.Send(returnBytes);
                                 }
                                 else if (cmd > 0 && cmd < 10)//纸币信息发送命令
@@ -253,22 +259,22 @@ namespace MyTcpServer
                                        new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
-                                           Command = readBuf,
+                                           Command = bBuffer.Take(200).ToArray(),
                                            MessageType = TCPMessageType.NET_UP
                                        }));
                                     byte[] returnBytes = new byte[46];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
                                     Array.Copy(msg_length, 0, returnBytes, 4, msg_length.Length);
-                                    Array.Copy(bBuffer, 0, returnBytes, 8, 4);//协议版本、requestCmd
+                                    Array.Copy(bBuffer, 8, returnBytes, 8, 4);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
-                                    Array.Copy(bBuffer, 4, returnBytes, 14, 28);
+                                    Array.Copy(bBuffer, 12, returnBytes, 14, 28);
                                     sokClient.Send(returnBytes);
 
                                     //machineNo = Encoding.ASCII.GetString(bBuffer,4,28).Replace("\0","");
                                     //报文体长度
                                     int bodyLen = msgLen - 84 - 2;
                                     byte[] Fsn = new byte[bodyLen];
-                                    Array.Copy(bBuffer, 76, Fsn, 0, bodyLen);
+                                    Array.Copy(bBuffer, 84, Fsn, 0, bodyLen);
                                     string fileName = DataSaveFolder + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") +
                                                       "-" + machineNo + ".FSN";
                                     //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
@@ -356,15 +362,15 @@ namespace MyTcpServer
                                        new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
-                                           Command = readBuf,
+                                           Command = bBuffer.Take(42).ToArray(),
                                            MessageType = TCPMessageType.NET_TIME
                                        }));
                                     byte[] returnBytes = new byte[58];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
                                     Array.Copy(msg_len_TimeSync, 0, returnBytes, 4, msg_length.Length);
-                                    Array.Copy(bBuffer, 0, returnBytes, 8, 4);
+                                    Array.Copy(bBuffer, 8, returnBytes, 8, 4);
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
-                                    Array.Copy(bBuffer, 4, returnBytes, 14, 28);
+                                    Array.Copy(bBuffer, 12, returnBytes, 14, 28);
                                     string time = DateTime.Now.ToString("yyyyMMddHHmmss");
                                     byte[] timeBytes = Encoding.ASCII.GetBytes(time);
                                     Array.Copy(timeBytes, 0, returnBytes, 42, timeBytes.Length);
@@ -376,7 +382,7 @@ namespace MyTcpServer
                                        new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
-                                           Command = readBuf,
+                                           Command = bBuffer.Take(44).ToArray(),
                                            MessageType = TCPMessageType.NET_CLOSE
                                        }));
                                     dict[ipAndPort].Close();
@@ -389,7 +395,7 @@ namespace MyTcpServer
                                     }
                                     catch (ThreadAbortException e)
                                     {
-                                        Log.ConnectionException(e, "关闭连接异常");
+                                        //Log.ConnectionException(e, "关闭连接异常");
                                     }
                                     finally
                                     {

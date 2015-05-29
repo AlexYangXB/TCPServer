@@ -65,6 +65,8 @@ namespace NodeServerAndManager
                 }
                 if (!IsOpen)//未打开，打开系统
                 {
+                    //清除日志
+                    Log.CleanLogs();
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new NodeManager());
@@ -75,8 +77,7 @@ namespace NodeServerAndManager
                 
                 throw;
             }
-            //清除日志
-            Log.CleanLogs();
+            
         }
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
