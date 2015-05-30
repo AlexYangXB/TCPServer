@@ -40,3 +40,16 @@ E:\TCPServer\TcpServer\bin\Debug\EntityFramework.dll
 E:\TCPServer\TcpServer\bin\Debug\KyBll.dll
 E:\TCPServer\TcpServer\bin\Debug\ICSharpCode.SharpZipLib.dll
 E:\TCPServer\TcpServer\bin\Debug\KyBll.pdb
+F:\GitHub\TCPServer\TcpServer\bin\Debug\TcpServer.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\TcpServer.pdb
+F:\GitHub\TCPServer\TcpServer\bin\Debug\KyBll.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\KyModel.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\EntityFramework.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\MySql.Data.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\Newtonsoft.Json.dll
+F:\GitHub\TCPServer\TcpServer\bin\Debug\KyBll.pdb
+F:\GitHub\TCPServer\TcpServer\bin\Debug\KyModel.pdb
+F:\GitHub\TCPServer\TcpServer\obj\Debug\MyTcpServer.csprojResolveAssemblyReference.cache
+F:\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.dll
+F:\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.pdb

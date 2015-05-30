@@ -33,9 +33,9 @@
             // 
             // LogRichTextBox
             // 
-            this.LogRichTextBox.Location = new System.Drawing.Point(12, 24);
+            this.LogRichTextBox.Location = new System.Drawing.Point(12, 68);
             this.LogRichTextBox.Name = "LogRichTextBox";
-            this.LogRichTextBox.Size = new System.Drawing.Size(672, 413);
+            this.LogRichTextBox.Size = new System.Drawing.Size(672, 369);
             this.LogRichTextBox.TabIndex = 0;
             this.LogRichTextBox.Text = "";
             // 

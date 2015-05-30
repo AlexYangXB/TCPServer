@@ -41,3 +41,14 @@ E:\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb
 E:\TCPServer\MyTest\obj\x86\Debug\MyTest.Form2Test.resources
 E:\TCPServer\MyTest\bin\Debug\Newtonsoft.Json.dll
+F:\GitHub\TCPServer\MyTest\bin\Debug\app.config
+F:\GitHub\TCPServer\MyTest\bin\Debug\MyTest.exe.config
+F:\GitHub\TCPServer\MyTest\bin\Debug\MyTest.exe
+F:\GitHub\TCPServer\MyTest\bin\Debug\MyTest.pdb
+F:\GitHub\TCPServer\MyTest\bin\Debug\Newtonsoft.Json.dll
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csprojResolveAssemblyReference.cache
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Form2Test.resources
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Properties.Resources.resources
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csproj.GenerateResource.Cache
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
+F:\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb

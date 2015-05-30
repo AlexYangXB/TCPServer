@@ -48,3 +48,15 @@ E:\TCPServer\KyBll\bin\Debug\KyModel.dll
 E:\TCPServer\KyBll\bin\Debug\MySql.Data.Entity.EF6.dll
 E:\TCPServer\KyBll\bin\Debug\Newtonsoft.Json.dll
 E:\TCPServer\KyBll\bin\Debug\KyModel.pdb
+F:\GitHub\TCPServer\KyBll\bin\Debug\KyBll.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\KyBll.pdb
+F:\GitHub\TCPServer\KyBll\bin\Debug\EntityFramework.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\KyModel.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\MySql.Data.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\MySql.Data.Entity.EF6.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\Newtonsoft.Json.dll
+F:\GitHub\TCPServer\KyBll\bin\Debug\KyModel.pdb
+F:\GitHub\TCPServer\KyBll\obj\Debug\KyBll.csprojResolveAssemblyReference.cache
+F:\GitHub\TCPServer\KyBll\obj\Debug\KyBll.dll
+F:\GitHub\TCPServer\KyBll\obj\Debug\KyBll.pdb

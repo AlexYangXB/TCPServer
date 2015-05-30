@@ -90,13 +90,16 @@ namespace KyBll
         {
             int CleanDay = 5;
             string path = System.Environment.CurrentDirectory + "\\Log";
-            string[] dirs = Directory.GetDirectories(path);
-            foreach (var dir in dirs)
+            if (Directory.Exists(path))
             {
-                DirectoryInfo di = new DirectoryInfo(dir);
-                if ((DateTime.Now - di.CreationTime).Days > CleanDay)
+                string[] dirs = Directory.GetDirectories(path);
+                foreach (var dir in dirs)
                 {
-                    di.Delete(true);
+                    DirectoryInfo di = new DirectoryInfo(dir);
+                    if ((DateTime.Now - di.CreationTime).Days > CleanDay)
+                    {
+                        di.Delete(true);
+                    }
                 }
             }
         }

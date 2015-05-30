@@ -3,3 +3,8 @@ E:\TCPServer\KyModel\bin\Debug\KyModel.pdb
 E:\TCPServer\KyModel\bin\Debug\EntityFramework.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.dll
 E:\TCPServer\KyModel\obj\Debug\KyModel.pdb
+F:\GitHub\TCPServer\KyModel\bin\Debug\KyModel.dll
+F:\GitHub\TCPServer\KyModel\bin\Debug\KyModel.pdb
+F:\GitHub\TCPServer\KyModel\bin\Debug\EntityFramework.dll
+F:\GitHub\TCPServer\KyModel\obj\Debug\KyModel.dll
+F:\GitHub\TCPServer\KyModel\obj\Debug\KyModel.pdb

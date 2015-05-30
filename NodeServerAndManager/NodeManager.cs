@@ -17,7 +17,7 @@ using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
 namespace NodeServerAndManager
 {
-    public partial class NodeManager : Form
+    public partial class NodeManager : MaterialSkin.Controls.MaterialForm
     {
         public NodeManager()
         {

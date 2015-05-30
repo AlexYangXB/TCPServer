@@ -9,14 +9,19 @@ using System.Windows.Forms;
 using MyTcpServer;
 using KyModel;
 using KyBll;
+using MaterialSkin;
 namespace NodeServerAndManager.BaseWinform
 {
-    public partial class LogForm : Form
+    public partial class LogForm : MaterialSkin.Controls.MaterialForm
     {
+        private readonly MaterialSkinManager materialSkinManager;
         public string LogText = "";
         public LogForm()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
         }
         public void myTcpServer_LogEvent(object sender, TcpServer.LogEventArgs e)
         {
