@@ -63,9 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\EngineIoClientDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialSkin">
-      <HintPath>..\Lib\MaterialSkin.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.6\lib\net40\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -73,6 +70,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="SocketIoClientDotNet, Version=0.9.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\SocketIoClientDotNet.dll</HintPath>
@@ -81,11 +79,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Threading.Tasks.NET35">
       <HintPath>..\Lib\System.Threading.Tasks.NET35.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
     <Reference Include="WebSocket4Net">
       <HintPath>..\Lib\WebSocket4Net.dll</HintPath>
     </Reference>
@@ -103,11 +103,11 @@
     <Compile Include="BaseWinform\ServerSettings.Designer.cs">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseWinform\Setting.cs">
+    <Compile Include="BaseWinform\WaitingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BaseWinform\Setting.Designer.cs">
-      <DependentUpon>Setting.cs</DependentUpon>
+    <Compile Include="BaseWinform\WaitingForm.Designer.cs">
+      <DependentUpon>WaitingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\IpControl.cs">
       <SubType>UserControl</SubType>
@@ -129,8 +129,8 @@
     <EmbeddedResource Include="BaseWinform\ServerSettings.resx">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BaseWinform\Setting.resx">
-      <DependentUpon>Setting.cs</DependentUpon>
+    <EmbeddedResource Include="BaseWinform\WaitingForm.resx">
+      <DependentUpon>WaitingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\IpControl.resx">
       <DependentUpon>IpControl.cs</DependentUpon>
@@ -149,7 +149,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="NodeServerAndManager_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -169,6 +168,10 @@
     <ProjectReference Include="..\KyModel\KyModel.csproj">
       <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
       <Name>KyModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MaterialSkin\MaterialSkin.csproj">
+      <Project>{8EB7611B-68CD-4B8B-987A-11717E2B250C}</Project>
+      <Name>MaterialSkin</Name>
     </ProjectReference>
     <ProjectReference Include="..\TcpServer\MyTcpServer.csproj">
       <Project>{B0778505-ED62-4D28-866C-7E29C0E78F79}</Project>

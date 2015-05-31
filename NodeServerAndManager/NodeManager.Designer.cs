@@ -31,254 +31,175 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
-            this.btn_InsertData = new System.Windows.Forms.Button();
-            this.btn_MachineMonitoring = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
+            this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lab_ServerSettings = new System.Windows.Forms.Label();
-            this.lab_Version = new System.Windows.Forms.Label();
-            this.btn_Login = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txb_PassWord = new System.Windows.Forms.TextBox();
-            this.txb_User = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btn_Logout = new System.Windows.Forms.Button();
-            this.btn_BusinessControl = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btn_Ok = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txb_Message = new System.Windows.Forms.TextBox();
+            this.rad_GZH = new System.Windows.Forms.RadioButton();
+            this.rad_FSN = new System.Windows.Forms.RadioButton();
+            this.txb_FilePath = new System.Windows.Forms.TextBox();
+            this.btn_Scan = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.cmb_BusinessType = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.cmb_CashBox2 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cmb_Factory = new System.Windows.Forms.ComboBox();
             this.cmb_ATM2 = new System.Windows.Forms.ComboBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.cmb_Node = new System.Windows.Forms.ComboBox();
-            this.rad_GZH = new System.Windows.Forms.RadioButton();
-            this.rad_FSN = new System.Windows.Forms.RadioButton();
-            this.btn_Ok = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txb_Message = new System.Windows.Forms.TextBox();
-            this.btn_Scan = new System.Windows.Forms.Button();
-            this.txb_FilePath = new System.Windows.Forms.TextBox();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dgv_machine = new System.Windows.Forms.DataGridView();
             this.kId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kUpdateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btn_Exit = new System.Windows.Forms.Button();
-            this.btn_Minimize = new System.Windows.Forms.Button();
-            this.lab_Tital = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btn_Login = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lab_LogDetail = new System.Windows.Forms.Label();
-            this.tabControl1.SuspendLayout();
+            this.lab_ServerSettings = new System.Windows.Forms.Label();
+            this.lab_Version = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txb_PassWord = new System.Windows.Forms.TextBox();
+            this.txb_User = new System.Windows.Forms.TextBox();
+            this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
+            this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.日志ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage4.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage5.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_machine)).BeginInit();
-            this.panel2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.materialContextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btn_InsertData
+            // timer_UpdateMachine
             // 
-            this.btn_InsertData.BackgroundImage = global::NodeServerAndManager.Properties.Resources.冠字号码文件上传;
-            this.btn_InsertData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_InsertData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_InsertData.Location = new System.Drawing.Point(133, 99);
-            this.btn_InsertData.Name = "btn_InsertData";
-            this.btn_InsertData.Size = new System.Drawing.Size(100, 100);
-            this.btn_InsertData.TabIndex = 1;
-            this.btn_InsertData.UseVisualStyleBackColor = true;
-            this.btn_InsertData.Click += new System.EventHandler(this.btn_InsertData_Click);
+            this.timer_UpdateMachine.Interval = 600000;
+            this.timer_UpdateMachine.Tick += new System.EventHandler(this.timer_UpdateMachine_Tick);
             // 
-            // btn_MachineMonitoring
+            // materialTabControl1
             // 
-            this.btn_MachineMonitoring.BackgroundImage = global::NodeServerAndManager.Properties.Resources.设备监控;
-            this.btn_MachineMonitoring.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_MachineMonitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_MachineMonitoring.Location = new System.Drawing.Point(292, 99);
-            this.btn_MachineMonitoring.Name = "btn_MachineMonitoring";
-            this.btn_MachineMonitoring.Size = new System.Drawing.Size(100, 100);
-            this.btn_MachineMonitoring.TabIndex = 2;
-            this.btn_MachineMonitoring.UseVisualStyleBackColor = true;
-            this.btn_MachineMonitoring.Click += new System.EventHandler(this.btn_MachineMonitoring_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Location = new System.Drawing.Point(0, 25);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(581, 385);
-            this.tabControl1.TabIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.materialTabControl1.Controls.Add(this.tabPage1);
+            this.materialTabControl1.Controls.Add(this.tabPage2);
+            this.materialTabControl1.Controls.Add(this.tabPage3);
+            this.materialTabControl1.Depth = 0;
+            this.materialTabControl1.Location = new System.Drawing.Point(0, 79);
+            this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialTabControl1.Name = "materialTabControl1";
+            this.materialTabControl1.SelectedIndex = 0;
+            this.materialTabControl1.Size = new System.Drawing.Size(653, 469);
+            this.materialTabControl1.TabIndex = 8;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lab_LogDetail);
-            this.tabPage1.Controls.Add(this.lab_ServerSettings);
-            this.tabPage1.Controls.Add(this.lab_Version);
-            this.tabPage1.Controls.Add(this.btn_Login);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.txb_PassWord);
-            this.tabPage1.Controls.Add(this.txb_User);
+            this.tabPage1.Controls.Add(this.btn_Ok);
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.txb_Message);
+            this.tabPage1.Controls.Add(this.rad_GZH);
+            this.tabPage1.Controls.Add(this.rad_FSN);
+            this.tabPage1.Controls.Add(this.txb_FilePath);
+            this.tabPage1.Controls.Add(this.btn_Scan);
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(573, 359);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(645, 443);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "登录界面";
+            this.tabPage1.Text = "文件上传";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lab_ServerSettings
+            // btn_Ok
             // 
-            this.lab_ServerSettings.AutoSize = true;
-            this.lab_ServerSettings.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_ServerSettings.ForeColor = System.Drawing.Color.Blue;
-            this.lab_ServerSettings.Location = new System.Drawing.Point(473, 322);
-            this.lab_ServerSettings.Name = "lab_ServerSettings";
-            this.lab_ServerSettings.Size = new System.Drawing.Size(77, 14);
-            this.lab_ServerSettings.TabIndex = 6;
-            this.lab_ServerSettings.Text = "服务器设置";
-            this.lab_ServerSettings.Click += new System.EventHandler(this.lab_ServerSettings_Click);
+            this.btn_Ok.Location = new System.Drawing.Point(298, 402);
+            this.btn_Ok.Name = "btn_Ok";
+            this.btn_Ok.Size = new System.Drawing.Size(75, 23);
+            this.btn_Ok.TabIndex = 34;
+            this.btn_Ok.Text = "确定";
+            this.btn_Ok.UseVisualStyleBackColor = true;
+            this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
             // 
-            // lab_Version
+            // label13
             // 
-            this.lab_Version.AutoSize = true;
-            this.lab_Version.Location = new System.Drawing.Point(16, 324);
-            this.lab_Version.Name = "lab_Version";
-            this.lab_Version.Size = new System.Drawing.Size(101, 12);
-            this.lab_Version.TabIndex = 5;
-            this.lab_Version.Text = "软件版本:1.0.0.0";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(144, 254);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(59, 12);
+            this.label13.TabIndex = 33;
+            this.label13.Text = "上传提示:";
             // 
-            // btn_Login
+            // txb_Message
             // 
-            this.btn_Login.Location = new System.Drawing.Point(248, 213);
-            this.btn_Login.Name = "btn_Login";
-            this.btn_Login.Size = new System.Drawing.Size(75, 23);
-            this.btn_Login.TabIndex = 4;
-            this.btn_Login.Text = "登录";
-            this.btn_Login.UseVisualStyleBackColor = true;
-            this.btn_Login.Click += new System.EventHandler(this.btn_Login_Click);
+            this.txb_Message.Location = new System.Drawing.Point(146, 272);
+            this.txb_Message.Multiline = true;
+            this.txb_Message.Name = "txb_Message";
+            this.txb_Message.Size = new System.Drawing.Size(385, 120);
+            this.txb_Message.TabIndex = 32;
             // 
-            // label2
+            // rad_GZH
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(174, 157);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 16);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "密码";
+            this.rad_GZH.AutoSize = true;
+            this.rad_GZH.Location = new System.Drawing.Point(84, 63);
+            this.rad_GZH.Name = "rad_GZH";
+            this.rad_GZH.Size = new System.Drawing.Size(65, 16);
+            this.rad_GZH.TabIndex = 31;
+            this.rad_GZH.Text = "GZH文件";
+            this.rad_GZH.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // rad_FSN
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(174, 95);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 16);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "用户";
+            this.rad_FSN.AutoSize = true;
+            this.rad_FSN.Checked = true;
+            this.rad_FSN.Location = new System.Drawing.Point(84, 40);
+            this.rad_FSN.Name = "rad_FSN";
+            this.rad_FSN.Size = new System.Drawing.Size(65, 16);
+            this.rad_FSN.TabIndex = 30;
+            this.rad_FSN.TabStop = true;
+            this.rad_FSN.Text = "FSN文件";
+            this.rad_FSN.UseVisualStyleBackColor = true;
             // 
-            // txb_PassWord
+            // txb_FilePath
             // 
-            this.txb_PassWord.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_PassWord.Location = new System.Drawing.Point(220, 154);
-            this.txb_PassWord.Name = "txb_PassWord";
-            this.txb_PassWord.PasswordChar = '*';
-            this.txb_PassWord.Size = new System.Drawing.Size(157, 26);
-            this.txb_PassWord.TabIndex = 1;
+            this.txb_FilePath.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txb_FilePath.Location = new System.Drawing.Point(176, 40);
+            this.txb_FilePath.Name = "txb_FilePath";
+            this.txb_FilePath.Size = new System.Drawing.Size(299, 23);
+            this.txb_FilePath.TabIndex = 28;
             // 
-            // txb_User
+            // btn_Scan
             // 
-            this.txb_User.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_User.Location = new System.Drawing.Point(220, 92);
-            this.txb_User.Name = "txb_User";
-            this.txb_User.Size = new System.Drawing.Size(157, 26);
-            this.txb_User.TabIndex = 0;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.btn_Logout);
-            this.tabPage2.Controls.Add(this.btn_MachineMonitoring);
-            this.tabPage2.Controls.Add(this.btn_BusinessControl);
-            this.tabPage2.Controls.Add(this.btn_InsertData);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(573, 359);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "主界面";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btn_Logout
-            // 
-            this.btn_Logout.Location = new System.Drawing.Point(463, 301);
-            this.btn_Logout.Name = "btn_Logout";
-            this.btn_Logout.Size = new System.Drawing.Size(66, 23);
-            this.btn_Logout.TabIndex = 3;
-            this.btn_Logout.Text = "注销";
-            this.btn_Logout.UseVisualStyleBackColor = true;
-            this.btn_Logout.Click += new System.EventHandler(this.btn_Logout_Click);
-            // 
-            // btn_BusinessControl
-            // 
-            this.btn_BusinessControl.BackgroundImage = global::NodeServerAndManager.Properties.Resources.交易控制;
-            this.btn_BusinessControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_BusinessControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_BusinessControl.Location = new System.Drawing.Point(64, 224);
-            this.btn_BusinessControl.Name = "btn_BusinessControl";
-            this.btn_BusinessControl.Size = new System.Drawing.Size(100, 100);
-            this.btn_BusinessControl.TabIndex = 0;
-            this.btn_BusinessControl.UseVisualStyleBackColor = true;
-            this.btn_BusinessControl.Visible = false;
-            this.btn_BusinessControl.Click += new System.EventHandler(this.btn_BusinessControl_Click);
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.groupBox1);
-            this.tabPage4.Controls.Add(this.rad_GZH);
-            this.tabPage4.Controls.Add(this.rad_FSN);
-            this.tabPage4.Controls.Add(this.btn_Ok);
-            this.tabPage4.Controls.Add(this.label13);
-            this.tabPage4.Controls.Add(this.txb_Message);
-            this.tabPage4.Controls.Add(this.btn_Scan);
-            this.tabPage4.Controls.Add(this.txb_FilePath);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(573, 359);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "冠字号码上传";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.btn_Scan.Location = new System.Drawing.Point(481, 40);
+            this.btn_Scan.Name = "btn_Scan";
+            this.btn_Scan.Size = new System.Drawing.Size(75, 23);
+            this.btn_Scan.TabIndex = 29;
+            this.btn_Scan.Text = "选择文件";
+            this.btn_Scan.UseVisualStyleBackColor = true;
+            this.btn_Scan.Click += new System.EventHandler(this.btn_Scan_Click);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.cmb_BusinessType);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.cmb_CashBox2);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.cmb_Factory);
             this.groupBox1.Controls.Add(this.cmb_ATM2);
-            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.cmb_Node);
-            this.groupBox1.Location = new System.Drawing.Point(82, 37);
+            this.groupBox1.Location = new System.Drawing.Point(127, 85);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(407, 154);
-            this.groupBox1.TabIndex = 26;
+            this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             // 
             // label12
@@ -290,6 +211,16 @@
             this.label12.Size = new System.Drawing.Size(63, 14);
             this.label12.TabIndex = 12;
             this.label12.Text = "交易类型";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label15.Location = new System.Drawing.Point(16, 17);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(63, 14);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "所属厂家";
             // 
             // cmb_BusinessType
             // 
@@ -307,7 +238,6 @@
             this.cmb_BusinessType.Name = "cmb_BusinessType";
             this.cmb_BusinessType.Size = new System.Drawing.Size(314, 22);
             this.cmb_BusinessType.TabIndex = 9;
-            this.cmb_BusinessType.SelectedIndexChanged += new System.EventHandler(this.cmb_BusinessType_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -377,16 +307,6 @@
             this.cmb_ATM2.Size = new System.Drawing.Size(314, 22);
             this.cmb_ATM2.TabIndex = 18;
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label15.Location = new System.Drawing.Point(16, 17);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(63, 14);
-            this.label15.TabIndex = 21;
-            this.label15.Text = "所属厂家";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -406,86 +326,17 @@
             this.cmb_Node.Name = "cmb_Node";
             this.cmb_Node.Size = new System.Drawing.Size(314, 22);
             this.cmb_Node.TabIndex = 20;
-            this.cmb_Node.SelectedIndexChanged += new System.EventHandler(this.cmb_Node_SelectedIndexChanged);
             // 
-            // rad_GZH
+            // tabPage2
             // 
-            this.rad_GZH.AutoSize = true;
-            this.rad_GZH.Location = new System.Drawing.Point(9, 31);
-            this.rad_GZH.Name = "rad_GZH";
-            this.rad_GZH.Size = new System.Drawing.Size(65, 16);
-            this.rad_GZH.TabIndex = 25;
-            this.rad_GZH.Text = "GZH文件";
-            this.rad_GZH.UseVisualStyleBackColor = true;
-            this.rad_GZH.CheckedChanged += new System.EventHandler(this.rad_GZH_CheckedChanged);
-            // 
-            // rad_FSN
-            // 
-            this.rad_FSN.AutoSize = true;
-            this.rad_FSN.Checked = true;
-            this.rad_FSN.Location = new System.Drawing.Point(9, 8);
-            this.rad_FSN.Name = "rad_FSN";
-            this.rad_FSN.Size = new System.Drawing.Size(65, 16);
-            this.rad_FSN.TabIndex = 24;
-            this.rad_FSN.TabStop = true;
-            this.rad_FSN.Text = "FSN文件";
-            this.rad_FSN.UseVisualStyleBackColor = true;
-            this.rad_FSN.CheckedChanged += new System.EventHandler(this.rad_FSN_CheckedChanged);
-            // 
-            // btn_Ok
-            // 
-            this.btn_Ok.Location = new System.Drawing.Point(249, 327);
-            this.btn_Ok.Name = "btn_Ok";
-            this.btn_Ok.Size = new System.Drawing.Size(75, 23);
-            this.btn_Ok.TabIndex = 17;
-            this.btn_Ok.Text = "确定";
-            this.btn_Ok.UseVisualStyleBackColor = true;
-            this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(95, 179);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(59, 12);
-            this.label13.TabIndex = 16;
-            this.label13.Text = "上传提示:";
-            // 
-            // txb_Message
-            // 
-            this.txb_Message.Location = new System.Drawing.Point(97, 197);
-            this.txb_Message.Multiline = true;
-            this.txb_Message.Name = "txb_Message";
-            this.txb_Message.Size = new System.Drawing.Size(385, 120);
-            this.txb_Message.TabIndex = 15;
-            // 
-            // btn_Scan
-            // 
-            this.btn_Scan.Location = new System.Drawing.Point(406, 8);
-            this.btn_Scan.Name = "btn_Scan";
-            this.btn_Scan.Size = new System.Drawing.Size(75, 23);
-            this.btn_Scan.TabIndex = 1;
-            this.btn_Scan.Text = "选择文件";
-            this.btn_Scan.UseVisualStyleBackColor = true;
-            this.btn_Scan.Click += new System.EventHandler(this.btn_Scan_Click);
-            // 
-            // txb_FilePath
-            // 
-            this.txb_FilePath.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_FilePath.Location = new System.Drawing.Point(101, 8);
-            this.txb_FilePath.Name = "txb_FilePath";
-            this.txb_FilePath.Size = new System.Drawing.Size(299, 23);
-            this.txb_FilePath.TabIndex = 0;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.dgv_machine);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(573, 359);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "设备监控";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.tabPage2.Controls.Add(this.dgv_machine);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(645, 443);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "设备监控";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // dgv_machine
             // 
@@ -493,7 +344,7 @@
             this.dgv_machine.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -507,13 +358,13 @@
             this.kUpdateTime,
             this.kStatus});
             this.dgv_machine.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_machine.Location = new System.Drawing.Point(0, 0);
+            this.dgv_machine.Location = new System.Drawing.Point(3, 3);
             this.dgv_machine.Name = "dgv_machine";
             this.dgv_machine.ReadOnly = true;
             this.dgv_machine.RowHeadersVisible = false;
             this.dgv_machine.RowTemplate.Height = 23;
-            this.dgv_machine.Size = new System.Drawing.Size(573, 359);
-            this.dgv_machine.TabIndex = 0;
+            this.dgv_machine.Size = new System.Drawing.Size(639, 437);
+            this.dgv_machine.TabIndex = 1;
             // 
             // kId
             // 
@@ -523,6 +374,7 @@
             this.kId.ReadOnly = true;
             this.kId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.kId.Visible = false;
+            this.kId.Width = 60;
             // 
             // kIpAddress
             // 
@@ -555,152 +407,227 @@
             this.kStatus.ReadOnly = true;
             this.kStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // timer_UpdateMachine
+            // tabPage3
             // 
-            this.timer_UpdateMachine.Interval = 600000;
-            this.timer_UpdateMachine.Tick += new System.EventHandler(this.timer_UpdateMachine_Tick);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.btn_Login);
+            this.tabPage3.Controls.Add(this.lab_LogDetail);
+            this.tabPage3.Controls.Add(this.lab_ServerSettings);
+            this.tabPage3.Controls.Add(this.lab_Version);
+            this.tabPage3.Controls.Add(this.label2);
+            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.txb_PassWord);
+            this.tabPage3.Controls.Add(this.txb_User);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(645, 443);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "用户登录";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // label3
             // 
-            this.panel2.BackColor = System.Drawing.Color.LightCyan;
-            this.panel2.BackgroundImage = global::NodeServerAndManager.Properties.Resources.标题栏1;
-            this.panel2.Controls.Add(this.btn_Exit);
-            this.panel2.Controls.Add(this.btn_Minimize);
-            this.panel2.Controls.Add(this.lab_Tital);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(580, 46);
-            this.panel2.TabIndex = 4;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ForeColor = System.Drawing.Color.Blue;
+            this.label3.Location = new System.Drawing.Point(579, 337);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 14);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "菜单";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // btn_Exit
+            // btn_Login
             // 
-            this.btn_Exit.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Exit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btn_Exit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Exit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_Exit.Location = new System.Drawing.Point(530, 5);
-            this.btn_Exit.Name = "btn_Exit";
-            this.btn_Exit.Size = new System.Drawing.Size(35, 35);
-            this.btn_Exit.TabIndex = 2;
-            this.btn_Exit.UseVisualStyleBackColor = false;
-            this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
-            // 
-            // btn_Minimize
-            // 
-            this.btn_Minimize.BackColor = System.Drawing.Color.Transparent;
-            this.btn_Minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btn_Minimize.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Minimize.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_Minimize.Location = new System.Drawing.Point(493, 5);
-            this.btn_Minimize.Name = "btn_Minimize";
-            this.btn_Minimize.Size = new System.Drawing.Size(35, 35);
-            this.btn_Minimize.TabIndex = 1;
-            this.btn_Minimize.UseVisualStyleBackColor = false;
-            this.btn_Minimize.Click += new System.EventHandler(this.btn_Minimize_Click);
-            // 
-            // lab_Tital
-            // 
-            this.lab_Tital.AutoSize = true;
-            this.lab_Tital.BackColor = System.Drawing.Color.Transparent;
-            this.lab_Tital.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_Tital.Location = new System.Drawing.Point(256, 13);
-            this.lab_Tital.Name = "lab_Tital";
-            this.lab_Tital.Size = new System.Drawing.Size(49, 20);
-            this.lab_Tital.TabIndex = 0;
-            this.lab_Tital.Text = "登录";
+            this.btn_Login.Depth = 0;
+            this.btn_Login.Location = new System.Drawing.Point(277, 255);
+            this.btn_Login.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btn_Login.Name = "btn_Login";
+            this.btn_Login.Primary = true;
+            this.btn_Login.Size = new System.Drawing.Size(114, 43);
+            this.btn_Login.TabIndex = 16;
+            this.btn_Login.Text = "登录";
+            this.btn_Login.UseVisualStyleBackColor = true;
+            this.btn_Login.Click += new System.EventHandler(this.btn_Login_Click);
             // 
             // lab_LogDetail
             // 
             this.lab_LogDetail.AutoSize = true;
             this.lab_LogDetail.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lab_LogDetail.ForeColor = System.Drawing.Color.Blue;
-            this.lab_LogDetail.Location = new System.Drawing.Point(498, 288);
+            this.lab_LogDetail.Location = new System.Drawing.Point(579, 375);
             this.lab_LogDetail.Name = "lab_LogDetail";
             this.lab_LogDetail.Size = new System.Drawing.Size(35, 14);
-            this.lab_LogDetail.TabIndex = 7;
+            this.lab_LogDetail.TabIndex = 15;
             this.lab_LogDetail.Text = "日志";
             this.lab_LogDetail.Click += new System.EventHandler(this.lab_LogDetail_Click);
+            // 
+            // lab_ServerSettings
+            // 
+            this.lab_ServerSettings.AutoSize = true;
+            this.lab_ServerSettings.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_ServerSettings.ForeColor = System.Drawing.Color.Blue;
+            this.lab_ServerSettings.Location = new System.Drawing.Point(554, 409);
+            this.lab_ServerSettings.Name = "lab_ServerSettings";
+            this.lab_ServerSettings.Size = new System.Drawing.Size(77, 14);
+            this.lab_ServerSettings.TabIndex = 14;
+            this.lab_ServerSettings.Text = "服务器设置";
+            this.lab_ServerSettings.Click += new System.EventHandler(this.lab_ServerSettings_Click);
+            // 
+            // lab_Version
+            // 
+            this.lab_Version.AutoSize = true;
+            this.lab_Version.Location = new System.Drawing.Point(19, 411);
+            this.lab_Version.Name = "lab_Version";
+            this.lab_Version.Size = new System.Drawing.Size(101, 12);
+            this.lab_Version.TabIndex = 13;
+            this.lab_Version.Text = "软件版本:1.0.0.0";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(216, 209);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 16);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "密码";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(216, 147);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 16);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "用户";
+            // 
+            // txb_PassWord
+            // 
+            this.txb_PassWord.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txb_PassWord.Location = new System.Drawing.Point(262, 206);
+            this.txb_PassWord.Name = "txb_PassWord";
+            this.txb_PassWord.PasswordChar = '*';
+            this.txb_PassWord.Size = new System.Drawing.Size(157, 26);
+            this.txb_PassWord.TabIndex = 9;
+            // 
+            // txb_User
+            // 
+            this.txb_User.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txb_User.Location = new System.Drawing.Point(262, 144);
+            this.txb_User.Name = "txb_User";
+            this.txb_User.Size = new System.Drawing.Size(157, 26);
+            this.txb_User.TabIndex = 8;
+            // 
+            // materialTabSelector1
+            // 
+            this.materialTabSelector1.BackColor = System.Drawing.Color.White;
+            this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
+            this.materialTabSelector1.Depth = 0;
+            this.materialTabSelector1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.materialTabSelector1.ForeColor = System.Drawing.SystemColors.Control;
+            this.materialTabSelector1.Location = new System.Drawing.Point(0, 28);
+            this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialTabSelector1.Name = "materialTabSelector1";
+            this.materialTabSelector1.Size = new System.Drawing.Size(653, 45);
+            this.materialTabSelector1.TabIndex = 1;
+            this.materialTabSelector1.Text = "materialTabSelector1";
+            // 
+            // materialContextMenuStrip1
+            // 
+            this.materialContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialContextMenuStrip1.Depth = 0;
+            this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.服务器设置ToolStripMenuItem,
+            this.日志ToolStripMenuItem});
+            this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
+            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 48);
+            // 
+            // 服务器设置ToolStripMenuItem
+            // 
+            this.服务器设置ToolStripMenuItem.Name = "服务器设置ToolStripMenuItem";
+            this.服务器设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.服务器设置ToolStripMenuItem.Text = "服务器设置";
+            // 
+            // 日志ToolStripMenuItem
+            // 
+            this.日志ToolStripMenuItem.Name = "日志ToolStripMenuItem";
+            this.日志ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.日志ToolStripMenuItem.Text = "日志";
             // 
             // NodeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 410);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ClientSize = new System.Drawing.Size(654, 549);
+            this.Controls.Add(this.materialTabControl1);
+            this.Controls.Add(this.materialTabSelector1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "NodeManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "网点服务器";
             this.Activated += new System.EventHandler(this.NodeManager_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NodeManager_FormClosing);
             this.Load += new System.EventHandler(this.NodeManager_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.materialTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_machine)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.materialContextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btn_BusinessControl;
-        private System.Windows.Forms.Button btn_InsertData;
-        private System.Windows.Forms.Button btn_MachineMonitoring;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.Timer timer_UpdateMachine;
+        private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Label lab_ServerSettings;
-        private System.Windows.Forms.Label lab_Version;
-        private System.Windows.Forms.Button btn_Login;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txb_PassWord;
-        private System.Windows.Forms.TextBox txb_User;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage5;
+        private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
+        private System.Windows.Forms.Button btn_Ok;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txb_Message;
+        private System.Windows.Forms.RadioButton rad_GZH;
+        private System.Windows.Forms.RadioButton rad_FSN;
+        private System.Windows.Forms.TextBox txb_FilePath;
+        private System.Windows.Forms.Button btn_Scan;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox cmb_BusinessType;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox cmb_CashBox2;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox cmb_Factory;
+        private System.Windows.Forms.ComboBox cmb_ATM2;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cmb_Node;
         private System.Windows.Forms.DataGridView dgv_machine;
         private System.Windows.Forms.DataGridViewTextBoxColumn kId;
         private System.Windows.Forms.DataGridViewTextBoxColumn kIpAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn kUpdateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn kStatus;
-        private System.Windows.Forms.Button btn_Ok;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txb_Message;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox cmb_BusinessType;
-        private System.Windows.Forms.Button btn_Scan;
-        private System.Windows.Forms.TextBox txb_FilePath;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lab_Tital;
-        private System.Windows.Forms.Button btn_Exit;
-        private System.Windows.Forms.Button btn_Minimize;
-        private System.Windows.Forms.Button btn_Logout;
-        private System.Windows.Forms.ComboBox cmb_ATM2;
-        private System.Windows.Forms.ComboBox cmb_Node;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox cmb_Factory;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox cmb_CashBox2;
-        private System.Windows.Forms.Timer timer_UpdateMachine;
-        private System.Windows.Forms.RadioButton rad_GZH;
-        private System.Windows.Forms.RadioButton rad_FSN;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label lab_LogDetail;
+        private System.Windows.Forms.Label lab_ServerSettings;
+        private System.Windows.Forms.Label lab_Version;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txb_PassWord;
+        private System.Windows.Forms.TextBox txb_User;
+        private MaterialSkin.Controls.MaterialRaisedButton btn_Login;
+        private System.Windows.Forms.Label label3;
+        private MaterialSkin.Controls.MaterialContextMenuStrip materialContextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 日志ToolStripMenuItem;
     }
 }
 

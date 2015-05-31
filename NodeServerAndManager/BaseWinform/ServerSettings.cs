@@ -10,7 +10,7 @@ using KyBll;
 using KyBll.DBUtility;
 namespace NodeServerAndManager.BaseWinform
 {
-    public partial class ServerSettings : Form
+    public partial class ServerSettings : MaterialSkin.Controls.MaterialForm
     {
         public string ServerIp="";
         public string PictureIp="";
@@ -25,6 +25,9 @@ namespace NodeServerAndManager.BaseWinform
 
         private void ServerSettings_Load(object sender, EventArgs e)
         {
+            WaitingForm waitingForm = new WaitingForm();
+            waitingForm.Show();
+            Application.DoEvents();
             ServerIp = Properties.Settings.Default.ServerIp;
             PictureIp = Properties.Settings.Default.PictureIp;
             DeviceIp = Properties.Settings.Default.DeviceIp;
@@ -74,6 +77,7 @@ namespace NodeServerAndManager.BaseWinform
             txb_ImagePort.Text = Properties.Settings.Default.PicturtDbPort.ToString();
             txb_LocalPort.Text = Properties.Settings.Default.Port.ToString();
             txb_PushPort.Text = Properties.Settings.Default.PushPort.ToString();
+            waitingForm.Close();
         }
 
         private void btn_Confirm_Click(object sender, EventArgs e)

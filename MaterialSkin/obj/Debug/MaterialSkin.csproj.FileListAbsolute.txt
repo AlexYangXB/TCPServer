@@ -1,0 +1,13 @@
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\bin\Debug\MaterialSkin.dll
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\bin\Debug\MaterialSkin.pdb
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\obj\Debug\MaterialSkin.csprojResolveAssemblyReference.cache
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\obj\Debug\MaterialSkin.Properties.Resources.resources
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\obj\Debug\MaterialSkin.csproj.GenerateResource.Cache
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\obj\Debug\MaterialSkin.dll
+F:\临时文件\MaterialSkin-master\MaterialSkin-master\MaterialSkin\obj\Debug\MaterialSkin.pdb
+F:\GitHub\TCPServer\MaterialSkin\bin\Debug\MaterialSkin.dll
+F:\GitHub\TCPServer\MaterialSkin\bin\Debug\MaterialSkin.pdb
+F:\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.Properties.Resources.resources
+F:\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.csproj.GenerateResource.Cache
+F:\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.dll
+F:\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.pdb

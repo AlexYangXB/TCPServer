@@ -30,7 +30,6 @@ F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.pdb
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.csprojResolveAssemblyReference.cache
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.LogForm.resources
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.ServerSettings.resources
-F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.Setting.resources
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.Control.IpControl.resources
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.NodeManager.resources
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.Properties.Resources.resources
@@ -53,3 +52,5 @@ F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\KyModel.pdb
 F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\TcpServer.pdb
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\康艺系统采集端.exe
 F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.dll
+F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.pdb
+F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.WaitingForm.resources

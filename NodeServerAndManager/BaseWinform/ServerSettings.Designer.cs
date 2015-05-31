@@ -85,7 +85,7 @@
             // 
             // btn_Confirm
             // 
-            this.btn_Confirm.Location = new System.Drawing.Point(221, 379);
+            this.btn_Confirm.Location = new System.Drawing.Point(224, 462);
             this.btn_Confirm.Name = "btn_Confirm";
             this.btn_Confirm.Size = new System.Drawing.Size(75, 23);
             this.btn_Confirm.TabIndex = 6;
@@ -203,7 +203,7 @@
             this.groupBox1.Controls.Add(this.txb_LocalPort);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.ipControl_Local);
-            this.groupBox1.Location = new System.Drawing.Point(18, 13);
+            this.groupBox1.Location = new System.Drawing.Point(12, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(476, 58);
             this.groupBox1.TabIndex = 17;
@@ -267,7 +267,7 @@
             this.groupBox2.Controls.Add(this.lab_DeviceTest);
             this.groupBox2.Controls.Add(this.lab_PictureTest);
             this.groupBox2.Controls.Add(this.cmb_imageServer);
-            this.groupBox2.Location = new System.Drawing.Point(18, 78);
+            this.groupBox2.Location = new System.Drawing.Point(12, 151);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(476, 175);
             this.groupBox2.TabIndex = 18;
@@ -342,7 +342,7 @@
             this.groupBox3.Controls.Add(this.txb_BindNode);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.chkList_Node);
-            this.groupBox3.Location = new System.Drawing.Point(18, 259);
+            this.groupBox3.Location = new System.Drawing.Point(18, 332);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(476, 114);
             this.groupBox3.TabIndex = 19;
@@ -381,12 +381,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(513, 414);
+            this.ClientSize = new System.Drawing.Size(513, 510);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Confirm);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ServerSettings";
