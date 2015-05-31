@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Threading;
 namespace NodeServerAndManager.BaseWinform
 {
     public partial class WaitingForm : Form
@@ -15,5 +15,7 @@ namespace NodeServerAndManager.BaseWinform
         {
             InitializeComponent();
         }
+
+
     }
 }

@@ -15,13 +15,19 @@ using Newtonsoft.Json.Linq;
 using NodeServerAndManager.BaseWinform;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
+using MaterialSkin;
 namespace NodeServerAndManager
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
     {
+        private readonly MaterialSkinManager materialSkinManager;
         public NodeManager()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
         }
         //用于收数据的server端
         private TcpServer myTcpServer = new TcpServer();
@@ -183,34 +189,50 @@ namespace NodeServerAndManager
             //加密
             passWord = KyDataOperation.Md5(passWord);
 
-            ky_user dt = KyDataOperation.GetUser(user);
-            if (dt != null)
+            ky_user dt = null; ;
+            try
             {
-                if (dt.kPassWord == passWord)
+                dt = KyDataOperation.GetUser(user);
+                if (dt != null)
                 {
-                    //localNodeId = Convert.ToInt32( dt.Rows[0]["kNodeId"]);
-                    userNumber = user;
-                    userId = Convert.ToInt32(dt.kId);
-                    txb_User.Text = "";
-                    txb_PassWord.Text = "";
-                    tabControl1.SelectedIndex = 1;
+                    if (dt.kPassWord == passWord)
+                    {
+                        userNumber = user;
+                        userId = Convert.ToInt32(dt.kId);
+                        txb_User.Text = "";
+                        txb_PassWord.Text = "";
+                        this.tabPage3.Parent = null;
+                        this.tabPage1.Parent = materialTabControl1;
+                        this.tabPage2.Parent = materialTabControl1;
+                    }
+                    else
+                    {
+                        MessageBox.Show("密码错误,请重新输入！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txb_PassWord.Focus();
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("密码错误,请重新输入！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    txb_PassWord.Focus();
+                    MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txb_User.Focus();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txb_User.Focus();
+                MessageBox.Show("无法连接设备数据库！");
+                Log.DataBaseException(ex, "登陆失败");
             }
+            
 
         }
         #endregion
 
         #region 公共部分
+        /// <summary>
+        /// 窗体加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NodeManager_Load(object sender, EventArgs e)
         {
             //无边框窗体添加右键菜单
@@ -218,20 +240,22 @@ namespace NodeServerAndManager
             //int WS_MINIMIZEBOX = 0x20000; // 最大最小化按钮
             //int windowLong = (GetWindowLong(new HandleRef(this, this.Handle), -16));
             //SetWindowLong(new HandleRef(this, this.Handle), -16, windowLong | WS_SYSMENU | WS_MINIMIZEBOX);
-
+            WaitingForm waitingForm = new WaitingForm();
+            waitingForm.Show();
+            //Application.DoEvents();
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
-            
+
             //打开定时器
             timer_UpdateMachine.Start();
 
 
             //绘制最小化、退出按钮
-            System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
-            gp.AddEllipse(1, 1, 33, 33);
-            gp.FillMode = System.Drawing.Drawing2D.FillMode.Winding;
-            btn_Exit.Region = new Region(gp);
-            btn_Minimize.Region = new Region(gp);
+            //System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
+            //gp.AddEllipse(1, 1, 33, 33);
+            //gp.FillMode = System.Drawing.Drawing2D.FillMode.Winding;
+            //btn_Exit.Region = new Region(gp);
+            //btn_Minimize.Region = new Region(gp);
 
             //设置数据库连接字符串
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
@@ -247,6 +271,14 @@ namespace NodeServerAndManager
 
             //连接socket.IO
             SocketIoConnect();
+            //foreach (TabPage tp in materialTabControl1.TabPages)
+            //{
+            //    if(tp.Text=="设备监控"||tp.Text=="文件上传")
+            //        materialTabControl1.TabPages.Remove(tp);
+            //}
+            this.tabPage1.Parent = null;
+            this.tabPage2.Parent = null;
+            waitingForm.Close();
         }
 
         void myTcpServer_CmdEvent(object sender, TcpServer.CmdEventArgs e)
@@ -272,7 +304,7 @@ namespace NodeServerAndManager
                 socket.Emit("SetCount", obj);
             }
         }
-        
+
         private void NodeManager_Activated(object sender, EventArgs e)
         {
             txb_User.Focus();
@@ -280,83 +312,59 @@ namespace NodeServerAndManager
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (tabControl1.SelectedIndex)
-            {
-                case 0:
-                    lab_Tital.Text = "登录";
-                    break;
-                case 1:
-                    lab_Tital.Text = "主界面";
-                    break;
-                case 2:
-                    lab_Tital.Text = "冠字号文件上传";
-                    //所属厂家
-                    List<ky_factory> dtFactory = KyDataOperation.GetAllFactory();
-                    cmb_Factory.Items.Clear();
-                    foreach (var factory in dtFactory)
-                    {
-                        string str = string.Format("{0},{1}", factory.kId,
-                                                   factory.kFactoryName.Trim());
-                        cmb_Factory.Items.Add(str);
-                    }
-                    //所属网点
-                    List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
-                    cmb_Node.Items.Clear();
-                    foreach (var node in dtNode)
-                    {
-                        string str = string.Format("{0},{1}", node.kId, node.kNodeName.Trim());
-                        cmb_Node.Items.Add(str);
-                    }
-                    //ATM编号
-                    List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
-                    cmb_ATM2.Items.Clear();
-                    foreach (var atm in dtATM2)
-                    {
-                        string str = string.Format("{0},{1}", atm.kId, atm.kATMNumber.Trim());
-                        cmb_ATM2.Items.Add(str);
-                    }
-                    //钞箱编号
-                    List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
-                    cmb_CashBox2.Items.Clear();
-                    foreach (var cashbox in dtCashBox2)
-                    {
-                        string str = string.Format("{0},{1}", cashbox.kId, cashbox.kCashBoxNumber.Trim());
-                        cmb_CashBox2.Items.Add(str);
-                    }
-                    break;
-                case 3:
-                    lab_Tital.Text = "设备监控";
-                    List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
-                    if (dtMachine != null)
-                    {
-                        dgv_machine.DataSource = dtMachine;
-                    }
-                    break;
-            }
-        }
-
-        //退出按钮
-        private void btn_Exit_Click(object sender, EventArgs e)
-        {
-            switch (tabControl1.SelectedIndex)
-            {
-                case 0:
-                    if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                        this.Close(); ;
-                    break;
-                case 1:
-                    if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                        this.Close();
-                    break;
-
-                default: tabControl1.SelectedIndex = 1;
-                    break;
-            }
-        }
-        //最小化按钮
-        private void btn_Minimize_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
+            //switch (tabControl1.SelectedIndex)
+            //{
+            //    case 0:
+            //        //lab_Tital.Text = "登录";
+            //        break;
+            //    case 1:
+            //        //lab_Tital.Text = "主界面";
+            //        break;
+            //    case 2:
+            //        //lab_Tital.Text = "冠字号文件上传";
+            //        //所属厂家
+            //        List<ky_factory> dtFactory = KyDataOperation.GetAllFactory();
+            //        cmb_Factory.Items.Clear();
+            //        foreach (var factory in dtFactory)
+            //        {
+            //            string str = string.Format("{0},{1}", factory.kId,
+            //                                       factory.kFactoryName.Trim());
+            //            cmb_Factory.Items.Add(str);
+            //        }
+            //        //所属网点
+            //        List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
+            //        cmb_Node.Items.Clear();
+            //        foreach (var node in dtNode)
+            //        {
+            //            string str = string.Format("{0},{1}", node.kId, node.kNodeName.Trim());
+            //            cmb_Node.Items.Add(str);
+            //        }
+            //        //ATM编号
+            //        List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
+            //        cmb_ATM2.Items.Clear();
+            //        foreach (var atm in dtATM2)
+            //        {
+            //            string str = string.Format("{0},{1}", atm.kId, atm.kATMNumber.Trim());
+            //            cmb_ATM2.Items.Add(str);
+            //        }
+            //        //钞箱编号
+            //        List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
+            //        cmb_CashBox2.Items.Clear();
+            //        foreach (var cashbox in dtCashBox2)
+            //        {
+            //            string str = string.Format("{0},{1}", cashbox.kId, cashbox.kCashBoxNumber.Trim());
+            //            cmb_CashBox2.Items.Add(str);
+            //        }
+            //        break;
+            //    case 3:
+            //        //lab_Tital.Text = "设备监控";
+            //        List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
+            //        if (dtMachine != null)
+            //        {
+            //            dgv_machine.DataSource = dtMachine;
+            //        }
+            //        break;
+            //}
         }
         #endregion
 
@@ -364,7 +372,7 @@ namespace NodeServerAndManager
         //注销
         private void btn_Logout_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedIndex = 0;
+            //tabControl1.SelectedIndex = 0;
             userId = 0;
             userNumber = "";
             //localNodeId = 0;
@@ -378,12 +386,12 @@ namespace NodeServerAndManager
         {
             txb_FilePath.Text = "";
             txb_Message.Text = "";
-            tabControl1.SelectedIndex = 2;
+            //tabControl1.SelectedIndex = 2;
         }
         //设备监控
         private void btn_MachineMonitoring_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectedIndex = 3;
+            // tabControl1.SelectedIndex = 3;
         }
         #endregion
 
@@ -485,7 +493,7 @@ namespace NodeServerAndManager
 
                 //交易类型
                 BussinessType business = (BussinessType)cmb_BusinessType.SelectedIndex;
-            
+
 
                 foreach (var uploadFile in uploadFiles)
                 {
@@ -567,7 +575,6 @@ namespace NodeServerAndManager
                 }
 
             }
-
         }
 
         /// <summary>
@@ -695,7 +702,7 @@ namespace NodeServerAndManager
                                bControl.dateTime = DateTime.Now;
                                bControl.ip = idIp[machineId];
                                if (d["Type"] != null)
-                                   bControl.business =  (BussinessType) Enum.Parse(typeof(BussinessType), d["Type"].ToString(), true);
+                                   bControl.business = (BussinessType)Enum.Parse(typeof(BussinessType), d["Type"].ToString(), true);
                                else
                                    bControl.business = BussinessType.HM;
                                if (d["UserId"] != null)
@@ -781,13 +788,24 @@ namespace NodeServerAndManager
             {
                 BaseWinform.LogForm logForm = new LogForm();
                 myTcpServer.ClearLogEvent();
-                myTcpServer.LogEvent +=new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
+                myTcpServer.LogEvent += new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
                 logForm.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            materialContextMenuStrip1.Show(Cursor.Position);
+        }
+
+        private void NodeManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                e.Cancel=true;
         }
 
 
