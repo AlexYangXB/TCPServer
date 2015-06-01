@@ -54,6 +54,6 @@ F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.dll
 F:\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.pdb
 F:\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.WaitingForm.resources
 E:\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.dll
-E:\TCPServer\NodeServerAndManager\bin\Debug\MaterialSkin.pdb
 E:\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.WaitingForm.resources
 E:\TCPServer\NodeServerAndManager\bin\Debug\MySql.Data.Entity.EF6.dll
+E:\TCPServer\NodeServerAndManager\obj\x86\Debug\NodeServerAndManager.BaseWinform.SystemSettings.resources

@@ -67,6 +67,7 @@
             this.txb_User = new System.Windows.Forms.TextBox();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.SystemSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -500,12 +501,20 @@
             this.materialContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialContextMenuStrip1.Depth = 0;
             this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SystemSettingToolStripMenuItem,
             this.ServerSettingToolStripMenuItem,
             this.LogToolStripMenuItem,
             this.LogOutToolStripMenuItem});
             this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
-            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 70);
+            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 92);
+            // 
+            // SystemSettingToolStripMenuItem
+            // 
+            this.SystemSettingToolStripMenuItem.Name = "SystemSettingToolStripMenuItem";
+            this.SystemSettingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.SystemSettingToolStripMenuItem.Text = "系统设置";
+            this.SystemSettingToolStripMenuItem.Click += new System.EventHandler(this.SystemSettingToolStripMenuItem_Click);
             // 
             // ServerSettingToolStripMenuItem
             // 
@@ -597,6 +606,7 @@
         private System.Windows.Forms.ToolStripMenuItem ServerSettingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LogOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SystemSettingToolStripMenuItem;
     }
 }
 

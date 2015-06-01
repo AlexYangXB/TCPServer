@@ -17,3 +17,4 @@ E:\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.Properties.Resources.resources
 E:\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.csproj.GenerateResource.Cache
 E:\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.dll
 E:\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.pdb
+E:\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.csprojResolveAssemblyReference.cache

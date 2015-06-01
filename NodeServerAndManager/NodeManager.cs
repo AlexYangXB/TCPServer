@@ -771,7 +771,7 @@ namespace NodeServerAndManager
 
         public override void OnShowMenu(MouseEventArgs e)
         {
-            if(userId==0)
+            if (userId == 0)
                 LogOutToolStripMenuItem.Visible = false;
             else
                 LogOutToolStripMenuItem.Visible = true;
@@ -842,6 +842,12 @@ namespace NodeServerAndManager
             this.tabPage1.Parent = null;
             this.tabPage2.Parent = null;
             this.tabPage3.Parent = materialTabControl1;
+        }
+
+        private void SystemSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SystemSettings frm = new SystemSettings();
+            frm.ShowDialog();
         }
 
 

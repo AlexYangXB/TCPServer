@@ -96,7 +96,7 @@ namespace MaterialSkin.Controls
             foreach (TabPage tabPage in baseTabControl.TabPages)
             {
                 //font previous is SkinManager.ROBOTO_MEDIUM_12
-                Font My_Font = new Font("宋体", 15,FontStyle.Bold);   
+                Font My_Font = new Font("宋体", 14,FontStyle.Bold);   
                // int currentTabIndex = tabPage.TabIndex;
                 int currentTabIndex = tapIndex;
 				Brush textBrush = new SolidBrush(Color.FromArgb(CalculateTextAlpha(currentTabIndex, animationProgress), SkinManager.ColorScheme.TextColor));
