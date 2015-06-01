@@ -14,8 +14,12 @@ namespace NodeServerAndManager.BaseWinform
         public WaitingForm()
         {
             InitializeComponent();
+            
         }
-
+        public void SetText(string str)
+        {
+            label1.Text = str;
+        }
 
     }
 }

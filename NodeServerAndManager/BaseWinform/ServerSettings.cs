@@ -17,23 +17,34 @@ namespace NodeServerAndManager.BaseWinform
         public string DeviceIp ="";
         public string LocalIp = "";
         public string PushIp = "";
+        /// <summary>
+        /// 等待窗体
+        /// </summary>
+        WaitingForm waitingForm = new WaitingForm();
+        /// <summary>
+        /// 委托关闭等待窗体
+        /// </summary>
+        public delegate void delloading();
+        public void CloseLoading(IAsyncResult ar)
+        {
+            this.Invoke(new delloading(() => { waitingForm.Close(); }));
+        }
         public ServerSettings()
         {
             InitializeComponent();
+           
             
         }
 
         private void ServerSettings_Load(object sender, EventArgs e)
         {
-            WaitingForm waitingForm = new WaitingForm();
-            waitingForm.Show();
-            Application.DoEvents();
+
             ServerIp = Properties.Settings.Default.ServerIp;
             PictureIp = Properties.Settings.Default.PictureIp;
             DeviceIp = Properties.Settings.Default.DeviceIp;
             LocalIp = Properties.Settings.Default.LocalIp;
             PushIp = Properties.Settings.Default.PushIp;
-            if(LocalIp=="")
+            if(LocalIp==""||LocalIp=="192.168.1.1")
             {
                 LocalIp = GetLocalIP();
             }
@@ -41,9 +52,30 @@ namespace NodeServerAndManager.BaseWinform
             ipControl_Server.Text = ServerIp;
             ipControl_Device.Text = DeviceIp;
             ipControl_Push.Text = PushIp;
-            if(DeviceIp!="0.0.0.0"&&DeviceIp!="")
+
+
+            //启动服务后关闭等待窗体
+            waitingForm.SetText("正在初始化，请稍候...");
+            new Action(ServerSettingInit).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            cmb_imageServer.Text = PictureIp;
+
+            txb_SphinxPort.Text = Properties.Settings.Default.ServerDbPort.ToString();
+            txb_DevicePort.Text = Properties.Settings.Default.DeviceDbPort.ToString();
+            txb_ImagePort.Text = Properties.Settings.Default.PicturtDbPort.ToString();
+            txb_LocalPort.Text = Properties.Settings.Default.Port.ToString();
+            txb_PushPort.Text = Properties.Settings.Default.PushPort.ToString();
+            
+        }
+
+        /// <summary>
+        /// 设置初始化
+        /// </summary>
+        private void ServerSettingInit()
+        {
+            if (DeviceIp != "0.0.0.0" && DeviceIp != "")
             {
-                DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+                DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
                 bool result = KyDataOperation.TestConnectDevice();
                 if (result)
                 {
@@ -55,10 +87,10 @@ namespace NodeServerAndManager.BaseWinform
                     chkList_Node.DataSource = dtNode;
                     chkList_Node.DisplayMember = "kNodeName";
                     chkList_Node.ValueMember = "kId";
-                    if(LocalIp!=""&&LocalIp!="0.0.0.0")
+                    if (LocalIp != "" && LocalIp != "0.0.0.0")
                     {
                         string strMessage = "";
-                        for (var i = 0; i < dtNode.Count;i++ )
+                        for (var i = 0; i < dtNode.Count; i++)
                         {
                             if (LocalIp == dtNode[i].kBindIpAddress)
                             {
@@ -70,16 +102,7 @@ namespace NodeServerAndManager.BaseWinform
                     }
                 }
             }
-            cmb_imageServer.Text = PictureIp;
-
-            txb_SphinxPort.Text = Properties.Settings.Default.ServerDbPort.ToString();
-            txb_DevicePort.Text = Properties.Settings.Default.DeviceDbPort.ToString();
-            txb_ImagePort.Text = Properties.Settings.Default.PicturtDbPort.ToString();
-            txb_LocalPort.Text = Properties.Settings.Default.Port.ToString();
-            txb_PushPort.Text = Properties.Settings.Default.PushPort.ToString();
-            waitingForm.Close();
         }
-
         private void btn_Confirm_Click(object sender, EventArgs e)
         {
             //本地IP 端口号
@@ -164,23 +187,28 @@ namespace NodeServerAndManager.BaseWinform
         /// <param name="e"></param>
         private void lab_ServerTest_Click(object sender, EventArgs e)
         {
-            if (txb_SphinxPort.Text.Trim()=="")
+            waitingForm.SetText("正在测试，请稍等...");
+            new Action(SeverTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+        }
+        private void SeverTest()
+        {
+            if (txb_SphinxPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
             Properties.Settings.Default.ServerIp = ipControl_Server.Text;
             Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
             Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp,Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
 
-            bool result=KyDataOperation.TestConnectServer();
+            bool result = KyDataOperation.TestConnectServer();
             if (result)
-                MessageBox.Show("数据库服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("数据库服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             else
-                MessageBox.Show("数据库服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("数据库服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
-
         /// <summary>
         /// 测试设备服务器的连接
         /// </summary>
@@ -188,19 +216,26 @@ namespace NodeServerAndManager.BaseWinform
         /// <param name="e"></param>
         private void lab_DeviceTest_Click(object sender, EventArgs e)
         {
-            if (txb_DevicePort.Text.Trim()=="")
+            waitingForm.SetText("正在测试，请稍等...");
+            new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            
+        }
+        private void DeviceTest()
+        {
+            if (txb_DevicePort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
             Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
             Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp,Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
             bool result = KyDataOperation.TestConnectDevice();
             if (result)
             {
-                MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
                 cmb_imageServer.DataSource = dt;
                 cmb_imageServer.DisplayMember = "kIpAddress";
@@ -210,9 +245,8 @@ namespace NodeServerAndManager.BaseWinform
                 chkList_Node.ValueMember = "kId";
             }
             else
-                MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
-
         /// <summary>
         /// 测试推送服务器的连接
         /// </summary>
@@ -220,9 +254,15 @@ namespace NodeServerAndManager.BaseWinform
         /// <param name="e"></param>
         private void lab_PushTest_Click(object sender, EventArgs e)
         {
+            waitingForm.SetText("正在测试，请稍等...");
+            new Action(PushTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+        }
+        private void PushTest()
+        {
             if (txb_PushPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
             string PushIp = ipControl_Push.Text;
@@ -230,13 +270,13 @@ namespace NodeServerAndManager.BaseWinform
             bool result = KyDataOperation.TestConnectPush(PushIp, PushPort);
             if (result)
             {
-                MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 Properties.Settings.Default.PushIp = PushIp;
                 Properties.Settings.Default.PushPort = PushPort;
                 Properties.Settings.Default.Save();
             }
             else
-                MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
         /// <summary>
         /// 测试图像服务器的连接
@@ -245,15 +285,22 @@ namespace NodeServerAndManager.BaseWinform
         /// <param name="e"></param>
         private void lab_PictureTest_Click(object sender, EventArgs e)
         {
+            waitingForm.SetText("正在测试，请稍等...");
+            new Action(PictureTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+         }
+        private void PictureTest() 
+        {
             Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp,Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             bool result = KyDataOperation.TestConnectImage();
             if (result)
-                MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             else
-                MessageBox.Show("图像服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("图像服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+        
         }
 
         private void cmb_imageServer_SelectedIndexChanged(object sender, EventArgs e)

@@ -23,11 +23,18 @@ namespace NodeServerAndManager
         private readonly MaterialSkinManager materialSkinManager;
         public NodeManager()
         {
+            showMenu = true;
             InitializeComponent();
+            //只显示绑定数据的信息
+            this.dgv_machine.AutoGenerateColumns = false;
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            //蓝色
             materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+            //黑色
+            //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+
         }
         //用于收数据的server端
         private TcpServer myTcpServer = new TcpServer();
@@ -38,77 +45,31 @@ namespace NodeServerAndManager
         private Dictionary<int, string> idIp = new Dictionary<int, string>();
         private string userNumber = "";//当前登录的用户编号
         private int userId = 0;//当前登录的用户的ID
-
-        #region 无边框窗体   移动  添加右键菜单
-        //http://blog.csdn.net/ku_cha_cha/article/details/6697131 详情参考该网址
-        //移动
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
-        [DllImport("user32.dll")]
-        public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
-        public const int WM_SYSCOMMAND = 0x0112;
-        public const int SC_MOVE = 0xF010;
-        public const int HTCAPTION = 0x0002;
-        private void panel2_MouseDown(object sender, MouseEventArgs e)
+        /// <summary>
+        /// 等待窗体
+        /// </summary>
+        WaitingForm waitingForm = new WaitingForm();
+        /// <summary>
+        /// 委托关闭等待窗体
+        /// </summary>
+        public delegate void delloading();
+        public void CloseLoading(IAsyncResult ar)
         {
-            ReleaseCapture();
-            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+            this.Invoke(new delloading(() => { waitingForm.Close(); }));
         }
 
-        //添加右键菜单
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong", CharSet = CharSet.Auto)]
-        public static extern int GetWindowLong(HandleRef hWnd, int nIndex);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Auto)]
-        public static extern IntPtr SetWindowLong(HandleRef hWnd, int nIndex, int dwNewLong);
+        #region 无边框窗体   移动  添加右键菜单
 
         #endregion
 
         #region 登录界面
         private void lab_ServerSettings_Click(object sender, EventArgs e)
         {
-            //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
-            string localIp = Properties.Settings.Default.LocalIp;
-            int port = Properties.Settings.Default.Port;
-
-            //记录推送IP与端口号，当推送IP与端口号发生改变时，
-            string pushIp = Properties.Settings.Default.PushIp;
-            int pushPort = Properties.Settings.Default.PushPort;
-            //显示设置界面
-            BaseWinform.ServerSettings frm = new ServerSettings();
-            frm.ShowDialog();
-
-            //设置数据库连接字符串
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
-            //本地IP或者端口号改过之后，要重新启动 TcpServer端
-            if (localIp != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
-            {
-                if (myTcpServer.IsRunning)
-                {
-                    myTcpServer.Stop();
-                    StartTcpServer();
-                }
-                else
-                {
-                    StartTcpServer();
-                }
-            }
-
-            //当推送IP或端口号发生改变时
-            if (pushIp != Properties.Settings.Default.PushIp || pushPort != Properties.Settings.Default.PushPort)
-            {
-                //停止socket
-                if (socket != null)
-                    socket.Close();
-                //重现连接
-                SocketIoConnect();
-            }
+           
         }
 
         //启动TcpServer 接收数据
-        private bool StartTcpServer()
+        private void StartTcpServer()
         {
             bool result = false;
             if (Properties.Settings.Default.ServerIp != "" && Properties.Settings.Default.DeviceIp != "" && Properties.Settings.Default.PictureIp != "" && Properties.Settings.Default.LocalIp != "")
@@ -117,26 +78,35 @@ namespace NodeServerAndManager
                 result = KyDataOperation.TestConnectServer();
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-                    return false;
+                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
+                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
                 }
                 result = KyDataOperation.TestConnectDevice();
                 //Device数据库连接
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-                    return false;
+                    MessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
                 }
                 //图像数据库
                 result = KyDataOperation.TestConnectImage();
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-                    return false;
+                    MessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
                 }
+                result = KyDataOperation.TestConnectPush(Properties.Settings.Default.PushIp, Properties.Settings.Default.PushPort);
+                if (!result)
+                {
+                    MessageBox.Show("无法连接‘推送服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
+                }
+                //连接到soket.IO
+                SocketIoConnect();
                 try
                 {
                     //获取绑定的网点ID
@@ -175,14 +145,29 @@ namespace NodeServerAndManager
                 catch (Exception e)
                 {
                     Log.ConnectionException(e, "启动连接服务器异常！");
-                    return false;
+                    return;
                 }
             }
-            return true;
+            return;
         }
 
         //登录
         private void btn_Login_Click(object sender, EventArgs e)
+        {
+
+            waitingForm.SetText("正在登录，请稍等...");
+            new Action(Login).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            Application.DoEvents();
+            waitingForm.ShowDialog();
+            if (userId != 0)
+            {
+                this.tabPage1.Parent = materialTabControl1;
+                this.tabPage2.Parent = materialTabControl1;
+                this.tabPage3.Parent = null;
+            }
+
+        }
+        private void Login()
         {
             string user = txb_User.Text.Trim();
             string passWord = txb_PassWord.Text.Trim();
@@ -201,29 +186,28 @@ namespace NodeServerAndManager
                         userId = Convert.ToInt32(dt.kId);
                         txb_User.Text = "";
                         txb_PassWord.Text = "";
-                        this.tabPage3.Parent = null;
-                        this.tabPage1.Parent = materialTabControl1;
-                        this.tabPage2.Parent = materialTabControl1;
+
                     }
                     else
                     {
-                        MessageBox.Show("密码错误,请重新输入！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("密码错误,请重新输入！", "提示", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         txb_PassWord.Focus();
                     }
                 }
                 else
                 {
-                    MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OKCancel,
+                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     txb_User.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("无法连接设备数据库！");
+                MessageBox.Show("无法连接设备数据库！", "提示", MessageBoxButtons.OK,
+                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 Log.DataBaseException(ex, "登陆失败");
             }
-            
-
         }
         #endregion
 
@@ -235,28 +219,10 @@ namespace NodeServerAndManager
         /// <param name="e"></param>
         private void NodeManager_Load(object sender, EventArgs e)
         {
-            //无边框窗体添加右键菜单
-            //int WS_SYSMENU = 0x00080000;
-            //int WS_MINIMIZEBOX = 0x20000; // 最大最小化按钮
-            //int windowLong = (GetWindowLong(new HandleRef(this, this.Handle), -16));
-            //SetWindowLong(new HandleRef(this, this.Handle), -16, windowLong | WS_SYSMENU | WS_MINIMIZEBOX);
-            WaitingForm waitingForm = new WaitingForm();
-            waitingForm.Show();
-            //Application.DoEvents();
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
-
             //打开定时器
             timer_UpdateMachine.Start();
-
-
-            //绘制最小化、退出按钮
-            //System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
-            //gp.AddEllipse(1, 1, 33, 33);
-            //gp.FillMode = System.Drawing.Drawing2D.FillMode.Winding;
-            //btn_Exit.Region = new Region(gp);
-            //btn_Minimize.Region = new Region(gp);
-
             //设置数据库连接字符串
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
             DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
@@ -266,19 +232,15 @@ namespace NodeServerAndManager
             {
                 Directory.CreateDirectory(path);
             }
-            //设置收数据的Server端
-            bool success = StartTcpServer();
+            //启动TCP服务、并连接到socket.IO后关闭等待窗体
+            waitingForm.SetText("正在连接到服务器，请稍等...");
+            new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
 
-            //连接socket.IO
-            SocketIoConnect();
-            //foreach (TabPage tp in materialTabControl1.TabPages)
-            //{
-            //    if(tp.Text=="设备监控"||tp.Text=="文件上传")
-            //        materialTabControl1.TabPages.Remove(tp);
-            //}
             this.tabPage1.Parent = null;
             this.tabPage2.Parent = null;
-            waitingForm.Close();
+
+
         }
 
         void myTcpServer_CmdEvent(object sender, TcpServer.CmdEventArgs e)
@@ -312,59 +274,70 @@ namespace NodeServerAndManager
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //switch (tabControl1.SelectedIndex)
-            //{
-            //    case 0:
-            //        //lab_Tital.Text = "登录";
-            //        break;
-            //    case 1:
-            //        //lab_Tital.Text = "主界面";
-            //        break;
-            //    case 2:
-            //        //lab_Tital.Text = "冠字号文件上传";
-            //        //所属厂家
-            //        List<ky_factory> dtFactory = KyDataOperation.GetAllFactory();
-            //        cmb_Factory.Items.Clear();
-            //        foreach (var factory in dtFactory)
-            //        {
-            //            string str = string.Format("{0},{1}", factory.kId,
-            //                                       factory.kFactoryName.Trim());
-            //            cmb_Factory.Items.Add(str);
-            //        }
-            //        //所属网点
-            //        List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
-            //        cmb_Node.Items.Clear();
-            //        foreach (var node in dtNode)
-            //        {
-            //            string str = string.Format("{0},{1}", node.kId, node.kNodeName.Trim());
-            //            cmb_Node.Items.Add(str);
-            //        }
-            //        //ATM编号
-            //        List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
-            //        cmb_ATM2.Items.Clear();
-            //        foreach (var atm in dtATM2)
-            //        {
-            //            string str = string.Format("{0},{1}", atm.kId, atm.kATMNumber.Trim());
-            //            cmb_ATM2.Items.Add(str);
-            //        }
-            //        //钞箱编号
-            //        List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
-            //        cmb_CashBox2.Items.Clear();
-            //        foreach (var cashbox in dtCashBox2)
-            //        {
-            //            string str = string.Format("{0},{1}", cashbox.kId, cashbox.kCashBoxNumber.Trim());
-            //            cmb_CashBox2.Items.Add(str);
-            //        }
-            //        break;
-            //    case 3:
-            //        //lab_Tital.Text = "设备监控";
-            //        List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
-            //        if (dtMachine != null)
-            //        {
-            //            dgv_machine.DataSource = dtMachine;
-            //        }
-            //        break;
-            //}
+            bool flag = true;
+            foreach (TabPage tab in materialTabControl1.TabPages)
+            {
+                if (tab.Text == "用户登录")
+                    flag = false;
+
+            }
+            if (flag)
+            {
+                switch (materialTabControl1.SelectedIndex)
+                {
+                    case 0:
+                        //文件上传
+                        //所属厂家
+                        if (KyDataOperation.TestConnectDevice())
+                        {
+                            List<ky_factory> dtFactory = KyDataOperation.GetAllFactory();
+                            cmb_Factory.Items.Clear();
+                            foreach (var factory in dtFactory)
+                            {
+                                string str = string.Format("{0},{1}", factory.kId,
+                                                           factory.kFactoryName.Trim());
+                                cmb_Factory.Items.Add(str);
+                            }
+                            //所属网点
+                            List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
+                            cmb_Node.Items.Clear();
+                            foreach (var node in dtNode)
+                            {
+                                string str = string.Format("{0},{1}", node.kId, node.kNodeName.Trim());
+                                cmb_Node.Items.Add(str);
+                            }
+                            //ATM编号
+                            List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
+                            cmb_ATM2.Items.Clear();
+                            foreach (var atm in dtATM2)
+                            {
+                                string str = string.Format("{0},{1}", atm.kId, atm.kATMNumber.Trim());
+                                cmb_ATM2.Items.Add(str);
+                            }
+                            //钞箱编号
+                            List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
+                            cmb_CashBox2.Items.Clear();
+                            foreach (var cashbox in dtCashBox2)
+                            {
+                                string str = string.Format("{0},{1}", cashbox.kId, cashbox.kCashBoxNumber.Trim());
+                                cmb_CashBox2.Items.Add(str);
+                            }
+                        }
+                        break;
+                    case 1:
+                        //设备监控
+                        if (KyDataOperation.TestConnectDevice())
+                        {
+                            List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
+                            if (dtMachine != null)
+                            {
+                                dgv_machine.DataSource = dtMachine;
+                            }
+                        }
+                        break;
+                    default: break;
+                }
+            }
         }
         #endregion
 
@@ -782,7 +755,90 @@ namespace NodeServerAndManager
 
         #endregion
 
+        /// <summary>
+        /// 日志窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lab_LogDetail_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            materialContextMenuStrip1.Show(Cursor.Position);
+        }
+        /// <summary>
+        /// 窗体关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NodeManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                e.Cancel = true;
+        }
+
+        private void txb_PassWord_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (txb_PassWord.ContainsFocus)
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btn_Login.PerformClick();
+                }
+            }
+        }
+
+        public override void OnShowMenu(MouseEventArgs e)
+        {
+            materialContextMenuStrip1.Show(Cursor.Position);
+        }
+
+        private void ServerSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
+            string localIp = Properties.Settings.Default.LocalIp;
+            int port = Properties.Settings.Default.Port;
+
+            //记录推送IP与端口号，当推送IP与端口号发生改变时，
+            string pushIp = Properties.Settings.Default.PushIp;
+            int pushPort = Properties.Settings.Default.PushPort;
+            //显示设置界面
+            BaseWinform.ServerSettings frm = new ServerSettings();
+            frm.ShowDialog();
+
+            //设置数据库连接字符串
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            //本地IP或者端口号改过之后，要重新启动 TcpServer端
+            if (localIp != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
+            {
+                if (myTcpServer.IsRunning)
+                {
+                    myTcpServer.Stop();
+                    StartTcpServer();
+                }
+                else
+                {
+                    StartTcpServer();
+                }
+            }
+
+            //当推送IP或端口号发生改变时
+            if (pushIp != Properties.Settings.Default.PushIp || pushPort != Properties.Settings.Default.PushPort)
+            {
+                //停止socket
+                if (socket != null)
+                    socket.Close();
+                //重现连接
+                SocketIoConnect();
+            }
+        }
+
+        private void LogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -796,21 +852,6 @@ namespace NodeServerAndManager
                 MessageBox.Show(ex.ToString());
             }
         }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-            materialContextMenuStrip1.Show(Cursor.Position);
-        }
-
-        private void NodeManager_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                e.Cancel=true;
-        }
-
-
-
-
 
 
 

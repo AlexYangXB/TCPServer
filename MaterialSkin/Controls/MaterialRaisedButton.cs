@@ -40,6 +40,8 @@ namespace MaterialSkin.Controls
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
+            //font previous is SkinManager.ROBOTO_MEDIUM_12
+            Font My_Font = new Font("宋体", 15, FontStyle.Bold); 
             var g = pevent.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -69,7 +71,7 @@ namespace MaterialSkin.Controls
 
             g.DrawString(
                 Text.ToUpper(),
-                SkinManager.ROBOTO_MEDIUM_10, 
+                My_Font, 
                 SkinManager.GetRaisedButtonTextBrush(Primary),
                 ClientRectangle,
                 new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });

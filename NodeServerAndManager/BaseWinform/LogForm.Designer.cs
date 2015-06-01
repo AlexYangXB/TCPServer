@@ -43,11 +43,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(701, 464);
             this.Controls.Add(this.LogRichTextBox);
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LogForm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "日志";
             this.ResumeLayout(false);
 

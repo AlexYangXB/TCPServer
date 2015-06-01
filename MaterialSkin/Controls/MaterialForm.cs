@@ -65,7 +65,12 @@ namespace MaterialSkin.Controls
         private const int WMSZ_BOTTOM = 6;
         private const int WMSZ_BOTTOMLEFT = 7;
         private const int WMSZ_BOTTOMRIGHT = 8;
-
+        public bool showMenu = false;
+        /// <summary>
+        /// Show menu
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnShowMenu(MouseEventArgs e) { }
         private readonly Dictionary<int, int> resizingLocationsToCmd = new Dictionary<int, int>
         {
             {HTTOP,         WMSZ_TOP},
@@ -136,9 +141,11 @@ namespace MaterialSkin.Controls
             XOver,
             MaxOver,
             MinOver,
+            MenuOver,
             XDown,
             MaxDown,
             MinDown,
+            MenuDown,
             None
         }
 
@@ -146,6 +153,7 @@ namespace MaterialSkin.Controls
 
         private Rectangle minButtonBounds;
         private Rectangle maxButtonBounds;
+        private Rectangle menuButtionBounds;
         private Rectangle xButtonBounds;
         private Rectangle actionBarBounds;
         private Rectangle statusBarBounds;
@@ -361,6 +369,10 @@ namespace MaterialSkin.Controls
                     buttonState = ButtonState.MaxDown;
                 else if (ControlBox && xButtonBounds.Contains(e.Location))
                     buttonState = ButtonState.XDown;
+                else if (showMax&&menuButtionBounds.Contains(e.Location))
+                    buttonState = ButtonState.MenuDown;
+                else if (!showMax && minButtonBounds.Contains(e.Location))
+                    buttonState = ButtonState.MenuDown;
                 else
                     buttonState = ButtonState.None;
             }
@@ -394,6 +406,19 @@ namespace MaterialSkin.Controls
 
                     if (oldState == ButtonState.XDown)
                         Close();
+                }
+                else if (MaximizeBox&&menuButtionBounds.Contains(e.Location))
+                {
+                    buttonState = ButtonState.MenuOver;
+                    if (oldState == ButtonState.MenuDown)
+                        OnShowMenu(e);
+
+                }
+                else if (!MaximizeBox && minButtonBounds.Contains(e.Location))
+                {
+                    buttonState = ButtonState.MenuOver;
+                    if (oldState == ButtonState.MenuDown)
+                        OnShowMenu(e);
                 }
                 else buttonState = ButtonState.None;
             }
@@ -467,7 +492,7 @@ namespace MaterialSkin.Controls
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-
+            menuButtionBounds = new Rectangle((Width - SkinManager.FORM_PADDING / 2) - 4 * STATUS_BAR_BUTTON_WIDTH, 0, STATUS_BAR_BUTTON_WIDTH, STATUS_BAR_HEIGHT);
             minButtonBounds = new Rectangle((Width - SkinManager.FORM_PADDING / 2) - 3 * STATUS_BAR_BUTTON_WIDTH, 0, STATUS_BAR_BUTTON_WIDTH, STATUS_BAR_HEIGHT);
             maxButtonBounds = new Rectangle((Width - SkinManager.FORM_PADDING / 2) - 2 * STATUS_BAR_BUTTON_WIDTH, 0, STATUS_BAR_BUTTON_WIDTH, STATUS_BAR_HEIGHT);
             xButtonBounds = new Rectangle((Width - SkinManager.FORM_PADDING / 2) - STATUS_BAR_BUTTON_WIDTH, 0, STATUS_BAR_BUTTON_WIDTH, STATUS_BAR_HEIGHT);
@@ -495,6 +520,7 @@ namespace MaterialSkin.Controls
             // Determine whether or not we even should be drawing the buttons.
             bool showMin = MinimizeBox && ControlBox;
             bool showMax = MaximizeBox && ControlBox;
+            
             var hoverBrush = SkinManager.GetFlatButtonHoverBackgroundBrush();
             var downBrush = SkinManager.GetFlatButtonPressedBackgroundBrush();
 
@@ -517,14 +543,50 @@ namespace MaterialSkin.Controls
             if (buttonState == ButtonState.XDown && ControlBox)
                 g.FillRectangle(downBrush, xButtonBounds);
 
+            if (showMax&&buttonState == ButtonState.MenuDown)
+                g.FillRectangle(downBrush, menuButtionBounds);
+            if (showMax&&buttonState == ButtonState.MenuOver)
+                g.FillRectangle(hoverBrush, menuButtionBounds);
+
+            if (!showMax && buttonState == ButtonState.MenuDown)
+                g.FillRectangle(downBrush, minButtonBounds);
+            if (!showMax && buttonState == ButtonState.MenuOver)
+                g.FillRectangle(hoverBrush, minButtonBounds);
+
             using (var formButtonsPen = new Pen(SkinManager.ACTION_BAR_TEXT_SECONDARY, 2))
             {
+                //menu button
+                if (showMenu)
+                {
+                  int x = showMax ? menuButtionBounds.X : minButtonBounds.X;
+                  int y = showMax ? menuButtionBounds.Y : minButtonBounds.Y;
+                    g.DrawLine(
+                            formButtonsPen,
+                            x + (int)(minButtonBounds.Width * 0.20),
+                            y + (int)(minButtonBounds.Height * 0.35),
+                            x + (int)(minButtonBounds.Width * 0.80),
+                            y + (int)(minButtonBounds.Height * 0.35)
+                       );
+                    g.DrawLine(
+                           formButtonsPen,
+                           x + (int)(minButtonBounds.Width * 0.20),
+                           y + (int)(minButtonBounds.Height * 0.50),
+                           x + (int)(minButtonBounds.Width * 0.80),
+                           y + (int)(minButtonBounds.Height * 0.50)
+                      );
+                    g.DrawLine(
+                           formButtonsPen,
+                           x + (int)(minButtonBounds.Width * 0.20),
+                           y + (int)(minButtonBounds.Height * 0.70),
+                           x + (int)(minButtonBounds.Width * 0.80),
+                           y + (int)(minButtonBounds.Height * 0.70)
+                      );
+                }
                 // Minimize button.
                 if (showMin)
                 {
                     int x = showMax ? minButtonBounds.X : maxButtonBounds.X;
                     int y = showMax ? minButtonBounds.Y : maxButtonBounds.Y;
-
                     g.DrawLine(
                         formButtonsPen,
                         x + (int)(minButtonBounds.Width * 0.33),
@@ -592,4 +654,5 @@ namespace MaterialSkin.Controls
             return false;
         }
     }
+    
 }

@@ -59,10 +59,7 @@
             this.kUpdateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label3 = new System.Windows.Forms.Label();
             this.btn_Login = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.lab_LogDetail = new System.Windows.Forms.Label();
-            this.lab_ServerSettings = new System.Windows.Forms.Label();
             this.lab_Version = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -70,8 +67,8 @@
             this.txb_User = new System.Windows.Forms.TextBox();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
-            this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.日志ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -98,6 +95,7 @@
             this.materialTabControl1.SelectedIndex = 0;
             this.materialTabControl1.Size = new System.Drawing.Size(653, 469);
             this.materialTabControl1.TabIndex = 8;
+            this.materialTabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -111,7 +109,7 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(645, 443);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "文件上传";
@@ -238,6 +236,7 @@
             this.cmb_BusinessType.Name = "cmb_BusinessType";
             this.cmb_BusinessType.Size = new System.Drawing.Size(314, 22);
             this.cmb_BusinessType.TabIndex = 9;
+            this.cmb_BusinessType.SelectedIndexChanged += new System.EventHandler(this.cmb_BusinessType_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -332,7 +331,7 @@
             this.tabPage2.Controls.Add(this.dgv_machine);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(645, 443);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "设备监控";
@@ -409,10 +408,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.btn_Login);
-            this.tabPage3.Controls.Add(this.lab_LogDetail);
-            this.tabPage3.Controls.Add(this.lab_ServerSettings);
             this.tabPage3.Controls.Add(this.lab_Version);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.label1);
@@ -425,18 +421,6 @@
             this.tabPage3.Text = "用户登录";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ForeColor = System.Drawing.Color.Blue;
-            this.label3.Location = new System.Drawing.Point(579, 337);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 14);
-            this.label3.TabIndex = 17;
-            this.label3.Text = "菜单";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
             // btn_Login
             // 
             this.btn_Login.Depth = 0;
@@ -444,35 +428,11 @@
             this.btn_Login.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_Login.Name = "btn_Login";
             this.btn_Login.Primary = true;
-            this.btn_Login.Size = new System.Drawing.Size(114, 43);
+            this.btn_Login.Size = new System.Drawing.Size(115, 39);
             this.btn_Login.TabIndex = 16;
             this.btn_Login.Text = "登录";
             this.btn_Login.UseVisualStyleBackColor = true;
             this.btn_Login.Click += new System.EventHandler(this.btn_Login_Click);
-            // 
-            // lab_LogDetail
-            // 
-            this.lab_LogDetail.AutoSize = true;
-            this.lab_LogDetail.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_LogDetail.ForeColor = System.Drawing.Color.Blue;
-            this.lab_LogDetail.Location = new System.Drawing.Point(579, 375);
-            this.lab_LogDetail.Name = "lab_LogDetail";
-            this.lab_LogDetail.Size = new System.Drawing.Size(35, 14);
-            this.lab_LogDetail.TabIndex = 15;
-            this.lab_LogDetail.Text = "日志";
-            this.lab_LogDetail.Click += new System.EventHandler(this.lab_LogDetail_Click);
-            // 
-            // lab_ServerSettings
-            // 
-            this.lab_ServerSettings.AutoSize = true;
-            this.lab_ServerSettings.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_ServerSettings.ForeColor = System.Drawing.Color.Blue;
-            this.lab_ServerSettings.Location = new System.Drawing.Point(554, 409);
-            this.lab_ServerSettings.Name = "lab_ServerSettings";
-            this.lab_ServerSettings.Size = new System.Drawing.Size(77, 14);
-            this.lab_ServerSettings.TabIndex = 14;
-            this.lab_ServerSettings.Text = "服务器设置";
-            this.lab_ServerSettings.Click += new System.EventHandler(this.lab_ServerSettings_Click);
             // 
             // lab_Version
             // 
@@ -511,6 +471,7 @@
             this.txb_PassWord.PasswordChar = '*';
             this.txb_PassWord.Size = new System.Drawing.Size(157, 26);
             this.txb_PassWord.TabIndex = 9;
+            this.txb_PassWord.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txb_PassWord_KeyDown);
             // 
             // txb_User
             // 
@@ -530,7 +491,7 @@
             this.materialTabSelector1.Location = new System.Drawing.Point(0, 28);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabSelector1.Name = "materialTabSelector1";
-            this.materialTabSelector1.Size = new System.Drawing.Size(653, 45);
+            this.materialTabSelector1.Size = new System.Drawing.Size(680, 45);
             this.materialTabSelector1.TabIndex = 1;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
@@ -539,23 +500,25 @@
             this.materialContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialContextMenuStrip1.Depth = 0;
             this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.服务器设置ToolStripMenuItem,
-            this.日志ToolStripMenuItem});
+            this.ServerSettingToolStripMenuItem,
+            this.LogToolStripMenuItem});
             this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
             this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 48);
             // 
-            // 服务器设置ToolStripMenuItem
+            // ServerSettingToolStripMenuItem
             // 
-            this.服务器设置ToolStripMenuItem.Name = "服务器设置ToolStripMenuItem";
-            this.服务器设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.服务器设置ToolStripMenuItem.Text = "服务器设置";
+            this.ServerSettingToolStripMenuItem.Name = "ServerSettingToolStripMenuItem";
+            this.ServerSettingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.ServerSettingToolStripMenuItem.Text = "服务器设置";
+            this.ServerSettingToolStripMenuItem.Click += new System.EventHandler(this.ServerSettingToolStripMenuItem_Click);
             // 
-            // 日志ToolStripMenuItem
+            // LogToolStripMenuItem
             // 
-            this.日志ToolStripMenuItem.Name = "日志ToolStripMenuItem";
-            this.日志ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.日志ToolStripMenuItem.Text = "日志";
+            this.LogToolStripMenuItem.Name = "LogToolStripMenuItem";
+            this.LogToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.LogToolStripMenuItem.Text = "日志";
+            this.LogToolStripMenuItem.Click += new System.EventHandler(this.LogToolStripMenuItem_Click);
             // 
             // NodeManager
             // 
@@ -616,18 +579,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn kUpdateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn kStatus;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label lab_LogDetail;
-        private System.Windows.Forms.Label lab_ServerSettings;
         private System.Windows.Forms.Label lab_Version;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txb_PassWord;
         private System.Windows.Forms.TextBox txb_User;
         private MaterialSkin.Controls.MaterialRaisedButton btn_Login;
-        private System.Windows.Forms.Label label3;
         private MaterialSkin.Controls.MaterialContextMenuStrip materialContextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 日志ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ServerSettingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LogToolStripMenuItem;
     }
 }
 

@@ -95,13 +95,15 @@ namespace MaterialSkin.Controls
             //Draw tab headers
             foreach (TabPage tabPage in baseTabControl.TabPages)
             {
+                //font previous is SkinManager.ROBOTO_MEDIUM_12
+                Font My_Font = new Font("宋体", 15,FontStyle.Bold);   
                // int currentTabIndex = tabPage.TabIndex;
                 int currentTabIndex = tapIndex;
 				Brush textBrush = new SolidBrush(Color.FromArgb(CalculateTextAlpha(currentTabIndex, animationProgress), SkinManager.ColorScheme.TextColor));
 
                 g.DrawString(
-                    tabPage.Text.ToUpper(), 
-                    SkinManager.ROBOTO_MEDIUM_10, 
+                    tabPage.Text.ToUpper(),
+                    My_Font, 
                     textBrush, 
                     tabRects[currentTabIndex], 
                     new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });

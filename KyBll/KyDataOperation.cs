@@ -467,7 +467,17 @@ namespace KyBll
             List<ky_machine> machines;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machines = conn.ky_machine.Where(q => nodeIds.Contains(q.kNodeId)).ToList();
+                var entity=conn.ky_machine;
+                var tt = (from e in entity.Where(q => nodeIds.Contains(q.kNodeId))
+                            select new  { kIpAddress = e.kIpAddress, kUpdateTime = e.kUpdateTime, kStatus = e.kStatus, kId = e.kId }).ToList();
+                machines = tt.ConvertAll<ky_machine>(item => new ky_machine()
+                {
+                    kIpAddress = item.kIpAddress,
+                    kUpdateTime = item.kUpdateTime,
+                    kStatus = item.kStatus,
+                    kId = item.kId
+                });
+                
             }
             return machines;
         }
