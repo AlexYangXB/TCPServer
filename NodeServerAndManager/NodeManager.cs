@@ -342,14 +342,6 @@ namespace NodeServerAndManager
         #endregion
 
         #region 主界面
-        //注销
-        private void btn_Logout_Click(object sender, EventArgs e)
-        {
-            //tabControl1.SelectedIndex = 0;
-            userId = 0;
-            userNumber = "";
-            //localNodeId = 0;
-        }
         //交易控制
         private void btn_BusinessControl_Click(object sender, EventArgs e)
         {
@@ -756,20 +748,6 @@ namespace NodeServerAndManager
         #endregion
 
         /// <summary>
-        /// 日志窗体
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void lab_LogDetail_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-            materialContextMenuStrip1.Show(Cursor.Position);
-        }
-        /// <summary>
         /// 窗体关闭
         /// </summary>
         /// <param name="sender"></param>
@@ -793,6 +771,10 @@ namespace NodeServerAndManager
 
         public override void OnShowMenu(MouseEventArgs e)
         {
+            if(userId==0)
+                LogOutToolStripMenuItem.Visible = false;
+            else
+                LogOutToolStripMenuItem.Visible = true;
             materialContextMenuStrip1.Show(Cursor.Position);
         }
 
@@ -851,6 +833,15 @@ namespace NodeServerAndManager
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void LogOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            userId = 0;
+            userNumber = "";
+            this.tabPage1.Parent = null;
+            this.tabPage2.Parent = null;
+            this.tabPage3.Parent = materialTabControl1;
         }
 
 

@@ -69,6 +69,7 @@
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.ServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LogOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -230,8 +231,7 @@
             "柜面取款",
             "柜面存款",
             "ATM配钞",
-            "ATM清钞",
-            "跨行调款"});
+            "ATM清钞"});
             this.cmb_BusinessType.Location = new System.Drawing.Point(85, 68);
             this.cmb_BusinessType.Name = "cmb_BusinessType";
             this.cmb_BusinessType.Size = new System.Drawing.Size(314, 22);
@@ -501,10 +501,11 @@
             this.materialContextMenuStrip1.Depth = 0;
             this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ServerSettingToolStripMenuItem,
-            this.LogToolStripMenuItem});
+            this.LogToolStripMenuItem,
+            this.LogOutToolStripMenuItem});
             this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
-            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 48);
+            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 70);
             // 
             // ServerSettingToolStripMenuItem
             // 
@@ -519,6 +520,13 @@
             this.LogToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.LogToolStripMenuItem.Text = "日志";
             this.LogToolStripMenuItem.Click += new System.EventHandler(this.LogToolStripMenuItem_Click);
+            // 
+            // LogOutToolStripMenuItem
+            // 
+            this.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem";
+            this.LogOutToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.LogOutToolStripMenuItem.Text = "注销";
+            this.LogOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItem_Click);
             // 
             // NodeManager
             // 
@@ -588,6 +596,7 @@
         private MaterialSkin.Controls.MaterialContextMenuStrip materialContextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ServerSettingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LogOutToolStripMenuItem;
     }
 }
 

@@ -627,9 +627,10 @@ namespace MaterialSkin.Controls
                         xButtonBounds.Y + (int)(xButtonBounds.Height * 0.66));
                 }
             }
-
+            //font previous is SkinManager.ROBOTO_MEDIUM_12
+            Font My_Font = new Font("宋体", 15, FontStyle.Bold);
             //Form title
-            g.DrawString(Text, SkinManager.ROBOTO_MEDIUM_12, SkinManager.ColorScheme.TextBrush, new Rectangle(SkinManager.FORM_PADDING, STATUS_BAR_HEIGHT, Width, ACTION_BAR_HEIGHT), new StringFormat { LineAlignment = StringAlignment.Center });
+            g.DrawString(Text, My_Font, SkinManager.ColorScheme.TextBrush, new Rectangle(SkinManager.FORM_PADDING, STATUS_BAR_HEIGHT, Width, ACTION_BAR_HEIGHT), new StringFormat { LineAlignment = StringAlignment.Center });
         }
     }
 
