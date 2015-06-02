@@ -8,4 +8,3 @@ F:\GitHub\TCPServer\KyModel\bin\Debug\KyModel.pdb
 F:\GitHub\TCPServer\KyModel\bin\Debug\EntityFramework.dll
 F:\GitHub\TCPServer\KyModel\obj\Debug\KyModel.dll
 F:\GitHub\TCPServer\KyModel\obj\Debug\KyModel.pdb
-E:\TCPServer\KyModel\obj\Debug\KyModel.csprojResolveAssemblyReference.cache

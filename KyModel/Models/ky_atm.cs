@@ -5,7 +5,7 @@ namespace KyModel.Models
 {
     public partial class ky_atm
     {
-        public long kId { get; set; }
+        public int kId { get; set; }
         public string kATMNumber { get; set; }
         public string kATMAddress { get; set; }
         public int kNodeId { get; set; }

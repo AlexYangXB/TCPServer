@@ -47,19 +47,19 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txb_LocalPort = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.ipControl_Local = new NodeServerAndManager.Control.IpControl();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.ipControl_Push = new NodeServerAndManager.Control.IpControl();
             this.txb_PushPort = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.lab_PushTest = new System.Windows.Forms.Label();
-            this.ipControl_Server = new NodeServerAndManager.Control.IpControl();
-            this.ipControl_Device = new NodeServerAndManager.Control.IpControl();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txb_BindNode = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.chkList_Node = new System.Windows.Forms.CheckedListBox();
+            this.ipControl_Push = new NodeServerAndManager.Control.IpControl();
+            this.ipControl_Server = new NodeServerAndManager.Control.IpControl();
+            this.ipControl_Device = new NodeServerAndManager.Control.IpControl();
+            this.ipControl_Local = new NodeServerAndManager.Control.IpControl();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -236,15 +236,6 @@
             this.label8.TabIndex = 5;
             this.label8.Text = "本机IP";
             // 
-            // ipControl_Local
-            // 
-            this.ipControl_Local.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Local.Location = new System.Drawing.Point(83, 14);
-            this.ipControl_Local.Name = "ipControl_Local";
-            this.ipControl_Local.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Local.TabIndex = 4;
-            this.ipControl_Local.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Local.Value")));
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label10);
@@ -283,15 +274,6 @@
             this.label10.TabIndex = 20;
             this.label10.Text = "端口";
             // 
-            // ipControl_Push
-            // 
-            this.ipControl_Push.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
-            this.ipControl_Push.Name = "ipControl_Push";
-            this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Push.TabIndex = 17;
-            this.ipControl_Push.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Push.Value")));
-            // 
             // txb_PushPort
             // 
             this.txb_PushPort.Location = new System.Drawing.Point(359, 100);
@@ -318,24 +300,6 @@
             this.lab_PushTest.TabIndex = 19;
             this.lab_PushTest.Text = "测试";
             this.lab_PushTest.Click += new System.EventHandler(this.lab_PushTest_Click);
-            // 
-            // ipControl_Server
-            // 
-            this.ipControl_Server.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Server.Location = new System.Drawing.Point(83, 15);
-            this.ipControl_Server.Name = "ipControl_Server";
-            this.ipControl_Server.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Server.TabIndex = 0;
-            this.ipControl_Server.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Server.Value")));
-            // 
-            // ipControl_Device
-            // 
-            this.ipControl_Device.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Device.Location = new System.Drawing.Point(83, 51);
-            this.ipControl_Device.Name = "ipControl_Device";
-            this.ipControl_Device.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Device.TabIndex = 2;
-            this.ipControl_Device.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Device.Value")));
             // 
             // groupBox3
             // 
@@ -376,6 +340,42 @@
             this.chkList_Node.Click += new System.EventHandler(this.chkList_Node_Click);
             this.chkList_Node.SelectedIndexChanged += new System.EventHandler(this.chkList_Node_SelectedIndexChanged);
             // 
+            // ipControl_Push
+            // 
+            this.ipControl_Push.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
+            this.ipControl_Push.Name = "ipControl_Push";
+            this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Push.TabIndex = 17;
+            this.ipControl_Push.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Push.Value")));
+            // 
+            // ipControl_Server
+            // 
+            this.ipControl_Server.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Server.Location = new System.Drawing.Point(83, 15);
+            this.ipControl_Server.Name = "ipControl_Server";
+            this.ipControl_Server.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Server.TabIndex = 0;
+            this.ipControl_Server.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Server.Value")));
+            // 
+            // ipControl_Device
+            // 
+            this.ipControl_Device.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Device.Location = new System.Drawing.Point(83, 51);
+            this.ipControl_Device.Name = "ipControl_Device";
+            this.ipControl_Device.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Device.TabIndex = 2;
+            this.ipControl_Device.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Device.Value")));
+            // 
+            // ipControl_Local
+            // 
+            this.ipControl_Local.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Local.Location = new System.Drawing.Point(83, 14);
+            this.ipControl_Local.Name = "ipControl_Local";
+            this.ipControl_Local.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Local.TabIndex = 4;
+            this.ipControl_Local.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Local.Value")));
+            // 
             // ServerSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -390,7 +390,7 @@
             this.MinimizeBox = false;
             this.Name = "ServerSettings";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "服务器设置";
             this.Load += new System.EventHandler(this.ServerSettings_Load);
             this.groupBox1.ResumeLayout(false);

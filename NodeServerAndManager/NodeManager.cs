@@ -58,17 +58,11 @@ namespace NodeServerAndManager
             this.Invoke(new delloading(() => { waitingForm.Close(); }));
         }
 
-        #region 无边框窗体   移动  添加右键菜单
-
-        #endregion
-
         #region 登录界面
-        private void lab_ServerSettings_Click(object sender, EventArgs e)
-        {
-           
-        }
 
-        //启动TcpServer 接收数据
+        /// <summary>
+        /// 启动TcpServer、Socket.IO 
+        /// </summary>
         private void StartTcpServer()
         {
             bool result = false;
@@ -105,8 +99,7 @@ namespace NodeServerAndManager
                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     return;
                 }
-                //连接到soket.IO
-                SocketIoConnect();
+              
                 try
                 {
                     //获取绑定的网点ID
@@ -141,6 +134,8 @@ namespace NodeServerAndManager
                         myTcpServer.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
                         result = true;
                     }
+                    //连接到soket.IO
+                    SocketIoConnect();
                 }
                 catch (Exception e)
                 {
@@ -151,7 +146,11 @@ namespace NodeServerAndManager
             return;
         }
 
-        //登录
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Login_Click(object sender, EventArgs e)
         {
 
@@ -167,6 +166,10 @@ namespace NodeServerAndManager
             }
 
         }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
         private void Login()
         {
             string user = txb_User.Text.Trim();
@@ -239,10 +242,15 @@ namespace NodeServerAndManager
 
             this.tabPage1.Parent = null;
             this.tabPage2.Parent = null;
-
+            //其他厂家接入FSN
+            this.timer_ImportFSN.Tick += new System.EventHandler(this.timer_ImportFSN_Tick);
 
         }
-
+        /// <summary>
+        /// 发送冠字号信息给SOCKET.IO服务端
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void myTcpServer_CmdEvent(object sender, TcpServer.CmdEventArgs e)
         {
             int id = 0;
@@ -266,12 +274,15 @@ namespace NodeServerAndManager
                 socket.Emit("SetCount", obj);
             }
         }
-
+        /// <summary>
+        /// 窗体激活事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NodeManager_Activated(object sender, EventArgs e)
         {
             txb_User.Focus();
         }
-
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool flag = true;
@@ -338,25 +349,6 @@ namespace NodeServerAndManager
                     default: break;
                 }
             }
-        }
-        #endregion
-
-        #region 主界面
-        //交易控制
-        private void btn_BusinessControl_Click(object sender, EventArgs e)
-        {
-        }
-        //冠字号码文件上传
-        private void btn_InsertData_Click(object sender, EventArgs e)
-        {
-            txb_FilePath.Text = "";
-            txb_Message.Text = "";
-            //tabControl1.SelectedIndex = 2;
-        }
-        //设备监控
-        private void btn_MachineMonitoring_Click(object sender, EventArgs e)
-        {
-            // tabControl1.SelectedIndex = 3;
         }
         #endregion
 
@@ -457,7 +449,7 @@ namespace NodeServerAndManager
                     cashBoxId = Convert.ToInt32(strTmp[0]);
 
                 //交易类型
-                BussinessType business = (BussinessType)cmb_BusinessType.SelectedIndex;
+                BussinessType bussiness = (BussinessType)cmb_BusinessType.SelectedIndex;
 
 
                 foreach (var uploadFile in uploadFiles)
@@ -478,7 +470,12 @@ namespace NodeServerAndManager
                         machineId2 = KyDataOperation.GetMachineIdFromImportMachine(machineMac);
                         if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
                         {
-                            int id = KyDataOperation.InsertMachineToImportMachine(machineMac, nodeId, factoryId);
+                            ky_import_machine import_machine = new ky_import_machine {
+                                kMachineNumber=machineMac,
+                                kNodeId=nodeId,
+                                kFactoryId=factoryId
+                            };
+                            int id = KyDataOperation.InsertMachineToImportMachine(import_machine);
                             if (id > 0)
                                 machineId2 = id;
                         }
@@ -487,7 +484,7 @@ namespace NodeServerAndManager
                     machineTmp.kMachineNumber = machineMac;
                     machineTmp.kNodeId = nodeId;
                     machineTmp.kFactoryId = factoryId;
-                    machineTmp.business = business;
+                    machineTmp.business = bussiness;
                     machineTmp.kId = machineId;
                     machineTmp.atmId = AtmId;
                     machineTmp.cashBoxId = cashBoxId;
@@ -758,6 +755,11 @@ namespace NodeServerAndManager
                 e.Cancel = true;
         }
 
+        /// <summary>
+        /// 密码回车登录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txb_PassWord_KeyDown(object sender, KeyEventArgs e)
         {
             if (txb_PassWord.ContainsFocus)
@@ -768,7 +770,10 @@ namespace NodeServerAndManager
                 }
             }
         }
-
+        /// <summary>
+        /// 重写，显示菜单
+        /// </summary>
+        /// <param name="e"></param>
         public override void OnShowMenu(MouseEventArgs e)
         {
             if (userId == 0)
@@ -778,6 +783,13 @@ namespace NodeServerAndManager
             materialContextMenuStrip1.Show(Cursor.Position);
         }
 
+
+        #region 菜单功能
+        /// <summary>
+        /// 服务器设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ServerSettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
@@ -819,7 +831,11 @@ namespace NodeServerAndManager
                 SocketIoConnect();
             }
         }
-
+        /// <summary>
+        /// 日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -843,14 +859,38 @@ namespace NodeServerAndManager
             this.tabPage2.Parent = null;
             this.tabPage3.Parent = materialTabControl1;
         }
-
+        /// <summary>
+        /// 系统设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SystemSettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SystemSettings frm = new SystemSettings();
             frm.ShowDialog();
         }
 
+        #endregion
 
+        /// <summary>
+        /// 其他厂家FSN接入
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_ImportFSN_Tick(object sender, EventArgs e)
+        {
+            bool flag = Properties.Settings.Default.OtherFactoryAccess;
+            if (flag)
+            {
+                string importDir = Properties.Settings.Default.OtherFactoryAccessDir;
+                if (Directory.Exists(importDir))
+                {
+                    AutoImport.FsnImport(importDir,Properties.Settings.Default.PictureIp);
+                }
+                else
+                    Log.ImportLog(null,importDir+"路径不存在！");
+            }
+        }
 
 
     }

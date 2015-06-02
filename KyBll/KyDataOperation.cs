@@ -52,6 +52,7 @@ namespace KyBll
                             batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
                             batch.kuser, batch.kimgserver, batch.hjson);
                         conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
+                        
                       Console.WriteLine("");
                         
                 }
@@ -483,6 +484,23 @@ namespace KyBll
         }
 
         /// <summary>
+        /// 根据atm编号，返回atmId
+        /// </summary>
+        /// <param name="UserNumber"></param>
+        /// <returns></returns>
+        public static int GetATMId(string ATMNumber,int NodeId)
+        {
+            int atmId=0;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                var atm = conn.ky_atm.Where(q => q.kATMNumber == ATMNumber)
+                    .Where(q=>q.kNodeId==NodeId).FirstOrDefault();
+                if (atm != null)
+                    atmId = atm.kId;
+            }
+            return atmId;
+        }
+        /// <summary>
         /// 通过网点Id获取该网点下的所有ATM数据
         /// </summary>
         /// <param name="nodeId"></param>
@@ -496,9 +514,49 @@ namespace KyBll
             }
             return atms;
         }
+        /// <summary>
+        /// 添加atm信息 返回id
+        /// </summary>
+        /// <param name="factoryName"></param>
+        /// <param name="factoryNumber"></param>
+        /// <returns></returns>
+        public static int InsertATM(ky_atm ATM)
+        {
+            try
+            {
+                using (var conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.ky_atm.Add(ATM);
+                    conn.SaveChanges();
+                }
+                return ATM.kId;
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "添加ATM信息异常");
+                return 0;
+            }
+        }
+        /// <summary>
+        /// 根据cashbox编号，返回cashboxId
+        /// </summary>
+        /// <param name="UserNumber"></param>
+        /// <returns></returns>
+        public static int GetCashBoxId(string CashBoxNumber,int NodeId)
+        {
+            int cashboxId = 0;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                var cashbox = conn.ky_cashbox.Where(q => q.kCashBoxNumber == CashBoxNumber)
+                    .Where(q=>q.kNodeId==NodeId).FirstOrDefault();
+                if (cashbox != null)
+                    cashboxId = cashbox.kId;
+            }
+            return cashboxId;
+        }
 
         /// <summary>
-        /// 通过网点Id获取该网点下的所有ATM数据
+        /// 通过网点Id获取该网点下的所有CashBox数据
         /// </summary>
         /// <param name="nodeId"></param>
         /// <returns></returns>
@@ -510,6 +568,29 @@ namespace KyBll
                 cashboxs = conn.ky_cashbox.Where(q => nodeIds.Contains(q.kNodeId)).ToList();
             }
             return cashboxs;
+        }
+        /// <summary>
+        /// 添加cashbox信息
+        /// </summary>
+        /// <param name="factoryName"></param>
+        /// <param name="factoryNumber"></param>
+        /// <returns></returns>
+        public static int InsertCashBox(ky_cashbox CashBox)
+        {
+            try
+            {
+                using (var conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.ky_cashbox.Add(CashBox);
+                    conn.SaveChanges();
+                }
+                return CashBox.kId;
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "添加ATM信息异常");
+                return 0;
+            }
         }
         /// <summary>
         /// 获取全部钞箱信息
@@ -586,21 +667,16 @@ namespace KyBll
         /// <summary>
         /// 往表ky_import_machine中插入数据，并返回id
         /// </summary>
-        /// <param name="machineNumber"></param>
-        /// <param name="nodeId"></param>
-        /// <param name="factoryId"></param>
-        /// <returns></returns>
-        public static int InsertMachineToImportMachine(string machineNumber, int nodeId, int factoryId)
+        public static int InsertMachineToImportMachine(ky_import_machine import_machine)
         {
             int id = 0;
             try
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    ky_import_machine machine = new ky_import_machine { kMachineType = 0, kMachineNumber = machineNumber, kNodeId = nodeId, kFactoryId = factoryId };
-                    conn.ky_import_machine.Add(machine);
+                    conn.ky_import_machine.Add(import_machine);
                     conn.SaveChanges();
-                    id = Convert.ToInt32(machine.kId);
+                    id = Convert.ToInt32(import_machine.kId);
                 }
             }
             catch (Exception e)
@@ -775,7 +851,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    conn.ky_batch.FirstOrDefault();
+                    conn.ky_sign.FirstOrDefault();
                 }
                 return true;
             }

@@ -15,10 +15,6 @@ namespace KyModel.Mapping
                 .IsRequired()
                 .HasMaxLength(255);
 
-            this.Property(t => t.kMachineModel)
-                .IsRequired()
-                .HasMaxLength(255);
-
             // Table & Column Mappings
             this.ToTable("ky_import_machine", "kydb");
             this.Property(t => t.kId).HasColumnName("kId");

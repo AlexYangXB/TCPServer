@@ -66,6 +66,7 @@
     <Compile Include="DateTimeAndTimeStamp.cs" />
     <Compile Include="DBUtility\CommandInfo.cs" />
     <Compile Include="DBUtility\DbHelperMySQL.cs" />
+    <Compile Include="AutoImport.cs" />
     <Compile Include="FtpOperation.cs" />
     <Compile Include="GzhInput.cs" />
     <Compile Include="IniFile.cs" />

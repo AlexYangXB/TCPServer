@@ -12,7 +12,7 @@ namespace KyModel.Mapping
 
 
             // Table & Column Mappings
-            this.ToTable("ky_batch");
+            this.ToTable("ky_agent_batch");
             this.Property(t => t.id).HasColumnName("id");
             this.Property(t => t.ktype).HasColumnName("ktype");
             this.Property(t => t.kdate).HasColumnName("kdate");

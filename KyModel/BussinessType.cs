@@ -12,6 +12,8 @@ namespace KyModel
         CK = 2,
         ATMP = 3,
         ATMQ =4,
-        KHDK = 5
+        KHDK = 5,
+        CACK=6,
+        CAQK=7
     }
 }

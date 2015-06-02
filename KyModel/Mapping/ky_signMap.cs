@@ -9,7 +9,7 @@ namespace KyModel.Mapping
         {
 
             // Table & Column Mappings
-            this.ToTable("ky_sign");
+            this.ToTable("ky_agent_sign");
             this.Property(t => t.id).HasColumnName("id");
             this.Property(t => t.knumber).HasColumnName("knumber");
             this.Property(t => t.kdate).HasColumnName("kdate");

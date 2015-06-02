@@ -27,7 +27,11 @@ namespace KyBll
         public static int ConvertDateTimeInt(System.DateTime time)
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-            return Convert.ToInt32((time - startTime).TotalSeconds);
+            double totalSeconds = (time - startTime).TotalSeconds;
+            if (totalSeconds > 0)
+                return Convert.ToInt32(totalSeconds);
+            else
+                return 0;
         }
     }
 }

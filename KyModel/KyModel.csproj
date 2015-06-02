@@ -51,6 +51,7 @@
     <Compile Include="BussinessType.cs" />
     <Compile Include="KyDataLayer1.cs" />
     <Compile Include="KyDataLayer2.cs" />
+    <Compile Include="MachineType.cs" />
     <Compile Include="Models\ky_atm.cs" />
     <Compile Include="Models\ky_atmtype.cs" />
     <Compile Include="Models\ky_batch.cs" />

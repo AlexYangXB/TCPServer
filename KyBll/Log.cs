@@ -80,7 +80,30 @@ namespace KyBll
             string time = DateTime.Now.ToString("yyyyMMdd");
             using (StreamWriter sw = new StreamWriter(path + "\\" + time + "_command.log", true, Encoding.Default))
             {
-                sw.Write(backStr);
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：")+backStr);
+            }
+        }
+        /// <summary>
+        /// 导入日志  日期_import.log
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="str"></param>
+        public static void ImportLog(Exception e=null, string backStr="")
+        {
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string str="";
+            if(e!=null)
+             str = GetExceptionMsg(e, backStr);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string time = DateTime.Now.ToString("yyyyMMdd");
+            using (StreamWriter sw = new StreamWriter(path + "\\" + time + "_import.log", true, Encoding.Default))
+            {
+                if (str != "")
+                    sw.WriteLine(str);
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：")+backStr);
             }
         }
         /// <summary>

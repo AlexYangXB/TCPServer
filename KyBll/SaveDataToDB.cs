@@ -55,6 +55,7 @@ namespace KyBll
             {
                 fileName = Path.GetFileName(fileName);
                 result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, DateTime.Now, machine.business.ToString(), machine.kNodeId);
+                Log.ImportLog(null,fileName+"的冠字号码时间是"+DateTimeAndTimeStamp.GetTime(batch.kdate.ToString()).ToString("yyyy-MM-dd HH:mm:ss"));
             }
             return result;
         }
@@ -147,7 +148,12 @@ namespace KyBll
                 machineId2 = KyDataOperation.GetMachineIdFromImportMachine(machineMac);
                 if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
                 {
-                    int id = KyDataOperation.InsertMachineToImportMachine(machineMac, gzh_package.kNodeId, factoryId);
+                    ky_import_machine import_machine = new ky_import_machine {
+                        kMachineNumber=machineMac,
+                        kNodeId=gzh_package.kNodeId,
+                        kFactoryId=factoryId
+                    };
+                    int id = KyDataOperation.InsertMachineToImportMachine(import_machine);
                     if (id > 0)
                         machineId2 = id;
                 }
@@ -368,11 +374,14 @@ namespace KyBll
                 if (batch.ktype!=BussinessType.HM.ToString())
                 {
                     if ((batch.ktype == BussinessType.ATMP.ToString() || batch.ktype == BussinessType.ATMQ.ToString()))
+                    {
                         jo["katm"] = machine.atmId;
-                    if (batch.ktype == BussinessType.QK.ToString() || batch.ktype == BussinessType.CK.ToString())
-                        jo["kbussinessNumber"] = machine.bussinessNumber;
-                    if (batch.ktype == BussinessType.ATMP.ToString())
                         jo["kcashbox"] = machine.cashBoxId;
+                    }
+                    if (batch.ktype == BussinessType.QK.ToString() || batch.ktype == BussinessType.CK.ToString()
+                        ||batch.ktype==BussinessType.CACK.ToString()||batch.ktype==BussinessType.CAQK.ToString())
+                        jo["kbussinessnumber"] = machine.bussinessNumber;
+                        
                 }
                 if (machine.kId == 0)
                 {

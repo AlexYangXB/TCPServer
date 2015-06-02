@@ -481,9 +481,10 @@ namespace MyTcpServer
                         if (currentMachine.business == BussinessType.CK || currentMachine.business == BussinessType.QK)
                             currentMachine.bussinessNumber = bControl.bussinessNumber;
                         if (currentMachine.business == BussinessType.ATMP || currentMachine.business == BussinessType.ATMQ)
+                        {
                             currentMachine.atmId = Convert.ToInt32(bControl.atmId);
-                        if (currentMachine.business == BussinessType.ATMP)
                             currentMachine.cashBoxId = Convert.ToInt32(bControl.cashBoxId);
+                        }
                         if (currentMachine.business == BussinessType.KHDK)
                         {
                             currentMachine.isClearCenter = bControl.isClearCenter;

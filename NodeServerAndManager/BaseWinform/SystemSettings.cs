@@ -29,7 +29,7 @@ namespace NodeServerAndManager.BaseWinform
         private void SystemSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             //其他厂家接入保存
-            bool flag=true;
+            bool flag = true;
             if (OtherFactoryAccessCheckBox.Checked)
             {
                 if (Directory.Exists(txb_OtherFactoryAccessDir.Text))
@@ -56,7 +56,7 @@ namespace NodeServerAndManager.BaseWinform
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                string foldPath=dialog.SelectedPath;
+                string foldPath = dialog.SelectedPath;
                 txb_OtherFactoryAccessDir.Text = foldPath;
             }
         }

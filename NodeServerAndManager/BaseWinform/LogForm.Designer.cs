@@ -50,7 +50,7 @@
             this.MinimizeBox = false;
             this.Name = "LogForm";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "日志";
             this.ResumeLayout(false);
 
