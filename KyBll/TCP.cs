@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using KyModel;
 namespace KyBll
 {
-    public class TCP
+    public class MyTCP
     {
         public static string ByteToStringX2(byte[] bytes)
         {
@@ -47,7 +47,7 @@ namespace KyBll
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
-                CommandFormat = " len " + TCPMessage.Command.Length + Environment.NewLine + TCP.ByteToStringX2(TCPMessage.Command);
+                CommandFormat = " len " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
             }
             if (TCPMessage.MessageType == TCPMessageType.NewConnection)
             {

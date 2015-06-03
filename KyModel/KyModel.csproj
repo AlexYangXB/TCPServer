@@ -49,8 +49,11 @@
   <ItemGroup>
     <Compile Include="businessControl.cs" />
     <Compile Include="BussinessType.cs" />
+    <Compile Include="CRH.cs" />
     <Compile Include="KyDataLayer1.cs" />
     <Compile Include="KyDataLayer2.cs" />
+    <Compile Include="ky_agent_batch.cs" />
+    <Compile Include="ky_count.cs" />
     <Compile Include="MachineType.cs" />
     <Compile Include="Models\ky_atm.cs" />
     <Compile Include="Models\ky_atmtype.cs" />

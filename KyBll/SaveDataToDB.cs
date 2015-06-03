@@ -79,7 +79,7 @@ namespace KyBll
                                                        kFileName = gzh.fileName,
                                                    };
             gzhLayer2.kBranchId = KyDataOperation.GetBranchId(gzh.branchNumber);
-            gzhLayer2.kNodeId = KyDataOperation.GetNodeId(gzh.nodeNumber);
+            gzhLayer2.kNodeId = KyDataOperation.GetNodeIdByNodeNumber(gzh.nodeNumber);
             return gzhLayer2;
         }
 
@@ -141,7 +141,7 @@ namespace KyBll
 
             int machineId = 0;
             int machineId2 = 0;
-            machineId = KyDataOperation.GetMachineId(machineMac);
+            machineId = KyDataOperation.GetMachineIdByMachineNumber(machineMac);
             if (machineId == 0)//未在机具列表中找到该机具编号
             {
                 //获取数据库内的上传文件的机具列表

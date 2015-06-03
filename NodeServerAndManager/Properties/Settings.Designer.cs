@@ -190,5 +190,65 @@ namespace NodeServerAndManager.Properties {
                 this["OtherFactoryAccessDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CRHExport {
+            get {
+                return ((bool)(this["CRHExport"]));
+            }
+            set {
+                this["CRHExport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21:00:00")]
+        public string CRHStartTime {
+            get {
+                return ((string)(this["CRHStartTime"]));
+            }
+            set {
+                this["CRHStartTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CRHYesterday {
+            get {
+                return ((bool)(this["CRHYesterday"]));
+            }
+            set {
+                this["CRHYesterday"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CRHToday {
+            get {
+                return ((bool)(this["CRHToday"]));
+            }
+            set {
+                this["CRHToday"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:/KangYi/CRH/")]
+        public string CRHDir {
+            get {
+                return ((string)(this["CRHDir"]));
+            }
+            set {
+                this["CRHDir"] = value;
+            }
+        }
     }
 }

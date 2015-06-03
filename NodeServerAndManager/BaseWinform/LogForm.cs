@@ -30,7 +30,7 @@ namespace NodeServerAndManager.BaseWinform
 
                 }
                 TCPMessage TCPMessage = e.TCPMessage;
-                string message=TCP.TCPMessageFormat(TCPMessage);
+                string message=MyTCP.TCPMessageFormat(TCPMessage);
                 LogRichTextBox.AppendText(message);
             }
             catch (Exception ex)

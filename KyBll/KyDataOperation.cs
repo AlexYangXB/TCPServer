@@ -43,41 +43,24 @@ namespace KyBll
         {
             try
             {
-                
-                //string machine = JsonConvert.SerializeObject(batch.kmachine).Trim(new char[] { '[', ']' });
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                        string strSql = string.Format(
-                            "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
-                            batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
-                            batch.kuser, batch.kimgserver, batch.hjson);
-                        conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
-                        
-                      Console.WriteLine("");
-                        
+                    string strSql = string.Format(
+                        "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
+                        batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
+                        batch.kuser, batch.kimgserver, batch.hjson);
+                    conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
                 }
                 return true;
             }
             catch (Exception e)
             {
-
                 KyBll.Log.DataBaseException(e, "保存批次异常");
                 return false;
             }
         }
 
 
-        //public class ky_sign_sphinx
-        //{
-        //    public Int64 id;
-        //    public int date;//时间戳
-        //    public string sign;//冠字号码
-        //    public Int64 batchId;//批次Id
-        //    public UInt32 value;//面额
-        //    public UInt32 version;//版本
-        //    public UInt32 currency;//币种ID
-        //    public UInt32 status;//钞票状态
-        //}
         /// <summary>
         /// 往sphinx中插入冠字号码数据，往图片数据库中插入图片数据
         /// </summary>
@@ -95,40 +78,26 @@ namespace KyBll
                     List<ky_sign> only_signs = new List<ky_sign>();
                     DateTime now = DateTime.Now;
                     int count = 0;
-                    string strSql =  "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
+                    string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
                     foreach (var sign in signs)
                     {
                         if (count != 0)
                         {
                             strSql += ",";
                         }
-                        int time =  DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
+                        int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
                         Int64 id = KyDataLayer2.GuidToLongID();
-                        ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now,kImageType=sign.ImageType };
+                        ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
                         pictures.Add(picture);
-                        
-                       strSql +=string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
-                                                  sign.Sign, batchId, sign.Value, sign.Version,
-                                                  sign.Currency, sign.True, startIndex + count, 0);
-                        //ky_sign only_sign = new ky_sign
-                        //{
-                        //    id = id,
-                        //    kbatchid = batchId,
-                        //    ksign = sign.Sign,
-                        //    kdate = time,
-                        //    kvalue =Convert.ToInt32(sign.Value),
-                        //    kversion = Convert.ToInt32(sign.Version),
-                        //    kcurrency = Convert.ToInt32(sign.Currency),
-                        //    kstatus = Convert.ToInt32(sign.True),
-                        //    knumber = Convert.ToInt32(startIndex + count),
-                        //    hjson = ""
-                        //};
-                        //only_signs.Add(only_sign);
+
+                        strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
+                                                   sign.Sign, batchId, sign.Value, sign.Version,
+                                                   sign.Currency, sign.True, startIndex + count, 0);
                         count++;
                     }
                     using (var conn = DbHelperMySQL.OpenSphinxConnection())
                     {
-                       conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
+                        conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
                     }
                     using (var conn = DbHelperMySQL.OpenImageConnection())
                     {
@@ -146,6 +115,57 @@ namespace KyBll
 
         }
 
+        /// <summary>
+        /// 根据时间范围获取批次总数
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public static int GetBatchCount(int startTime, int endTime)
+        {
+            int totalCount = 0;
+            try
+            {
+                string strSql =
+                    string.Format("select count(*) as count from ky_agent_batch where kdate>{0} and kdate<{1}", startTime,endTime);
+                using (var conn = DbHelperMySQL.OpenSphinxConnection())
+                {
+                    totalCount= conn.Database.SqlQuery<ky_count>(strSql).FirstOrDefault().count;
+                   
+                }
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "获取批次总数异常");
+            }
+            return totalCount;
+        }
+
+
+        /// <summary>
+        /// 根据时间范围获取批次
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public static List<ky_agent_batch> GetBatches(int startTime, int endTime,int count)
+        {
+            List<ky_agent_batch> batches = new List<ky_agent_batch>();
+            try
+            {
+                string strSql =
+                    string.Format("select * from ky_agent_batch where kdate>{0} and kdate<{1} limit 0,{2} option max_matches={2}", startTime, endTime,count); 
+                using (var conn = DbHelperMySQL.OpenSphinxConnection())
+                {
+                    batches = conn.Database.SqlQuery<ky_agent_batch>(strSql).ToList();                    
+                }
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "获取批次异常");
+            }
+            return batches;
+        }
         #endregion
 
 
@@ -162,7 +182,7 @@ namespace KyBll
             List<ky_node> nodes;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.ky_node.Where(cc=>cc.kBindIpAddress==bindIpAddress).ToList();
+                nodes = conn.ky_node.Where(cc => cc.kBindIpAddress == bindIpAddress).ToList();
             }
             return nodes;
         }
@@ -201,9 +221,9 @@ namespace KyBll
 
                     }
                     if (selectNodes != null)
-                    
+
                         conn.SaveChanges();
-                    }
+                }
                 return true;
             }
             catch (Exception e)
@@ -218,7 +238,7 @@ namespace KyBll
         /// </summary>
         /// <param name="nodeNumber"></param>
         /// <returns></returns>
-        public static int GetNodeId(string nodeNumber)
+        public static int GetNodeIdByNodeNumber(string nodeNumber)
         {
             ky_node node;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
@@ -229,6 +249,23 @@ namespace KyBll
                 return node.kId;
             else
                 return 0;
+        }
+        /// <summary>
+        /// 通过网点id获取网点
+        /// </summary>
+        /// <param name="nodeNumber"></param>
+        /// <returns></returns>
+        public static ky_node GetNodeByNodeId(int id)
+        {
+            ky_node node;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                node = conn.ky_node.Where(q => q.kId == id).FirstOrDefault();
+            }
+            if (node != null)
+                return node;
+            else
+                return null;
         }
 
         /// <summary>
@@ -264,6 +301,23 @@ namespace KyBll
                 return node.kBranchId;
             else
                 return 0;
+        }
+        /// <summary>
+        /// 根据网点Id获取银行 
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
+        public static ky_branch GetBranchWithNodeId(int nodeId)
+        {
+            ky_branch branch;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                branch = conn.ky_branch.Where(q => q.kId == nodeId).FirstOrDefault();
+            }
+            if (branch != null)
+                return branch;
+            else
+                return null;
         }
 
         /// <summary>
@@ -331,7 +385,7 @@ namespace KyBll
                 Log.ConnectionException(e, "获取机具异常");
                 return null;
             }
-            
+
         }
 
         /// <summary>
@@ -339,7 +393,7 @@ namespace KyBll
         /// </summary>
         /// <param name="machineNumber"></param>
         /// <returns></returns>
-        public static int GetMachineId(string machineNumber)
+        public static int GetMachineIdByMachineNumber(string machineNumber)
         {
             ky_machine machine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
@@ -350,6 +404,23 @@ namespace KyBll
                 return machine.kId;
             else
                 return 0;
+        }
+        /// <summary>
+        /// 通过机具Id获取机具
+        /// </summary>
+        /// <param name="machineNumber"></param>
+        /// <returns></returns>
+        public static ky_machine GetMachineByMachineId(int id)
+        {
+            ky_machine machine;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                machine = conn.ky_machine.Where(q => q.kId == id).FirstOrDefault();
+            }
+            if (machine != null)
+                return machine;
+            else
+                return null;
         }
         /// <summary>
         /// 通过用户编号获取用户ID
@@ -468,9 +539,9 @@ namespace KyBll
             List<ky_machine> machines;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                var entity=conn.ky_machine;
+                var entity = conn.ky_machine;
                 var tt = (from e in entity.Where(q => nodeIds.Contains(q.kNodeId))
-                            select new  { kIpAddress = e.kIpAddress, kUpdateTime = e.kUpdateTime, kStatus = e.kStatus, kId = e.kId }).ToList();
+                          select new { kIpAddress = e.kIpAddress, kUpdateTime = e.kUpdateTime, kStatus = e.kStatus, kId = e.kId }).ToList();
                 machines = tt.ConvertAll<ky_machine>(item => new ky_machine()
                 {
                     kIpAddress = item.kIpAddress,
@@ -478,7 +549,7 @@ namespace KyBll
                     kStatus = item.kStatus,
                     kId = item.kId
                 });
-                
+
             }
             return machines;
         }
@@ -488,13 +559,13 @@ namespace KyBll
         /// </summary>
         /// <param name="UserNumber"></param>
         /// <returns></returns>
-        public static int GetATMId(string ATMNumber,int NodeId)
+        public static int GetATMId(string ATMNumber, int NodeId)
         {
-            int atmId=0;
+            int atmId = 0;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
                 var atm = conn.ky_atm.Where(q => q.kATMNumber == ATMNumber)
-                    .Where(q=>q.kNodeId==NodeId).FirstOrDefault();
+                    .Where(q => q.kNodeId == NodeId).FirstOrDefault();
                 if (atm != null)
                     atmId = atm.kId;
             }
@@ -542,13 +613,13 @@ namespace KyBll
         /// </summary>
         /// <param name="UserNumber"></param>
         /// <returns></returns>
-        public static int GetCashBoxId(string CashBoxNumber,int NodeId)
+        public static int GetCashBoxId(string CashBoxNumber, int NodeId)
         {
             int cashboxId = 0;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
                 var cashbox = conn.ky_cashbox.Where(q => q.kCashBoxNumber == CashBoxNumber)
-                    .Where(q=>q.kNodeId==NodeId).FirstOrDefault();
+                    .Where(q => q.kNodeId == NodeId).FirstOrDefault();
                 if (cashbox != null)
                     cashboxId = cashbox.kId;
             }

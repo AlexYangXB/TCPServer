@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-namespace KyModel.Models
+using KyModel.Models;
+namespace KyModel
 {
-    public partial class ky_batch
+    public class ky_agent_batch
     {
         /// <summary>
         /// 批次ID
         /// </summary>
-        public Int64 id{get;set;}
+        public Int64 id { get; set; }
         /// <summary>
         /// 业务类型，用英文表示1、号码记录(HM) 2、柜面取款(QK) 3、柜面存款(CK) 4、ATM配钞(ATMP) 5、ATM清钞(ATMQ)
         /// </summary>
@@ -51,5 +51,10 @@ namespace KyModel.Models
         /// JSON字段，可扩展
         /// </summary>
         public string hjson { get; set; }
+
+        public ky_node node { get; set; }
+        public ky_branch branch { get; set; }
+        public ky_machine machine { get; set; }
+        public string bussinessnumber { get; set; }
     }
 }

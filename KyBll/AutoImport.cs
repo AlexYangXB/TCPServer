@@ -65,7 +65,7 @@ namespace KyBll
                     Log.ImportLog(null, fi.Name + "中的厂家简称不存在！");
                     continue;
                 }
-                int nodeId = KyDataOperation.GetNodeId(node);
+                int nodeId = KyDataOperation.GetNodeIdByNodeNumber(node);
                 if(nodeId==0)
                 {
                     MoveErrFile(importDir, fi.Name);
@@ -83,7 +83,7 @@ namespace KyBll
                 {
                     machineNumber = machineModel + machineNumber;
                 }
-                machineId = KyDataOperation.GetMachineId(machineNumber);
+                machineId = KyDataOperation.GetMachineIdByMachineNumber(machineNumber);
                 if (machineId == 0)//未在机具列表中找到该机具编号
                 {
                     //获取数据库内的上传文件的机具列表

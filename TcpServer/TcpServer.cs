@@ -50,7 +50,7 @@ namespace MyTcpServer
             {
                 LogEvent(this, e);  // 调用所有注册对象的方法
             }
-            string message = TCP.TCPMessageFormat(e.TCPMessage);
+            string message = MyTCP.TCPMessageFormat(e.TCPMessage);
             Log.CommandLog(message);
         }
         //日志参数定义

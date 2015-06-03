@@ -44,5 +44,20 @@
     <Setting Name="OtherFactoryAccessDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:/KangYi/FSN/</Value>
     </Setting>
+    <Setting Name="CRHExport" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CRHStartTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">21:00:00</Value>
+    </Setting>
+    <Setting Name="CRHYesterday" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CRHToday" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="CRHDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:/KangYi/CRH/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
