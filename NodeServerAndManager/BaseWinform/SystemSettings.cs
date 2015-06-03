@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using MaterialSkin;
 using System.IO;
 using KyBll;
+using KyModel;
 namespace NodeServerAndManager.BaseWinform
 {
     public partial class SystemSettings : MaterialSkin.Controls.MaterialForm
@@ -101,9 +102,10 @@ namespace NodeServerAndManager.BaseWinform
 
         private void btn_CRHExport_Click(object sender, EventArgs e)
         {
-            DateTime startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1));
+            DateTime startTime = Convert.ToDateTime(DateTime.Now.AddDays(-10));
             DateTime endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
-            CRHExport.GetBatchesByTime(startTime, endTime);
+          List<ky_agent_batch> batches=  CRHExport.GetBatchesByTime(startTime, endTime);
+          List<CRH> crhs=CRHExport.BatchesToCRH(batches);
         }
     }
 }

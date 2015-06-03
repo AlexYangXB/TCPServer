@@ -52,9 +52,26 @@ namespace KyModel
         /// </summary>
         public string hjson { get; set; }
 
-        public ky_node node { get; set; }
-        public ky_branch branch { get; set; }
-        public ky_machine machine { get; set; }
-        public string bussinessnumber { get; set; }
+        public ky_node Node { get; set; }
+        public ky_branch Branch { get; set; }
+        public ky_machine Machine { get; set; }
+        public string BussinessNumber { get; set; }
+        public DateTime Date { get; set; }
+        public int BussinessType { get; set; }
+        public int MachineType { get; set; }
+    }
+    public class BatchHjson {
+        
+        public int kmachine { get; set; }
+        public int katm { get; set; }
+        public int kcashobx { get; set; }
+        public string kbussinessnumber { get; set; }
+        public BatchHjson()
+        {
+            kmachine = 0;
+            katm = 0;
+            kcashobx = 0;
+            kbussinessnumber = "";
+        }
     }
 }

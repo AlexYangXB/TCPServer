@@ -312,7 +312,8 @@ namespace KyBll
             ky_branch branch;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                branch = conn.ky_branch.Where(q => q.kId == nodeId).FirstOrDefault();
+                ky_node node= conn.ky_node.Where(q => q.kId == nodeId).FirstOrDefault();
+                branch = conn.ky_branch.Where(q => q.kId == node.kBranchId).FirstOrDefault();
             }
             if (branch != null)
                 return branch;
@@ -717,6 +718,22 @@ namespace KyBll
                 importmachines = conn.ky_import_machine.ToList();
             }
             return importmachines;
+        }
+        /// <summary>
+        /// 根据id返回Import_machine
+        /// </summary>
+        /// <returns></returns>
+        public static ky_import_machine GetmportMachineByImportMachineId(int id)
+        {
+            ky_import_machine importmachine;
+            using (var conn = DbHelperMySQL.OpenDeviceConnection())
+            {
+                importmachine = conn.ky_import_machine.Where(q=>q.kId==id).FirstOrDefault();
+            }
+            if (importmachine != null)
+                return importmachine;
+            else
+                return null;
         }
         /// <summary>
         /// 根据机具编号获取(导入文件的)机具id

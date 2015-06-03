@@ -107,6 +107,29 @@ namespace KyBll
             }
         }
         /// <summary>
+        /// CRH日志  日期_CRH.log
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="str"></param>
+        public static void CRHLog(Exception e = null, string backStr = "")
+        {
+            string path = System.Environment.CurrentDirectory + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string str = "";
+            if (e != null)
+                str = GetExceptionMsg(e, backStr);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string time = DateTime.Now.ToString("yyyyMMdd");
+            using (StreamWriter sw = new StreamWriter(path + "\\" + time + "_CRH.log", true, Encoding.Default))
+            {
+                if (str != "")
+                    sw.WriteLine(str);
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr);
+            }
+        }
+        /// <summary>
         /// 清除Err目录下的访问日期小于当前5天的文件夹
         /// </summary>
         public static void CleanLogs()
