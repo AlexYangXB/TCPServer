@@ -322,6 +322,7 @@ namespace MyTcpServer
                                         string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                                         if (str.Length == 3)
                                             machineNumber = str[2];
+                                        machineNumber = machineNumber.Replace("\0", "");
                                         if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
                                             KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
                                         machine[ip].kMachineNumber = machineNumber;
@@ -343,6 +344,7 @@ namespace MyTcpServer
                                         string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                                         if (str.Length == 3)
                                             machineNumber = str[2];
+                                        machineNumber=machineNumber.Replace("\0","");
                                         if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
                                             KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
                                         machine[ip].kMachineNumber = machineNumber;

@@ -892,6 +892,12 @@ namespace NodeServerAndManager
             }
         }
 
+        private void CRHReviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CRHReview CRHReview = new CRHReview();
+            CRHReview.ShowDialog();
+        }
+
 
     }
 }

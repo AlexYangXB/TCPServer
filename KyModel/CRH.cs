@@ -57,6 +57,7 @@ namespace KyModel
         /// </summary>
         public byte[] Reverse;
         public List<CRHRecord> records;
+        public string fileName;
         public CRH(ky_agent_batch batch)
         {
             string[] dTime=batch.Date.ToString("yyyy-MM-dd HH:mm:ss").Split(' ');
@@ -69,23 +70,38 @@ namespace KyModel
             RecordCount = BitConverter.GetBytes(batch.ktotalnumber);
             ClearCenter = Convert.ToByte('F');
             FileVersion = Convert.ToByte(1);
-            if (batch.Machine != null)
-            {
-                MachineType = Convert.ToByte(batch.MachineType);
-                MachineModel = GetStringByte(batch.Machine.kMachineModel, 8);
-                MachineNumber = GetStringByte(batch.Machine.kMachineNumber, 10);
-            }
-            else
-            {
-                //没有找到机具的情况
-                MachineType = Convert.ToByte(3);
-                MachineModel = GetStringByte("HT9000A", 8);
-                MachineNumber = GetStringByte("123456", 10);
-            }
+            MachineType = Convert.ToByte(batch.Machine.kMachineType);
+            MachineModel = GetStringByte(batch.Machine.kMachineModel, 8);
+            MachineNumber = GetStringByte(batch.Machine.kMachineNumber, 10);
             BussinessNumber = GetStringByte(batch.BussinessNumber, 50);
             Reverse = new byte[10];
-            records = null;
+            records = new List<CRHRecord>();
+            if (batch.Signs != null)
+            {
+                byte[] StartTime=BitConverter.GetBytes(((int.Parse(time[0]) << 11) + (int.Parse(time[1]) << 5) + (int.Parse(time[0]) >> 1)));
+                foreach (ky_agent_sign sign in batch.Signs)
+                {
+                    CRHRecord record = new CRHRecord
+                    {
+                        //机器开始点钞时间
+                        Time = StartTime,
+                        Sign = GetStringByte(sign.ksign, 12),
+                        SignVersion = Convert.ToByte(sign.kversion),
+                        SignValue = Convert.ToByte(sign.kvalue)
+                    };
+                    records.Add(record);
+                }
+            }
+            fileName = Encoding.ASCII.GetString(BankCode).Replace("_", "") + "_" + Encoding.ASCII.GetString(MachineModel).Replace("_", "").Replace("/", "-").Replace("\\", "-") + "_"
+                + Encoding.ASCII.GetString(MachineNumber).Replace("_", "").Replace("/", "-").Replace("\\", "-")+"_" + batch.Date.ToString("yyyyMMddHHmmss") + ".CRH";
         }
+        
+        /// <summary>
+        /// 字符串转byte数组，不足左补_,大于长度截取末尾指定长字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public static byte[] GetStringByte(string str,int length)
         {
             if (str.Length > length)
@@ -99,7 +115,122 @@ namespace KyModel
     }
     public struct CRHRecord
     {
+        /// <summary>
+        /// 记录时间  2字节
+        /// </summary>
+        public byte[] Time;
+        /// <summary>
+        /// 冠字号码  12字节
+        /// </summary>
+        public byte[] Sign;
+        /// <summary>
+        /// 版别 1字节
+        /// </summary>
+        public byte SignVersion;
+        /// <summary>
+        /// 币值  1字节
+        /// </summary>
+        public byte SignValue;
+    }
+    public struct CRHDisplay
+    {
+        public string Date;
+        public string BankCode;
+        public string NodeCode;
+        public string BussinessType;
+        public int RecordCount;
+        public string ClearCenter;
+        public string FileVersion;
+        public string MachineType;
+        public string MachineModel;
+        public string MachineNumber;
+        public string BussinessNumber;
+        public List<CRHDisplayRecord> records;
+        public CRHDisplay(byte[] bBuffer)
+        {
+           int index = 0;
+           UInt16 date = BitConverter.ToUInt16(bBuffer, index); index += 2;
+           UInt32 year, month, day;
+           day = (uint)date & 0x1F;
+           month = (uint)((date >> 5) & 0x0F);
+           year = (uint)((date >> 9) + 1980);
+           Date = year.ToString("D4") + month.ToString("D2") + day.ToString("D2");
+           BankCode = Encoding.ASCII.GetString(bBuffer, index, 6).Replace("_", ""); index += 6;
+           NodeCode = Encoding.ASCII.GetString(bBuffer, index, 6).Replace("_", ""); index += 6;
+           BussinessType = Convert.ToString(bBuffer[index]); index += 1;
+           switch (BussinessType)
+           {
+               case "1": BussinessType = "现金收入"; break;
+               case "2": BussinessType = "现金付出"; break;
+               case "3": BussinessType = "清分业务"; break;
+               default: BussinessType = "未定义"; break;
+           }
+           RecordCount = BitConverter.ToInt32(bBuffer, index); index += 4;
+           ClearCenter = Convert.ToString(bBuffer[index]); index += 1;
+           FileVersion = Convert.ToString(bBuffer[index]); index += 1;
+           MachineType = Convert.ToString(bBuffer[index]); index += 1;
+           switch (MachineType)
+           {
+               case "1": MachineType = "清分机具"; break;
+               case "2": MachineType = "存取款一体机"; break;
+               case "3": MachineType = "点钞机"; break;
+               case "4": MachineType = "取款机"; break;
+               case "5": MachineType = "兑换机具"; break;
+               default: MachineType = "未定义"; break;
+           }
+           MachineModel = Encoding.ASCII.GetString(bBuffer, index, 8).Replace("_", ""); index += 8;
+           MachineNumber = Encoding.ASCII.GetString(bBuffer, index, 10).Replace("_", ""); index += 10;
+           BussinessNumber = Encoding.ASCII.GetString(bBuffer, index, 50).Replace("_", ""); index += 50;
+           index += 10;//保留字
+           records = new List<CRHDisplayRecord>();
+           for (var i = 0; i < RecordCount; i++)
+           {
+               UInt32  hour, min, sec;
+               UInt16 time=BitConverter.ToUInt16(bBuffer, index); index += 3;
+               sec = (uint)(time & 0x1F) << 1;
+               min = (uint)(time >> 5) & 0x3F;
+               hour = (uint)(time >> 11);
+               string  RecordTime=hour.ToString("D2") + min.ToString("D2") + sec.ToString("D2");
+               string RecordSign=Encoding.ASCII.GetString(bBuffer, index, 12).Replace("_", "");index += 13;
+               string RecordVersion = Convert.ToString(bBuffer[index]); index += 2;
+               switch (RecordVersion)
+               {
+                   case "0": RecordVersion = "1990版"; break;
+                   case "1": RecordVersion = "1999版"; break;
+                   case "2": RecordVersion = "2005版"; break;
+                   case "255": RecordVersion = "其他币种"; break;
+                   default: RecordVersion = "未定义"; break;
+               }
+               string RecordValue = Convert.ToString(bBuffer[index]); index += 3;
+               switch (RecordValue)
+               {
+                   case "0": RecordValue = "无法识别"; break;
+                   case "1": RecordValue = "1元"; break;
+                   case "2": RecordValue = "5元"; break;
+                   case "3": RecordValue = "10元"; break;
+                   case "4": RecordValue = "20元"; break;
+                   case "5": RecordValue = "50元"; break;
+                   default: RecordValue = "未定义"; break;
+               }
+               CRHDisplayRecord record = new CRHDisplayRecord
+               {
+                   //机器开始点钞时间
+                   Time = hour.ToString("D2") +":"+ min.ToString("D2") +":"+ sec.ToString("D2"),
+                   Sign = RecordSign,
+                   SignVersion = RecordVersion,
+                   SignValue = RecordValue
+               };
+               records.Add(record);
+           }
+        }
  
+    }
+    public struct CRHDisplayRecord
+    {
+        public string Time;
+        public string Sign;
+        public string SignVersion;
+        public string SignValue;
     }
    
 }

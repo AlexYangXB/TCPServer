@@ -58,7 +58,8 @@ namespace KyModel
         public string BussinessNumber { get; set; }
         public DateTime Date { get; set; }
         public int BussinessType { get; set; }
-        public int MachineType { get; set; }
+
+        public List<ky_agent_sign> Signs { get; set; }
     }
     public class BatchHjson {
         

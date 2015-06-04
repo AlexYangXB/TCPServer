@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
             this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
@@ -72,6 +72,7 @@
             this.LogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_ImportFSN = new System.Windows.Forms.Timer(this.components);
+            this.CRHReviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -344,14 +345,14 @@
             // 
             this.dgv_machine.AllowUserToAddRows = false;
             this.dgv_machine.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_machine.ColumnHeadersHeight = 24;
             this.dgv_machine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_machine.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -503,39 +504,40 @@
             this.materialContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.materialContextMenuStrip1.Depth = 0;
             this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SystemSettingToolStripMenuItem,
             this.ServerSettingToolStripMenuItem,
+            this.SystemSettingToolStripMenuItem,
+            this.CRHReviewToolStripMenuItem,
             this.LogToolStripMenuItem,
             this.LogOutToolStripMenuItem});
             this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
-            this.materialContextMenuStrip1.Size = new System.Drawing.Size(137, 92);
+            this.materialContextMenuStrip1.Size = new System.Drawing.Size(153, 136);
             // 
             // SystemSettingToolStripMenuItem
             // 
             this.SystemSettingToolStripMenuItem.Name = "SystemSettingToolStripMenuItem";
-            this.SystemSettingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.SystemSettingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.SystemSettingToolStripMenuItem.Text = "系统设置";
             this.SystemSettingToolStripMenuItem.Click += new System.EventHandler(this.SystemSettingToolStripMenuItem_Click);
             // 
             // ServerSettingToolStripMenuItem
             // 
             this.ServerSettingToolStripMenuItem.Name = "ServerSettingToolStripMenuItem";
-            this.ServerSettingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.ServerSettingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ServerSettingToolStripMenuItem.Text = "服务器设置";
             this.ServerSettingToolStripMenuItem.Click += new System.EventHandler(this.ServerSettingToolStripMenuItem_Click);
             // 
             // LogToolStripMenuItem
             // 
             this.LogToolStripMenuItem.Name = "LogToolStripMenuItem";
-            this.LogToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.LogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.LogToolStripMenuItem.Text = "日志";
             this.LogToolStripMenuItem.Click += new System.EventHandler(this.LogToolStripMenuItem_Click);
             // 
             // LogOutToolStripMenuItem
             // 
             this.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem";
-            this.LogOutToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.LogOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.LogOutToolStripMenuItem.Text = "注销";
             this.LogOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItem_Click);
             // 
@@ -543,7 +545,13 @@
             // 
             this.timer_ImportFSN.Enabled = true;
             this.timer_ImportFSN.Interval = 3000;
-            
+            // 
+            // CRHReviewToolStripMenuItem
+            // 
+            this.CRHReviewToolStripMenuItem.Name = "CRHReviewToolStripMenuItem";
+            this.CRHReviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.CRHReviewToolStripMenuItem.Text = "CRH查看";
+            this.CRHReviewToolStripMenuItem.Click += new System.EventHandler(this.CRHReviewToolStripMenuItem_Click);
             // 
             // NodeManager
             // 
@@ -616,6 +624,7 @@
         private System.Windows.Forms.ToolStripMenuItem LogOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SystemSettingToolStripMenuItem;
         private System.Windows.Forms.Timer timer_ImportFSN;
+        private System.Windows.Forms.ToolStripMenuItem CRHReviewToolStripMenuItem;
     }
 }
 

@@ -17,19 +17,6 @@ namespace KyBll
 {
     public class KyDataOperation
     {
-        //public class ky_batch_sphinx
-        //{
-        //    public Int64 id;//批次ID
-        //    public string type;//业务类型，用英文表示1、号码记录(signrecord) 2、柜面取款(counterdraw) 3、柜面存款(counterdeposit) 4、ATM配钞(atmmatch) 5、ATM清钞(atmclear)
-        //    public int date;//时间戳
-        //    public UInt32 node;//网点ID
-        //    public UInt32 factory;//厂家ID
-        //    public UInt32[] machine;//机具ID
-        //    public UInt32 totalnumber;//总张数
-        //    public UInt32 totalvalue;//总金额
-        //    public UInt32 kuser;//柜员ID
-        //    public string json;
-        //}
 
 
         #region 保存冠字号码数据到Sphinx
@@ -166,6 +153,32 @@ namespace KyBll
             }
             return batches;
         }
+
+
+        /// <summary>
+        /// 根据批次id获取冠字号码信息 最大取10万条冠字号码数据（一个业务可能超过10万？）
+        /// </summary>
+        /// <returns></returns>
+        public static List<ky_agent_sign> GetSignByBatchId(long batchid)
+        {
+            List<ky_agent_sign> signs = null;
+            try
+            {
+                string strSql =
+                    string.Format("select * from ky_agent_sign where kbatchid={0} limit 0,100000 option max_matches=100000", batchid);
+                using (var conn = DbHelperMySQL.OpenSphinxConnection())
+                {
+                    signs = conn.Database.SqlQuery<ky_agent_sign>(strSql).ToList();
+
+                }
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException(e, "获取冠字号码信息异常");
+            }
+            return signs;
+        }
+
         #endregion
 
 
@@ -518,8 +531,9 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    var machine = new ky_machine { kId = id, kMachineNumber = machineNumber, kMachineModel = machineModel, kUpdateTime = DateTime.Now };
-                    conn.Entry(machine).State = System.Data.Entity.EntityState.Modified;
+                    ky_machine machine=conn.ky_machine.Where(q => q.kId == id).FirstOrDefault();
+                    machine.kMachineNumber=machineNumber;
+                    machine.kMachineModel=machineModel;
                     conn.SaveChanges();
                 }
                 return true;

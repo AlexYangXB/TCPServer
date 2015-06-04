@@ -5,12 +5,58 @@ using System.Text;
 using KyModel.Models;
 using KyModel;
 using Newtonsoft.Json;
+using System.IO;
 namespace KyBll
 {
     public class CRHExport
     {
         /// <summary>
-        /// 根据时间获取所有批次
+        /// 导出CRH
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        public CRHExport(DateTime startTime, DateTime endTime, string path)
+        {
+            List<ky_agent_batch> batches = GetBatchesByTime(startTime, endTime);
+            List<CRH> crhs = BatchesToCRH(batches);
+            string tmpPath = path + "/" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "/";
+            if (!Directory.Exists(tmpPath))
+                Directory.CreateDirectory(tmpPath);
+            foreach (CRH crh in crhs)
+            {
+                string crhFileName = tmpPath + crh.fileName;
+                using (FileStream fs = new FileStream(crhFileName, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(crh.Date, 0, sizeof(ushort));
+                    fs.Write(crh.BankCode, 0, crh.BankCode.Length);
+                    fs.Write(crh.NodeCode, 0, crh.NodeCode.Length);
+                    fs.WriteByte(crh.BussinessType);
+                    fs.Write(crh.RecordCount, 0, crh.RecordCount.Length);
+                    fs.WriteByte(crh.ClearCenter);
+                    fs.WriteByte(crh.FileVersion);
+                    fs.WriteByte(crh.MachineType);
+                    fs.Write(crh.MachineModel, 0, crh.MachineModel.Length);
+                    fs.Write(crh.MachineNumber, 0, crh.MachineNumber.Length);
+                    fs.Write(crh.BussinessNumber, 0, crh.BussinessNumber.Length);
+                    fs.Write(crh.Reverse, 0, crh.Reverse.Length);
+                    byte[] SplitByte = Encoding.ASCII.GetBytes(",");
+                    byte[] LineByte = Encoding.ASCII.GetBytes(Environment.NewLine);
+                    foreach (CRHRecord sign in crh.records)
+                    {
+                        fs.Write(sign.Time, 0, sign.Time.Length);
+                        fs.Write(SplitByte, 0, 1);
+                        fs.Write(sign.Sign, 0, sign.Sign.Length);
+                        fs.Write(SplitByte, 0, 1);
+                        fs.WriteByte(sign.SignVersion);
+                        fs.Write(SplitByte, 0, 1);
+                        fs.WriteByte(sign.SignValue);
+                        fs.Write(LineByte, 0, LineByte.Length);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 根据时间获取所有批次与冠字号码信息
         /// </summary>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
@@ -22,6 +68,13 @@ namespace KyBll
             int end = DateTimeAndTimeStamp.ConvertDateTimeInt(endTime);
             int count = KyDataOperation.GetBatchCount(start, end);
             List<ky_agent_batch> batches = KyDataOperation.GetBatches(start, end, count);
+            foreach (ky_agent_batch batch in batches)
+            {
+                long batchid = batch.id;
+                List<ky_agent_sign> signs = KyDataOperation.GetSignByBatchId(batchid);
+                if (signs != null)
+                    batch.Signs = signs;
+            }
             return batches;
         }
         /// <summary>
@@ -48,19 +101,19 @@ namespace KyBll
             }
             return CRHs;
         }
-      /// <summary>
-      /// 解析批次信息
-      /// </summary>
-      /// <param name="batch"></param>
-      /// <returns></returns>
-        public static ky_agent_batch  BatchAnalyses(ky_agent_batch batch)
+        /// <summary>
+        /// 解析批次信息
+        /// </summary>
+        /// <param name="batch"></param>
+        /// <returns></returns>
+        public static ky_agent_batch BatchAnalyses(ky_agent_batch batch)
         {
             if (batch.hjson == null)
                 batch.hjson = "";
             BatchHjson hjson = new BatchHjson();
-            hjson = (BatchHjson)JsonConvert.DeserializeObject(batch.hjson, hjson.GetType());     
+            hjson = (BatchHjson)JsonConvert.DeserializeObject(batch.hjson, hjson.GetType());
             if (hjson == null)
-                hjson =new  BatchHjson();
+                hjson = new BatchHjson();
             //默认第一台机具
             int machineId = Convert.ToInt32(batch.kmachine.Split(',')[0]);
             if (machineId != 0)
@@ -68,18 +121,14 @@ namespace KyBll
             else
             {
                 ky_import_machine import_machine = KyDataOperation.GetmportMachineByImportMachineId(hjson.kmachine);
-                ky_machine machine = null;
-                if (import_machine != null)
+                ky_machine machine = new ky_machine
                 {
-                    machine = new ky_machine
-                    {
-                        kMachineModel = import_machine.kMachineModel,
-                        kFactoryId = import_machine.kFactoryId,
-                        kNodeId = import_machine.kNodeId,
-                        kMachineType = import_machine.kMachineType,
-                        kMachineNumber = import_machine.kMachineNumber
-                    };
-                }
+                    kMachineModel = import_machine.kMachineModel,
+                    kFactoryId = import_machine.kFactoryId,
+                    kNodeId = import_machine.kNodeId,
+                    kMachineType = import_machine.kMachineType,
+                    kMachineNumber = import_machine.kMachineNumber
+                };
                 batch.Machine = machine;
             }
             int nodeId = batch.knode;
@@ -90,40 +139,41 @@ namespace KyBll
             batch.Date = DateTimeAndTimeStamp.GetTime(batch.kdate.ToString());
             switch (batch.ktype)
             {
-                case "CK": 
+                case "CK":
                 case "CACK": batch.BussinessType = 1; break;
-                case "QK": 
+                case "QK":
                 case "CAQK": batch.BussinessType = 2; break;
-                case "KHDK": 
+                case "KHDK":
                 case "ATMP":
                 case "ATMQ": batch.BussinessType = 3; batch.BussinessNumber = "0"; break;
                 default: batch.BussinessType = 0; batch.BussinessNumber = "0"; break;
 
             }
-            if (batch.Machine != null)
+            batch.Machine=FSNFormat.ConvertToFsnMachine(batch.Machine);
+            if (batch.Signs != null)
             {
-                var MachineType = batch.Machine.kMachineType;
-                switch (MachineType)
+                for (int i = 0; i < batch.Signs.Count; i++)
                 {
-                    //1 清分机具  =>1 大型清分机 2 中型清分机 3 小型清分机
-                    //3 点钞机 => 4 一口半点钞机 5 A类点钞机 
-                    //2 存取款一体机 =>6 存取款一体机 
-                    //4 取款机 => 7 ATM取款机  
-                    //5 兑换机具 => 9 兑换机具 
-                    //0 未定义 =>10 其他机具 8 循环柜员机
-                    case 1:
-                    case 2:
-                    case 3: batch.MachineType = 1; break;
-                    case 4: 
-                    case 5: batch.MachineType = 3; break;
-                    case 6: batch.MachineType = 2; break;
-                    case 7: batch.MachineType = 4; break;
-                    case 9: batch.MachineType = 5; break;
-                    default: batch.MachineType = 0; break;
+                    switch (batch.Signs[i].kversion)
+                    {
+                        case 1990: batch.Signs[i].kversion = 0; break;
+                        case 1999: batch.Signs[i].kversion = 1; break;
+                        case 2005: batch.Signs[i].kversion = 2; break;
+                        default: batch.Signs[i].kversion = 255; break;
+                    }
+                    switch (batch.Signs[i].kvalue)
+                    {
+                        case 1: batch.Signs[i].kvalue = 1; break;
+                        case 5: batch.Signs[i].kvalue = 2; break;
+                        case 10: batch.Signs[i].kvalue = 3; break;
+                        case 20: batch.Signs[i].kvalue = 4; break;
+                        case 50: batch.Signs[i].kvalue = 5; break;
+                        case 100: batch.Signs[i].kvalue = 6; break;
+                        default: batch.Signs[i].kvalue = 0; break;
+                    }
                 }
             }
             return batch;
         }
-
     }
 }

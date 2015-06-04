@@ -104,8 +104,13 @@ namespace NodeServerAndManager.BaseWinform
         {
             DateTime startTime = Convert.ToDateTime(DateTime.Now.AddDays(-10));
             DateTime endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
-          List<ky_agent_batch> batches=  CRHExport.GetBatchesByTime(startTime, endTime);
-          List<CRH> crhs=CRHExport.BatchesToCRH(batches);
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string foldPath = dialog.SelectedPath;
+                CRHExport crhExport = new CRHExport(startTime, endTime, foldPath);
+            }
+           
         }
     }
 }
