@@ -132,20 +132,20 @@ namespace KyModel
         /// </summary>
         public byte SignValue;
     }
-    public struct CRHDisplay
+    public class CRHDisplay
     {
-        public string Date;
-        public string BankCode;
-        public string NodeCode;
-        public string BussinessType;
-        public int RecordCount;
-        public string ClearCenter;
-        public string FileVersion;
-        public string MachineType;
-        public string MachineModel;
-        public string MachineNumber;
-        public string BussinessNumber;
-        public List<CRHDisplayRecord> records;
+        public string Date { get; set; }
+        public string BankCode { get; set; }
+        public string NodeCode { get; set; }
+        public string BussinessType { get; set; }
+        public int RecordCount { get; set; }
+        public string ClearCenter { get; set; }
+        public string FileVersion { get; set; }
+        public string MachineType { get; set; }
+        public string MachineModel { get; set; }
+        public string MachineNumber { get; set; }
+        public string BussinessNumber { get; set; }
+        public List<CRHDisplayRecord> records { get; set; }
         public CRHDisplay(byte[] bBuffer)
         {
            int index = 0;
@@ -166,7 +166,12 @@ namespace KyModel
                default: BussinessType = "未定义"; break;
            }
            RecordCount = BitConverter.ToInt32(bBuffer, index); index += 4;
-           ClearCenter = Convert.ToString(bBuffer[index]); index += 1;
+           ClearCenter = Encoding.ASCII.GetString(bBuffer,index,1); index += 1;
+           switch (ClearCenter)
+           {
+               case "T": ClearCenter = "是"; break;
+               default: ClearCenter = "否"; break;
+           }
            FileVersion = Convert.ToString(bBuffer[index]); index += 1;
            MachineType = Convert.ToString(bBuffer[index]); index += 1;
            switch (MachineType)
@@ -191,7 +196,7 @@ namespace KyModel
                min = (uint)(time >> 5) & 0x3F;
                hour = (uint)(time >> 11);
                string  RecordTime=hour.ToString("D2") + min.ToString("D2") + sec.ToString("D2");
-               string RecordSign=Encoding.ASCII.GetString(bBuffer, index, 12).Replace("_", "");index += 13;
+               string RecordSign=Encoding.ASCII.GetString(bBuffer, index, 12);index += 13;
                string RecordVersion = Convert.ToString(bBuffer[index]); index += 2;
                switch (RecordVersion)
                {
@@ -210,6 +215,7 @@ namespace KyModel
                    case "3": RecordValue = "10元"; break;
                    case "4": RecordValue = "20元"; break;
                    case "5": RecordValue = "50元"; break;
+                   case "6": RecordValue = "100元"; break;
                    default: RecordValue = "未定义"; break;
                }
                CRHDisplayRecord record = new CRHDisplayRecord
@@ -225,12 +231,12 @@ namespace KyModel
         }
  
     }
-    public struct CRHDisplayRecord
+    public class CRHDisplayRecord
     {
-        public string Time;
-        public string Sign;
-        public string SignVersion;
-        public string SignValue;
+        public string Time { get; set; }
+        public string Sign { get; set; }
+        public string SignVersion { get; set; }
+        public string SignValue { get; set; }
     }
    
 }

@@ -12,11 +12,11 @@ using KyModel.Models;
 using MyTcpServer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NodeServerAndManager.BaseWinform;
+using KangYiCollection.BaseWinform;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
 using MaterialSkin;
-namespace NodeServerAndManager
+namespace KangYiCollection
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
     {
@@ -45,6 +45,7 @@ namespace NodeServerAndManager
         private Dictionary<int, string> idIp = new Dictionary<int, string>();
         private string userNumber = "";//当前登录的用户编号
         private int userId = 0;//当前登录的用户的ID
+        private bool Exit = false;
         /// <summary>
         /// 等待窗体
         /// </summary>
@@ -99,7 +100,7 @@ namespace NodeServerAndManager
                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     return;
                 }
-              
+
                 try
                 {
                     //获取绑定的网点ID
@@ -143,6 +144,9 @@ namespace NodeServerAndManager
                     return;
                 }
             }
+            else
+                MessageBox.Show("服务器还未配置，请在菜单下选择‘服务器设置’进行配置！", "提示", MessageBoxButtons.OKCancel,
+                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             return;
         }
 
@@ -237,6 +241,7 @@ namespace NodeServerAndManager
             }
             //启动TCP服务、并连接到socket.IO后关闭等待窗体
             waitingForm.SetText("正在连接到服务器，请稍等...");
+            Application.DoEvents();
             new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
 
@@ -244,6 +249,7 @@ namespace NodeServerAndManager
             this.tabPage2.Parent = null;
             //其他厂家接入FSN
             this.timer_ImportFSN.Tick += new System.EventHandler(this.timer_ImportFSN_Tick);
+
 
         }
         /// <summary>
@@ -271,7 +277,10 @@ namespace NodeServerAndManager
                 obj["Total"] = e.Amount.TotalValue;           //总金额
                 obj["First"] = e.Amount.FirstSign; //首张冠字号码
                 obj["Last"] = e.Amount.LastSign;   //末张冠字号码
+                obj["BundleNumber"] = e.Amount.BundleNumber;   //捆钞序号
                 socket.Emit("SetCount", obj);
+                Log.BussinessLog("发送机具id" + id + ",总金额" + e.Amount.TotalValue + ",可疑币张数" + e.Amount.TotalErr + ",真币张数"
+                    + e.Amount.TotalTrue + ",第一张冠字号" + e.Amount.FirstSign + ",末张冠字号" + e.Amount.LastSign+"捆钞讯号"+e.Amount.BundleNumber);
             }
         }
         /// <summary>
@@ -455,44 +464,15 @@ namespace NodeServerAndManager
                 foreach (var uploadFile in uploadFiles)
                 {
                     txb_Message.Text = "";
-                    string machineModel = "";
-                    string[] str = KyDataLayer2.GetMachineNumberFromFSN(uploadFile, out machineModel).Split("/".ToCharArray());
-                    string machineMac = str[str.Length - 1];
-                    if (machineMac == "")
-                        continue;
-
-                    int machineId = 0;
-                    int machineId2 = 0;
-                    machineId = KyDataOperation.GetMachineIdByMachineNumber(machineMac);
-                    if (machineId == 0)//未在机具列表中找到该机具编号
-                    {
-                        //获取数据库内的上传文件的机具列表
-                        machineId2 = KyDataOperation.GetMachineIdFromImportMachine(machineMac);
-                        if (machineId2 == 0)//未在上传文件的机具列表中找到该机具编号
-                        {
-                            ky_import_machine import_machine = new ky_import_machine {
-                                kMachineNumber=machineMac,
-                                kNodeId=nodeId,
-                                kFactoryId=factoryId
-                            };
-                            int id = KyDataOperation.InsertMachineToImportMachine(import_machine);
-                            if (id > 0)
-                                machineId2 = id;
-                        }
-                    }
-                    ky_machine machineTmp = new ky_machine();
-                    machineTmp.kMachineNumber = machineMac;
-                    machineTmp.kNodeId = nodeId;
-                    machineTmp.kFactoryId = factoryId;
-                    machineTmp.business = bussiness;
-                    machineTmp.kId = machineId;
-                    machineTmp.atmId = AtmId;
-                    machineTmp.cashBoxId = cashBoxId;
-                    machineTmp.userId = userId;
-                    machineTmp.imgServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
-                    machineTmp.importMachineId = machineId2;
-                    bool result = SaveDataToDB.UploadFsn(uploadFile, machineTmp);
-                    if (result)
+                    ky_machine machine = FSNFormat.FindMachineByFsn(uploadFile, nodeId, factoryId);
+                    machine.business = bussiness;
+                    machine.atmId = AtmId;
+                    machine.cashBoxId = cashBoxId;
+                    machine.userId = userId;
+                    machine.imgServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    machine.importMachineId = machine.importMachineId;
+                    long batchId = FSNImport.UploadFsn(uploadFile, machine);
+                    if (batchId > 0)
                     {
                         string strMessage = string.Format("{0},{1}导入成功\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                                                      Path.GetFileName(uploadFile));
@@ -511,9 +491,8 @@ namespace NodeServerAndManager
             {
                 if (uploadFiles.Length > 0)
                 {
-                    GzhInput bll = new GzhInput();
                     int pictureServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
-                    bool success = bll.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
+                    bool success = GZHImport.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
                     string strMessage = "";
                     if (success)
                     {
@@ -652,14 +631,25 @@ namespace NodeServerAndManager
                     socket.On(Socket.EVENT_CONNECT, () =>
                     {
                         socket.Emit("SetNodeId", node);
+                        Log.BussinessLog("发送绑定网点id" + node);
                     });
                     socket.On("SetStart",
                        (data) =>
                        {
                            var d = (JObject)data;
                            int machineId = Convert.ToInt32(d["MachineId"]);
-                           if (idIp.ContainsKey(machineId))
+                           Log.BussinessLog("收到开始命令,机具id是" + machineId + ",业务类型是" + d["Type"] + ",用户id是" + d["UserId"]);
+                           ky_machine currentMachine = null;
+                           foreach (var machine in myTcpServer.machine)
                            {
+                               if (machine.Value.kId == machineId)
+                                   currentMachine = machine.Value;
+                           }
+                           if (currentMachine == null)
+                               Log.BussinessLog("机具id是" + data + "已失去连接。");
+                           else if ((DateTime.Now - currentMachine.alive).TotalMinutes < 5)
+                           {
+                               Log.BussinessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss"));
                                businessControl bControl = new businessControl();
                                bControl.dateTime = DateTime.Now;
                                bControl.ip = idIp[machineId];
@@ -673,12 +663,21 @@ namespace NodeServerAndManager
                                    bControl.userId = 0;
                                if (bControl.business == BussinessType.KHDK)
                                {
+                                   Log.BussinessLog("一批张数是" + d["BundleCount"]);
                                    int bundleCount = 100;
                                    if (d["BundleCount"] != null)
                                        bundleCount = Convert.ToInt32(d["BundleCount"]);
                                    bControl.bundleCount = bundleCount;
                                }
+                               Log.BussinessLog("解析业务类型为" + bControl.business.ToString());
                                myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.Start, bControl);
+                           }
+                           else
+                           {
+                               Log.BussinessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前时间5分钟，视为未连接。");
+                               var obj = new JObject();
+                               obj["MachineId"] = machineId;
+                               socket.Emit("NoMachine", obj);
                            }
                        });
                     socket.On("SetEnd",
@@ -686,25 +685,43 @@ namespace NodeServerAndManager
                                   {
                                       var d = (JObject)data;
                                       int machineId = Convert.ToInt32(d["MachineId"]);
+                                      Log.BussinessLog("收到结束命令,机具id是" + machineId);
                                       if (idIp.ContainsKey(machineId))
                                       {
                                           businessControl bControl = new businessControl();
                                           bControl.ip = idIp[machineId];
+                                          if (d["Cancel"] != null)
+                                          {
+                                              Log.BussinessLog("收到撤销命令");
+                                              bControl.cancel = true;
+                                          }
+                                          else
+                                              bControl.cancel = false;
                                           if (d["BussinessNumber"] != null)
+                                          {
+                                              Log.BussinessLog("业务流水号是" + d["BussinessNumber"]);
                                               bControl.bussinessNumber = d["BussinessNumber"].ToString();
+                                          }
                                           else
                                               bControl.bussinessNumber = "";
                                           if (d["ATMId"] != null)
+                                          {
+                                              Log.BussinessLog("ATM id是" + d["ATMId"].ToString());
                                               bControl.atmId = d["ATMId"].ToString();
+                                          }
                                           else
                                               bControl.atmId = "";
                                           if (d["CashBoxId"] != null)
+                                          {
+                                              Log.BussinessLog("CashBox id是" + d["CashBoxId"].ToString());
                                               bControl.cashBoxId = d["CashBoxId"].ToString();
+                                          }
                                           else
                                               bControl.cashBoxId = "";
                                           bool isClearCenter = false;
                                           if (d["ClearCenter"] != null)
                                           {
+                                              Log.BussinessLog("是否为清分中心：" + d["ClearCenter"].ToString());
                                               isClearCenter = Convert.ToBoolean(d["ClearCenter"]);
                                               if (isClearCenter)
                                                   bControl.isClearCenter = "T";
@@ -714,13 +731,34 @@ namespace NodeServerAndManager
                                           else
                                               bControl.isClearCenter = "";
                                           if (d["PackageNumber"] != null)
+                                          {
+                                              Log.BussinessLog("包号是" + d["PackageNumber"].ToString());
                                               bControl.packageNumber = d["PackageNumber"].ToString();
+                                          }
                                           else
                                               bControl.packageNumber = "";
+                                          if (d["BundleNumbers"] != null)
+                                          {
+                                              Log.BussinessLog("捆钞序号是是" + d["BundleNumbers"].ToString());
+                                              bControl.bundleNumbers = d["BundleNumbers"].ToString();
+                                          }
+                                          else
+                                              bControl.bundleNumbers = "";
                                           myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.End, bControl);
                                       }
                                   });
-                    socket.On("NoMachine", (data) => { });
+                    socket.On("NoMachine", (data) =>
+                    {
+                        Log.BussinessLog("用户已关闭浏览器,用户选择的机具id是" + data);
+                    });
+                    socket.On("reconnecting", (nextRetry) =>
+                    {
+                        Log.BussinessLog("尝试重连，等待" + nextRetry+"秒。");
+                    });
+                    socket.On("disconnect", (data) =>
+                    {
+                        Log.BussinessLog("断开连接！");
+                    });
                 }
                 else
                 {
@@ -751,7 +789,9 @@ namespace NodeServerAndManager
         /// <param name="e"></param>
         private void NodeManager_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+            if (Exit)
+                e.Cancel = false;
+            else if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                 e.Cancel = true;
         }
 
@@ -777,10 +817,10 @@ namespace NodeServerAndManager
         public override void OnShowMenu(MouseEventArgs e)
         {
             if (userId == 0)
-                LogOutToolStripMenuItem.Visible = false;
+                MenuItem_LogOut.Visible = false;
             else
-                LogOutToolStripMenuItem.Visible = true;
-            materialContextMenuStrip1.Show(Cursor.Position);
+                MenuItem_LogOut.Visible = true;
+            contextMenuStrip_Main.Show(Cursor.Position);
         }
 
 
@@ -790,7 +830,7 @@ namespace NodeServerAndManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ServerSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_ServerSetting_Click(object sender, EventArgs e)
         {
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
             string localIp = Properties.Settings.Default.LocalIp;
@@ -836,14 +876,15 @@ namespace NodeServerAndManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void LogToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_Log_Click(object sender, EventArgs e)
         {
             try
             {
                 BaseWinform.LogForm logForm = new LogForm();
-                myTcpServer.ClearLogEvent();
+
                 myTcpServer.LogEvent += new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
                 logForm.ShowDialog();
+                myTcpServer.LogEvent -= new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
             }
             catch (Exception ex)
             {
@@ -851,7 +892,7 @@ namespace NodeServerAndManager
             }
         }
 
-        private void LogOutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_LogOut_Click(object sender, EventArgs e)
         {
             userId = 0;
             userNumber = "";
@@ -864,7 +905,7 @@ namespace NodeServerAndManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SystemSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MenuItem_SystemSetting_Click(object sender, EventArgs e)
         {
             SystemSettings frm = new SystemSettings();
             frm.ShowDialog();
@@ -885,17 +926,97 @@ namespace NodeServerAndManager
                 string importDir = Properties.Settings.Default.OtherFactoryAccessDir;
                 if (Directory.Exists(importDir))
                 {
-                    AutoImport.FsnImport(importDir,Properties.Settings.Default.PictureIp);
+                    FSNImport.FsnImport(importDir, Properties.Settings.Default.PictureIp);
                 }
                 else
-                    Log.ImportLog(null,importDir+"路径不存在！");
+                    Log.ImportLog(null, importDir + "路径不存在！");
             }
         }
-
-        private void CRHReviewToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// CRH查看
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItem_CRHReview_Click(object sender, EventArgs e)
         {
             CRHReview CRHReview = new CRHReview();
             CRHReview.ShowDialog();
+        }
+        /// <summary>
+        /// 导出CRH
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_ExportCRH_Tick(object sender, EventArgs e)
+        {
+            string Time = DateTime.Now.ToString("HH:mm:ss");
+            if (Time == Properties.Settings.Default.CRHStartTime)
+            {
+                bool flag = Properties.Settings.Default.CRHExport;
+                if (flag)
+                {
+                    string exportDir = Properties.Settings.Default.CRHDir;
+                    if (Directory.Exists(exportDir))
+                    {
+                        DateTime startTime;
+                        DateTime endTime;
+                        if (Properties.Settings.Default.CRHYesterday)
+                        {
+                            startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
+                            endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                        }
+                        else
+                        {
+                            //默认导出当天
+                            startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                            endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+                        }
+                        CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
+                    }
+                    else
+                        Log.ImportLog(null, exportDir + "路径不存在！");
+                }
+            }
+        }
+
+        //private void NodeManager_Resize(object sender, EventArgs e)
+        //{
+        //    if (WindowState == FormWindowState.Minimized)
+        //        switchToTray(true);
+        //}
+        //private void switchToTray(bool bHide)
+        //{
+        //    if (!bHide)
+        //    {
+        //        Show();
+        //        WindowState = FormWindowState.Normal;
+        //        BringToFront();
+        //    }
+        //    else
+        //    {
+        //        Hide();
+        //        WindowState = FormWindowState.Minimized;
+        //    }
+        //}
+
+        //private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        //{
+        //    if (e.Button == MouseButtons.Left)
+        //    {
+        //        if (WindowState == FormWindowState.Minimized)
+        //            switchToTray(false);
+        //        else
+        //            switchToTray(true);
+        //    }
+        //}
+
+        private void MenuItem_Exit_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+            {
+                Exit = true;
+                Close();
+            }
         }
 
 

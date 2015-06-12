@@ -1,4 +1,4 @@
-﻿namespace NodeServerAndManager.BaseWinform
+﻿namespace KangYiCollection.BaseWinform
 {
     partial class CRHReview
     {
@@ -28,34 +28,59 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "记录日期",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            "报送银行编码",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            "生成网点编码",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            "业务类型",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
+            "记录数",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
+            "现金清分中心",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
+            "文件版本",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
+            "设备类别",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
+            "机型",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem(new string[] {
+            "设备编号",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem(new string[] {
+            "业务关联信息",
+            ""}, -1);
             this.btn_CRHOpenFile = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Sign = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SignVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SignValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BankCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NodeCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BussinessType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RecordCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ClearCenter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FileVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MachineType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MachineModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MachineNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BussinessNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.liv_CRHCommon = new System.Windows.Forms.ListView();
+            this.key = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.liv_CRHRecord = new System.Windows.Forms.ListView();
+            this.recordtime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.recordsign = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.recordversion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.recordvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lab_CRHCommon = new MaterialSkin.Controls.MaterialLabel();
+            this.lab_CRHRecord = new MaterialSkin.Controls.MaterialLabel();
+            this.number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // btn_CRHOpenFile
             // 
             this.btn_CRHOpenFile.Depth = 0;
-            this.btn_CRHOpenFile.Location = new System.Drawing.Point(12, 93);
+            this.btn_CRHOpenFile.Location = new System.Drawing.Point(47, 109);
             this.btn_CRHOpenFile.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_CRHOpenFile.Name = "btn_CRHOpenFile";
             this.btn_CRHOpenFile.Primary = true;
@@ -65,205 +90,152 @@
             this.btn_CRHOpenFile.UseVisualStyleBackColor = true;
             this.btn_CRHOpenFile.Click += new System.EventHandler(this.btn_CRHOpenFile_Click);
             // 
-            // dataGridView1
+            // liv_CRHCommon
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Time,
-            this.Sign,
-            this.SignVersion,
-            this.SignValue});
-            this.dataGridView1.Location = new System.Drawing.Point(368, 213);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(403, 257);
-            this.dataGridView1.TabIndex = 1;
+            this.liv_CRHCommon.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.key,
+            this.value});
+            this.liv_CRHCommon.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10,
+            listViewItem11});
+            this.liv_CRHCommon.Location = new System.Drawing.Point(258, 181);
+            this.liv_CRHCommon.Name = "liv_CRHCommon";
+            this.liv_CRHCommon.Size = new System.Drawing.Size(261, 285);
+            this.liv_CRHCommon.SmallImageList = this.imageList1;
+            this.liv_CRHCommon.TabIndex = 3;
+            this.liv_CRHCommon.UseCompatibleStateImageBehavior = false;
+            this.liv_CRHCommon.View = System.Windows.Forms.View.Details;
             // 
-            // Time
+            // key
             // 
-            this.Time.DataPropertyName = "Time";
-            this.Time.HeaderText = "记录时间";
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
+            this.key.Text = "字段";
+            this.key.Width = 130;
             // 
-            // Sign
+            // value
             // 
-            this.Sign.DataPropertyName = "Sign";
-            this.Sign.HeaderText = "冠字号码";
-            this.Sign.Name = "Sign";
-            this.Sign.ReadOnly = true;
+            this.value.Text = "值";
+            this.value.Width = 114;
             // 
-            // SignVersion
+            // imageList1
             // 
-            this.SignVersion.DataPropertyName = "SignVersion";
-            this.SignVersion.HeaderText = "版别";
-            this.SignVersion.Name = "SignVersion";
-            this.SignVersion.ReadOnly = true;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(18, 20);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // SignValue
+            // liv_CRHRecord
             // 
-            this.SignValue.DataPropertyName = "SignValue";
-            this.SignValue.HeaderText = "币值";
-            this.SignValue.Name = "SignValue";
-            this.SignValue.ReadOnly = true;
+            this.liv_CRHRecord.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.number,
+            this.recordtime,
+            this.recordsign,
+            this.recordversion,
+            this.recordvalue});
+            this.liv_CRHRecord.Location = new System.Drawing.Point(565, 158);
+            this.liv_CRHRecord.Name = "liv_CRHRecord";
+            this.liv_CRHRecord.Size = new System.Drawing.Size(466, 308);
+            this.liv_CRHRecord.TabIndex = 4;
+            this.liv_CRHRecord.UseCompatibleStateImageBehavior = false;
+            this.liv_CRHRecord.View = System.Windows.Forms.View.Details;
             // 
-            // dataGridView2
+            // recordtime
             // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Date,
-            this.BankCode,
-            this.NodeCode,
-            this.BussinessType,
-            this.RecordCount,
-            this.ClearCenter,
-            this.FileVersion,
-            this.MachineType,
-            this.MachineModel,
-            this.MachineNumber,
-            this.BussinessNumber});
-            this.dataGridView2.Location = new System.Drawing.Point(12, 159);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(1104, 48);
-            this.dataGridView2.TabIndex = 2;
+            this.recordtime.Text = "记录时间";
+            this.recordtime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.recordtime.Width = 119;
             // 
-            // Date
+            // recordsign
             // 
-            this.Date.DataPropertyName = "Date";
-            this.Date.HeaderText = "记录日期";
-            this.Date.Name = "Date";
-            this.Date.ReadOnly = true;
+            this.recordsign.Text = "冠字号码";
+            this.recordsign.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.recordsign.Width = 111;
             // 
-            // BankCode
+            // recordversion
             // 
-            this.BankCode.DataPropertyName = "BankCode";
-            this.BankCode.HeaderText = "报送银行编码";
-            this.BankCode.Name = "BankCode";
-            this.BankCode.ReadOnly = true;
+            this.recordversion.DisplayIndex = 4;
+            this.recordversion.Text = "版别";
+            this.recordversion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.recordversion.Width = 84;
             // 
-            // NodeCode
+            // recordvalue
             // 
-            this.NodeCode.DataPropertyName = "NodeCode";
-            this.NodeCode.HeaderText = "生成网点编码";
-            this.NodeCode.Name = "NodeCode";
-            this.NodeCode.ReadOnly = true;
+            this.recordvalue.DisplayIndex = 3;
+            this.recordvalue.Text = "币值";
+            this.recordvalue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.recordvalue.Width = 80;
             // 
-            // BussinessType
+            // lab_CRHCommon
             // 
-            this.BussinessType.DataPropertyName = "BussinessType";
-            this.BussinessType.HeaderText = "业务类型";
-            this.BussinessType.Name = "BussinessType";
-            this.BussinessType.ReadOnly = true;
+            this.lab_CRHCommon.AutoSize = true;
+            this.lab_CRHCommon.Depth = 0;
+            this.lab_CRHCommon.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lab_CRHCommon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lab_CRHCommon.Location = new System.Drawing.Point(254, 154);
+            this.lab_CRHCommon.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lab_CRHCommon.Name = "lab_CRHCommon";
+            this.lab_CRHCommon.Size = new System.Drawing.Size(121, 19);
+            this.lab_CRHCommon.TabIndex = 5;
+            this.lab_CRHCommon.Text = "公共信息部分：";
             // 
-            // RecordCount
+            // lab_CRHRecord
             // 
-            this.RecordCount.DataPropertyName = "RecordCount";
-            this.RecordCount.HeaderText = "记录数";
-            this.RecordCount.Name = "RecordCount";
-            this.RecordCount.ReadOnly = true;
+            this.lab_CRHRecord.AutoSize = true;
+            this.lab_CRHRecord.Depth = 0;
+            this.lab_CRHRecord.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lab_CRHRecord.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lab_CRHRecord.Location = new System.Drawing.Point(561, 132);
+            this.lab_CRHRecord.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lab_CRHRecord.Name = "lab_CRHRecord";
+            this.lab_CRHRecord.Size = new System.Drawing.Size(153, 19);
+            this.lab_CRHRecord.TabIndex = 6;
+            this.lab_CRHRecord.Text = "冠字号码记录部分：";
             // 
-            // ClearCenter
+            // number
             // 
-            this.ClearCenter.DataPropertyName = "ClearCenter";
-            this.ClearCenter.HeaderText = "现金清分中心";
-            this.ClearCenter.Name = "ClearCenter";
-            this.ClearCenter.ReadOnly = true;
-            // 
-            // FileVersion
-            // 
-            this.FileVersion.DataPropertyName = "FileVersion";
-            this.FileVersion.HeaderText = "文件版本";
-            this.FileVersion.Name = "FileVersion";
-            this.FileVersion.ReadOnly = true;
-            // 
-            // MachineType
-            // 
-            this.MachineType.DataPropertyName = "MachineType";
-            this.MachineType.HeaderText = "设备类别";
-            this.MachineType.Name = "MachineType";
-            this.MachineType.ReadOnly = true;
-            // 
-            // MachineModel
-            // 
-            this.MachineModel.DataPropertyName = "MachineModel";
-            this.MachineModel.HeaderText = "机型";
-            this.MachineModel.Name = "MachineModel";
-            this.MachineModel.ReadOnly = true;
-            // 
-            // MachineNumber
-            // 
-            this.MachineNumber.DataPropertyName = "MachineNumber";
-            this.MachineNumber.HeaderText = "设备编号";
-            this.MachineNumber.Name = "MachineNumber";
-            this.MachineNumber.ReadOnly = true;
-            // 
-            // BussinessNumber
-            // 
-            this.BussinessNumber.DataPropertyName = "BussinessNumber";
-            this.BussinessNumber.HeaderText = "业务关联信息";
-            this.BussinessNumber.Name = "BussinessNumber";
-            this.BussinessNumber.ReadOnly = true;
+            this.number.Text = "序号";
             // 
             // CRHReview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 482);
-            this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.lab_CRHRecord);
+            this.Controls.Add(this.lab_CRHCommon);
+            this.Controls.Add(this.liv_CRHRecord);
+            this.Controls.Add(this.liv_CRHCommon);
             this.Controls.Add(this.btn_CRHOpenFile);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CRHReview";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CRH查看";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private MaterialSkin.Controls.MaterialRaisedButton btn_CRHOpenFile;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Sign;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SignVersion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SignValue;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BankCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NodeCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BussinessType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RecordCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClearCenter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FileVersion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MachineType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MachineModel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MachineNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BussinessNumber;
+        private System.Windows.Forms.ListView liv_CRHCommon;
+        private System.Windows.Forms.ColumnHeader key;
+        private System.Windows.Forms.ColumnHeader value;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ListView liv_CRHRecord;
+        private System.Windows.Forms.ColumnHeader recordtime;
+        private System.Windows.Forms.ColumnHeader recordsign;
+        private System.Windows.Forms.ColumnHeader recordversion;
+        private System.Windows.Forms.ColumnHeader recordvalue;
+        private MaterialSkin.Controls.MaterialLabel lab_CRHCommon;
+        private MaterialSkin.Controls.MaterialLabel lab_CRHRecord;
+        private System.Windows.Forms.ColumnHeader number;
     }
 }

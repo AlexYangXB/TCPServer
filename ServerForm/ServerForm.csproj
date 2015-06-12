@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ServerForm</RootNamespace>
     <AssemblyName>ServerForm</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -99,6 +100,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -112,13 +114,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KyBll\KyBll.csproj">
+      <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
+      <Name>KyBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KyModel\KyModel.csproj">
+      <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
+      <Name>KyModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TcpServer\MyTcpServer.csproj">
       <Project>{B0778505-ED62-4D28-866C-7E29C0E78F79}</Project>
       <Name>MyTcpServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{CDF78796-AE5A-4260-A657-80AA0767232F}</Project>
-      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

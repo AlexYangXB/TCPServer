@@ -470,11 +470,6 @@
             "AssemblyAsmDisplayName" = "8:TcpServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_3CC1711314A40AE0FF48B661B21D470C"
-                    {
-                    "Name" = "8:TcpServer.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TcpServer.dll"
             "TargetName" = "8:"
@@ -501,11 +496,6 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_72D39A8ACDDC22AABDD80C82933A0037"
-                    {
-                    "Name" = "8:EntityFramework.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EntityFramework.dll"
             "TargetName" = "8:"
@@ -532,11 +522,6 @@
             "AssemblyAsmDisplayName" = "8:System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7A7875E7256E0989E01D9A63C6765870"
-                    {
-                    "Name" = "8:System.Threading.Tasks.NET35.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Threading.Tasks.NET35.dll"
             "TargetName" = "8:"
@@ -563,11 +548,6 @@
             "AssemblyAsmDisplayName" = "8:EngineIoClientDotNet, Version=0.9.17.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7F39CD6D25FC233B9823E86344F4889B"
-                    {
-                    "Name" = "8:EngineIoClientDotNet.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EngineIoClientDotNet.dll"
             "TargetName" = "8:"
@@ -634,11 +614,6 @@
             "AssemblyAsmDisplayName" = "8:MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_925AF0785AF1B1AE22006BB5A95E907E"
-                    {
-                    "Name" = "8:MaterialSkin.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MaterialSkin.dll"
             "TargetName" = "8:"
@@ -665,11 +640,6 @@
             "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_966CF31867416BFFB6769016753919DB"
-                    {
-                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
@@ -696,11 +666,6 @@
             "AssemblyAsmDisplayName" = "8:MySql.Data.Entity.EF6, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_9FA9AD08EBE616254AAD7CE55AFD8DCF"
-                    {
-                    "Name" = "8:MySql.Data.Entity.EF6.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MySql.Data.Entity.EF6.dll"
             "TargetName" = "8:"
@@ -727,11 +692,6 @@
             "AssemblyAsmDisplayName" = "8:KyModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A8BC6F25CA91902E7F62A91FA19BA3D8"
-                    {
-                    "Name" = "8:KyModel.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:KyModel.dll"
             "TargetName" = "8:"
@@ -758,11 +718,6 @@
             "AssemblyAsmDisplayName" = "8:WebSocket4Net, Version=0.11.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_CCB23EFB66053031D749F205D88BF4C7"
-                    {
-                    "Name" = "8:WebSocket4Net.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:WebSocket4Net.dll"
             "TargetName" = "8:"
@@ -789,11 +744,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_CEFDC40F2DFBA4FDF12D7D206F862372"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -840,11 +790,6 @@
             "AssemblyAsmDisplayName" = "8:KyBll, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E50F7BD3179ECFBF9601046E2FF61343"
-                    {
-                    "Name" = "8:KyBll.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:KyBll.dll"
             "TargetName" = "8:"
@@ -871,11 +816,6 @@
             "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_F63BA85854088C39D5D2E5AE1643861D"
-                    {
-                    "Name" = "8:MySql.Data.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MySql.Data.dll"
             "TargetName" = "8:"
@@ -902,11 +842,6 @@
             "AssemblyAsmDisplayName" = "8:SocketIoClientDotNet, Version=0.9.10.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_FC71E26BD6B5A8397E2D63FBD923EAC4"
-                    {
-                    "Name" = "8:SocketIoClientDotNet.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SocketIoClientDotNet.dll"
             "TargetName" = "8:"
@@ -1004,7 +939,7 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:康艺网点管理端"
-        "ProductCode" = "8:{1695CAB9-BAE0-42F5-B047-76D3FDB05359}"
+        "ProductCode" = "8:{A4603D8C-5798-483A-BCDF-687C865CC532}"
         "PackageCode" = "8:{95F6567A-16E7-4565-BAA8-83B8F63B4277}"
         "UpgradeCode" = "8:{7AD2C6DE-4672-461D-8A94-85D2B8764F65}"
         "AspNetVersion" = "8:4.0.30319.0"
@@ -1046,6 +981,70 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C1B588D58C7143CE848E9316F1C93A5F"
+                            {
+                            "Name" = "8:Microsoft"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_330C252E48A3465993CA3238EEA49476"
+                                    {
+                                    "Name" = "8:Windows"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_A06D700FC52E4464B12F951021D17D22"
+                                            {
+                                            "Name" = "8:CurrentVersion"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_DF1C77B4F75D48BF9D5626251403A0E3"
+                                                    {
+                                                    "Name" = "8:Run"
+                                                    "Condition" = "8:"
+                                                    "AlwaysCreate" = "11:FALSE"
+                                                    "DeleteAtUninstall" = "11:FALSE"
+                                                    "Transitive" = "11:FALSE"
+                                                        "Keys"
+                                                        {
+                                                        }
+                                                        "Values"
+                                                        {
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_0007FA77B01F4BA08CD13944EB72FE59"
+                                                            {
+                                                            "Name" = "8:KangYiCollection"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:1"
+                                                            "Value" = "8:[TARGETDIR]KangYiCollection.exe"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_E27D17A422304BA18BAF9084F2DD9106"
                             {
                             "Name" = "8:[Manufacturer]"

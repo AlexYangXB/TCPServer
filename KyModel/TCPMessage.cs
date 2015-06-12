@@ -16,6 +16,7 @@ namespace KyModel
     {
         NewConnection=0,
         NoMachineIp=1,
+        
         /// <summary>
         /// 传输数据请求命令
         /// </summary>
@@ -31,7 +32,14 @@ namespace KyModel
         /// <summary>
         /// 时间同步命令
         /// </summary>
-        NET_TIME=5
+        NET_TIME=5,
+        /// <summary>
+        /// 心跳命令
+        /// </summary>
+        NET_CONTINUE=6,
+        ExistConnection=7,
+        UnknownCommand=8,
+        
     }
     
 }

@@ -8,7 +8,7 @@ using KyModel.Models;
 using System.Linq;
 using KyBll;
 using KyBll.DBUtility;
-namespace NodeServerAndManager.BaseWinform
+namespace KangYiCollection.BaseWinform
 {
     public partial class ServerSettings : MaterialSkin.Controls.MaterialForm
     {
@@ -53,7 +53,7 @@ namespace NodeServerAndManager.BaseWinform
             ipControl_Device.Text = DeviceIp;
             ipControl_Push.Text = PushIp;
 
-
+            Application.DoEvents();
             //启动服务后关闭等待窗体
             waitingForm.SetText("正在初始化，请稍候...");
             new Action(ServerSettingInit).BeginInvoke(new AsyncCallback(CloseLoading), null);
@@ -121,7 +121,7 @@ namespace NodeServerAndManager.BaseWinform
             Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
             Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             //修改自动更新配置文件
-            IniFile g = new IniFile(Environment.CurrentDirectory + "/config.ini");
+            IniFile g = new IniFile(Application.StartupPath + "/config.ini");
             string url = g.ReadString("NETWORK", "URL", "");
             g.WriteString("NETWORK", "URL", "http://"+Properties.Settings.Default.DeviceIp.ToString()+":8888/update/");
             Properties.Settings.Default.Save();
@@ -219,6 +219,25 @@ namespace NodeServerAndManager.BaseWinform
             waitingForm.SetText("正在测试，请稍等...");
             new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
+            List<ky_node> dtNode = KyDataOperation.GetAllNode();
+            chkList_Node.DataSource = dtNode;
+            chkList_Node.DisplayMember = "kNodeName";
+            chkList_Node.ValueMember = "kId";
+            if (LocalIp != "" && LocalIp != "0.0.0.0")
+            {
+                string strMessage = "";
+                for (var i = 0; i < dtNode.Count; i++)
+                {
+                    if (LocalIp == dtNode[i].kBindIpAddress)
+                    {
+                        chkList_Node.SetItemChecked(i, true);
+                        strMessage += dtNode[i].kNodeName + ";";
+                    }
+                    else
+                        chkList_Node.SetItemChecked(i, false);
+                }
+                txb_BindNode.Text = strMessage;
+            }
             
         }
         private void DeviceTest()
@@ -239,10 +258,8 @@ namespace NodeServerAndManager.BaseWinform
                 List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
                 cmb_imageServer.DataSource = dt;
                 cmb_imageServer.DisplayMember = "kIpAddress";
-                List<ky_node> dtNode = KyDataOperation.GetAllNode();
-                chkList_Node.DataSource = dtNode;
-                chkList_Node.DisplayMember = "kNodeName";
-                chkList_Node.ValueMember = "kId";
+               
+                
             }
             else
                 MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);

@@ -1,4 +1,4 @@
-﻿namespace NodeServerAndManager.BaseWinform
+﻿namespace KangYiCollection.BaseWinform
 {
     partial class WaitingForm
     {

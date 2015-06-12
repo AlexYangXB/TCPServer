@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("TcpServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("康艺网点客户端")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lenovo (Beijing) Limited")]
+[assembly: AssemblyCompany("广州康艺电子有限公司顺德分公司")]
 [assembly: AssemblyProduct("TcpServer")]
-[assembly: AssemblyCopyright("Copyright © Lenovo (Beijing) Limited 2014")]
+[assembly: AssemblyCopyright("Copyright © 广州康艺电子有限公司顺德分公司 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

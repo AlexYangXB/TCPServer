@@ -1,4 +1,4 @@
-﻿namespace NodeServerAndManager.Control
+﻿namespace KangYiCollection.Control
 {
     partial class IpControl
     {

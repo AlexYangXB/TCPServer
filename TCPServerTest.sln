@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KyModel", "KyModel\KyModel.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialSkin", "MaterialSkin\MaterialSkin.csproj", "{8EB7611B-68CD-4B8B-987A-11717E2B250C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerForm", "ServerForm\ServerForm.csproj", "{7694E379-172B-447B-AAB3-22C18F98435D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TCPServerTest.vsmdi
@@ -237,6 +239,31 @@ Global
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.STATIC_ONLY NO_EXPRESSIONS|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.STATIC_ONLY NO_EXPRESSIONS|Mixed Platforms.Build.0 = Release|Any CPU
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.STATIC_ONLY NO_EXPRESSIONS|x86.ActiveCfg = Release|Any CPU
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Debug|x86.ActiveCfg = Debug|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Debug|x86.Build.0 = Debug|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.MonoTouch|Any CPU.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.MonoTouch|Mixed Platforms.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.MonoTouch|Mixed Platforms.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.MonoTouch|x86.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.MonoTouch|x86.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Release|Any CPU.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Release|x86.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Release|x86.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Signed|Any CPU.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Signed|Mixed Platforms.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Signed|Mixed Platforms.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Signed|x86.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.Signed|x86.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.STATIC_ONLY NO_EXPRESSIONS|Any CPU.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.STATIC_ONLY NO_EXPRESSIONS|Mixed Platforms.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.STATIC_ONLY NO_EXPRESSIONS|Mixed Platforms.Build.0 = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.STATIC_ONLY NO_EXPRESSIONS|x86.ActiveCfg = Release|x86
+		{7694E379-172B-447B-AAB3-22C18F98435D}.STATIC_ONLY NO_EXPRESSIONS|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

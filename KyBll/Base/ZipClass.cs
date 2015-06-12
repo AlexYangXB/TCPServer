@@ -30,38 +30,29 @@ namespace KyBll.Base
                 return false;
             }
         }
-        /// <summary>
-        /// 递归压缩文件夹方法
-        /// </summary>
-        /// <param name="folderToZip"></param>
-        /// <param name="s"></param>
-        /// <param name="ParentFolderName"></param>
-        private bool ZipFileDictory(string folderToZip, ZipOutputStream s, string ParentFolderName)
+        private void zip(string strFile, ZipOutputStream s, string staticFile)
         {
-            bool res = true;
-            string[] folders, filenames;
-            ZipEntry entry = null;
-            FileStream fs = null;
+            if (strFile[strFile.Length - 1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
             Crc32 crc = new Crc32();
-            try
+            string[] filenames = Directory.GetFileSystemEntries(strFile);
+            foreach (string file in filenames)
             {
-                //////创建当前文件夹
-                // 20121221
-                //entry = new ZipEntry(Path.Combine(ParentFolderName, Path.GetFileName(folderToZip) + "/"));  //加上 “/” 才会当成是文件夹创建
-                //s.PutNextEntry(entry);
-                //s.Flush();
-                //先压缩文件，再递归压缩文件夹 
-                filenames = Directory.GetFiles(folderToZip);
-                foreach (string file in filenames)
+
+                if (Directory.Exists(file))
+                {
+                    zip(file, s, staticFile);
+                }
+
+                else // 否则直接压缩文件
                 {
                     //打开压缩文件
-                    fs = File.OpenRead(file);
+                    FileStream fs = File.OpenRead(file);
 
                     byte[] buffer = new byte[fs.Length];
                     fs.Read(buffer, 0, buffer.Length);
-                    //20121221
-                    //entry = new ZipEntry(Path.Combine(ParentFolderName, Path.GetFileName(folderToZip) + "/" + Path.GetFileName(file)));
-                    entry = new ZipEntry(Path.Combine(ParentFolderName, "" + Path.GetFileName(file)));
+                    string tempfile = file.Substring(staticFile.LastIndexOf("\\") + 1);
+                    ZipEntry entry = new ZipEntry(tempfile);
+
                     entry.DateTime = DateTime.Now;
                     entry.Size = fs.Length;
                     fs.Close();
@@ -69,32 +60,25 @@ namespace KyBll.Base
                     crc.Update(buffer);
                     entry.Crc = crc.Value;
                     s.PutNextEntry(entry);
+
                     s.Write(buffer, 0, buffer.Length);
                 }
             }
-            catch
-            {
-                res = false;
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                    fs = null;
-                }
-                if (entry != null)
-                    entry = null;
-                GC.Collect();
-                GC.Collect(1);
-            }
-            folders = Directory.GetDirectories(folderToZip);
-            foreach (string folder in folders)
-            {
-                if (!ZipFileDictory(folder, s, Path.Combine(ParentFolderName, Path.GetFileName(folderToZip))))
-                    return false;
-            }
-            return res;
+        }
+        /// <summary>
+        /// 压缩文件夹
+        /// </summary>
+        /// <param name="dirName"></param>
+        /// <param name="zipFileName"></param>
+        public void ZipDirFile(string dirName, string zipFileName)
+        {
+            if (dirName[dirName.Length - 1] != Path.DirectorySeparatorChar)
+                dirName += Path.DirectorySeparatorChar;
+            ZipOutputStream s = new ZipOutputStream(File.Create(zipFileName));
+            s.SetLevel(6); // 0 - store only to 9 - means best compression
+            zip(dirName, s, dirName);
+            s.Finish();
+            s.Close();
         }
 
 

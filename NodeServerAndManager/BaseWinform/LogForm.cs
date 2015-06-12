@@ -10,7 +10,7 @@ using MyTcpServer;
 using KyModel;
 using KyBll;
 using MaterialSkin;
-namespace NodeServerAndManager.BaseWinform
+namespace KangYiCollection.BaseWinform
 {
     public partial class LogForm : MaterialSkin.Controls.MaterialForm
     {

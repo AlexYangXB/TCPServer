@@ -267,7 +267,7 @@ namespace KyModel
                     }
                 }
             }
-            return machineNumber;
+            return machineNumber.Replace("\0", "");
         }
 
         //获取文件中的第一个点钞时间
@@ -279,55 +279,7 @@ namespace KyModel
             return sign.Date;
         }
 
-        /// <summary>
-        /// 读取GZH文件
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static KYDataLayer1.Gzh ReadGzh(string file)
-        {
-            try
-            {
-                KYDataLayer1.Gzh gzh = new KYDataLayer1.Gzh();
-                gzh.fileName = Path.GetFileName(file);
-
-                using (StreamReader sr = new StreamReader(file, Encoding.ASCII))
-                {
-                    string strLine = sr.ReadLine();
-                    string[] str = strLine.Split(":".ToCharArray());
-                    if (str.Length == 10)
-                    {
-                        
-                        try
-                        {
-                            gzh.date = DateTime.ParseExact(str[0], "yyyyMMddHHmmss", null);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                        gzh.branchNumber = str[1];
-                        gzh.nodeNumber = str[2];
-                        gzh.business = str[3];
-                        gzh.fileCnt = int.Parse(str[4]);
-                        gzh.isCashCenter = str[5];
-                        gzh.fileVersion = str[6];
-                        gzh.packageNumber = str[7];
-                        gzh.currency = str[8];
-                        gzh.reserved = str[9];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                return gzh;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+       
 
 
         
@@ -379,7 +331,7 @@ namespace KyModel
                     }
                 }
             }
-            File.Delete(fsnFile);
+           // File.Delete(fsnFile);
         }
        
 

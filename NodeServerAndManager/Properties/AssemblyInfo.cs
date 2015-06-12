@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("NodeServerAndManager")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("KangYiCollection")]
+[assembly: AssemblyDescription("康艺网点客户端")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lenovo (Beijing) Limited")]
-[assembly: AssemblyProduct("NodeServerAndManager")]
-[assembly: AssemblyCopyright("Copyright © Lenovo (Beijing) Limited 2015")]
+[assembly: AssemblyCompany("广州康艺电子有限公司顺德分公司")]
+[assembly: AssemblyProduct("KangYiCollection")]
+[assembly: AssemblyCopyright("Copyright © 广州康艺电子有限公司顺德分公司 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

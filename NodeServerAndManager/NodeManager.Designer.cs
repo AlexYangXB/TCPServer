@@ -1,4 +1,4 @@
-﻿namespace NodeServerAndManager
+﻿namespace KangYiCollection
 {
     partial class NodeManager
     {
@@ -66,25 +66,29 @@
             this.txb_PassWord = new System.Windows.Forms.TextBox();
             this.txb_User = new System.Windows.Forms.TextBox();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
-            this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
-            this.SystemSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LogOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip_Main = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.MenuItem_ServerSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_SystemSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_CRHReview = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Log = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_LogOut = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_ImportFSN = new System.Windows.Forms.Timer(this.components);
-            this.CRHReviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer_ExportCRH = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon_Tray = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip_Tray = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.MenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_machine)).BeginInit();
             this.tabPage3.SuspendLayout();
-            this.materialContextMenuStrip1.SuspendLayout();
+            this.contextMenuStrip_Main.SuspendLayout();
+            this.contextMenuStrip_Tray.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer_UpdateMachine
             // 
-            this.timer_UpdateMachine.Enabled = true;
             this.timer_UpdateMachine.Interval = 600000;
             this.timer_UpdateMachine.Tick += new System.EventHandler(this.timer_UpdateMachine_Tick);
             // 
@@ -156,6 +160,7 @@
             this.rad_GZH.TabIndex = 31;
             this.rad_GZH.Text = "GZH文件";
             this.rad_GZH.UseVisualStyleBackColor = true;
+            this.rad_GZH.CheckedChanged += new System.EventHandler(this.rad_GZH_CheckedChanged);
             // 
             // rad_FSN
             // 
@@ -168,6 +173,7 @@
             this.rad_FSN.TabStop = true;
             this.rad_FSN.Text = "FSN文件";
             this.rad_FSN.UseVisualStyleBackColor = true;
+            this.rad_FSN.CheckedChanged += new System.EventHandler(this.rad_FSN_CheckedChanged);
             // 
             // txb_FilePath
             // 
@@ -499,59 +505,90 @@
             this.materialTabSelector1.TabIndex = 1;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
-            // materialContextMenuStrip1
+            // contextMenuStrip_Main
             // 
-            this.materialContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialContextMenuStrip1.Depth = 0;
-            this.materialContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ServerSettingToolStripMenuItem,
-            this.SystemSettingToolStripMenuItem,
-            this.CRHReviewToolStripMenuItem,
-            this.LogToolStripMenuItem,
-            this.LogOutToolStripMenuItem});
-            this.materialContextMenuStrip1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialContextMenuStrip1.Name = "materialContextMenuStrip1";
-            this.materialContextMenuStrip1.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.contextMenuStrip_Main.Depth = 0;
+            this.contextMenuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_ServerSetting,
+            this.MenuItem_SystemSetting,
+            this.MenuItem_CRHReview,
+            this.MenuItem_Log,
+            this.MenuItem_LogOut});
+            this.contextMenuStrip_Main.MouseState = MaterialSkin.MouseState.HOVER;
+            this.contextMenuStrip_Main.Name = "materialContextMenuStrip1";
+            this.contextMenuStrip_Main.Size = new System.Drawing.Size(137, 114);
             // 
-            // SystemSettingToolStripMenuItem
+            // MenuItem_ServerSetting
             // 
-            this.SystemSettingToolStripMenuItem.Name = "SystemSettingToolStripMenuItem";
-            this.SystemSettingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.SystemSettingToolStripMenuItem.Text = "系统设置";
-            this.SystemSettingToolStripMenuItem.Click += new System.EventHandler(this.SystemSettingToolStripMenuItem_Click);
+            this.MenuItem_ServerSetting.Name = "MenuItem_ServerSetting";
+            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_ServerSetting.Text = "服务器设置";
+            this.MenuItem_ServerSetting.Click += new System.EventHandler(this.MenuItem_ServerSetting_Click);
             // 
-            // ServerSettingToolStripMenuItem
+            // MenuItem_SystemSetting
             // 
-            this.ServerSettingToolStripMenuItem.Name = "ServerSettingToolStripMenuItem";
-            this.ServerSettingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ServerSettingToolStripMenuItem.Text = "服务器设置";
-            this.ServerSettingToolStripMenuItem.Click += new System.EventHandler(this.ServerSettingToolStripMenuItem_Click);
+            this.MenuItem_SystemSetting.Name = "MenuItem_SystemSetting";
+            this.MenuItem_SystemSetting.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_SystemSetting.Text = "系统设置";
+            this.MenuItem_SystemSetting.Click += new System.EventHandler(this.MenuItem_SystemSetting_Click);
             // 
-            // LogToolStripMenuItem
+            // MenuItem_CRHReview
             // 
-            this.LogToolStripMenuItem.Name = "LogToolStripMenuItem";
-            this.LogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.LogToolStripMenuItem.Text = "日志";
-            this.LogToolStripMenuItem.Click += new System.EventHandler(this.LogToolStripMenuItem_Click);
+            this.MenuItem_CRHReview.Name = "MenuItem_CRHReview";
+            this.MenuItem_CRHReview.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_CRHReview.Text = "CRH查看";
+            this.MenuItem_CRHReview.Click += new System.EventHandler(this.MenuItem_CRHReview_Click);
             // 
-            // LogOutToolStripMenuItem
+            // MenuItem_Log
             // 
-            this.LogOutToolStripMenuItem.Name = "LogOutToolStripMenuItem";
-            this.LogOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.LogOutToolStripMenuItem.Text = "注销";
-            this.LogOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItem_Click);
+            this.MenuItem_Log.Name = "MenuItem_Log";
+            this.MenuItem_Log.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_Log.Text = "日志";
+            this.MenuItem_Log.Click += new System.EventHandler(this.MenuItem_Log_Click);
+            // 
+            // MenuItem_LogOut
+            // 
+            this.MenuItem_LogOut.Name = "MenuItem_LogOut";
+            this.MenuItem_LogOut.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_LogOut.Text = "注销";
+            this.MenuItem_LogOut.Click += new System.EventHandler(this.MenuItem_LogOut_Click);
             // 
             // timer_ImportFSN
             // 
             this.timer_ImportFSN.Enabled = true;
             this.timer_ImportFSN.Interval = 3000;
             // 
-            // CRHReviewToolStripMenuItem
+            // timer_ExportCRH
             // 
-            this.CRHReviewToolStripMenuItem.Name = "CRHReviewToolStripMenuItem";
-            this.CRHReviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.CRHReviewToolStripMenuItem.Text = "CRH查看";
-            this.CRHReviewToolStripMenuItem.Click += new System.EventHandler(this.CRHReviewToolStripMenuItem_Click);
+            this.timer_ExportCRH.Enabled = true;
+            this.timer_ExportCRH.Interval = 3000;
+            this.timer_ExportCRH.Tick += new System.EventHandler(this.timer_ExportCRH_Tick);
+            // 
+            // notifyIcon_Tray
+            // 
+            this.notifyIcon_Tray.ContextMenuStrip = this.contextMenuStrip_Tray;
+            this.notifyIcon_Tray.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon_Tray.Icon")));
+            this.notifyIcon_Tray.Text = "SyncthingTray";
+            this.notifyIcon_Tray.Visible = true;
+            //this.notifyIcon_Tray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            // 
+            // contextMenuStrip_Tray
+            // 
+            this.contextMenuStrip_Tray.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.contextMenuStrip_Tray.Depth = 0;
+            this.contextMenuStrip_Tray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_Exit});
+            this.contextMenuStrip_Tray.MouseState = MaterialSkin.MouseState.HOVER;
+            this.contextMenuStrip_Tray.Name = "contextMenuStrip_Tray";
+            this.contextMenuStrip_Tray.Size = new System.Drawing.Size(101, 26);
+            // 
+            // MenuItem_Exit
+            // 
+            this.MenuItem_Exit.Name = "MenuItem_Exit";
+            this.MenuItem_Exit.Size = new System.Drawing.Size(100, 22);
+            this.MenuItem_Exit.Text = "退出";
+            this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
             // 
             // NodeManager
             // 
@@ -567,6 +604,7 @@
             this.Activated += new System.EventHandler(this.NodeManager_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NodeManager_FormClosing);
             this.Load += new System.EventHandler(this.NodeManager_Load);
+           // this.Resize += new System.EventHandler(this.NodeManager_Resize);
             this.materialTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -576,7 +614,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_machine)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.materialContextMenuStrip1.ResumeLayout(false);
+            this.contextMenuStrip_Main.ResumeLayout(false);
+            this.contextMenuStrip_Tray.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -618,13 +657,17 @@
         private System.Windows.Forms.TextBox txb_PassWord;
         private System.Windows.Forms.TextBox txb_User;
         private MaterialSkin.Controls.MaterialRaisedButton btn_Login;
-        private MaterialSkin.Controls.MaterialContextMenuStrip materialContextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem ServerSettingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem LogToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem LogOutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SystemSettingToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialContextMenuStrip contextMenuStrip_Main;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_ServerSetting;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Log;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_LogOut;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_SystemSetting;
         private System.Windows.Forms.Timer timer_ImportFSN;
-        private System.Windows.Forms.ToolStripMenuItem CRHReviewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_CRHReview;
+        private System.Windows.Forms.Timer timer_ExportCRH;
+        private System.Windows.Forms.NotifyIcon notifyIcon_Tray;
+        private MaterialSkin.Controls.MaterialContextMenuStrip contextMenuStrip_Tray;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Exit;
     }
 }
 

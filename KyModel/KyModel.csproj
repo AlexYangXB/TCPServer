@@ -50,6 +50,7 @@
     <Compile Include="businessControl.cs" />
     <Compile Include="BussinessType.cs" />
     <Compile Include="CRH.cs" />
+    <Compile Include="GZH.cs" />
     <Compile Include="KyDataLayer1.cs" />
     <Compile Include="KyDataLayer2.cs" />
     <Compile Include="ky_agent_batch.cs" />

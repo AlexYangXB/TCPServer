@@ -10,11 +10,27 @@ using MaterialSkin;
 using System.IO;
 using KyBll;
 using KyModel;
-namespace NodeServerAndManager.BaseWinform
+namespace KangYiCollection.BaseWinform
 {
     public partial class SystemSettings : MaterialSkin.Controls.MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
+        /// <summary>
+        /// 等待窗体
+        /// </summary>
+        WaitingForm waitingForm = new WaitingForm();
+        /// <summary>
+        /// 委托关闭等待窗体
+        /// </summary>
+        public delegate void delloading();
+        public void CloseLoading(IAsyncResult ar)
+        {
+            this.Invoke(new delloading(() => { waitingForm.Close(); }));
+        }
+        //手动导出CRH
+        private DateTime startTime;
+        private DateTime endTime;
+        private string foldPath;
         public SystemSettings()
         {
             InitializeComponent();
@@ -102,15 +118,37 @@ namespace NodeServerAndManager.BaseWinform
 
         private void btn_CRHExport_Click(object sender, EventArgs e)
         {
-            DateTime startTime = Convert.ToDateTime(DateTime.Now.AddDays(-10));
-            DateTime endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
+            if (rb_CRHYesterday.Checked)
+            {
+                startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
+                endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                //默认导出当天
+                startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+            }
             FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if (Directory.Exists(Properties.Settings.Default.CRHDir))
+                dialog.SelectedPath = Properties.Settings.Default.CRHDir;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                string foldPath = dialog.SelectedPath;
-                CRHExport crhExport = new CRHExport(startTime, endTime, foldPath);
+                foldPath = dialog.SelectedPath;
+                Application.DoEvents();
+                waitingForm.SetText("正在导出CRH，请稍等...");
+                new Action(ExportToCRH).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                waitingForm.ShowDialog();
+                if (MessageBox.Show("导出成功！，是否打开导出目录？", "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) == DialogResult.OK)
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", foldPath);
+                }
             }
            
+        }
+        private void ExportToCRH()
+        {
+            CRHExport crhExport = new CRHExport(startTime, endTime, foldPath);
         }
     }
 }

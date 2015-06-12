@@ -18,6 +18,8 @@ namespace KyModel
         public int bundleCount;         //每捆钞票张数
         public string isClearCenter;      //是否清分中心
         public string packageNumber;    //包号
+        public bool cancel;            //撤销
+        public string bundleNumbers;//捆钞序号
         
     }
 }

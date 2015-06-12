@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace NodeServerAndManager.Control
+namespace KangYiCollection.Control
 {
     public enum IPType : byte { A, B, C, D, E };  
     public partial class IpControl : UserControl

@@ -1,4 +1,4 @@
-﻿namespace NodeServerAndManager.BaseWinform
+﻿namespace KangYiCollection.BaseWinform
 {
     partial class ServerSettings
     {
@@ -56,10 +56,10 @@
             this.txb_BindNode = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.chkList_Node = new System.Windows.Forms.CheckedListBox();
-            this.ipControl_Push = new NodeServerAndManager.Control.IpControl();
-            this.ipControl_Server = new NodeServerAndManager.Control.IpControl();
-            this.ipControl_Device = new NodeServerAndManager.Control.IpControl();
-            this.ipControl_Local = new NodeServerAndManager.Control.IpControl();
+            this.ipControl_Push = new KangYiCollection.Control.IpControl();
+            this.ipControl_Server = new KangYiCollection.Control.IpControl();
+            this.ipControl_Device = new KangYiCollection.Control.IpControl();
+            this.ipControl_Local = new KangYiCollection.Control.IpControl();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -142,7 +142,7 @@
             this.cmb_imageServer.Location = new System.Drawing.Point(94, 137);
             this.cmb_imageServer.Name = "cmb_imageServer";
             this.cmb_imageServer.Size = new System.Drawing.Size(227, 20);
-            this.cmb_imageServer.TabIndex = 10;
+            this.cmb_imageServer.TabIndex = 6;
             this.cmb_imageServer.SelectedIndexChanged += new System.EventHandler(this.cmb_imageServer_SelectedIndexChanged);
             // 
             // label4
@@ -159,7 +159,7 @@
             this.txb_SphinxPort.Location = new System.Drawing.Point(358, 27);
             this.txb_SphinxPort.Name = "txb_SphinxPort";
             this.txb_SphinxPort.Size = new System.Drawing.Size(72, 21);
-            this.txb_SphinxPort.TabIndex = 12;
+            this.txb_SphinxPort.TabIndex = 1;
             this.txb_SphinxPort.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txb_SphinxPort_KeyPress);
             // 
             // txb_DevicePort
@@ -167,7 +167,7 @@
             this.txb_DevicePort.Location = new System.Drawing.Point(358, 63);
             this.txb_DevicePort.Name = "txb_DevicePort";
             this.txb_DevicePort.Size = new System.Drawing.Size(72, 21);
-            this.txb_DevicePort.TabIndex = 14;
+            this.txb_DevicePort.TabIndex = 3;
             this.txb_DevicePort.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txb_SphinxPort_KeyPress);
             // 
             // label5
@@ -185,7 +185,7 @@
             this.txb_ImagePort.Location = new System.Drawing.Point(358, 139);
             this.txb_ImagePort.Name = "txb_ImagePort";
             this.txb_ImagePort.Size = new System.Drawing.Size(72, 21);
-            this.txb_ImagePort.TabIndex = 16;
+            this.txb_ImagePort.TabIndex = 7;
             this.txb_ImagePort.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txb_SphinxPort_KeyPress);
             // 
             // label6
@@ -279,7 +279,7 @@
             this.txb_PushPort.Location = new System.Drawing.Point(359, 100);
             this.txb_PushPort.Name = "txb_PushPort";
             this.txb_PushPort.Size = new System.Drawing.Size(72, 21);
-            this.txb_PushPort.TabIndex = 21;
+            this.txb_PushPort.TabIndex = 4;
             // 
             // label11
             // 
@@ -319,7 +319,7 @@
             this.txb_BindNode.Location = new System.Drawing.Point(94, 16);
             this.txb_BindNode.Name = "txb_BindNode";
             this.txb_BindNode.Size = new System.Drawing.Size(336, 21);
-            this.txb_BindNode.TabIndex = 2;
+            this.txb_BindNode.TabIndex = 0;
             // 
             // label9
             // 
@@ -336,7 +336,7 @@
             this.chkList_Node.Location = new System.Drawing.Point(94, 48);
             this.chkList_Node.Name = "chkList_Node";
             this.chkList_Node.Size = new System.Drawing.Size(227, 52);
-            this.chkList_Node.TabIndex = 0;
+            this.chkList_Node.TabIndex = 1;
             this.chkList_Node.Click += new System.EventHandler(this.chkList_Node_Click);
             this.chkList_Node.SelectedIndexChanged += new System.EventHandler(this.chkList_Node_SelectedIndexChanged);
             // 
@@ -346,7 +346,7 @@
             this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
             this.ipControl_Push.Name = "ipControl_Push";
             this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Push.TabIndex = 17;
+            this.ipControl_Push.TabIndex = 4;
             this.ipControl_Push.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Push.Value")));
             // 
             // ipControl_Server

@@ -22,7 +22,7 @@ namespace MyTcpServer
         {
             if (CmdEvent != null)    // 如果有对象注册
             {
-                CmdEvent(this, e);  // 调用所有注册对象的方法
+                CmdEvent(this.CmdEvent, e);  // 调用所有注册对象的方法
             }
         }
         //时间参数定义
@@ -44,14 +44,34 @@ namespace MyTcpServer
         {
             LogEvent = null;
         }
-        protected virtual void OnLog(Object sender, LogEventArgs e)
+        protected virtual void OnLogEvent(Object sender, LogEventArgs e)
         {
-            if (LogEvent != null)    // 如果有对象注册
+            try
             {
-                LogEvent(this, e);  // 调用所有注册对象的方法
+                if (LogEvent != null)    // 如果有对象注册
+                {
+                    LogEvent(this.LogEvent, e);  // 调用所有注册对象的方法
+                }
+
             }
-            string message = MyTCP.TCPMessageFormat(e.TCPMessage);
-            Log.CommandLog(message);
+            finally
+            {
+
+            }
+
+        }
+        public void OnLog(TCPMessage TCPMessage)
+        {
+            try
+            {
+                OnLogEvent(this, new LogEventArgs(TCPMessage));
+                string message = MyTCP.TCPMessageFormat(TCPMessage);
+                Log.CommandLog(message);
+            }
+            catch (Exception e)
+            {
+                Log.UnHandleException(e, "记录command日志出错");
+            }
         }
         //日志参数定义
         public class LogEventArgs : EventArgs
@@ -97,12 +117,11 @@ namespace MyTcpServer
 
         public void UpdateMachineTable(List<ky_machine> dt)
         {
-            Dictionary<string, ky_machine> machineTmp = new Dictionary<string, ky_machine>();
             foreach (var m in dt)
             {
-                machineTmp.Add(m.kIpAddress, m);
+                if (!machine.ContainsKey(m.kIpAddress))
+                    machine.Add(m.kIpAddress, m);
             }
-            machine = machineTmp;
         }
 
 
@@ -148,16 +167,15 @@ namespace MyTcpServer
                 // 想列表控件中添加客户端的IP信息；  
                 //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
                 string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                OnLog(this, new LogEventArgs(
-                    new TCPMessage
+                OnLog(new TCPMessage
                     {
                         IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                         MessageType = TCPMessageType.NewConnection
-                    }));
+                    });
                 //IP地址在数据库中，才会接收数据
                 if (machine.ContainsKey(ipPort[0]))
                 {
-                    // 将与客户端连接的 套接字 对象添加到集合中；
+                    // 将与客户端连接的 套接字 对象添加到集合中
                     if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                         dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
                     Thread thr = new Thread(RecMsg);
@@ -175,21 +193,37 @@ namespace MyTcpServer
                         // 将与客户端连接的 套接字 对象添加到集合中；
                         if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                             dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
+                        else
+                        {
+                            OnLog(new TCPMessage
+                           {
+                               IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                               MessageType = TCPMessageType.ExistConnection
+                           });
+                        }
                         //ShowMsg("客户端连接成功！");
                         Thread thr = new Thread(RecMsg);
                         thr.IsBackground = true;
-                        thr.Start(sokConnection);
                         if (!dictThread.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                             dictThread.Add(sokConnection.RemoteEndPoint.ToString(), thr);  //  将新建的线程 添加 到线程的集合中去。  
+                        else
+                        {
+                            OnLog(new TCPMessage
+                            {
+                                IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                                MessageType = TCPMessageType.ExistConnection
+                            });
+                        }
+                        thr.Start(sokConnection);
+
                     }
                     else
                     {
-                        OnLog(this, new LogEventArgs(
-                            new TCPMessage
+                        OnLog(new TCPMessage
                             {
                                 IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                                 MessageType = TCPMessageType.NoMachineIp
-                            }));
+                            });
                         sokConnection.Close();
                     }
                 }
@@ -236,13 +270,13 @@ namespace MyTcpServer
                                 machineNo = Encoding.ASCII.GetString(bBuffer, 12, 28).Replace("\0", "");
                                 if (cmd == 0x00A1)//传输数据请求命令
                                 {
-                                    OnLog(this, new LogEventArgs(
-                                        new TCPMessage
+                                    machine[ip].alive = DateTime.Now;
+                                    OnLog(new TCPMessage
                                         {
                                             IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                             Command = bBuffer.Take(54).ToArray(),
                                             MessageType = TCPMessageType.NET_SIMPLE
-                                        }));
+                                        });
                                     //请求回复
                                     byte[] returnBytes = new byte[46];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
@@ -254,14 +288,14 @@ namespace MyTcpServer
                                 }
                                 else if (cmd > 0 && cmd < 10)//纸币信息发送命令
                                 {
+
                                     //应答回复
-                                    OnLog(this, new LogEventArgs(
-                                       new TCPMessage
+                                    OnLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(200).ToArray(),
                                            MessageType = TCPMessageType.NET_UP
-                                       }));
+                                       });
                                     byte[] returnBytes = new byte[46];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
                                     Array.Copy(msg_length, 0, returnBytes, 4, msg_length.Length);
@@ -275,16 +309,40 @@ namespace MyTcpServer
                                     int bodyLen = msgLen - 84 - 2;
                                     byte[] Fsn = new byte[bodyLen];
                                     Array.Copy(bBuffer, 84, Fsn, 0, bodyLen);
-                                    string fileName = DataSaveFolder + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") +
+                                    DateTime date = DateTime.Now;
+                                    string filePath = DataSaveFolder + "\\" + date.ToString("yyyyMMdd") + "\\" + date.ToString("HH") + "\\";
+                                    if (!Directory.Exists(filePath))
+                                        Directory.CreateDirectory(filePath);
+                                    string fileName = filePath + date.ToString("mmssfff") +
                                                       "-" + machineNo + ".FSN";
                                     //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
                                     DateTime fileTime = KyDataLayer2.GetDateTime(Fsn);
-                                    if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddSeconds(-30) < fileTime)
+                                    Log.BussinessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss") + ",机具" + ip + "的开始标志是" + machine[ip].startBusinessCtl);
+                                    if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
                                     {
                                         if (machine[ip].fileName == null || machine[ip].fileName == "")
                                             machine[ip].fileName = fileName;
                                         else
                                             fileName = machine[ip].fileName;
+                                        string tmpPath = machine[ip].tmpPath;
+                                        
+                                        if (machine[ip].business == BussinessType.KHDK)
+                                        {
+
+                                            if (!Directory.Exists(tmpPath))
+                                            {
+                                                Directory.CreateDirectory(tmpPath);
+                                            }
+                                            List<string> modifyFiles = GZHImport.MergeLastFile(Fsn, tmpPath, machine[ip].bundleCount);
+                                            foreach (string file in modifyFiles)
+                                            {
+                                                KYDataLayer1.Amount amount;
+                                                KyDataLayer2.GetTotalValueFromFSN(file, out amount);
+                                                amount.BundleNumber = Convert.ToInt32(Path.GetFileNameWithoutExtension(file));
+                                                CmdEventArgs e = new CmdEventArgs(ip, amount);
+                                                OnCmd(this, e);
+                                            }
+                                        }
                                         //文件不存在
                                         if (!File.Exists(fileName))
                                         {
@@ -311,22 +369,25 @@ namespace MyTcpServer
                                                 fs.Close();
                                             }
                                         }
-                                        KYDataLayer1.Amount amount;
-                                        KyDataLayer2.GetTotalValueFromFSN(fileName, out amount);
-                                        CmdEventArgs e = new CmdEventArgs(ip, amount);
-                                        OnCmd(this, e);
-
-                                        //更新机具列表
-                                        //机器最后上传时间和机具编号
-                                        string machineNumber = "", machineModel = "";
-                                        string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
-                                        if (str.Length == 3)
-                                            machineNumber = str[2];
-                                        machineNumber = machineNumber.Replace("\0", "");
-                                        if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
-                                            KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
-                                        machine[ip].kMachineNumber = machineNumber;
-                                        machine[ip].kMachineModel = machineModel;
+                                        if (machine[ip].business != BussinessType.KHDK)
+                                        {
+                                            KYDataLayer1.Amount amount;
+                                            KyDataLayer2.GetTotalValueFromFSN(fileName, out amount);
+                                            amount.BundleNumber = 999999;
+                                            CmdEventArgs e = new CmdEventArgs(ip, amount);
+                                            OnCmd(this, e);
+                                            //更新机具列表
+                                            //机器最后上传时间和机具编号
+                                            string machineNumber = "", machineModel = "";
+                                            string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
+                                            if (str.Length == 3)
+                                                machineNumber = str[2];
+                                            if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
+                                                KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
+                                            machine[ip].kMachineNumber = machineNumber;
+                                            machine[ip].kMachineModel = machineModel;
+                                        }
+                                       
                                     }
                                     else//没有进行交易控制
                                     {
@@ -337,22 +398,21 @@ namespace MyTcpServer
                                         }
                                         machine[ip].imgServerId = PictureServerId;
                                         machine[ip].business = BussinessType.HM;
-                                        SaveDataToDB.SaveFsn(fileName, machine[ip]);
+                                        FSNImport.SaveFsn(fileName, machine[ip]);
                                         //更新机具列表
                                         //机器最后上传时间和机具编号
                                         string machineNumber = "", machineModel = "";
                                         string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                                         if (str.Length == 3)
                                             machineNumber = str[2];
-                                        machineNumber=machineNumber.Replace("\0","");
                                         if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
                                             KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
                                         machine[ip].kMachineNumber = machineNumber;
                                         machine[ip].kMachineModel = machineModel;
 
                                         //删除文件
-                                        if (File.Exists(fileName))
-                                            File.Delete(fileName);
+                                        //if (File.Exists(fileName))
+                                        //    File.Delete(fileName);
                                     }
 
 
@@ -360,13 +420,12 @@ namespace MyTcpServer
                                 else if (cmd == 0x0010)//时间同步
                                 {
                                     //发送回复信息
-                                    OnLog(this, new LogEventArgs(
-                                       new TCPMessage
+                                    OnLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(42).ToArray(),
                                            MessageType = TCPMessageType.NET_TIME
-                                       }));
+                                       });
                                     byte[] returnBytes = new byte[58];
                                     Array.Copy(start_work, 0, returnBytes, 0, start_work.Length);
                                     Array.Copy(msg_len_TimeSync, 0, returnBytes, 4, msg_length.Length);
@@ -377,53 +436,74 @@ namespace MyTcpServer
                                     byte[] timeBytes = Encoding.ASCII.GetBytes(time);
                                     Array.Copy(timeBytes, 0, returnBytes, 42, timeBytes.Length);
                                     sokClient.Send(returnBytes);
+                                    CloseThread(ipAndPort);
+                                }
+                                else if (cmd == 0x000B)//心跳命令
+                                {
+                                    OnLog(new TCPMessage
+                                    {
+                                        IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                        Command = bBuffer,
+                                        MessageType = TCPMessageType.NET_CONTINUE
+                                    });
+                                    machine[ip].alive = DateTime.Now;
+                                    CloseThread(ipAndPort);
                                 }
                                 else if (cmd == 0x00A2)//关闭连接
                                 {
-                                    OnLog(this, new LogEventArgs(
-                                       new TCPMessage
+                                    OnLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(44).ToArray(),
                                            MessageType = TCPMessageType.NET_CLOSE
-                                       }));
-                                    dict[ipAndPort].Close();
-                                    if (dict.ContainsKey(ipAndPort))
-                                        dict.Remove(ipAndPort);
-                                    // 从通信线程集合中删除被中断连接的通信线程对象； 
-                                    try
-                                    {
-                                        dictThread[ipAndPort].Abort();//Thread.Abort一定会抛出异常。所以要try catch掉
-                                    }
-                                    catch (ThreadAbortException e)
-                                    {
-                                        //Log.ConnectionException(e, "关闭连接异常");
-                                    }
-                                    finally
-                                    {
-                                        if (dictThread.ContainsKey(ipAndPort))
-                                        {
-                                            dictThread.Remove(ipAndPort);
-                                        }
-                                    }
+                                       });
+                                    CloseThread(ipAndPort);
                                 }
                             }
+                        }
+                        else
+                        {
+                            OnLog(new TCPMessage
+                                       {
+                                           IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                           Command = startBuf,
+                                           MessageType = TCPMessageType.UnknownCommand
+                                       });
                         }
                     }
                 }
                 catch (SocketException se)
                 {
                     Log.ConnectionException(se, "通信异常");
-                    //ShowMsg("异常：" + se.Message);
-                    // 从 通信套接字 集合中删除被中断连接的通信套接字；  
-                    if (dict.ContainsKey(ipAndPort))
-                        dict.Remove(ipAndPort);
-                    // 从通信线程集合中删除被中断连接的通信线程对象；  
-                    if (dictThread.ContainsKey(ipAndPort))
-                        dictThread.Remove(ipAndPort);
-                    // 从列表中移除被中断的连接IP  
-                    //lbOnline.Items.Remove(ipAndPort);
+                    CloseThread(ipAndPort);
                     break;
+                }
+            }
+        }
+        /// <summary>
+        /// 关闭收数据线程
+        /// </summary>
+        /// <param name="ipAndPort"></param>
+        private void CloseThread(string ipAndPort)
+        {
+            //dict[ipAndPort].Shutdown(SocketShutdown.Both);
+            dict[ipAndPort].Close();
+            if (dict.ContainsKey(ipAndPort))
+                dict.Remove(ipAndPort);
+            //从通信线程集合中删除被中断连接的通信线程对象； 
+            try
+            {
+                dictThread[ipAndPort].Abort();//Thread.Abort一定会抛出异常。所以要try catch掉
+            }
+            catch (ThreadAbortException e)
+            {
+                //Log.ConnectionException(e, "关闭连接异常");
+            }
+            finally
+            {
+                if (dictThread.ContainsKey(ipAndPort))
+                {
+                    dictThread.Remove(ipAndPort);
                 }
             }
         }
@@ -465,6 +545,7 @@ namespace MyTcpServer
             switch (myBusinessStatus)
             {
                 case MyBusinessStatus.Start:
+                    Log.BussinessLog(bControl.business + "业务开始,机具ip为" + bControl.ip);
                     if (machine.ContainsKey(bControl.ip))
                     {
                         currentMachine.startBusinessCtl = true;
@@ -473,13 +554,14 @@ namespace MyTcpServer
                         currentMachine.business = bControl.business;
                         currentMachine.bundleCount = bControl.bundleCount;//每捆的张数  2015.05.05
                         currentMachine.userId = bControl.userId;//2015.05.08
+                        if (currentMachine.business == BussinessType.KHDK)
+                            currentMachine.tmpPath = DataSaveFolder + "\\tmp\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
                     }
                     break;
                 case MyBusinessStatus.End:
-
+                    Log.BussinessLog(currentMachine.business + "业务结束,机具ip为" + bControl.ip);
                     if (machine.ContainsKey(bControl.ip))
                     {
-                        currentMachine.startBusinessCtl = false;
                         if (currentMachine.business == BussinessType.CK || currentMachine.business == BussinessType.QK)
                             currentMachine.bussinessNumber = bControl.bussinessNumber;
                         if (currentMachine.business == BussinessType.ATMP || currentMachine.business == BussinessType.ATMQ)
@@ -493,35 +575,29 @@ namespace MyTcpServer
                             currentMachine.packageNumber = bControl.packageNumber;
                         }
                         currentMachine.imgServerId = PictureServerId;
-                        if (currentMachine.fileName != "" && File.Exists(currentMachine.fileName))
+                        if (!bControl.cancel)
                         {
+                            if (currentMachine.fileName != "" && File.Exists(currentMachine.fileName))
+                            {
+                                FSNImport.SaveFsn(currentMachine.fileName, currentMachine);
+                            }
+                            string tmpPath = currentMachine.tmpPath;
                             if (currentMachine.business == BussinessType.KHDK)
                             {
-                                if (!Directory.Exists(DataSaveFolder + "\\tmp"))
+                                if (Directory.Exists(tmpPath))
                                 {
-                                    Directory.CreateDirectory(DataSaveFolder + "\\tmp");
-                                }
-                                KyDataLayer2.DecompositionFile(currentMachine.fileName, DataSaveFolder + "\\tmp",
-                                                               currentMachine.bundleCount);
-                                SaveDataToDB.SaveKHDK(DataSaveFolder + "\\tmp", currentMachine);
-                                //删除文件
-                                if (Directory.Exists(DataSaveFolder + "\\tmp"))
-                                {
-                                    string[] files = Directory.GetFiles(DataSaveFolder + "\\tmp");
-                                    foreach (var file in files)
+                                    string[] bundleNumbers = bControl.bundleNumbers.Split(',');
+                                    List<string> saveFiles = new List<string>();
+                                    foreach (var bundle in bundleNumbers)
                                     {
-                                        File.Delete(file);
+                                        string saveFile=tmpPath+"\\"+bundle+".FSN";
+                                        if (File.Exists(saveFile))
+                                            saveFiles.Add(saveFile);
                                     }
+                                    GZHImport.SaveKHDK(saveFiles, currentMachine);
                                 }
-                            }
-                            else
-                            {
-                                SaveDataToDB.SaveFsn(currentMachine.fileName, currentMachine);
-                            }
-                            //删除文件
-                            if (File.Exists(currentMachine.fileName))
-                            {
-                                File.Delete(currentMachine.fileName);
+                                else
+                                    Log.BussinessLog("KHDK中临时路径"+tmpPath+"不存在！");
                             }
                         }
                         currentMachine.business = BussinessType.HM;

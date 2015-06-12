@@ -145,7 +145,7 @@ namespace MyTest
             byte[] MachineModelByte = Encoding.ASCII.GetBytes(MachineModel);
             byte[] MachineNumberByte = Encoding.ASCII.GetBytes(MachineNumber);
             byte[] BussinessNumberByte = Encoding.ASCII.GetBytes(BussinessNumber);
-            string fileName = Environment.CurrentDirectory + "/" + "123.CRH";
+            string fileName = Application.StartupPath + "/" + "123.CRH";
             byte[] TotalCountByte = BitConverter.GetBytes(TotalCount);
 
 
@@ -191,6 +191,14 @@ namespace MyTest
             else
                 str = string.Format("{0," + length + "}", str).Replace(" ", "_");
             return str;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DateTime time1=Convert.ToDateTime("0001-01-01 00:00:00");
+            DateTime time2 = Convert.ToDateTime("2015-06-09 10:03:00");
+            double d = (time2 - time1).TotalMinutes;
+            MessageBox.Show(d+"");
         }
     }
 }

@@ -67,5 +67,13 @@ namespace KyModel.Models
         /// 包号
         /// </summary>
         public string packageNumber { get; set; }
+        /// <summary>
+        /// 心跳时间
+        /// </summary>
+        public DateTime alive { get; set; }
+        /// <summary>
+        /// 业务临时目录
+        /// </summary>
+        public string tmpPath { get; set; }
     }
 }

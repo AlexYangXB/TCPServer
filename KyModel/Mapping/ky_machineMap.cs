@@ -47,6 +47,8 @@ namespace KyModel.Mapping
             this.Ignore(p => p.cashBoxId);
             this.Ignore(p => p.isClearCenter);
             this.Ignore(p => p.packageNumber);
+            this.Ignore(p => p.alive);
+            this.Ignore(p => p.tmpPath);
         }
     }
 }

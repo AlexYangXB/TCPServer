@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Text;
 using Utility;
 using KyBll;
-namespace NodeServerAndManager
+namespace KangYiCollection
 {
     static class Program
     {
@@ -39,15 +39,18 @@ namespace NodeServerAndManager
         [STAThread]
         static void Main()
         {
+            
+
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            //开机自启动
+            //string fileName = Application.StartupPath + @"/KangYiCollection.exe";
+            //SystemOperation.SetAutoRun(fileName, true);
             //调用软件升级程序
             System.Diagnostics.Process p = new Process();
             p.StartInfo.FileName = Application.StartupPath + "\\KangYiUpdate.exe";
             p.Start();
             p.WaitForExit();
-
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-
             try
             {
                 //判断该系统是否已打开
@@ -67,6 +70,7 @@ namespace NodeServerAndManager
                 {
                     //清除日志
                     Log.CleanLogs();
+                    Log.CleanFsnFloder();
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new NodeManager());

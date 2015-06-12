@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using MyTcpServer;
 using ServerForm.BaseWinForm;
+using Utility;
 
 namespace ServerForm
 {
@@ -181,7 +182,7 @@ namespace ServerForm
                         if(!Properties.Settings.Default.IsLocalSave)
                         {
                             string[] files = Directory.GetFiles(fsnSavePath);
-                            Utility.FtpOperation.FilesUpload(FtpIp, FtpPort, Properties.Settings.Default.FtpPath,
+                            FtpOperation.FilesUpload(FtpIp, FtpPort, Properties.Settings.Default.FtpPath,
                                                              Properties.Settings.Default.FtpUser,
                                                              Properties.Settings.Default.FtpPassWord, files);
                         }

@@ -138,18 +138,21 @@ namespace KyBll
         public static List<ky_agent_batch> GetBatches(int startTime, int endTime,int count)
         {
             List<ky_agent_batch> batches = new List<ky_agent_batch>();
-            try
+            if (count > 0)
             {
-                string strSql =
-                    string.Format("select * from ky_agent_batch where kdate>{0} and kdate<{1} limit 0,{2} option max_matches={2}", startTime, endTime,count); 
-                using (var conn = DbHelperMySQL.OpenSphinxConnection())
+                try
                 {
-                    batches = conn.Database.SqlQuery<ky_agent_batch>(strSql).ToList();                    
+                    string strSql =
+                        string.Format("select * from ky_agent_batch where kdate>{0} and kdate<{1} limit 0,{2} option max_matches={2}", startTime, endTime, count);
+                    using (var conn = DbHelperMySQL.OpenSphinxConnection())
+                    {
+                        batches = conn.Database.SqlQuery<ky_agent_batch>(strSql).ToList();
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Log.DataBaseException(e, "获取批次异常");
+                catch (Exception e)
+                {
+                    Log.DataBaseException(e, "获取批次异常");
+                }
             }
             return batches;
         }
@@ -359,22 +362,22 @@ namespace KyBll
         /// <param name="factoryName"></param>
         /// <param name="factoryNumber"></param>
         /// <returns></returns>
-        public static bool InsertFactory(string factoryName, string factoryNumber)
+        public static int InsertFactory(string factoryName, string factoryNumber)
         {
+            ky_factory factory = new ky_factory { kFactoryName = factoryName, kFactoryCode = factoryNumber };
             try
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    var factory = new ky_factory { kFactoryName = factoryName, kFactoryCode = factoryNumber };
                     conn.ky_factory.Add(factory);
                     conn.SaveChanges();
                 }
-                return true;
+                return factory.kId;
             }
             catch (Exception e)
             {
                 Log.DataBaseException(e, "添加厂家信息异常");
-                return false;
+                return 0;
             }
         }
 
