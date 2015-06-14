@@ -57,7 +57,9 @@ namespace KyBll
             }
             string time = DateTime.Now.ToString("yyyyMMdd");
             string fileName = path + "\\" + time + "_connect.log";
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + str, fileName);
+            if (str != "")
+                ShareWrite(str, fileName);
+            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr, fileName);
         }
         /// <summary>
         /// 连接的命令信息  日期_command.log

@@ -382,9 +382,11 @@ namespace KyBll
             try
             {
                 List<ky_machine> machines;
+                var ids = new[] { 1, 2, 3 };
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    machines = conn.Query<ky_machine>(q => nodeIds.Contains(q.kNodeId)).ToList();
+                    var dd=conn.Query<ky_machine>(q => ids.Contains(q.kNodeId));
+                    machines = conn.Query<ky_machine>(q => ids.Contains(q.kNodeId)).ToList();
                 }
                 return machines;
             }

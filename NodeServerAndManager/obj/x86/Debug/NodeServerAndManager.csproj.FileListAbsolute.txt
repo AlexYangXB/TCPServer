@@ -118,3 +118,4 @@ C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\SqlF
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\CavemanTools.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MySql.Data.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\KangYiCollection.Properties.Resources.resources
+C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\System.Threading.Tasks.NET35.dll
