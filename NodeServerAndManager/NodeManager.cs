@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using KangYiCollection.BaseWinform;
 using KyBll;
 using KyBll.DBUtility;
 using KyModel;
 using KyModel.Models;
+using MaterialSkin;
 using MyTcpServer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using KangYiCollection.BaseWinform;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
-using MaterialSkin;
 namespace KangYiCollection
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
@@ -67,7 +65,7 @@ namespace KangYiCollection
         private void StartTcpServer()
         {
             bool result = false;
-            if (Properties.Settings.Default.ServerIp != "" && Properties.Settings.Default.DeviceIp != "" && Properties.Settings.Default.PictureIp != "" && Properties.Settings.Default.LocalIp != "")
+            if (KangYiCollection.Properties.Settings.Default.ServerIp != "" && KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KangYiCollection.Properties.Settings.Default.PictureIp != "" && KangYiCollection.Properties.Settings.Default.LocalIp != "")
             {
                 //SPHINX数据服务器连接
                 result = KyDataOperation.TestConnectServer();
@@ -93,7 +91,7 @@ namespace KangYiCollection
                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     return;
                 }
-                result = KyDataOperation.TestConnectPush(Properties.Settings.Default.PushIp, Properties.Settings.Default.PushPort);
+                result = KyDataOperation.TestConnectPush(KangYiCollection.Properties.Settings.Default.PushIp, KangYiCollection.Properties.Settings.Default.PushPort);
                 if (!result)
                 {
                     MessageBox.Show("无法连接‘推送服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
@@ -105,7 +103,7 @@ namespace KangYiCollection
                 {
                     //获取绑定的网点ID
                     bindNodeId.Clear();
-                    List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(Properties.Settings.Default.LocalIp);
+                    List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(KangYiCollection.Properties.Settings.Default.LocalIp);
                     bindNodeId = (from node in nodes select node.kId).ToList();
                     List<ky_machine> machineDt = new List<ky_machine>();
                     //获取绑定网点内的机器
@@ -130,9 +128,9 @@ namespace KangYiCollection
                     {
                         myTcpServer.DTable = machineDt;
                         myTcpServer.DataSaveFolder = path;
-                        int pictureServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                        int pictureServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
                         myTcpServer.PictureServerId = pictureServerId;
-                        myTcpServer.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
+                        myTcpServer.StartListenling(KangYiCollection.Properties.Settings.Default.LocalIp, KangYiCollection.Properties.Settings.Default.Port);
                         result = true;
                     }
                     //连接到soket.IO
@@ -231,9 +229,9 @@ namespace KangYiCollection
             //打开定时器
             timer_UpdateMachine.Start();
             //设置数据库连接字符串
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //判断路径是否存在，不存在就建立
             if (!Directory.Exists(path))
             {
@@ -469,7 +467,7 @@ namespace KangYiCollection
                     machine.atmId = AtmId;
                     machine.cashBoxId = cashBoxId;
                     machine.userId = userId;
-                    machine.imgServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    machine.imgServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
                     machine.importMachineId = machine.importMachineId;
                     long batchId = FSNImport.UploadFsn(uploadFile, machine);
                     if (batchId > 0)
@@ -491,7 +489,7 @@ namespace KangYiCollection
             {
                 if (uploadFiles.Length > 0)
                 {
-                    int pictureServerId = KyDataOperation.GetPictureServerId(Properties.Settings.Default.PictureIp);
+                    int pictureServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
                     bool success = GZHImport.UploadGzhFile(uploadFiles[0], Application.StartupPath + "\\GZH", pictureServerId, userId);
                     string strMessage = "";
                     if (success)
@@ -575,7 +573,7 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void timer_UpdateMachine_Tick(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
+            if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
             {
                 //获取绑定网点内的机器
                 int[] nodeIds = new int[bindNodeId.Count];
@@ -602,8 +600,8 @@ namespace KangYiCollection
             var log = LogManager.GetLogger(Global.CallerName());
 
             var options = new IO.Options();
-            options.Port = Properties.Settings.Default.PushPort;
-            options.Hostname = Properties.Settings.Default.PushIp;
+            options.Port = KangYiCollection.Properties.Settings.Default.PushPort;
+            options.Hostname = KangYiCollection.Properties.Settings.Default.PushIp;
             options.ForceNew = true;
 
             return options;
@@ -833,22 +831,22 @@ namespace KangYiCollection
         private void MenuItem_ServerSetting_Click(object sender, EventArgs e)
         {
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
-            string localIp = Properties.Settings.Default.LocalIp;
-            int port = Properties.Settings.Default.Port;
+            string localIp = KangYiCollection.Properties.Settings.Default.LocalIp;
+            int port = KangYiCollection.Properties.Settings.Default.Port;
 
             //记录推送IP与端口号，当推送IP与端口号发生改变时，
-            string pushIp = Properties.Settings.Default.PushIp;
-            int pushPort = Properties.Settings.Default.PushPort;
+            string pushIp = KangYiCollection.Properties.Settings.Default.PushIp;
+            int pushPort = KangYiCollection.Properties.Settings.Default.PushPort;
             //显示设置界面
             BaseWinform.ServerSettings frm = new ServerSettings();
             frm.ShowDialog();
 
             //设置数据库连接字符串
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             //本地IP或者端口号改过之后，要重新启动 TcpServer端
-            if (localIp != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
+            if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port)
             {
                 if (myTcpServer.IsRunning)
                 {
@@ -862,7 +860,7 @@ namespace KangYiCollection
             }
 
             //当推送IP或端口号发生改变时
-            if (pushIp != Properties.Settings.Default.PushIp || pushPort != Properties.Settings.Default.PushPort)
+            if (pushIp != KangYiCollection.Properties.Settings.Default.PushIp || pushPort != KangYiCollection.Properties.Settings.Default.PushPort)
             {
                 //停止socket
                 if (socket != null)
@@ -920,13 +918,13 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void timer_ImportFSN_Tick(object sender, EventArgs e)
         {
-            bool flag = Properties.Settings.Default.OtherFactoryAccess;
+            bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
             if (flag)
             {
-                string importDir = Properties.Settings.Default.OtherFactoryAccessDir;
+                string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
                 if (Directory.Exists(importDir))
                 {
-                    FSNImport.FsnImport(importDir, Properties.Settings.Default.PictureIp);
+                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp);
                 }
                 else
                     Log.ImportLog(null, importDir + "路径不存在！");
@@ -950,17 +948,17 @@ namespace KangYiCollection
         private void timer_ExportCRH_Tick(object sender, EventArgs e)
         {
             string Time = DateTime.Now.ToString("HH:mm:ss");
-            if (Time == Properties.Settings.Default.CRHStartTime)
+            if (Time == KangYiCollection.Properties.Settings.Default.CRHStartTime)
             {
-                bool flag = Properties.Settings.Default.CRHExport;
+                bool flag = KangYiCollection.Properties.Settings.Default.CRHExport;
                 if (flag)
                 {
-                    string exportDir = Properties.Settings.Default.CRHDir;
+                    string exportDir = KangYiCollection.Properties.Settings.Default.CRHDir;
                     if (Directory.Exists(exportDir))
                     {
                         DateTime startTime;
                         DateTime endTime;
-                        if (Properties.Settings.Default.CRHYesterday)
+                        if (KangYiCollection.Properties.Settings.Default.CRHYesterday)
                         {
                             startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
                             endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));

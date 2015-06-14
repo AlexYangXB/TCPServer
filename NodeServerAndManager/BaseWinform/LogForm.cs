@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using MyTcpServer;
-using KyModel;
 using KyBll;
-using MaterialSkin;
+using KyModel;
+using MyTcpServer;
 namespace KangYiCollection.BaseWinform
 {
     public partial class LogForm : MaterialSkin.Controls.MaterialForm

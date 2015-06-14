@@ -34,10 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ORM\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -55,7 +51,6 @@
     <Compile Include="KyDataLayer2.cs" />
     <Compile Include="ky_agent_batch.cs" />
     <Compile Include="ky_agent_sign.cs" />
-    <Compile Include="ky_count.cs" />
     <Compile Include="MachineType.cs" />
     <Compile Include="Models\ky_atm.cs" />
     <Compile Include="Models\ky_atmtype.cs" />
@@ -80,32 +75,6 @@
     <Compile Include="Models\ky_sign.cs" />
     <Compile Include="Models\ky_user.cs" />
     <Compile Include="Models\ky_version.cs" />
-    <Compile Include="Mapping\ky_atmMap.cs" />
-    <Compile Include="Mapping\ky_atmtypeMap.cs" />
-    <Compile Include="Mapping\ky_batchMap.cs" />
-    <Compile Include="Mapping\ky_branchMap.cs" />
-    <Compile Include="Mapping\ky_cashboxMap.cs" />
-    <Compile Include="Mapping\ky_cashstatusMap.cs" />
-    <Compile Include="Mapping\ky_currencyMap.cs" />
-    <Compile Include="Mapping\ky_factoryMap.cs" />
-    <Compile Include="Mapping\ky_fakeregistMap.cs" />
-    <Compile Include="Mapping\ky_fakesignMap.cs" />
-    <Compile Include="Mapping\ky_gzh_bundleMap.cs" />
-    <Compile Include="Mapping\ky_gzh_packageMap.cs" />
-    <Compile Include="Mapping\ky_imgserverMap.cs" />
-    <Compile Include="Mapping\ky_import_fileMap.cs" />
-    <Compile Include="Mapping\ky_import_machineMap.cs" />
-    <Compile Include="Mapping\ky_machineMap.cs" />
-    <Compile Include="Mapping\ky_nodeMap.cs" />
-    <Compile Include="Mapping\ky_package_bundleMap.cs" />
-    <Compile Include="Mapping\ky_perm_user_nodeMap.cs" />
-    <Compile Include="Mapping\ky_pictureMap.cs" />
-    <Compile Include="Mapping\ky_signMap.cs" />
-    <Compile Include="Mapping\ky_userMap.cs" />
-    <Compile Include="Mapping\ky_versionMap.cs" />
-    <Compile Include="Mapping\migrationMap.cs" />
-    <Compile Include="Mapping\permissionMap.cs" />
-    <Compile Include="Mapping\roleMap.cs" />
     <Compile Include="Models\migration.cs" />
     <Compile Include="Models\permission.cs" />
     <Compile Include="Models\role.cs" />

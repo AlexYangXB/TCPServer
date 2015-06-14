@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using Utility;
 
 namespace ServerForm.BaseWinForm
 {
@@ -20,7 +14,7 @@ namespace ServerForm.BaseWinForm
         private void FileSaveSetting_Load(object sender, EventArgs e)
         {
             //是否本地保存
-            if(Properties.Settings.Default.IsLocalSave)
+            if(ServerForm.Properties.Settings.Default.IsLocalSave)
             {
                 radbtn_Local.Checked = true;
                 txb_LocalSave.Enabled = true;
@@ -42,11 +36,11 @@ namespace ServerForm.BaseWinForm
                 txb_PassWord.Enabled = true;
                 lab_FtpTest.Enabled = true;
             }
-            txb_LocalSave.Text = Properties.Settings.Default.LocalSavePath;
-            txb_FTP.Text = Properties.Settings.Default.FtpIp;
-            txb_Dir.Text = Properties.Settings.Default.FtpPath;
-            txb_User.Text = Properties.Settings.Default.FtpUser;
-            txb_PassWord.Text = Properties.Settings.Default.FtpPassWord;
+            txb_LocalSave.Text = ServerForm.Properties.Settings.Default.LocalSavePath;
+            txb_FTP.Text = ServerForm.Properties.Settings.Default.FtpIp;
+            txb_Dir.Text = ServerForm.Properties.Settings.Default.FtpPath;
+            txb_User.Text = ServerForm.Properties.Settings.Default.FtpUser;
+            txb_PassWord.Text = ServerForm.Properties.Settings.Default.FtpPassWord;
         }
 
         //浏览本地路径
@@ -129,9 +123,9 @@ namespace ServerForm.BaseWinForm
                         return;
                     }
                 }
-                Properties.Settings.Default.IsLocalSave = true;
-                Properties.Settings.Default.LocalSavePath = txb_LocalSave.Text.Trim();
-                Properties.Settings.Default.Save();
+                ServerForm.Properties.Settings.Default.IsLocalSave = true;
+                ServerForm.Properties.Settings.Default.LocalSavePath = txb_LocalSave.Text.Trim();
+                ServerForm.Properties.Settings.Default.Save();
             }
             else if(radbtn_Ftp.Checked)
             {
@@ -145,12 +139,12 @@ namespace ServerForm.BaseWinForm
                     MessageBox.Show("无法连接到FTP站点", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                Properties.Settings.Default.IsLocalSave = false;
-                Properties.Settings.Default.FtpIp = txb_FTP.Text.Trim();
-                Properties.Settings.Default.FtpPath = txb_Dir.Text.Trim();
-                Properties.Settings.Default.FtpUser = txb_User.Text.Trim();
-                Properties.Settings.Default.FtpPassWord = txb_PassWord.Text.Trim();
-                Properties.Settings.Default.Save();
+                ServerForm.Properties.Settings.Default.IsLocalSave = false;
+                ServerForm.Properties.Settings.Default.FtpIp = txb_FTP.Text.Trim();
+                ServerForm.Properties.Settings.Default.FtpPath = txb_Dir.Text.Trim();
+                ServerForm.Properties.Settings.Default.FtpUser = txb_User.Text.Trim();
+                ServerForm.Properties.Settings.Default.FtpPassWord = txb_PassWord.Text.Trim();
+                ServerForm.Properties.Settings.Default.Save();
             }
             this.Close();
         }

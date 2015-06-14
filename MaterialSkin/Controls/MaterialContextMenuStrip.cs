@@ -9,7 +9,7 @@ namespace MaterialSkin.Controls
 {
     public class MaterialContextMenuStrip : ContextMenuStrip, IMaterialControl
     {
-        //Properties for managing the material design properties
+        //KangYiCollection.Properties for managing the material design KangYiCollection.Properties
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]
@@ -93,7 +93,7 @@ namespace MaterialSkin.Controls
 
     internal class MaterialToolStripRender : ToolStripProfessionalRenderer, IMaterialControl
     {
-        //Properties for managing the material design properties
+        //KangYiCollection.Properties for managing the material design KangYiCollection.Properties
         public int Depth { get; set; }
         public MaterialSkinManager SkinManager { get { return MaterialSkinManager.Instance; } }
         public MouseState MouseState { get; set; }

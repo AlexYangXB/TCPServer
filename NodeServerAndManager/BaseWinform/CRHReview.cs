@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 using KyModel;
 using MaterialSkin;
 namespace KangYiCollection.BaseWinform
@@ -24,8 +18,8 @@ namespace KangYiCollection.BaseWinform
         private void btn_CRHOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
-            if (Directory.Exists(Properties.Settings.Default.CRHDir))
-                of.InitialDirectory = Properties.Settings.Default.CRHDir;
+            if (Directory.Exists(KangYiCollection.Properties.Settings.Default.CRHDir))
+                of.InitialDirectory = KangYiCollection.Properties.Settings.Default.CRHDir;
             of.Filter = "CRH文件|*.CRH";
             if (of.ShowDialog() == DialogResult.OK)
             {

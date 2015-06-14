@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
-using MaterialSkin.Properties;
+using MaterialSkin.KangYiCollection.Properties;
 
 namespace MaterialSkin
 {

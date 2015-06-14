@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Text;
-using Utility;
 using KyBll;
 namespace KangYiCollection
 {

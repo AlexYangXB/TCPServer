@@ -63,3 +63,14 @@ C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Proper
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csproj.GenerateResource.Cache
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\app.config
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\MyTest.exe.config
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\MyTest.exe
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\MyTest.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\Newtonsoft.Json.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Form2Test.resources
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Properties.Resources.resources
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csproj.GenerateResource.Cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb

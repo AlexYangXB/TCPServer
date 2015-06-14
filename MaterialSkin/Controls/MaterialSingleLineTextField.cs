@@ -9,7 +9,7 @@ namespace MaterialSkin.Controls
 {
     public class MaterialSingleLineTextField : Control, IMaterialControl
     {
-        //Properties for managing the material design properties
+        //KangYiCollection.Properties for managing the material design KangYiCollection.Properties
         [Browsable(false)]
         public int Depth { get; set; }
         [Browsable(false)]

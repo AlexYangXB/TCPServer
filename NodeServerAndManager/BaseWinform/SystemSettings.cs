@@ -41,14 +41,14 @@ namespace KangYiCollection.BaseWinform
         private void SystemSettings_Load(object sender, EventArgs e)
         {
             //其他厂家接入
-            chk_OtherFactoryAccess.Checked = Properties.Settings.Default.OtherFactoryAccess;
-            txb_OtherFactoryAccessDir.Text = Properties.Settings.Default.OtherFactoryAccessDir;
+            chk_OtherFactoryAccess.Checked = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
+            txb_OtherFactoryAccessDir.Text = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
             //CRH导出
-            chk_CRHExport.Checked = Properties.Settings.Default.CRHExport;
-            dt_CRHStartTime.Value = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + Properties.Settings.Default.CRHStartTime);
-            rb_CRHYesterday.Checked = Properties.Settings.Default.CRHYesterday;
-            rb_CRHToday.Checked = Properties.Settings.Default.CRHToday;
-            txb_CHRDir.Text = Properties.Settings.Default.CRHDir;
+            chk_CRHExport.Checked = KangYiCollection.Properties.Settings.Default.CRHExport;
+            dt_CRHStartTime.Value = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + KangYiCollection.Properties.Settings.Default.CRHStartTime);
+            rb_CRHYesterday.Checked = KangYiCollection.Properties.Settings.Default.CRHYesterday;
+            rb_CRHToday.Checked = KangYiCollection.Properties.Settings.Default.CRHToday;
+            txb_CHRDir.Text = KangYiCollection.Properties.Settings.Default.CRHDir;
         }
 
         private void SystemSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,7 +59,7 @@ namespace KangYiCollection.BaseWinform
             {
                 if (Directory.Exists(txb_OtherFactoryAccessDir.Text))
                 {
-                    Properties.Settings.Default.OtherFactoryAccessDir = txb_OtherFactoryAccessDir.Text;
+                    KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir = txb_OtherFactoryAccessDir.Text;
                 }
                 else
                 {
@@ -72,8 +72,8 @@ namespace KangYiCollection.BaseWinform
             {
                 if (Directory.Exists(txb_CHRDir.Text))
                 {
-                    Properties.Settings.Default.CRHDir = txb_CHRDir.Text;
-                    Properties.Settings.Default.CRHExport = chk_CRHExport.Checked;
+                    KangYiCollection.Properties.Settings.Default.CRHDir = txb_CHRDir.Text;
+                    KangYiCollection.Properties.Settings.Default.CRHExport = chk_CRHExport.Checked;
                 }
                 else
                 {
@@ -84,12 +84,12 @@ namespace KangYiCollection.BaseWinform
             if (flag)
             {
                 //其他厂家接入保存
-                Properties.Settings.Default.OtherFactoryAccess = chk_OtherFactoryAccess.Checked;
+                KangYiCollection.Properties.Settings.Default.OtherFactoryAccess = chk_OtherFactoryAccess.Checked;
                 //CRH导出
-                Properties.Settings.Default.CRHStartTime = dt_CRHStartTime.Value.ToString("HH:mm:ss");
-                Properties.Settings.Default.CRHToday = rb_CRHToday.Checked;
-                Properties.Settings.Default.CRHYesterday = rb_CRHYesterday.Checked;
-                Properties.Settings.Default.Save();
+                KangYiCollection.Properties.Settings.Default.CRHStartTime = dt_CRHStartTime.Value.ToString("HH:mm:ss");
+                KangYiCollection.Properties.Settings.Default.CRHToday = rb_CRHToday.Checked;
+                KangYiCollection.Properties.Settings.Default.CRHYesterday = rb_CRHYesterday.Checked;
+                KangYiCollection.Properties.Settings.Default.Save();
             }
             else
                 e.Cancel = true;
@@ -130,8 +130,8 @@ namespace KangYiCollection.BaseWinform
                 endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
             }
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (Directory.Exists(Properties.Settings.Default.CRHDir))
-                dialog.SelectedPath = Properties.Settings.Default.CRHDir;
+            if (Directory.Exists(KangYiCollection.Properties.Settings.Default.CRHDir))
+                dialog.SelectedPath = KangYiCollection.Properties.Settings.Default.CRHDir;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 foldPath = dialog.SelectedPath;

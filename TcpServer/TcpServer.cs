@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -8,7 +9,6 @@ using System.Threading;
 using KyBll;
 using KyModel;
 using KyModel.Models;
-using System.Linq;
 namespace MyTcpServer
 {
     public class TcpServer

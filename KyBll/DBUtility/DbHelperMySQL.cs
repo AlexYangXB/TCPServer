@@ -3,11 +3,9 @@ using System.Collections;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using KyBll.Context;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core.Mapping;
-using System.Data.Entity.Core.Metadata.Edm;
+using SqlFu;
+using System.Data.Common;
 namespace KyBll.DBUtility
 {
     /// <summary>
@@ -51,21 +49,22 @@ namespace KyBll.DBUtility
             }
         }
         //获取机构设备的连接数据库对象。MySqlConnection
-        public static DeviceContext OpenDeviceConnection()
+        public static SqlFuConnection OpenDeviceConnection()
         {
-            var context = new DeviceContext(connectionStringToDevice);
+            var context = new SqlFuConnection(connectionStringToDevice, SqlFu.DbEngine.MySql);
+            
             return context;
         }
         //获取SPHINX的连接数据库对象。MySqlConnection
-        public static SphinxContext OpenSphinxConnection()
+        public static SqlFuConnection OpenSphinxConnection()
         {
-            var context = new SphinxContext(connectionStringToSphinx);
+            var context = new SqlFuConnection(connectionStringToSphinx, SqlFu.DbEngine.MySql);
             return context;
         }
         //获取图像的连接数据库对象。MySqlConnection
-        public static ImageContext OpenImageConnection()
+        public static SqlFuConnection OpenImageConnection()
         {
-            var context = new ImageContext(connectionStringToImage);
+            var context = new SqlFuConnection(connectionStringToImage, SqlFu.DbEngine.MySql);
             return context;
         }
 

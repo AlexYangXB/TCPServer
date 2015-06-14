@@ -97,9 +97,9 @@ namespace ServerForm
             CheckForIllegalCrossThreadCalls = false;
             myTcpServerSimple.CmdEvent += new EventHandler<MyTcpServerSimple.CmdEventArgs>(myTcpServerSimple_CmdEvent);
             //当需要上传FTp时，设置FTP
-            if(!Properties.Settings.Default.IsLocalSave)
+            if(!ServerForm.Properties.Settings.Default.IsLocalSave)
             {
-                string[] ipAndPort = Properties.Settings.Default.FtpIp.Split(":".ToCharArray());
+                string[] ipAndPort = ServerForm.Properties.Settings.Default.FtpIp.Split(":".ToCharArray());
                 if(ipAndPort.Length==2)
                 {
                     FtpIp = ipAndPort[0];
@@ -152,13 +152,13 @@ namespace ServerForm
             }
             myTcpServerSimple.IpList = ip;
             //本地保存，且本地保存路径不为空，且本地保存路径存在
-            if (Properties.Settings.Default.IsLocalSave && Properties.Settings.Default.LocalSavePath != "" && Directory.Exists(Properties.Settings.Default.LocalSavePath))
-                myTcpServerSimple.DataSaveFolder = Properties.Settings.Default.LocalSavePath;
+            if (ServerForm.Properties.Settings.Default.IsLocalSave && ServerForm.Properties.Settings.Default.LocalSavePath != "" && Directory.Exists(ServerForm.Properties.Settings.Default.LocalSavePath))
+                myTcpServerSimple.DataSaveFolder = ServerForm.Properties.Settings.Default.LocalSavePath;
             else
                 myTcpServerSimple.DataSaveFolder = fsnSavePath;
-            if (Properties.Settings.Default.LocalIp != "")
+            if (ServerForm.Properties.Settings.Default.LocalIp != "")
             {
-                myTcpServerSimple.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
+                myTcpServerSimple.StartListenling(ServerForm.Properties.Settings.Default.LocalIp, ServerForm.Properties.Settings.Default.Port);
             }
         }
 
@@ -179,12 +179,12 @@ namespace ServerForm
                     }
                     else if(e.Cmd > 0 && e.Cmd < 10)//上传文件
                     {
-                        if(!Properties.Settings.Default.IsLocalSave)
+                        if(!ServerForm.Properties.Settings.Default.IsLocalSave)
                         {
                             string[] files = Directory.GetFiles(fsnSavePath);
-                            FtpOperation.FilesUpload(FtpIp, FtpPort, Properties.Settings.Default.FtpPath,
-                                                             Properties.Settings.Default.FtpUser,
-                                                             Properties.Settings.Default.FtpPassWord, files);
+                            FtpOperation.FilesUpload(FtpIp, FtpPort, ServerForm.Properties.Settings.Default.FtpPath,
+                                                             ServerForm.Properties.Settings.Default.FtpUser,
+                                                             ServerForm.Properties.Settings.Default.FtpPassWord, files);
                         }
                     }
                 }
@@ -291,16 +291,16 @@ namespace ServerForm
 
         private void 软件设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string ip = Properties.Settings.Default.LocalIp;
-            int port = Properties.Settings.Default.Port;
+            string ip = ServerForm.Properties.Settings.Default.LocalIp;
+            int port = ServerForm.Properties.Settings.Default.Port;
             BaseWinForm.Setting frm = new Setting();
             frm.ShowDialog();
             //IP地址或者端口号进行了修改，就要重启监听线程
-            if (ip != Properties.Settings.Default.LocalIp || port != Properties.Settings.Default.Port)
+            if (ip != ServerForm.Properties.Settings.Default.LocalIp || port != ServerForm.Properties.Settings.Default.Port)
             {
                 //if(myTcpServerSimple.IsRunning)
                 //    myTcpServerSimple.Stop();//会报错
-                myTcpServerSimple.StartListenling(Properties.Settings.Default.LocalIp, Properties.Settings.Default.Port);
+                myTcpServerSimple.StartListenling(ServerForm.Properties.Settings.Default.LocalIp, ServerForm.Properties.Settings.Default.Port);
             }
         }
 
@@ -309,15 +309,15 @@ namespace ServerForm
             BaseWinForm.FileSaveSetting frm=new FileSaveSetting();
             frm.ShowDialog();
             //本地保存，且本地保存路径不为空，且本地保存路径存在
-            if (Properties.Settings.Default.IsLocalSave && Properties.Settings.Default.LocalSavePath != "" && Directory.Exists(Properties.Settings.Default.LocalSavePath))
-                myTcpServerSimple.DataSaveFolder = Properties.Settings.Default.LocalSavePath;
+            if (ServerForm.Properties.Settings.Default.IsLocalSave && ServerForm.Properties.Settings.Default.LocalSavePath != "" && Directory.Exists(ServerForm.Properties.Settings.Default.LocalSavePath))
+                myTcpServerSimple.DataSaveFolder = ServerForm.Properties.Settings.Default.LocalSavePath;
             else
                 myTcpServerSimple.DataSaveFolder = fsnSavePath;
 
             //当需要上传FTp时，设置FTP
-            if (!Properties.Settings.Default.IsLocalSave)
+            if (!ServerForm.Properties.Settings.Default.IsLocalSave)
             {
-                string[] ipAndPort = Properties.Settings.Default.FtpIp.Split(":".ToCharArray());
+                string[] ipAndPort = ServerForm.Properties.Settings.Default.FtpIp.Split(":".ToCharArray());
                 if (ipAndPort.Length == 2)
                 {
                     FtpIp = ipAndPort[0];

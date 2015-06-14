@@ -66,3 +66,17 @@ C:\Users\xiaouyuan\Documents\GitHub\TCPServer\TcpServer\bin\Debug\KyModel.pdb
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\TcpServer\obj\Debug\MyTcpServer.csprojResolveAssemblyReference.cache
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.dll
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\TcpServer.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\TcpServer.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\KyBll.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\MySql.Data.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\KyBll.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Debug\MyTcpServer.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\CavemanTools.dll

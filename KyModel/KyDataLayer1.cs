@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -215,7 +213,7 @@ namespace KyModel
                     SignL2.NodeCode = signL1.NodeCode.Replace('\0', ' ').Replace(" ", "");
                 if (signL1.BranchCode != null)
                     SignL2.BranchCode = signL1.BranchCode.Replace('\0', ' ').Replace(" ", "");
-                if (signL1.Slope != null)
+                if (signL1.Slope != 0)
                     SignL2.Slope = signL1.Slope;
                 SignL2.Version = signL1.Version;
                 //if (SignL2.Version == "9999")

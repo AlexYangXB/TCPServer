@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ServerForm.BaseWinForm
@@ -20,13 +15,13 @@ namespace ServerForm.BaseWinForm
 
         private void Setting_Load(object sender, EventArgs e)
         {
-            string LocalIp = Properties.Settings.Default.LocalIp;
+            string LocalIp = ServerForm.Properties.Settings.Default.LocalIp;
             if (LocalIp == "")
             {
                 LocalIp = GetLocalIP();
             }
             ipControl_LocalIp.Text = LocalIp;
-            txb_Port.Text = Properties.Settings.Default.Port.ToString();
+            txb_Port.Text = ServerForm.Properties.Settings.Default.Port.ToString();
         }
         /// <summary>
         /// 获取本机IP
@@ -49,9 +44,9 @@ namespace ServerForm.BaseWinForm
 
         private void btn_confirm_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.LocalIp = ipControl_LocalIp.Text;
-            Properties.Settings.Default.Port = int.Parse(txb_Port.Text);
-            Properties.Settings.Default.Save();
+            ServerForm.Properties.Settings.Default.LocalIp = ipControl_LocalIp.Text;
+            ServerForm.Properties.Settings.Default.Port = int.Parse(txb_Port.Text);
+            ServerForm.Properties.Settings.Default.Save();
             Close();
         }
 

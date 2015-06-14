@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using KyModel.Models;
-using System.Linq;
 using KyBll;
 using KyBll.DBUtility;
+using KyModel.Models;
 namespace KangYiCollection.BaseWinform
 {
     public partial class ServerSettings : MaterialSkin.Controls.MaterialForm
@@ -39,11 +37,11 @@ namespace KangYiCollection.BaseWinform
         private void ServerSettings_Load(object sender, EventArgs e)
         {
 
-            ServerIp = Properties.Settings.Default.ServerIp;
-            PictureIp = Properties.Settings.Default.PictureIp;
-            DeviceIp = Properties.Settings.Default.DeviceIp;
-            LocalIp = Properties.Settings.Default.LocalIp;
-            PushIp = Properties.Settings.Default.PushIp;
+            ServerIp = KangYiCollection.Properties.Settings.Default.ServerIp;
+            PictureIp = KangYiCollection.Properties.Settings.Default.PictureIp;
+            DeviceIp = KangYiCollection.Properties.Settings.Default.DeviceIp;
+            LocalIp = KangYiCollection.Properties.Settings.Default.LocalIp;
+            PushIp = KangYiCollection.Properties.Settings.Default.PushIp;
             if(LocalIp==""||LocalIp=="192.168.1.1")
             {
                 LocalIp = GetLocalIP();
@@ -60,11 +58,11 @@ namespace KangYiCollection.BaseWinform
             waitingForm.ShowDialog();
             cmb_imageServer.Text = PictureIp;
 
-            txb_SphinxPort.Text = Properties.Settings.Default.ServerDbPort.ToString();
-            txb_DevicePort.Text = Properties.Settings.Default.DeviceDbPort.ToString();
-            txb_ImagePort.Text = Properties.Settings.Default.PicturtDbPort.ToString();
-            txb_LocalPort.Text = Properties.Settings.Default.Port.ToString();
-            txb_PushPort.Text = Properties.Settings.Default.PushPort.ToString();
+            txb_SphinxPort.Text = KangYiCollection.Properties.Settings.Default.ServerDbPort.ToString();
+            txb_DevicePort.Text = KangYiCollection.Properties.Settings.Default.DeviceDbPort.ToString();
+            txb_ImagePort.Text = KangYiCollection.Properties.Settings.Default.PicturtDbPort.ToString();
+            txb_LocalPort.Text = KangYiCollection.Properties.Settings.Default.Port.ToString();
+            txb_PushPort.Text = KangYiCollection.Properties.Settings.Default.PushPort.ToString();
             
         }
 
@@ -75,7 +73,7 @@ namespace KangYiCollection.BaseWinform
         {
             if (DeviceIp != "0.0.0.0" && DeviceIp != "")
             {
-                DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+                DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
                 bool result = KyDataOperation.TestConnectDevice();
                 if (result)
                 {
@@ -106,25 +104,25 @@ namespace KangYiCollection.BaseWinform
         private void btn_Confirm_Click(object sender, EventArgs e)
         {
             //本地IP 端口号
-            Properties.Settings.Default.LocalIp = ipControl_Local.Text;
-            Properties.Settings.Default.Port = int.Parse(txb_LocalPort.Text);
+            KangYiCollection.Properties.Settings.Default.LocalIp = ipControl_Local.Text;
+            KangYiCollection.Properties.Settings.Default.Port = int.Parse(txb_LocalPort.Text);
             //sphinx IP 端口号
-            Properties.Settings.Default.ServerIp = ipControl_Server.Text;
-            Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
+            KangYiCollection.Properties.Settings.Default.ServerIp = ipControl_Server.Text;
+            KangYiCollection.Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
             //设备服务器IP 端口号
-            Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
-            Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
+            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
+            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             //推送服务器IP 端口号
-            Properties.Settings.Default.PushIp = ipControl_Push.Text;
-            Properties.Settings.Default.PushPort = int.Parse(txb_PushPort.Text);
+            KangYiCollection.Properties.Settings.Default.PushIp = ipControl_Push.Text;
+            KangYiCollection.Properties.Settings.Default.PushPort = int.Parse(txb_PushPort.Text);
             //图片服务器IP 端口号
-            Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
-            Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
+            KangYiCollection.Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
+            KangYiCollection.Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             //修改自动更新配置文件
             IniFile g = new IniFile(Application.StartupPath + "/config.ini");
             string url = g.ReadString("NETWORK", "URL", "");
-            g.WriteString("NETWORK", "URL", "http://"+Properties.Settings.Default.DeviceIp.ToString()+":8888/update/");
-            Properties.Settings.Default.Save();
+            g.WriteString("NETWORK", "URL", "http://"+KangYiCollection.Properties.Settings.Default.DeviceIp.ToString()+":8888/update/");
+            KangYiCollection.Properties.Settings.Default.Save();
             //先清除已绑定的项
             //List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
             //int[] ids = (from node in nodes select node.kId).ToArray();
@@ -198,10 +196,10 @@ namespace KangYiCollection.BaseWinform
                 MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
-            Properties.Settings.Default.ServerIp = ipControl_Server.Text;
-            Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
-            Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.ServerIp, Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+            KangYiCollection.Properties.Settings.Default.ServerIp = ipControl_Server.Text;
+            KangYiCollection.Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
 
             bool result = KyDataOperation.TestConnectServer();
             if (result)
@@ -247,10 +245,10 @@ namespace KangYiCollection.BaseWinform
                 MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
-            Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
-            Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
-            Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.DeviceIp, Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
+            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
             bool result = KyDataOperation.TestConnectDevice();
             if (result)
             {
@@ -288,9 +286,9 @@ namespace KangYiCollection.BaseWinform
             if (result)
             {
                 MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                Properties.Settings.Default.PushIp = PushIp;
-                Properties.Settings.Default.PushPort = PushPort;
-                Properties.Settings.Default.Save();
+                KangYiCollection.Properties.Settings.Default.PushIp = PushIp;
+                KangYiCollection.Properties.Settings.Default.PushPort = PushPort;
+                KangYiCollection.Properties.Settings.Default.Save();
             }
             else
                 MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
@@ -308,10 +306,10 @@ namespace KangYiCollection.BaseWinform
          }
         private void PictureTest() 
         {
-            Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
-            Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
-            Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(Properties.Settings.Default.PictureIp, Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+            KangYiCollection.Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
+            KangYiCollection.Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
             bool result = KyDataOperation.TestConnectImage();
             if (result)
                 MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
@@ -322,15 +320,15 @@ namespace KangYiCollection.BaseWinform
 
         private void cmb_imageServer_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)cmb_imageServer.DataSource;
+            List<ky_imgserver> imgservers = (List<ky_imgserver>)cmb_imageServer.DataSource;
             string pictureIp = cmb_imageServer.Text;
-            if(dt.Rows.Count>0)
+            if (imgservers.Count > 0)
             {
-                for (int i = 0; i < dt.Rows.Count; i++)
+                foreach (var imgserver in imgservers)
                 {
-                    if(dt.Rows[i]["kIpAddress"].ToString()==pictureIp)
+                    if (imgserver.kIpAddress == pictureIp)
                     {
-                        txb_ImagePort.Text = dt.Rows[i]["kPort"].ToString();
+                        txb_ImagePort.Text = imgserver.kPort.ToString();
                     }
                 }
             }

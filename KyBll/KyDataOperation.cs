@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using MySql.Data.MySqlClient;
-using System.Linq;
-using System.Data.Entity;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using KyModel.Models;
-using System.Data.Objects;
-using KyBll;
-using KyModel;
 using KyBll.DBUtility;
+using KyModel;
+using KyModel.Models;
+using SqlFu;
 namespace KyBll
 {
     public class KyDataOperation
@@ -36,7 +30,8 @@ namespace KyBll
                         "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
                         batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
                         batch.kuser, batch.kimgserver, batch.hjson);
-                    conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
+                    conn.Execute(strSql);
+                    
                 }
                 return true;
             }
@@ -84,12 +79,12 @@ namespace KyBll
                     }
                     using (var conn = DbHelperMySQL.OpenSphinxConnection())
                     {
-                        conn.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, strSql);
+
+                        conn.Execute(strSql);
                     }
                     using (var conn = DbHelperMySQL.OpenImageConnection())
                     {
-                        conn.ky_picture.AddRange(pictures);
-                        conn.SaveChanges();
+                        conn.Insert(pictures);
                     }
                 }
                 return true;
@@ -117,7 +112,7 @@ namespace KyBll
                     string.Format("select count(*) as count from ky_agent_batch where kdate>{0} and kdate<{1}", startTime,endTime);
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    totalCount= conn.Database.SqlQuery<ky_count>(strSql).FirstOrDefault().count;
+                    totalCount = conn.GetValue<int>(strSql);
                    
                 }
             }
@@ -146,7 +141,7 @@ namespace KyBll
                         string.Format("select * from ky_agent_batch where kdate>{0} and kdate<{1} limit 0,{2} option max_matches={2}", startTime, endTime, count);
                     using (var conn = DbHelperMySQL.OpenSphinxConnection())
                     {
-                        batches = conn.Database.SqlQuery<ky_agent_batch>(strSql).ToList();
+                        batches = conn.Query<ky_agent_batch>(strSql).ToList();
                     }
                 }
                 catch (Exception e)
@@ -171,7 +166,7 @@ namespace KyBll
                     string.Format("select * from ky_agent_sign where kbatchid={0} limit 0,100000 option max_matches=100000", batchid);
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    signs = conn.Database.SqlQuery<ky_agent_sign>(strSql).ToList();
+                    signs = conn.Query<ky_agent_sign>(strSql).ToList();
 
                 }
             }
@@ -198,7 +193,7 @@ namespace KyBll
             List<ky_node> nodes;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.ky_node.Where(cc => cc.kBindIpAddress == bindIpAddress).ToList();
+                nodes = conn.Query<ky_node>(cc => cc.kBindIpAddress == bindIpAddress).ToList();
             }
             return nodes;
         }
@@ -212,7 +207,7 @@ namespace KyBll
             List<ky_node> nodes;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.ky_node.Where(q => id.Contains(q.kId)).ToList();
+                nodes = conn.Query<ky_node>(q => id.Contains(q.kId)).ToList();
             }
             return nodes;
         }
@@ -230,15 +225,12 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    var selectNodes = conn.ky_node.Where(q => ids.Contains(q.kId)).ToList();
+                    var selectNodes = conn.Query<ky_node>(q => ids.Contains(q.kId)).ToList();
                     foreach (ky_node selectNode in selectNodes)
                     {
-                        selectNode.kBindIpAddress = bindIpAdress;
-
+                        selectNode.kBindIpAddress = bindIpAdress;  
+                         conn.Update<ky_node>(selectNode);
                     }
-                    if (selectNodes != null)
-
-                        conn.SaveChanges();
                 }
                 return true;
             }
@@ -259,7 +251,7 @@ namespace KyBll
             ky_node node;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                node = conn.ky_node.Where(q => q.kNodeNumber == nodeNumber).FirstOrDefault();
+                node = conn.Get<ky_node>(q => q.kNodeNumber == nodeNumber);
             }
             if (node != null)
                 return node.kId;
@@ -276,7 +268,7 @@ namespace KyBll
             ky_node node;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                node = conn.ky_node.Where(q => q.kId == id).FirstOrDefault();
+                node = conn.Get<ky_node>(q => q.kId == id);
             }
             if (node != null)
                 return node;
@@ -294,7 +286,7 @@ namespace KyBll
             ky_branch branch;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                branch = conn.ky_branch.Where(q => q.kBranchNumber == branchNumber).FirstOrDefault();
+                branch = conn.Get<ky_branch>(q => q.kBranchNumber == branchNumber);
             }
             if (branch != null)
                 return branch.kId;
@@ -311,7 +303,7 @@ namespace KyBll
             ky_node node;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                node = conn.ky_node.Where(q => q.kId == nodeId).FirstOrDefault();
+                node = conn.Get<ky_node>(q => q.kId == nodeId);
             }
             if (node != null)
                 return node.kBranchId;
@@ -328,8 +320,8 @@ namespace KyBll
             ky_branch branch;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                ky_node node= conn.ky_node.Where(q => q.kId == nodeId).FirstOrDefault();
-                branch = conn.ky_branch.Where(q => q.kId == node.kBranchId).FirstOrDefault();
+                ky_node node = conn.Get<ky_node>(q => q.kId == nodeId);
+                branch = conn.Get<ky_branch>(q => q.kId == node.kBranchId);
             }
             if (branch != null)
                 return branch;
@@ -347,7 +339,7 @@ namespace KyBll
             ky_factory factory;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                factory = conn.ky_factory.Where(q => q.kFactoryCode == factoryNumber).FirstOrDefault();
+                factory = conn.Get<ky_factory>(q => q.kFactoryCode == factoryNumber);
 
             }
             if (factory != null)
@@ -369,8 +361,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_factory.Add(factory);
-                    conn.SaveChanges();
+                    conn.Insert(factory);
                 }
                 return factory.kId;
             }
@@ -393,7 +384,7 @@ namespace KyBll
                 List<ky_machine> machines;
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    machines = conn.ky_machine.Where(q => nodeIds.Contains(q.kNodeId)).ToList();
+                    machines = conn.Query<ky_machine>(q => nodeIds.Contains(q.kNodeId)).ToList();
                 }
                 return machines;
             }
@@ -415,7 +406,7 @@ namespace KyBll
             ky_machine machine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machine = conn.ky_machine.Where(q => q.kMachineNumber == machineNumber).FirstOrDefault();
+                machine = conn.Get<ky_machine>(q => q.kMachineNumber == machineNumber);
             }
             if (machine != null)
                 return machine.kId;
@@ -432,7 +423,7 @@ namespace KyBll
             ky_machine machine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machine = conn.ky_machine.Where(q => q.kId == id).FirstOrDefault();
+                machine = conn.Get<ky_machine>(q => q.kId == id);
             }
             if (machine != null)
                 return machine;
@@ -449,7 +440,7 @@ namespace KyBll
             ky_user user;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                user = conn.ky_user.Where(q => q.kUserNumber == userNumber).FirstOrDefault();
+                user = conn.Get<ky_user>(q => q.kUserNumber == userNumber);
             }
             if (user != null)
                 return user.kId;
@@ -467,7 +458,7 @@ namespace KyBll
             ky_imgserver imgserver;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                imgserver = conn.ky_imgserver.Where(q => q.kIpAddress == ip).FirstOrDefault();
+                imgserver = conn.Get<ky_imgserver>(q => q.kIpAddress == ip);
             }
             if (imgserver != null)
                 return imgserver.kId;
@@ -486,7 +477,7 @@ namespace KyBll
             ky_user user;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                user = conn.ky_user.Where(q => q.kUserNumber == UserNumber).FirstOrDefault();
+                user = conn.Get<ky_user>(q => q.kUserNumber == UserNumber);
             }
             return user;
         }
@@ -501,7 +492,7 @@ namespace KyBll
             ky_machine machine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machine = conn.ky_machine.Where(q => q.kIpAddress == ip).FirstOrDefault();
+                machine = conn.Get<ky_machine>(q => q.kIpAddress == ip);
             }
             return machine;
         }
@@ -516,7 +507,7 @@ namespace KyBll
             List<ky_machine> machines;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machines = conn.ky_machine.Where(q => q.kNodeId == nodeId).ToList();
+                machines = conn.Query<ky_machine>(q => q.kNodeId == nodeId).ToList();
             }
             return machines;
         }
@@ -534,10 +525,10 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    ky_machine machine=conn.ky_machine.Where(q => q.kId == id).FirstOrDefault();
+                    ky_machine machine = conn.Get<ky_machine>(q => q.kId == id);
                     machine.kMachineNumber=machineNumber;
                     machine.kMachineModel=machineModel;
-                    conn.SaveChanges();
+                    conn.Update<ky_machine>(machine);
                 }
                 return true;
             }
@@ -557,16 +548,7 @@ namespace KyBll
             List<ky_machine> machines;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                var entity = conn.ky_machine;
-                var tt = (from e in entity.Where(q => nodeIds.Contains(q.kNodeId))
-                          select new { kIpAddress = e.kIpAddress, kUpdateTime = e.kUpdateTime, kStatus = e.kStatus, kId = e.kId }).ToList();
-                machines = tt.ConvertAll<ky_machine>(item => new ky_machine()
-                {
-                    kIpAddress = item.kIpAddress,
-                    kUpdateTime = item.kUpdateTime,
-                    kStatus = item.kStatus,
-                    kId = item.kId
-                });
+                machines = conn.Query<ky_machine>(q => nodeIds.Contains(q.kNodeId)).ToList();
 
             }
             return machines;
@@ -582,8 +564,7 @@ namespace KyBll
             int atmId = 0;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                var atm = conn.ky_atm.Where(q => q.kATMNumber == ATMNumber)
-                    .Where(q => q.kNodeId == NodeId).FirstOrDefault();
+                var atm = conn.Get<ky_atm>(q => q.kATMNumber == ATMNumber&&q.kNodeId == NodeId);
                 if (atm != null)
                     atmId = atm.kId;
             }
@@ -599,7 +580,7 @@ namespace KyBll
             List<ky_atm> atms;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                atms = conn.ky_atm.Where(q => nodeIds.Contains(q.kNodeId)).ToList();
+                atms = conn.Query<ky_atm>(q => nodeIds.Contains(q.kNodeId)).ToList();
             }
             return atms;
         }
@@ -615,8 +596,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_atm.Add(ATM);
-                    conn.SaveChanges();
+                    conn.Insert(ATM);
                 }
                 return ATM.kId;
             }
@@ -636,8 +616,7 @@ namespace KyBll
             int cashboxId = 0;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                var cashbox = conn.ky_cashbox.Where(q => q.kCashBoxNumber == CashBoxNumber)
-                    .Where(q => q.kNodeId == NodeId).FirstOrDefault();
+                var cashbox = conn.Get<ky_cashbox>(q => q.kCashBoxNumber == CashBoxNumber && q.kNodeId == NodeId);
                 if (cashbox != null)
                     cashboxId = cashbox.kId;
             }
@@ -654,7 +633,7 @@ namespace KyBll
             List<ky_cashbox> cashboxs;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                cashboxs = conn.ky_cashbox.Where(q => nodeIds.Contains(q.kNodeId)).ToList();
+                cashboxs = conn.Query<ky_cashbox>(q => nodeIds.Contains(q.kNodeId)).ToList();
             }
             return cashboxs;
         }
@@ -670,8 +649,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_cashbox.Add(CashBox);
-                    conn.SaveChanges();
+                    conn.Insert(CashBox);
                 }
                 return CashBox.kId;
             }
@@ -690,7 +668,7 @@ namespace KyBll
             List<ky_cashbox> cashboxs;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                cashboxs = conn.ky_cashbox.ToList();
+                cashboxs=conn.Query<ky_cashbox>().ToList();
             }
             return cashboxs;
         }
@@ -704,7 +682,7 @@ namespace KyBll
             List<ky_node> nodes;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                nodes = conn.ky_node.ToList();
+                nodes = conn.Query<ky_node>().ToList();
             }
             return nodes;
         }
@@ -718,7 +696,7 @@ namespace KyBll
             List<ky_factory> factorys;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                factorys = conn.ky_factory.ToList();
+                factorys = conn.Query<ky_factory>().ToList();
             }
             return factorys;
         }
@@ -732,7 +710,7 @@ namespace KyBll
             List<ky_import_machine> importmachines;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                importmachines = conn.ky_import_machine.ToList();
+                importmachines = conn.Query<ky_import_machine>().ToList();
             }
             return importmachines;
         }
@@ -745,7 +723,7 @@ namespace KyBll
             ky_import_machine importmachine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                importmachine = conn.ky_import_machine.Where(q=>q.kId==id).FirstOrDefault();
+                importmachine = conn.Get<ky_import_machine>(q=>q.kId==id);
             }
             if (importmachine != null)
                 return importmachine;
@@ -761,7 +739,7 @@ namespace KyBll
             ky_import_machine machine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                machine = conn.ky_import_machine.Where(p => p.kMachineNumber == machineNumber).FirstOrDefault();
+                machine = conn.Get<ky_import_machine>(p => p.kMachineNumber == machineNumber);
             }
             if (machine != null)
                 return machine.kId;
@@ -779,9 +757,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_import_machine.Add(import_machine);
-                    conn.SaveChanges();
-                    id = Convert.ToInt32(import_machine.kId);
+                    id=conn.Insert<ky_import_machine>(import_machine).InsertedId<int>();
                 }
             }
             catch (Exception e)
@@ -814,8 +790,7 @@ namespace KyBll
                         kType = business,
                         kNodeId = nodeId
                     };
-                    conn.ky_import_file.Add(file);
-                    conn.SaveChanges();
+                    conn.Insert(file);
                 }
                 return true;
             }
@@ -832,7 +807,7 @@ namespace KyBll
             List<ky_imgserver> imgservers;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                imgservers = conn.ky_imgserver.ToList();
+                imgservers = conn.Query<ky_imgserver>().ToList();
             }
             return imgservers;
         }
@@ -856,8 +831,7 @@ namespace KyBll
                         kFileName = fileName,
                         kBundleNumber = bundleNumber
                     };
-                    conn.ky_gzh_bundle.Add(gzh_bundle);
-                    conn.SaveChanges();
+                    conn.Insert(gzh_bundle);
                 }
                 return true;
             }
@@ -880,7 +854,7 @@ namespace KyBll
             ky_gzh_bundle gzh_bundle;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                gzh_bundle = conn.ky_gzh_bundle.Where(p => p.kBatchId == batchId && p.kBundleNumber == bundleNumber).FirstOrDefault();
+                gzh_bundle = conn.Get<ky_gzh_bundle>(p => p.kBatchId == batchId && p.kBundleNumber == bundleNumber);
             }
             if (gzh_bundle != null)
                 return gzh_bundle.kId;
@@ -900,10 +874,8 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_gzh_package.Add(gzh);
-                    conn.GetValidationErrors();
-                    conn.SaveChanges();
-                    id = Convert.ToInt32(gzh.kId);
+
+                    id=conn.Insert(gzh).InsertedId<int>();
                 }
             }
             catch (Exception e)
@@ -929,8 +901,7 @@ namespace KyBll
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
                     ky_package_bundle pack_bundle = new ky_package_bundle { kBundleId = bundleId, kPackageId = packageId };
-                    conn.ky_package_bundle.Add(pack_bundle);
-                    conn.SaveChanges();
+                    conn.Insert(pack_bundle);
                 }
                 return true;
             }
@@ -956,7 +927,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    conn.ky_sign.FirstOrDefault();
+                    conn.Query<ky_sign>().FirstOrDefault();
                 }
                 return true;
             }
@@ -977,7 +948,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.ky_user.FirstOrDefault();
+                    conn.Query<ky_user>().FirstOrDefault();
                 }
                 return true;
             }
@@ -1017,7 +988,7 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenImageConnection())
                 {
-                    conn.ky_picture.FirstOrDefault();
+                    conn.Query<ky_picture>().FirstOrDefault();
                 }
                 return true;
             }
