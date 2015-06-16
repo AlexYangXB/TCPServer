@@ -58,7 +58,7 @@ namespace KyBll
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
-                CommandFormat = " len " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
+                CommandFormat = " CMD Length " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
             }
             if (TCPMessage.MessageType == TCPMessageType.NewConnection)
             {
@@ -82,7 +82,10 @@ namespace KyBll
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_UP)
             {
-                message += TCPMessage.IpAndPort + ", Send Data Command  " + CommandFormat;
+                int SignLength = 0;
+                if(TCPMessage.Command.Length>64)
+                    SignLength=BitConverter.ToInt16(TCPMessage.Command, 62);
+                message += TCPMessage.IpAndPort + ", Send Data Command  Sign Length "+SignLength + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {
