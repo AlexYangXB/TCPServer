@@ -1,6 +1,6 @@
 ﻿namespace KangYiCollection.BaseWinform
 {
-    partial class SystemSettings
+    partial class FunctionSettings
     {
         /// <summary>
         /// Required designer variable.

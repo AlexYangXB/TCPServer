@@ -72,16 +72,3 @@ C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyBll\bin\Debug\KyModel.pdb
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.csprojResolveAssemblyReference.cache
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.dll
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\KyBll.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\KyBll.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\ICSharpCode.SharpZipLib.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\KyModel.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\MySql.Data.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\Newtonsoft.Json.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\KyModel.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.csprojResolveAssemblyReference.cache
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\CavemanTools.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\SqlFu.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\SqlFu.pdb

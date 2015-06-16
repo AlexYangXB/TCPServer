@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using KyModel;
+using System.Net.Sockets;
+using System.Threading;
 namespace KyBll
 {
     public class MyTCP
@@ -209,6 +211,86 @@ namespace KyBll
         }
         
         #endregion
+
+
+        /// <summary>
+        /// 接收命令
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="ReceiveBytes"></param>
+        /// <param name="length"></param>
+        public static void ReceiveMessage(Socket user, out byte[] ReceiveBytes, int length)
+        {
+            try
+            {
+                byte[] readbuf = new byte[length];
+                int bytesRead = user.Receive(readbuf, 0, length, SocketFlags.None);
+                ReceiveBytes = new byte[bytesRead];
+                Array.Copy(readbuf, ReceiveBytes, bytesRead);
+            }
+            catch
+            {
+                ReceiveBytes = null;
+            }
+        }
+        /// <summary>
+        /// 异步接收命令
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="length"></param>
+        /// <param name="ReceiveBytes"></param>
+        /// <returns></returns>
+        public static int AsyncReceiveFromClient(Socket user, int length, out byte[] ReceiveBytes)
+        {
+            ReceiveMessageDelegate d = new ReceiveMessageDelegate(ReceiveMessage);
+            IAsyncResult result = d.BeginInvoke(user, out ReceiveBytes, length, null, null);
+            //使用轮询方式来判断异步操作是否完成
+            while (result.IsCompleted == false)
+            {
+                Thread.Sleep(250);
+            }
+            //获取Begin方法的返回值和所有输入/输出参数
+            d.EndInvoke(out ReceiveBytes, result);
+            if (ReceiveBytes != null)
+                return ReceiveBytes.Length;
+            else
+                return 0;
+        }
+        delegate void ReceiveMessageDelegate(Socket user, out byte[] ReceiveBytes, int length);
+
+        /// <summary>
+        /// 异步发送命令
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
+        public static void AsyncSendToClient(Socket user, byte[] message)
+        {
+            SendToClientDelegate d = new SendToClientDelegate(SendToClient);
+            IAsyncResult result = d.BeginInvoke(user, message, null, null);
+            while (result.IsCompleted == false)
+            {
+                Thread.Sleep(100);
+            }
+            d.EndInvoke(result);
+        }
+        private delegate void SendToClientDelegate(Socket user, byte[] message);
+       /// <summary>
+       /// 发送命令
+       /// </summary>
+       /// <param name="user"></param>
+       /// <param name="message"></param>
+        public static void SendToClient(Socket user, byte[] message)
+        {
+            try
+            {
+                //将字符串写入网络流，此方法会自动附加字符串长度前缀
+                user.Send(message, 0, message.Length, SocketFlags.None);
+            }
+            catch (Exception e)
+            {
+                Log.ConnectionException("发送命令失败!", e);
+            }
+        }
     }
    
 }

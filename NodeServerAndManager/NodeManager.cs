@@ -910,7 +910,11 @@ namespace KangYiCollection
                 MessageBox.Show(ex.ToString());
             }
         }
-
+        /// <summary>
+        /// 注销
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_LogOut_Click(object sender, EventArgs e)
         {
             userId = 0;
@@ -920,13 +924,13 @@ namespace KangYiCollection
             this.tabPage3.Parent = materialTabControl1;
         }
         /// <summary>
-        /// 系统设置
+        /// 功能设置
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MenuItem_SystemSetting_Click(object sender, EventArgs e)
+        private void MenuItem_FunctionSetting_Click(object sender, EventArgs e)
         {
-            SystemSettings frm = new SystemSettings();
+            FunctionSettings frm = new FunctionSettings();
             frm.ShowDialog();
         }
 
@@ -1036,6 +1040,12 @@ namespace KangYiCollection
                 Exit = true;
                 Close();
             }
+        }
+
+        private void lb_OpenMainDir_Click(object sender, EventArgs e)
+        {
+            string foldPath = Application.StartupPath;
+            System.Diagnostics.Process.Start("explorer.exe", foldPath);
         }
 
 

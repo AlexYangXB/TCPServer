@@ -21,6 +21,16 @@ namespace KangYiCollection.BaseWinform
                     CommandLogRichTextBox.Clear();
 
                 }
+                if (BussinessLogRichTextBox.Lines.Length > 200)
+                {
+                    BussinessLogRichTextBox.Clear();
+
+                }
+                if (FSNImortLogRichTextBox.Lines.Length > 200)
+                {
+                    FSNImortLogRichTextBox.Clear();
+
+                }
                 if (e.Type==LogType.Command)
                 {
                     CommandLogRichTextBox.AppendText(e.Message);

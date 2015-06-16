@@ -12,7 +12,7 @@ using KyBll;
 using KyModel;
 namespace KangYiCollection.BaseWinform
 {
-    public partial class SystemSettings : MaterialSkin.Controls.MaterialForm
+    public partial class FunctionSettings : MaterialSkin.Controls.MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
         /// <summary>
@@ -31,7 +31,7 @@ namespace KangYiCollection.BaseWinform
         private DateTime startTime;
         private DateTime endTime;
         private string foldPath;
-        public SystemSettings()
+        public FunctionSettings()
         {
             InitializeComponent();
             materialSkinManager = MaterialSkinManager.Instance;

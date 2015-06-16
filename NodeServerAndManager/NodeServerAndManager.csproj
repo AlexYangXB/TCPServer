@@ -111,11 +111,11 @@
     <Compile Include="BaseWinform\ServerSettings.Designer.cs">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseWinform\SystemSettings.cs">
+    <Compile Include="BaseWinform\FunctionSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BaseWinform\SystemSettings.Designer.cs">
-      <DependentUpon>SystemSettings.cs</DependentUpon>
+    <Compile Include="BaseWinform\FunctionSettings.Designer.cs">
+      <DependentUpon>FunctionSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseWinform\WaitingForm.cs">
       <SubType>Form</SubType>
@@ -146,8 +146,8 @@
     <EmbeddedResource Include="BaseWinform\ServerSettings.resx">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BaseWinform\SystemSettings.resx">
-      <DependentUpon>SystemSettings.cs</DependentUpon>
+    <EmbeddedResource Include="BaseWinform\FunctionSettings.resx">
+      <DependentUpon>FunctionSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BaseWinform\WaitingForm.resx">
       <DependentUpon>WaitingForm.cs</DependentUpon>

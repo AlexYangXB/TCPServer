@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
             this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
@@ -59,6 +59,7 @@
             this.kUpdateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lb_OpenMainDir = new System.Windows.Forms.Label();
             this.btn_Login = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lab_Version = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -68,7 +69,7 @@
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.contextMenuStrip_Main = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.MenuItem_ServerSetting = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_SystemSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_FunctionSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_CRHReview = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Log = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_LogOut = new System.Windows.Forms.ToolStripMenuItem();
@@ -351,14 +352,14 @@
             // 
             this.dgv_machine.AllowUserToAddRows = false;
             this.dgv_machine.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_machine.ColumnHeadersHeight = 24;
             this.dgv_machine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_machine.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -418,6 +419,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.lb_OpenMainDir);
             this.tabPage3.Controls.Add(this.btn_Login);
             this.tabPage3.Controls.Add(this.lab_Version);
             this.tabPage3.Controls.Add(this.label2);
@@ -430,6 +432,18 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "用户登录";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // lb_OpenMainDir
+            // 
+            this.lb_OpenMainDir.AutoSize = true;
+            this.lb_OpenMainDir.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lb_OpenMainDir.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lb_OpenMainDir.Location = new System.Drawing.Point(527, 397);
+            this.lb_OpenMainDir.Name = "lb_OpenMainDir";
+            this.lb_OpenMainDir.Size = new System.Drawing.Size(77, 14);
+            this.lb_OpenMainDir.TabIndex = 17;
+            this.lb_OpenMainDir.Text = "打开主目录";
+            this.lb_OpenMainDir.Click += new System.EventHandler(this.lb_OpenMainDir_Click);
             // 
             // btn_Login
             // 
@@ -511,7 +525,7 @@
             this.contextMenuStrip_Main.Depth = 0;
             this.contextMenuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_ServerSetting,
-            this.MenuItem_SystemSetting,
+            this.MenuItem_FunctionSetting,
             this.MenuItem_CRHReview,
             this.MenuItem_Log,
             this.MenuItem_LogOut});
@@ -522,35 +536,35 @@
             // MenuItem_ServerSetting
             // 
             this.MenuItem_ServerSetting.Name = "MenuItem_ServerSetting";
-            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_ServerSetting.Text = "服务器设置";
             this.MenuItem_ServerSetting.Click += new System.EventHandler(this.MenuItem_ServerSetting_Click);
             // 
-            // MenuItem_SystemSetting
+            // MenuItem_FunctionSetting
             // 
-            this.MenuItem_SystemSetting.Name = "MenuItem_SystemSetting";
-            this.MenuItem_SystemSetting.Size = new System.Drawing.Size(136, 22);
-            this.MenuItem_SystemSetting.Text = "系统设置";
-            this.MenuItem_SystemSetting.Click += new System.EventHandler(this.MenuItem_SystemSetting_Click);
+            this.MenuItem_FunctionSetting.Name = "MenuItem_FunctionSetting";
+            this.MenuItem_FunctionSetting.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_FunctionSetting.Text = "功能设置";
+            this.MenuItem_FunctionSetting.Click += new System.EventHandler(this.MenuItem_FunctionSetting_Click);
             // 
             // MenuItem_CRHReview
             // 
             this.MenuItem_CRHReview.Name = "MenuItem_CRHReview";
-            this.MenuItem_CRHReview.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_CRHReview.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_CRHReview.Text = "CRH查看";
             this.MenuItem_CRHReview.Click += new System.EventHandler(this.MenuItem_CRHReview_Click);
             // 
             // MenuItem_Log
             // 
             this.MenuItem_Log.Name = "MenuItem_Log";
-            this.MenuItem_Log.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_Log.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_Log.Text = "日志";
             this.MenuItem_Log.Click += new System.EventHandler(this.MenuItem_Log_Click);
             // 
             // MenuItem_LogOut
             // 
             this.MenuItem_LogOut.Name = "MenuItem_LogOut";
-            this.MenuItem_LogOut.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_LogOut.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_LogOut.Text = "注销";
             this.MenuItem_LogOut.Click += new System.EventHandler(this.MenuItem_LogOut_Click);
             // 
@@ -661,13 +675,14 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_ServerSetting;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Log;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_LogOut;
-        private System.Windows.Forms.ToolStripMenuItem MenuItem_SystemSetting;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_FunctionSetting;
         private System.Windows.Forms.Timer timer_ImportFSN;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CRHReview;
         private System.Windows.Forms.Timer timer_ExportCRH;
         private System.Windows.Forms.NotifyIcon notifyIcon_Tray;
         private MaterialSkin.Controls.MaterialContextMenuStrip contextMenuStrip_Tray;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Exit;
+        private System.Windows.Forms.Label lb_OpenMainDir;
     }
 }
 

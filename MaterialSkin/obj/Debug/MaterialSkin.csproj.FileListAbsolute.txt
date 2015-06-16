@@ -25,9 +25,3 @@ C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSki
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.csproj.GenerateResource.Cache
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.dll
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\bin\Debug\MaterialSkin.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\bin\Debug\MaterialSkin.pdb
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.Properties.Resources.resources
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.csproj.GenerateResource.Cache
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.dll
-C:\Users\davidhxy\Documents\GitHub\TCPServer\MaterialSkin\obj\Debug\MaterialSkin.pdb

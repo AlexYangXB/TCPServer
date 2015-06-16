@@ -91,79 +91,106 @@ namespace MyTcpServer
             //ShowMsg("服务器启动监听成功！");
             IsRunning = true;
         }
-
+        private delegate void ListenClientDelegate(out Socket client);
+        /// <summary>
+        /// 监听客户端连接
+        /// </summary>
+        /// <param name="newClient"></param>
+        private void ListenClient(out Socket newClient)
+        {
+            try
+            {
+                //开始监听客户端连接请求，Accept方法会阻断当前的线程
+                newClient = socketWatch.Accept();
+            }
+            catch
+            {
+                newClient = null;
+            }
+        }
         void WatchConnecting()
         {
-            while (true)  // 持续不断的监听客户端的连接请求；  
+            while (true)  // 持续不断的监听客户端的连接请求
             {
-                // 开始监听客户端连接请求，Accept方法会阻断当前的线程；  
-                Socket sokConnection = socketWatch.Accept(); // 一旦监听到一个客户端的请求，就返回一个与该客户端通信的 套接字；  
-                // 想列表控件中添加客户端的IP信息；  
-                //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
-                string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                TCPEvent.OnCommandLog(new TCPMessage
-                    {
-                        IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                        MessageType = TCPMessageType.NewConnection
-                    });
-                //IP地址在数据库中，才会接收数据
-                if (machine.ContainsKey(ipPort[0]))
+                Socket sokConnection = null;
+                ListenClientDelegate d = new ListenClientDelegate(ListenClient);
+                IAsyncResult result = d.BeginInvoke(out sokConnection, null, null);
+                //轮询方式
+                while (result.IsCompleted == false)
                 {
-                    // 将与客户端连接的 套接字 对象添加到集合中
-                    if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
-                        dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
-                    Thread thr = new Thread(RecMsg);
-                    thr.IsBackground = true;
-                    thr.Start(sokConnection);
-                    if (!dictThread.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
-                        dictThread.Add(sokConnection.RemoteEndPoint.ToString(), thr);  //  将新建的线程 添加 到线程的集合中去。  
+                    Thread.Sleep(100);
                 }
-                else
+                d.EndInvoke(out sokConnection, result);
+                if (sokConnection != null)
                 {
-                    ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
-                    if (newmachine != null)
+                    // 想列表控件中添加客户端的IP信息；  
+                    //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
+                    string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
+                    TCPEvent.OnCommandLog(new TCPMessage
+                        {
+                            IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                            MessageType = TCPMessageType.NewConnection
+                        });
+                    //IP地址在数据库中，才会接收数据
+                    if (machine.ContainsKey(ipPort[0]))
                     {
-                        machine.Add(newmachine.kIpAddress, newmachine);
-                        // 将与客户端连接的 套接字 对象添加到集合中；
+                        // 将与客户端连接的 套接字 对象添加到集合中
                         if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                             dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
-                        else
-                        {
-                            TCPEvent.OnCommandLog(new TCPMessage
-                           {
-                               IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                               MessageType = TCPMessageType.ExistConnection
-                           });
-                        }
-                        //ShowMsg("客户端连接成功！");
                         Thread thr = new Thread(RecMsg);
                         thr.IsBackground = true;
+                        thr.Start(sokConnection);
                         if (!dictThread.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                             dictThread.Add(sokConnection.RemoteEndPoint.ToString(), thr);  //  将新建的线程 添加 到线程的集合中去。  
-                        else
-                        {
-                            TCPEvent.OnCommandLog(new TCPMessage
-                            {
-                                IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                                MessageType = TCPMessageType.ExistConnection
-                            });
-                        }
-                        thr.Start(sokConnection);
-
                     }
                     else
                     {
-                        TCPEvent.OnCommandLog(new TCPMessage
+                        ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
+                        if (newmachine != null)
+                        {
+                            machine.Add(newmachine.kIpAddress, newmachine);
+                            // 将与客户端连接的 套接字 对象添加到集合中；
+                            if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
+                                dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
+                            else
                             {
-                                IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                                MessageType = TCPMessageType.NoMachineIp
-                            });
-                        sokConnection.Close();
+                                TCPEvent.OnCommandLog(new TCPMessage
+                               {
+                                   IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                                   MessageType = TCPMessageType.ExistConnection
+                               });
+                            }
+                            //ShowMsg("客户端连接成功！");
+                            Thread thr = new Thread(RecMsg);
+                            thr.IsBackground = true;
+                            if (!dictThread.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
+                                dictThread.Add(sokConnection.RemoteEndPoint.ToString(), thr);  //  将新建的线程 添加 到线程的集合中去。  
+                            else
+                            {
+                                TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                                    MessageType = TCPMessageType.ExistConnection
+                                });
+                            }
+                            thr.Start(sokConnection);
+
+                        }
+                        else
+                        {
+                            TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                                    MessageType = TCPMessageType.NoMachineIp
+                                });
+                            sokConnection.Close();
+                        }
                     }
                 }
 
             }
         }
+        
         void RecMsg(object sokConnectionparn)
         {
             Socket sokClient = sokConnectionparn as Socket;
@@ -172,18 +199,18 @@ namespace MyTcpServer
             var ip = ipEndPoint.Address.ToString();
             while (true)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(300);
                 try
                 {
                     byte[] startBuf = new byte[4];
                     int length = -1;
-                    length = sokClient.Receive(startBuf);
+                    length = MyTCP.AsyncReceiveFromClient(sokClient, 4, out startBuf);
                     if (length > 0)
                     {
                         if (length == 4 && BitConverter.ToInt32(startBuf, 0) == 0x4C4A4040)
                         {
                             byte[] readBuf = new byte[4];
-                            length = sokClient.Receive(readBuf);
+                            length = MyTCP.AsyncReceiveFromClient(sokClient, 4, out readBuf);
                             if (length == 4)
                             {
                                 int msgLen = BitConverter.ToInt32(readBuf, 0);
@@ -193,7 +220,7 @@ namespace MyTcpServer
                                 readBuf = new byte[1024 * 1024];
                                 for (int i = 8; i < msgLen; )
                                 {
-                                    length = sokClient.Receive(readBuf);
+                                    length = MyTCP.AsyncReceiveFromClient(sokClient, 1024 * 1024, out readBuf);
                                     Array.Copy(readBuf, 0, bBuffer, i, length);
                                     i += length;
                                     if (length == 0)
@@ -218,7 +245,7 @@ namespace MyTcpServer
                                     Array.Copy(bBuffer, 8, returnBytes, 8, 2);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
                                     Array.Copy(bBuffer, 12, returnBytes, 14, 28);
-                                    sokClient.Send(returnBytes);
+                                    MyTCP.SendToClient(sokClient, returnBytes);
                                 }
                                 else if (cmd > 0 && cmd < 10)//纸币信息发送命令
                                 {
@@ -236,7 +263,7 @@ namespace MyTcpServer
                                     Array.Copy(bBuffer, 8, returnBytes, 8, 4);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
                                     Array.Copy(bBuffer, 12, returnBytes, 14, 28);
-                                    sokClient.Send(returnBytes);
+                                    MyTCP.SendToClient(sokClient, returnBytes);
 
                                     //machineNo = Encoding.ASCII.GetString(bBuffer,4,28).Replace("\0","");
                                     //报文体长度
@@ -369,7 +396,7 @@ namespace MyTcpServer
                                     string time = DateTime.Now.ToString("yyyyMMddHHmmss");
                                     byte[] timeBytes = Encoding.ASCII.GetBytes(time);
                                     Array.Copy(timeBytes, 0, returnBytes, 42, timeBytes.Length);
-                                    sokClient.Send(returnBytes);
+                                    MyTCP.SendToClient(sokClient, returnBytes);
                                     CloseThread(ipAndPort);
                                 }
                                 else if (cmd == 0x000B)//心跳命令
