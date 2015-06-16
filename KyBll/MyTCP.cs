@@ -52,8 +52,7 @@ namespace KyBll
         /// <returns></returns>
         public static string TCPMessageFormat(TCPMessage TCPMessage)
         {
-            string date = DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss ] ");
-            string message = date;
+            string message = "";
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
@@ -98,5 +97,118 @@ namespace KyBll
             message += Environment.NewLine;
             return message;
         }
+
+        #region 委托、事件定义
+        //委托
+        public delegate void CmdEventHandler(Object sender, CmdEventArgs e);
+        //事件
+        public event EventHandler<CmdEventArgs> CmdEvent;
+        protected virtual void OnCmd(Object sender, CmdEventArgs e)
+        {
+            if (CmdEvent != null)    // 如果有对象注册
+            {
+                CmdEvent(this.CmdEvent, e);  // 调用所有注册对象的方法
+            }
+        }
+        //时间参数定义
+        public class CmdEventArgs : EventArgs
+        {
+            public readonly string IP;
+            public readonly KYDataLayer1.Amount Amount;
+            public CmdEventArgs(string ip, KYDataLayer1.Amount amount)
+            {
+                IP = ip;
+                Amount = amount;
+            }
+
+        }
+        public void OnAmountCmd( CmdEventArgs e)
+        {
+            try
+            {
+                OnCmd(this, e);
+            }
+            catch (Exception ex)
+            {
+                Log.UnHandleException("记录Amount日志出错", ex);
+            }
+        }
+        //日志参数定义
+        public class LogEventArgs : EventArgs
+        {
+            public LogType Type;
+            public string Message;
+            public LogEventArgs(LogType type,string message)
+            {
+                Type = type;
+                Message = DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss ] ")+message+Environment.NewLine;
+            }
+
+        }
+        public delegate void LogEventHandler(Object sender, LogEventArgs e);
+        //事件
+        public event EventHandler<LogEventArgs> LogEvent;
+        public void ClearLogEvent()
+        {
+            LogEvent = null;
+        }
+        protected virtual void OnLogEvent(Object sender, LogEventArgs e)
+        {
+            try
+            {
+                if (LogEvent != null)    // 如果有对象注册
+                {
+                    LogEvent(this.LogEvent, e);  // 调用所有注册对象的方法
+                }
+
+            }
+            finally
+            {
+
+            }
+
+        }
+        public void OnCommandLog(TCPMessage TCPMessage)
+        {
+            try
+            {
+                string message = MyTCP.TCPMessageFormat(TCPMessage);
+                OnLogEvent(this, new LogEventArgs(LogType.Command,message));
+                Log.CommandLog(message);
+            }
+            catch (Exception e)
+            {
+                Log.UnHandleException("记录command日志出错", e);
+            }
+        }
+        public void OnBussninessLog(string Message)
+        {
+            try
+            {
+                OnLogEvent(this, new LogEventArgs(LogType.Bussiness, Message));
+                Log.BussinessLog(Message);
+            }
+            catch (Exception e)
+            {
+                Log.UnHandleException("记录bussiness日志出错", e);
+            }
+        }
+        public void OnFSNImportLog(string Message, Exception ex = null)
+        {
+            try
+            {
+                if(ex!=null)
+                    Message += Log.GetExceptionMsg(ex, "");
+                OnLogEvent(this, new LogEventArgs(LogType.FSNImport, Message));
+                Log.ImportLog(Message);  
+            }
+            catch (Exception e)
+            {
+                Log.UnHandleException("记录fsn日志出错", e);
+            }
+        }
+        
+        #endregion
     }
+   
 }

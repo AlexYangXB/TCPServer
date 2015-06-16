@@ -7,6 +7,7 @@ using KyBll.DBUtility;
 using KyModel;
 using KyModel.Models;
 using SqlFu;
+using MySql.Data.MySqlClient;
 namespace KyBll
 {
     public class KyDataOperation
@@ -24,6 +25,7 @@ namespace KyBll
         {
             try
             {
+                DateTime start = DateTime.Now;
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
                     string strSql = string.Format(
@@ -31,13 +33,15 @@ namespace KyBll
                         batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
                         batch.kuser, batch.kimgserver, batch.hjson);
                     conn.Execute(strSql);
-                    
+
                 }
+                TimeSpan span = DateTime.Now - start;
+                KyBll.Log.TestLog("batch insert take about " + span.Milliseconds + "ms.");
                 return true;
             }
             catch (Exception e)
             {
-                KyBll.Log.DataBaseException(e, "保存批次异常");
+                KyBll.Log.DataBaseException("保存批次异常",e);
                 return false;
             }
         }
@@ -61,6 +65,9 @@ namespace KyBll
                     DateTime now = DateTime.Now;
                     int count = 0;
                     string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
+                    //用于图像数据库
+                    string strSqlImage = "INSERT INTO ky_picture(kId,kInsertTime,kImageType,kImageSNo) values";
+                    MySqlParameter[] para = new MySqlParameter[signs.Count];
                     foreach (var sign in signs)
                     {
                         if (count != 0)
@@ -75,23 +82,40 @@ namespace KyBll
                         strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
                                                    sign.Sign, batchId, sign.Value, sign.Version,
                                                    sign.Currency, sign.True, startIndex + count, 0);
+                        //图片数据库
+                        para[count] = new MySqlParameter();
+                        para[count].MySqlDbType = MySqlDbType.MediumBlob;
+                        para[count].ParameterName = "?imgbindata" + count.ToString();
+                        para[count].Size = sign.imageData.Length;
+                        para[count].Value = sign.imageData;
+                        string strImageSql = string.Format("({0},'{1}','{2}',{3})", id,
+                                                           DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), sign.ImageType,
+                                                           para[count].ParameterName);
+                        strSqlImage += strImageSql;
                         count++;
                     }
                     using (var conn = DbHelperMySQL.OpenSphinxConnection())
                     {
-
+                        DateTime start = DateTime.Now;
                         conn.Execute(strSql);
+                        TimeSpan span = DateTime.Now - start;
+                        KyBll.Log.TestLog("sign data insert take about " + span.Milliseconds + "ms. total " + count + ".");
                     }
                     using (var conn = DbHelperMySQL.OpenImageConnection())
                     {
-                        conn.Insert(pictures);
+                        DateTime start = DateTime.Now;
+                        conn.InsertAll<ky_picture>(pictures);
+                        //foreach (var pic in pictures)
+                        //    conn.Insert(pic);
+                        TimeSpan span = DateTime.Now - start;
+                        KyBll.Log.TestLog("sign picture insert take about " + span.Milliseconds + "ms. total " + count + ".");
                     }
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "保存冠字号码或图像异常");
+                Log.DataBaseException("保存冠字号码或图像异常",e );
                 return false;
             }
 
@@ -109,16 +133,16 @@ namespace KyBll
             try
             {
                 string strSql =
-                    string.Format("select count(*) as count from ky_agent_batch where kdate>{0} and kdate<{1}", startTime,endTime);
+                    string.Format("select count(*) as count from ky_agent_batch where kdate>{0} and kdate<{1}", startTime, endTime);
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
                     totalCount = conn.GetValue<int>(strSql);
-                   
+
                 }
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "获取批次总数异常");
+                Log.DataBaseException("获取批次总数异常",e);
             }
             return totalCount;
         }
@@ -130,7 +154,7 @@ namespace KyBll
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public static List<ky_agent_batch> GetBatches(int startTime, int endTime,int count)
+        public static List<ky_agent_batch> GetBatches(int startTime, int endTime, int count)
         {
             List<ky_agent_batch> batches = new List<ky_agent_batch>();
             if (count > 0)
@@ -146,7 +170,7 @@ namespace KyBll
                 }
                 catch (Exception e)
                 {
-                    Log.DataBaseException(e, "获取批次异常");
+                    Log.DataBaseException("获取批次异常",e);
                 }
             }
             return batches;
@@ -172,7 +196,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "获取冠字号码信息异常");
+                Log.DataBaseException( "获取冠字号码信息异常",e);
             }
             return signs;
         }
@@ -228,15 +252,15 @@ namespace KyBll
                     var selectNodes = conn.Query<ky_node>(q => ids.Contains(q.kId)).ToList();
                     foreach (ky_node selectNode in selectNodes)
                     {
-                        selectNode.kBindIpAddress = bindIpAdress;  
-                         conn.Update<ky_node>(selectNode);
+                        selectNode.kBindIpAddress = bindIpAdress;
+                        conn.Update<ky_node>(selectNode);
                     }
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "更新绑定IP地址异常");
+                Log.DataBaseException("更新绑定IP地址异常",e);
                 return false;
             }
         }
@@ -367,7 +391,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "添加厂家信息异常");
+                Log.DataBaseException("添加厂家信息异常",e);
                 return 0;
             }
         }
@@ -382,17 +406,15 @@ namespace KyBll
             try
             {
                 List<ky_machine> machines;
-                var ids = new[] { 1, 2, 3 };
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    var dd=conn.Query<ky_machine>(q => ids.Contains(q.kNodeId));
-                    machines = conn.Query<ky_machine>(q => ids.Contains(q.kNodeId)).ToList();
+                    machines = conn.Query<ky_machine>(q => nodeIds.Contains(q.kNodeId)).ToList();
                 }
                 return machines;
             }
             catch (Exception e)
             {
-                Log.ConnectionException(e, "获取机具异常");
+                Log.ConnectionException("获取机具异常",e );
                 return null;
             }
 
@@ -528,15 +550,15 @@ namespace KyBll
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
                     ky_machine machine = conn.Get<ky_machine>(q => q.kId == id);
-                    machine.kMachineNumber=machineNumber;
-                    machine.kMachineModel=machineModel;
+                    machine.kMachineNumber = machineNumber;
+                    machine.kMachineModel = machineModel;
                     conn.Update<ky_machine>(machine);
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "更新机器时间和机具编号异常");
+                Log.DataBaseException("更新机器时间和机具编号异常",e);
                 return false;
             }
         }
@@ -566,7 +588,7 @@ namespace KyBll
             int atmId = 0;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                var atm = conn.Get<ky_atm>(q => q.kATMNumber == ATMNumber&&q.kNodeId == NodeId);
+                var atm = conn.Get<ky_atm>(q => q.kATMNumber == ATMNumber && q.kNodeId == NodeId);
                 if (atm != null)
                     atmId = atm.kId;
             }
@@ -604,7 +626,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "添加ATM信息异常");
+                Log.DataBaseException("添加ATM信息异常",e);
                 return 0;
             }
         }
@@ -657,7 +679,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "添加ATM信息异常");
+                Log.DataBaseException("添加ATM信息异常",e);
                 return 0;
             }
         }
@@ -670,7 +692,7 @@ namespace KyBll
             List<ky_cashbox> cashboxs;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                cashboxs=conn.Query<ky_cashbox>().ToList();
+                cashboxs = conn.Query<ky_cashbox>().ToList();
             }
             return cashboxs;
         }
@@ -725,7 +747,7 @@ namespace KyBll
             ky_import_machine importmachine;
             using (var conn = DbHelperMySQL.OpenDeviceConnection())
             {
-                importmachine = conn.Get<ky_import_machine>(q=>q.kId==id);
+                importmachine = conn.Get<ky_import_machine>(q => q.kId == id);
             }
             if (importmachine != null)
                 return importmachine;
@@ -759,12 +781,12 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    id=conn.Insert<ky_import_machine>(import_machine).InsertedId<int>();
+                    id = conn.Insert<ky_import_machine>(import_machine).InsertedId<int>();
                 }
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "导入机具异常");
+                Log.DataBaseException("导入机具异常",e);
             }
             return id;
         }
@@ -798,7 +820,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "上传文件异常");
+                Log.DataBaseException("上传文件异常",e);
                 return false;
             }
         }
@@ -839,7 +861,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "上传GZH文件异常");
+                Log.DataBaseException("上传GZH文件异常",e);
                 return false;
 
             }
@@ -877,12 +899,12 @@ namespace KyBll
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
 
-                    id=conn.Insert(gzh).InsertedId<int>();
+                    id = conn.Insert(gzh).InsertedId<int>();
                 }
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "保存GZH的包信息异常");
+                Log.DataBaseException("保存GZH的包信息异常",e);
             }
             return id;
         }
@@ -909,7 +931,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "保存GZH捆钞异常");
+                Log.DataBaseException("保存GZH捆钞异常",e);
                 return false;
             }
         }
@@ -929,13 +951,13 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
-                    conn.Query<ky_sign>().FirstOrDefault();
+                    conn.Execute("select * from ky_agent_sign limit 0,1");
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "测试数据服务器连接失败");
+                Log.DataBaseException("测试数据服务器连接失败",e );
                 return false;
             }
         }
@@ -950,13 +972,15 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.Query<ky_user>().FirstOrDefault();
+                    if (conn.TableExists<ky_user>())
+                        return true;
+                    else
+                        return false;
                 }
-                return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "测试设备数据库连接失败");
+                Log.DataBaseException("测试设备数据库连接失败",e);
                 return false;
             }
         }
@@ -976,7 +1000,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "测试推送服务器连接失败");
+                Log.DataBaseException("测试推送服务器连接失败",e);
                 return false;
             }
         }
@@ -990,13 +1014,15 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenImageConnection())
                 {
-                    conn.Query<ky_picture>().FirstOrDefault();
+                    if (conn.TableExists<ky_picture>())
+                        return true;
+                    else
+                        return false;
                 }
-                return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException(e, "测试图像数据库连接失败");
+                Log.DataBaseException("测试图像数据库连接失败",e);
                 return false;
             }
         }

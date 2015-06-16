@@ -12,23 +12,43 @@ namespace KangYiCollection.BaseWinform
             InitializeComponent();
             
         }
-        public void myTcpServer_LogEvent(object sender, TcpServer.LogEventArgs e)
+        public void myTcpServer_LogEvent(object sender, MyTCP.LogEventArgs e)
         {
             try
             {
-                if (LogRichTextBox.Lines.Length > 100)
+                if (CommandLogRichTextBox.Lines.Length > 200)
                 {
-                    LogRichTextBox.Clear();
+                    CommandLogRichTextBox.Clear();
 
                 }
-                TCPMessage TCPMessage = e.TCPMessage;
-                string message=MyTCP.TCPMessageFormat(TCPMessage);
-                LogRichTextBox.AppendText(message);
+                if (e.Type==LogType.Command)
+                {
+                    CommandLogRichTextBox.AppendText(e.Message);
+                    CommandLogRichTextBox.Focus();
+                    CommandLogRichTextBox.Select(CommandLogRichTextBox.TextLength, 0);
+                    CommandLogRichTextBox.ScrollToCaret();
+                }
+                if (e.Type == LogType.Bussiness)
+                {
+                    BussinessLogRichTextBox.AppendText(e.Message);
+                    BussinessLogRichTextBox.Focus();
+                    BussinessLogRichTextBox.Select(BussinessLogRichTextBox.TextLength, 0);
+                    BussinessLogRichTextBox.ScrollToCaret();
+                }
+                if (e.Type == LogType.FSNImport)
+                {
+                    FSNImortLogRichTextBox.AppendText(e.Message);
+                    FSNImortLogRichTextBox.Focus();
+                    FSNImortLogRichTextBox.Select(FSNImortLogRichTextBox.TextLength, 0);
+                    FSNImortLogRichTextBox.ScrollToCaret();
+                }
             }
             catch (Exception ex)
             {
-                Log.ConnectionException(ex, "日志输出异常!");
+                Log.ConnectionException("日志输出异常!",ex);
             }
+            
         }
+
     }
 }

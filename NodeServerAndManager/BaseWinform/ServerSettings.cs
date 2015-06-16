@@ -157,9 +157,9 @@ namespace KangYiCollection.BaseWinform
                     {
                         bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
                         if (success)
-                            MessageBox.Show("绑定成功！");
+                            MessageBox.Show("绑定成功！","提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         else
-                            MessageBox.Show("绑定失败！");
+                            MessageBox.Show("绑定失败！","提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     }
                     else
                     {
@@ -170,9 +170,9 @@ namespace KangYiCollection.BaseWinform
                 {
                     bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
                     if (success)
-                        MessageBox.Show("绑定成功！");
+                        MessageBox.Show("绑定成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     else
-                        MessageBox.Show("绑定失败！");
+                        MessageBox.Show("绑定失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             this.Close();

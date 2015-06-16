@@ -84,3 +84,4 @@ C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Debug\KyBll.pdb
 C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\CavemanTools.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Debug\SqlFu.pdb

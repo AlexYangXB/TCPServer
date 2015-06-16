@@ -119,3 +119,4 @@ C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\Cave
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\MySql.Data.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\obj\x86\Debug\KangYiCollection.Properties.Resources.resources
 C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\System.Threading.Tasks.NET35.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\NodeServerAndManager\bin\Debug\SqlFu.pdb

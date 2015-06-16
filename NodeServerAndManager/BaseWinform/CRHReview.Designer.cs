@@ -68,13 +68,13 @@
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.liv_CRHRecord = new System.Windows.Forms.ListView();
+            this.number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recordtime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recordsign = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recordversion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recordvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lab_CRHCommon = new MaterialSkin.Controls.MaterialLabel();
             this.lab_CRHRecord = new MaterialSkin.Controls.MaterialLabel();
-            this.number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // btn_CRHOpenFile
@@ -146,6 +146,10 @@
             this.liv_CRHRecord.UseCompatibleStateImageBehavior = false;
             this.liv_CRHRecord.View = System.Windows.Forms.View.Details;
             // 
+            // number
+            // 
+            this.number.Text = "序号";
+            // 
             // recordtime
             // 
             this.recordtime.Text = "记录时间";
@@ -198,10 +202,6 @@
             this.lab_CRHRecord.TabIndex = 6;
             this.lab_CRHRecord.Text = "冠字号码记录部分：";
             // 
-            // number
-            // 
-            this.number.Text = "序号";
-            // 
             // CRHReview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -215,6 +215,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CRHReview";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CRH查看";
             this.ResumeLayout(false);

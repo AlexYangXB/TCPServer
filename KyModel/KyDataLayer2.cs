@@ -270,14 +270,7 @@ namespace KyModel
             return machineNumber.Replace("\0", "");
         }
 
-        //获取文件中的第一个点钞时间
-        public static DateTime GetDateTime(byte[] bFsn)
-        {
-            byte[] buf = new byte[1644];
-            Array.Copy(bFsn, 32, buf, 0, 32);
-            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(buf, ""));
-            return sign.Date;
-        }
+       
 
        
 

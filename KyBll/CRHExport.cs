@@ -18,23 +18,23 @@ namespace KyBll
         /// <param name="endTime"></param>
         public CRHExport(DateTime startTime, DateTime endTime, string path)
         {
-            Log.CRHLog(null, "导出CRH开始。");
+            Log.CRHLog("导出CRH开始。" );
             List<ky_agent_batch> batches = GetBatchesByTime(startTime, endTime);
-            Log.CRHLog(null, "总共"+batches.Count+"个批次需要导出CRH文件。");
+            Log.CRHLog( "总共"+batches.Count+"个批次需要导出CRH文件。");
             if (batches.Count > 0)
             {
                 List<CRH> crhs = BatchesToCRH(batches);
                 if (crhs.Count > 0)
                 {
                     string tmpPath = path + "/" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "/";
-                    Log.CRHLog(null, "建立临时目录"+tmpPath);
+                    Log.CRHLog("建立临时目录"+tmpPath);
                     string BankCode =System.Text.Encoding.ASCII.GetString(crhs[0].BankCode).Replace("_","");
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);
                     foreach (CRH crh in crhs)
                     {
                         string crhFileName = tmpPath + crh.fileName;
-                        Log.CRHLog(null, "建立新CRH文件" + crhFileName);
+                        Log.CRHLog( "建立新CRH文件" + crhFileName);
                         using (FileStream fs = new FileStream(crhFileName, FileMode.Create, FileAccess.Write))
                         {
                             fs.Write(crh.Date, 0, sizeof(ushort));
@@ -66,18 +66,18 @@ namespace KyBll
                     }
                     ZipClass Zc = new ZipClass();
                     string zipFileName =path+"/"+  BankCode + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip";
-                    Log.CRHLog(null, "生成CRH压缩包" + zipFileName);
-                    Log.CRHLog(null, "银行编码是" + BankCode);
+                    Log.CRHLog( "生成CRH压缩包" + zipFileName);
+                    Log.CRHLog("银行编码是" + BankCode);
                     Zc.ZipDirFile(tmpPath, zipFileName);
                     Directory.Delete(tmpPath, true);
                 }
                 else
                 {
-                    Log.CRHLog(null, "未能找到批次信息！");
+                    Log.CRHLog( "未能找到批次信息！");
                 }
             }
             else
-                Log.CRHLog(null, "未能找到批次信息！");
+                Log.CRHLog("未能找到批次信息！");
             
         }
         /// <summary>
@@ -127,7 +127,7 @@ namespace KyBll
                 }
                 catch (Exception e)
                 {
-                    Log.CRHLog(e, "批次id为" + batch.id + "网点id为"+batch.knode+"机具id为"+batch.kmachine+"转CRH异常");
+                    Log.CRHLog("批次id为" + batch.id + "网点id为"+batch.knode+"机具id为"+batch.kmachine+"转CRH异常",e );
                     continue;
                 }
             }

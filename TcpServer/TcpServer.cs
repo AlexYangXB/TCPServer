@@ -13,77 +13,7 @@ namespace MyTcpServer
 {
     public class TcpServer
     {
-        #region 委托、事件定义
-        //委托
-        public delegate void CmdEventHandler(Object sender, CmdEventArgs e);
-        //事件
-        public event EventHandler<CmdEventArgs> CmdEvent;
-        protected virtual void OnCmd(Object sender, CmdEventArgs e)
-        {
-            if (CmdEvent != null)    // 如果有对象注册
-            {
-                CmdEvent(this.CmdEvent, e);  // 调用所有注册对象的方法
-            }
-        }
-        //时间参数定义
-        public class CmdEventArgs : EventArgs
-        {
-            public readonly string IP;
-            public readonly KYDataLayer1.Amount Amount;
-            public CmdEventArgs(string ip, KYDataLayer1.Amount amount)
-            {
-                IP = ip;
-                Amount = amount;
-            }
-
-        }
-        public delegate void LogEventHandler(Object sender, LogEventArgs e);
-        //事件
-        public event EventHandler<LogEventArgs> LogEvent;
-        public void ClearLogEvent()
-        {
-            LogEvent = null;
-        }
-        protected virtual void OnLogEvent(Object sender, LogEventArgs e)
-        {
-            try
-            {
-                if (LogEvent != null)    // 如果有对象注册
-                {
-                    LogEvent(this.LogEvent, e);  // 调用所有注册对象的方法
-                }
-
-            }
-            finally
-            {
-
-            }
-
-        }
-        public void OnLog(TCPMessage TCPMessage)
-        {
-            try
-            {
-                OnLogEvent(this, new LogEventArgs(TCPMessage));
-                string message = MyTCP.TCPMessageFormat(TCPMessage);
-                Log.CommandLog(message);
-            }
-            catch (Exception e)
-            {
-                Log.UnHandleException(e, "记录command日志出错");
-            }
-        }
-        //日志参数定义
-        public class LogEventArgs : EventArgs
-        {
-            public readonly TCPMessage TCPMessage;
-            public LogEventArgs(TCPMessage m)
-            {
-                TCPMessage = m;
-            }
-
-        }
-        #endregion
+      
         //start_work
         public static byte[] start_work = new byte[] { 0x40, 0x40, 0x4A, 0x4C };
         public static byte[] msg_length = new byte[] { 0x2E, 0x00, 0x00, 0x00 };
@@ -97,7 +27,11 @@ namespace MyTcpServer
         public Dictionary<string, ky_machine> machine = new Dictionary<string, ky_machine>();
         //machine表
         private List<ky_machine> dt;
-
+        public MyTCP TCPEvent;
+        public TcpServer()
+        {
+            TCPEvent = new MyTCP();
+        }
         public List<ky_machine> DTable
         {
             set
@@ -145,7 +79,7 @@ namespace MyTcpServer
             }
             catch (SocketException e)
             {
-                Log.ConnectionException(e, "启动监听服务异常");
+                Log.ConnectionException("启动监听服务异常",e);
                 return;
             }
             // 设置监听队列的长度；  
@@ -167,7 +101,7 @@ namespace MyTcpServer
                 // 想列表控件中添加客户端的IP信息；  
                 //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
                 string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                OnLog(new TCPMessage
+                TCPEvent.OnCommandLog(new TCPMessage
                     {
                         IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                         MessageType = TCPMessageType.NewConnection
@@ -195,7 +129,7 @@ namespace MyTcpServer
                             dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
                         else
                         {
-                            OnLog(new TCPMessage
+                            TCPEvent.OnCommandLog(new TCPMessage
                            {
                                IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                                MessageType = TCPMessageType.ExistConnection
@@ -208,7 +142,7 @@ namespace MyTcpServer
                             dictThread.Add(sokConnection.RemoteEndPoint.ToString(), thr);  //  将新建的线程 添加 到线程的集合中去。  
                         else
                         {
-                            OnLog(new TCPMessage
+                            TCPEvent.OnCommandLog(new TCPMessage
                             {
                                 IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                                 MessageType = TCPMessageType.ExistConnection
@@ -219,7 +153,7 @@ namespace MyTcpServer
                     }
                     else
                     {
-                        OnLog(new TCPMessage
+                        TCPEvent.OnCommandLog(new TCPMessage
                             {
                                 IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                                 MessageType = TCPMessageType.NoMachineIp
@@ -271,7 +205,7 @@ namespace MyTcpServer
                                 if (cmd == 0x00A1)//传输数据请求命令
                                 {
                                     machine[ip].alive = DateTime.Now;
-                                    OnLog(new TCPMessage
+                                    TCPEvent.OnCommandLog(new TCPMessage
                                         {
                                             IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                             Command = bBuffer.Take(54).ToArray(),
@@ -290,7 +224,7 @@ namespace MyTcpServer
                                 {
 
                                     //应答回复
-                                    OnLog(new TCPMessage
+                                    TCPEvent.OnCommandLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(200).ToArray(),
@@ -316,8 +250,8 @@ namespace MyTcpServer
                                     string fileName = filePath + date.ToString("mmssfff") +
                                                       "-" + machineNo + ".FSN";
                                     //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
-                                    DateTime fileTime = KyDataLayer2.GetDateTime(Fsn);
-                                    Log.BussinessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss") + ",机具" + ip + "的开始标志是" + machine[ip].startBusinessCtl);
+                                    DateTime fileTime = FSNFormat.GetDateTime(Fsn);
+                                    TCPEvent.OnBussninessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss") + ",机具" + ip + "的开始标志是" + machine[ip].startBusinessCtl);
                                     if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
                                     {
                                         if (machine[ip].fileName == null || machine[ip].fileName == "")
@@ -339,8 +273,8 @@ namespace MyTcpServer
                                                 KYDataLayer1.Amount amount;
                                                 KyDataLayer2.GetTotalValueFromFSN(file, out amount);
                                                 amount.BundleNumber = Convert.ToInt32(Path.GetFileNameWithoutExtension(file));
-                                                CmdEventArgs e = new CmdEventArgs(ip, amount);
-                                                OnCmd(this, e);
+                                                MyTCP.CmdEventArgs e = new MyTCP.CmdEventArgs(ip, amount);
+                                                TCPEvent.OnAmountCmd(e);
                                             }
                                         }
                                         //文件不存在
@@ -374,8 +308,8 @@ namespace MyTcpServer
                                             KYDataLayer1.Amount amount;
                                             KyDataLayer2.GetTotalValueFromFSN(fileName, out amount);
                                             amount.BundleNumber = 999999;
-                                            CmdEventArgs e = new CmdEventArgs(ip, amount);
-                                            OnCmd(this, e);
+                                            MyTCP.CmdEventArgs e = new MyTCP.CmdEventArgs(ip, amount);
+                                            TCPEvent.OnAmountCmd(e);
                                             //更新机具列表
                                             //机器最后上传时间和机具编号
                                             string machineNumber = "", machineModel = "";
@@ -420,7 +354,7 @@ namespace MyTcpServer
                                 else if (cmd == 0x0010)//时间同步
                                 {
                                     //发送回复信息
-                                    OnLog(new TCPMessage
+                                    TCPEvent.OnCommandLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(42).ToArray(),
@@ -440,7 +374,7 @@ namespace MyTcpServer
                                 }
                                 else if (cmd == 0x000B)//心跳命令
                                 {
-                                    OnLog(new TCPMessage
+                                    TCPEvent.OnCommandLog(new TCPMessage
                                     {
                                         IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                         Command = bBuffer,
@@ -451,7 +385,7 @@ namespace MyTcpServer
                                 }
                                 else if (cmd == 0x00A2)//关闭连接
                                 {
-                                    OnLog(new TCPMessage
+                                    TCPEvent.OnCommandLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = bBuffer.Take(44).ToArray(),
@@ -463,7 +397,7 @@ namespace MyTcpServer
                         }
                         else
                         {
-                            OnLog(new TCPMessage
+                            TCPEvent.OnCommandLog(new TCPMessage
                                        {
                                            IpAndPort = sokClient.RemoteEndPoint.ToString(),
                                            Command = startBuf,
@@ -474,7 +408,7 @@ namespace MyTcpServer
                 }
                 catch (SocketException se)
                 {
-                    Log.ConnectionException(se, "通信异常");
+                    Log.ConnectionException("通信异常",se );
                     CloseThread(ipAndPort);
                     break;
                 }
@@ -545,7 +479,7 @@ namespace MyTcpServer
             switch (myBusinessStatus)
             {
                 case MyBusinessStatus.Start:
-                    Log.BussinessLog(bControl.business + "业务开始,机具ip为" + bControl.ip);
+                    TCPEvent.OnBussninessLog(bControl.business + "业务开始,机具ip为" + bControl.ip);
                     if (machine.ContainsKey(bControl.ip))
                     {
                         currentMachine.startBusinessCtl = true;
@@ -559,7 +493,7 @@ namespace MyTcpServer
                     }
                     break;
                 case MyBusinessStatus.End:
-                    Log.BussinessLog(currentMachine.business + "业务结束,机具ip为" + bControl.ip);
+                    TCPEvent.OnBussninessLog(currentMachine.business + "业务结束,机具ip为" + bControl.ip);
                     if (machine.ContainsKey(bControl.ip))
                     {
                         if (currentMachine.business == BussinessType.CK || currentMachine.business == BussinessType.QK)
@@ -597,7 +531,7 @@ namespace MyTcpServer
                                     GZHImport.SaveKHDK(saveFiles, currentMachine);
                                 }
                                 else
-                                    Log.BussinessLog("KHDK中临时路径"+tmpPath+"不存在！");
+                                    TCPEvent.OnBussninessLog("KHDK中临时路径" + tmpPath + "不存在！");
                             }
                         }
                         currentMachine.business = BussinessType.HM;

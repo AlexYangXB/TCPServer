@@ -307,6 +307,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SystemSettings";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "系统设置";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SystemSettings_FormClosing);

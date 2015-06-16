@@ -85,6 +85,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KyBll\KyBll.csproj">
+      <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
+      <Name>KyBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KyModel\KyModel.csproj">
+      <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
+      <Name>KyModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\SqlFu\SqlFu.csproj">
+      <Project>{0A6D3405-840F-46A0-B1D1-5A8058CFED75}</Project>
+      <Name>SqlFu</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -138,7 +138,7 @@ namespace KangYiCollection
                 }
                 catch (Exception e)
                 {
-                    Log.ConnectionException(e, "启动连接服务器异常！");
+                    Log.ConnectionException("启动连接服务器异常！",e);
                     return;
                 }
             }
@@ -211,7 +211,7 @@ namespace KangYiCollection
             {
                 MessageBox.Show("无法连接设备数据库！", "提示", MessageBoxButtons.OK,
                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                Log.DataBaseException(ex, "登陆失败");
+                Log.DataBaseException("登陆失败！",ex);
             }
         }
         #endregion
@@ -225,7 +225,7 @@ namespace KangYiCollection
         private void NodeManager_Load(object sender, EventArgs e)
         {
             CheckForIllegalCrossThreadCalls = false;
-            myTcpServer.CmdEvent += new EventHandler<TcpServer.CmdEventArgs>(myTcpServer_CmdEvent);
+            myTcpServer.TCPEvent.CmdEvent += new EventHandler<MyTCP.CmdEventArgs>(myTcpServer_CmdEvent);
             //打开定时器
             timer_UpdateMachine.Start();
             //设置数据库连接字符串
@@ -255,7 +255,7 @@ namespace KangYiCollection
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void myTcpServer_CmdEvent(object sender, TcpServer.CmdEventArgs e)
+        void myTcpServer_CmdEvent(object sender, MyTCP.CmdEventArgs e)
         {
             int id = 0;
             foreach (var item in idIp)
@@ -277,8 +277,8 @@ namespace KangYiCollection
                 obj["Last"] = e.Amount.LastSign;   //末张冠字号码
                 obj["BundleNumber"] = e.Amount.BundleNumber;   //捆钞序号
                 socket.Emit("SetCount", obj);
-                Log.BussinessLog("发送机具id" + id + ",总金额" + e.Amount.TotalValue + ",可疑币张数" + e.Amount.TotalErr + ",真币张数"
-                    + e.Amount.TotalTrue + ",第一张冠字号" + e.Amount.FirstSign + ",末张冠字号" + e.Amount.LastSign+"捆钞讯号"+e.Amount.BundleNumber);
+                myTcpServer.TCPEvent.OnBussninessLog("发送机具id" + id + ",总金额" + e.Amount.TotalValue + ",可疑币张数" + e.Amount.TotalErr + ",真币张数"
+                    + e.Amount.TotalTrue + ",第一张冠字号" + e.Amount.FirstSign + ",末张冠字号" + e.Amount.LastSign + "捆钞序号" + e.Amount.BundleNumber);
             }
         }
         /// <summary>
@@ -577,17 +577,20 @@ namespace KangYiCollection
             {
                 //获取绑定网点内的机器
                 int[] nodeIds = new int[bindNodeId.Count];
-                bindNodeId.CopyTo(nodeIds);
-                List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
-                myTcpServer.UpdateMachineTable(machineDt);
-                idIp.Clear();
-                foreach (var m in machineDt)
+                if (nodeIds.Length > 0)
                 {
-                    int machineId = Convert.ToInt32(m.kId);
-                    string ip = m.kIpAddress.Trim();
-                    if (!idIp.ContainsKey(machineId))
+                    bindNodeId.CopyTo(nodeIds);
+                    List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                    myTcpServer.UpdateMachineTable(machineDt);
+                    idIp.Clear();
+                    foreach (var m in machineDt)
                     {
-                        idIp.Add(machineId, ip);
+                        int machineId = Convert.ToInt32(m.kId);
+                        string ip = m.kIpAddress.Trim();
+                        if (!idIp.ContainsKey(machineId))
+                        {
+                            idIp.Add(machineId, ip);
+                        }
                     }
                 }
             }
@@ -629,14 +632,14 @@ namespace KangYiCollection
                     socket.On(Socket.EVENT_CONNECT, () =>
                     {
                         socket.Emit("SetNodeId", node);
-                        Log.BussinessLog("发送绑定网点id" + node);
+                        myTcpServer.TCPEvent.OnBussninessLog("发送绑定网点id" + node);
                     });
                     socket.On("SetStart",
                        (data) =>
                        {
                            var d = (JObject)data;
                            int machineId = Convert.ToInt32(d["MachineId"]);
-                           Log.BussinessLog("收到开始命令,机具id是" + machineId + ",业务类型是" + d["Type"] + ",用户id是" + d["UserId"]);
+                           myTcpServer.TCPEvent.OnBussninessLog("收到开始命令,机具id是" + machineId + ",业务类型是" + d["Type"] + ",用户id是" + d["UserId"]);
                            ky_machine currentMachine = null;
                            foreach (var machine in myTcpServer.machine)
                            {
@@ -644,10 +647,10 @@ namespace KangYiCollection
                                    currentMachine = machine.Value;
                            }
                            if (currentMachine == null)
-                               Log.BussinessLog("机具id是" + data + "已失去连接。");
+                               myTcpServer.TCPEvent.OnBussninessLog("机具id是" + data + "已失去连接。");
                            else if ((DateTime.Now - currentMachine.alive).TotalMinutes < 5)
                            {
-                               Log.BussinessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss"));
+                               myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss"));
                                businessControl bControl = new businessControl();
                                bControl.dateTime = DateTime.Now;
                                bControl.ip = idIp[machineId];
@@ -661,18 +664,18 @@ namespace KangYiCollection
                                    bControl.userId = 0;
                                if (bControl.business == BussinessType.KHDK)
                                {
-                                   Log.BussinessLog("一批张数是" + d["BundleCount"]);
+                                   myTcpServer.TCPEvent.OnBussninessLog("一批张数是" + d["BundleCount"]);
                                    int bundleCount = 100;
                                    if (d["BundleCount"] != null)
                                        bundleCount = Convert.ToInt32(d["BundleCount"]);
                                    bControl.bundleCount = bundleCount;
                                }
-                               Log.BussinessLog("解析业务类型为" + bControl.business.ToString());
+                               myTcpServer.TCPEvent.OnBussninessLog("解析业务类型为" + bControl.business.ToString());
                                myTcpServer.BusinessControl(TcpServer.MyBusinessStatus.Start, bControl);
                            }
                            else
                            {
-                               Log.BussinessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前时间5分钟，视为未连接。");
+                               myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前时间5分钟，视为未连接。");
                                var obj = new JObject();
                                obj["MachineId"] = machineId;
                                socket.Emit("NoMachine", obj);
@@ -683,35 +686,35 @@ namespace KangYiCollection
                                   {
                                       var d = (JObject)data;
                                       int machineId = Convert.ToInt32(d["MachineId"]);
-                                      Log.BussinessLog("收到结束命令,机具id是" + machineId);
+                                      myTcpServer.TCPEvent.OnBussninessLog("收到结束命令,机具id是" + machineId);
                                       if (idIp.ContainsKey(machineId))
                                       {
                                           businessControl bControl = new businessControl();
                                           bControl.ip = idIp[machineId];
                                           if (d["Cancel"] != null)
                                           {
-                                              Log.BussinessLog("收到撤销命令");
+                                              myTcpServer.TCPEvent.OnBussninessLog("收到撤销命令");
                                               bControl.cancel = true;
                                           }
                                           else
                                               bControl.cancel = false;
                                           if (d["BussinessNumber"] != null)
                                           {
-                                              Log.BussinessLog("业务流水号是" + d["BussinessNumber"]);
+                                              myTcpServer.TCPEvent.OnBussninessLog("业务流水号是" + d["BussinessNumber"]);
                                               bControl.bussinessNumber = d["BussinessNumber"].ToString();
                                           }
                                           else
                                               bControl.bussinessNumber = "";
                                           if (d["ATMId"] != null)
                                           {
-                                              Log.BussinessLog("ATM id是" + d["ATMId"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("ATM id是" + d["ATMId"].ToString());
                                               bControl.atmId = d["ATMId"].ToString();
                                           }
                                           else
                                               bControl.atmId = "";
                                           if (d["CashBoxId"] != null)
                                           {
-                                              Log.BussinessLog("CashBox id是" + d["CashBoxId"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("CashBox id是" + d["CashBoxId"].ToString());
                                               bControl.cashBoxId = d["CashBoxId"].ToString();
                                           }
                                           else
@@ -719,7 +722,7 @@ namespace KangYiCollection
                                           bool isClearCenter = false;
                                           if (d["ClearCenter"] != null)
                                           {
-                                              Log.BussinessLog("是否为清分中心：" + d["ClearCenter"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("是否为清分中心：" + d["ClearCenter"].ToString());
                                               isClearCenter = Convert.ToBoolean(d["ClearCenter"]);
                                               if (isClearCenter)
                                                   bControl.isClearCenter = "T";
@@ -730,14 +733,14 @@ namespace KangYiCollection
                                               bControl.isClearCenter = "";
                                           if (d["PackageNumber"] != null)
                                           {
-                                              Log.BussinessLog("包号是" + d["PackageNumber"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("包号是" + d["PackageNumber"].ToString());
                                               bControl.packageNumber = d["PackageNumber"].ToString();
                                           }
                                           else
                                               bControl.packageNumber = "";
                                           if (d["BundleNumbers"] != null)
                                           {
-                                              Log.BussinessLog("捆钞序号是是" + d["BundleNumbers"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("捆钞序号是是" + d["BundleNumbers"].ToString());
                                               bControl.bundleNumbers = d["BundleNumbers"].ToString();
                                           }
                                           else
@@ -747,15 +750,33 @@ namespace KangYiCollection
                                   });
                     socket.On("NoMachine", (data) =>
                     {
-                        Log.BussinessLog("用户已关闭浏览器,用户选择的机具id是" + data);
+                        myTcpServer.TCPEvent.OnBussninessLog("用户已关闭浏览器,用户选择的机具id是" + data);
+                    });
+                    socket.On("ExistNode", (data) =>
+                    {
+                        var d = (JObject)data;
+                        string NodeId = "";
+                        string IpAddress = "";
+                        if (d["NodeId"] != null)
+                        {
+                            NodeId = d["NodeId"].ToString();
+                        }
+                        if (d["IpAddress"] != null)
+                        {
+                            IpAddress = d["IpAddress"].ToString();
+                        }
+                        var str = "您绑定的网点id" + NodeId + "已被IP地址" + IpAddress + "绑定了！";
+                        myTcpServer.TCPEvent.OnBussninessLog(str);
+                        MessageBox.Show(str,"提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        SocketIoStop();
                     });
                     socket.On("reconnecting", (nextRetry) =>
                     {
-                        Log.BussinessLog("尝试重连，等待" + nextRetry+"秒。");
+                        myTcpServer.TCPEvent.OnBussninessLog("尝试重连，等待" + nextRetry + "秒。");
                     });
                     socket.On("disconnect", (data) =>
                     {
-                        Log.BussinessLog("断开连接！");
+                        myTcpServer.TCPEvent.OnBussninessLog("断开连接！");
                     });
                 }
                 else
@@ -766,7 +787,7 @@ namespace KangYiCollection
             }
             catch (Exception e)
             {
-                Log.ConnectionException(e, "推送服务器异常");
+                Log.ConnectionException("推送服务器异常",e);
             }
         }
 
@@ -880,9 +901,9 @@ namespace KangYiCollection
             {
                 BaseWinform.LogForm logForm = new LogForm();
 
-                myTcpServer.LogEvent += new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
+                myTcpServer.TCPEvent.LogEvent += new EventHandler<MyTCP.LogEventArgs>(logForm.myTcpServer_LogEvent);
                 logForm.ShowDialog();
-                myTcpServer.LogEvent -= new EventHandler<TcpServer.LogEventArgs>(logForm.myTcpServer_LogEvent);
+                myTcpServer.TCPEvent.LogEvent -= new EventHandler<MyTCP.LogEventArgs>(logForm.myTcpServer_LogEvent);
             }
             catch (Exception ex)
             {
@@ -924,10 +945,10 @@ namespace KangYiCollection
                 string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
                 if (Directory.Exists(importDir))
                 {
-                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp);
+                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp,myTcpServer.TCPEvent);
                 }
                 else
-                    Log.ImportLog(null, importDir + "路径不存在！");
+                    myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");
             }
         }
         /// <summary>
@@ -972,41 +993,41 @@ namespace KangYiCollection
                         CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
                     }
                     else
-                        Log.ImportLog(null, exportDir + "路径不存在！");
+                        myTcpServer.TCPEvent.OnFSNImportLog(exportDir + "路径不存在！");
                 }
             }
         }
 
-        //private void NodeManager_Resize(object sender, EventArgs e)
-        //{
-        //    if (WindowState == FormWindowState.Minimized)
-        //        switchToTray(true);
-        //}
-        //private void switchToTray(bool bHide)
-        //{
-        //    if (!bHide)
-        //    {
-        //        Show();
-        //        WindowState = FormWindowState.Normal;
-        //        BringToFront();
-        //    }
-        //    else
-        //    {
-        //        Hide();
-        //        WindowState = FormWindowState.Minimized;
-        //    }
-        //}
+        private void NodeManager_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                switchToTray(true);
+        }
+        private void switchToTray(bool bHide)
+        {
+            if (!bHide)
+            {
+                Show();
+                WindowState = FormWindowState.Normal;
+                BringToFront();
+            }
+            else
+            {
+                Hide();
+                WindowState = FormWindowState.Minimized;
+            }
+        }
 
-        //private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        if (WindowState == FormWindowState.Minimized)
-        //            switchToTray(false);
-        //        else
-        //            switchToTray(true);
-        //    }
-        //}
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (WindowState == FormWindowState.Minimized)
+                    switchToTray(false);
+                else
+                    switchToTray(true);
+            }
+        }
 
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {

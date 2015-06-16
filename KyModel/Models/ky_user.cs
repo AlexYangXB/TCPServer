@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
+using SqlFu;
 
 namespace KyModel.Models
 {
+    [Table("ky_user", PrimaryKey = "kId")]
     public partial class ky_user
     {
-        public ky_user()
-        {
-            this.roles = new List<role>();
-        }
-
         public int kId { get; set; }
         public string kUserName { get; set; }
         public string kUserNumber { get; set; }
@@ -19,6 +16,5 @@ namespace KyModel.Models
         public Nullable<int> kNodeId { get; set; }
         public string remember_token { get; set; }
         public Nullable<DateTime> updated_at { get; set; }
-        public virtual ICollection<role> roles { get; set; }
     }
 }

@@ -80,3 +80,4 @@ C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Debug\TcpServer.pdb
 C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\SqlFu.dll
 C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Debug\SqlFu.pdb

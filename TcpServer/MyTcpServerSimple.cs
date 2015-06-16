@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using KyModel;
+using KyBll;
 namespace MyTcpServer
 {
     public class MyTcpServerSimple
@@ -186,7 +187,7 @@ namespace MyTcpServer
                                 byte[] Fsn = new byte[bodyLen];
                                 Array.Copy(bBuffer, 76, Fsn, 0, bodyLen);
                                 //获取文件的第一个点钞时间,用于对文件命名
-                                DateTime fileTime = KyDataLayer2.GetDateTime(Fsn);
+                                DateTime fileTime = FSNFormat.GetDateTime(Fsn);
                                 string fileName = string.Format("{0}\\{1}-{2}.FSN", DataSaveFolder, fileTime.ToString("yyyyMMddHHmmssfff"), machineNo);
                                 //string fileName = DataSaveFolder + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") +
                                 //                  "-" + machineNo + ".FSN";

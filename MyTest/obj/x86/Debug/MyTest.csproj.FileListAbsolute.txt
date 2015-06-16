@@ -74,3 +74,12 @@ C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.Propert
 C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.csproj.GenerateResource.Cache
 C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.exe
 C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\obj\x86\Debug\MyTest.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\KyBll.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\MySql.Data.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\KyBll.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\MyTest\bin\Debug\SqlFu.pdb

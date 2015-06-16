@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-
+using SqlFu;
 namespace KyModel.Models
 {
+    [Table("ky_atm", PrimaryKey = "kId")]
     public partial class ky_atm
     {
         public int kId { get; set; }

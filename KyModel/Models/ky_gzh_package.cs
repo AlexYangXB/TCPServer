@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using SqlFu;
 
 namespace KyModel.Models
 {
+    [Table("ky_gzh_package", PrimaryKey = "kId")]
     public partial class ky_gzh_package
     {
         public int kId { get; set; }

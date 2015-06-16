@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using SqlFu;
 
 namespace KyModel.Models
 {
+    [Table("ky_fakesign", PrimaryKey = "kId")]
     public partial class ky_fakesign
     {
         public int kId { get; set; }

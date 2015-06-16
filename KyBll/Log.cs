@@ -9,131 +9,79 @@ namespace KyBll
     public class Log
     {
         /// <summary>
+        /// 测试记录日志  日期_test.log
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="str"></param>
+        public static void TestLog(string backStr)
+        {
+            WriteLog("test.log", backStr, null);
+
+        }
+        /// <summary>
         /// 未经处理的错误日志  日期_unhandle.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void UnHandleException(Exception ex, string backStr)
+        public static void UnHandleException(string backStr,Exception ex)
         {
-            string str = GetExceptionMsg(ex, backStr);
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_unhandle.log";
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + str, fileName);
+            WriteLog("unhandle.log", backStr, ex);
         }
         /// <summary>
         /// 数据库的错误日志  日期_database.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void DataBaseException(Exception ex, string backStr)
+        public static void DataBaseException(string backStr,Exception ex)
         {
-            string str = GetExceptionMsg(ex, backStr);
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_database.log";
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + str, fileName);
+            WriteLog("database.log", backStr, ex);
         }
         /// <summary>
         /// 连接的错误日志  日期_connect.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void ConnectionException(Exception ex, string backStr)
+        public static void ConnectionException(string backStr,Exception ex )
         {
-            string str = GetExceptionMsg(ex, backStr);
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_connect.log";
-            if (str != "")
-                ShareWrite(str, fileName);
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr, fileName);
+            WriteLog("connection.log", backStr, ex);
         }
         /// <summary>
         /// 连接的命令信息  日期_command.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void CommandLog(string backStr)
+        public static void CommandLog(string backStr, Exception ex=null)
         {
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_command.log";
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr, fileName);
+            WriteLog("command.log", backStr, ex);
         }
         /// <summary>
         /// 导入日志  日期_import.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void ImportLog(Exception e=null, string backStr="")
+        public static void ImportLog(string backStr="",Exception ex=null)
         {
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            string str="";
-            if(e!=null)
-             str = GetExceptionMsg(e, backStr);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_import.log";
-            if (str != "")
-                ShareWrite(str, fileName);
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr, fileName);
+            WriteLog("import.log", backStr, ex);
         }
         /// <summary>
         /// CRH日志  日期_CRH.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void CRHLog(Exception e = null, string backStr = "")
+        public static void CRHLog(string backStr = "",Exception ex = null)
         {
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            string str = "";
-            if (e != null)
-                str = GetExceptionMsg(e, backStr);
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_CRH.log";
-            if (str != "")
-                ShareWrite(str, fileName);
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + backStr,fileName);
+            WriteLog("CRH.log", backStr, ex);
+          
         }
         /// <summary>
         /// 业务交易日志  日期_bussiness.log
         /// </summary>
         /// <param name="path"></param>
         /// <param name="str"></param>
-        public static void BussinessLog(string str)
+        public static void BussinessLog(string backStr)
         {
-            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string time = DateTime.Now.ToString("yyyyMMdd");
-            string fileName = path + "\\" + time + "_bussiness.log";
-            ShareWrite(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss：") + str, fileName);
+            WriteLog("bussiness.log", backStr, null);
+          
         }
         /// <summary>
         /// 清除Log目录下的访问日期小于当前5天的文件夹
@@ -174,6 +122,23 @@ namespace KyBll
                     }
                 }
             }
+        }
+        public static void WriteLog(string fileName,string backStr, Exception ex=null)
+        {
+            string path = Application.StartupPath + "\\Log" + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            string str = "";
+            if (ex != null)
+                str = GetExceptionMsg(ex, backStr);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string time = DateTime.Now.ToString("yyyyMMdd");
+            string fullName = path + "\\" + time + "_" + fileName;
+            ShareWrite(DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss ] ")+ backStr, fullName);
+            if (str != "")
+                ShareWrite(str, fullName);
+            
         }
         /// <summary>
         /// 生成自定义异常消息

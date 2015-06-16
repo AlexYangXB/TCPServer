@@ -843,10 +843,10 @@ namespace KyBll.DBUtility
                 case DataBaseServer.Sphinx: connectionStringToSphinx = string.Format("server={0};Port={1};User Id={2};password={3};Charset=utf8;Connect Timeout=15;", new object[] { strServer, port, "", "" });//sphinx port:9306
                     break;
                 //Device  Unable to convert MySQL date/time value to System.DateTime=>"Convert Zero Datetime=True;Allow Zero Datetime=True"
-                case DataBaseServer.Device: connectionStringToDevice = string.Format("server={0};Port={1};User Id={2};database={3};password={4};Charset=utf8;Connect Timeout=15;", new object[] { strServer, port, "KangYiSystem", "kydb", "KangYi123456" });//mysql device port:9304
+                case DataBaseServer.Device: connectionStringToDevice = string.Format("server={0};Port={1};User Id={2};database={3};password={4};Charset=utf8;Connect Timeout=15;Convert Zero Datetime=True;Allow Zero Datetime=True", new object[] { strServer, port, "KangYiSystem", "kydb", "KangYi123456" });//mysql device port:9304
                     break;
                     //image
-                case DataBaseServer.Image: connectionStringToImage = string.Format("server={0};Port={1};User Id={2};database={3};password={4};Charset=utf8;Connect Timeout=15;", new object[] { strServer, port, "KangYiSystem", "kydb", "KangYi123456" });//mysql image port:9305
+                case DataBaseServer.Image: connectionStringToImage = string.Format("server={0};Port={1};User Id={2};database={3};password={4};Charset=utf8;Connect Timeout=15;Convert Zero Datetime=True;Allow Zero Datetime=True", new object[] { strServer, port, "KangYiSystem", "kydb", "KangYi123456" });//mysql image port:9305
                     break;
             }
             

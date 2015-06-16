@@ -14,6 +14,11 @@ using System.Runtime.Serialization.Json;
 using System.Collections;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using KyBll;
+using KyBll.DBUtility;
+using KyModel.Models;
+using KyModel;
+using SqlFu;
 namespace MyTest
 {
 
@@ -199,6 +204,31 @@ namespace MyTest
             DateTime time2 = Convert.ToDateTime("2015-06-09 10:03:00");
             double d = (time2 - time1).TotalMinutes;
             MessageBox.Show(d+"");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            DbHelperMySQL.SetConnectionString("127.0.0.1", 9305, DbHelperMySQL.DataBaseServer.Image);
+            ky_picture pic = new ky_picture {
+                kId= KyDataLayer2.GuidToLongID(),
+                kInsertTime=DateTime.Now,
+                kImageSNo=new byte[1536],
+                kImageType=""
+            };
+            ky_picture pic1 = new ky_picture
+            {
+                kId = KyDataLayer2.GuidToLongID(),
+                kInsertTime = DateTime.Now,
+                kImageSNo = new byte[1536],
+                kImageType = ""
+            };
+            List<ky_picture> pics = new List<ky_picture>();
+            pics.Add(pic);
+            pics.Add(pic1);
+            using (var conn = DbHelperMySQL.OpenImageConnection())
+            {
+                conn.InsertAll<ky_picture>(pics);
+            }
         }
     }
 }

@@ -557,7 +557,7 @@
             // timer_ImportFSN
             // 
             this.timer_ImportFSN.Enabled = true;
-            this.timer_ImportFSN.Interval = 3000;
+            this.timer_ImportFSN.Interval = 10000;
             // 
             // timer_ExportCRH
             // 
@@ -569,9 +569,9 @@
             // 
             this.notifyIcon_Tray.ContextMenuStrip = this.contextMenuStrip_Tray;
             this.notifyIcon_Tray.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon_Tray.Icon")));
-            this.notifyIcon_Tray.Text = "SyncthingTray";
+            this.notifyIcon_Tray.Text = "康艺网点管理端";
             this.notifyIcon_Tray.Visible = true;
-            //this.notifyIcon_Tray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            this.notifyIcon_Tray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // contextMenuStrip_Tray
             // 
@@ -604,7 +604,7 @@
             this.Activated += new System.EventHandler(this.NodeManager_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NodeManager_FormClosing);
             this.Load += new System.EventHandler(this.NodeManager_Load);
-           // this.Resize += new System.EventHandler(this.NodeManager_Resize);
+            this.Resize += new System.EventHandler(this.NodeManager_Resize);
             this.materialTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
