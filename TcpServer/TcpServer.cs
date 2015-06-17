@@ -439,6 +439,8 @@ namespace MyTcpServer
                     CloseThread(ipAndPort);
                     break;
                 }
+                if ((DateTime.Now - machine[ip].alive).TotalMinutes > 5)
+                    CloseThread(ipAndPort);
             }
         }
         /// <summary>

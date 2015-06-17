@@ -85,7 +85,7 @@ namespace KyBll
                 int SignLength = 0;
                 if(TCPMessage.Command.Length>64)
                     SignLength=BitConverter.ToInt16(TCPMessage.Command, 62);
-                message += TCPMessage.IpAndPort + ", Send Data Command  Sign Length "+SignLength + CommandFormat;
+                message += TCPMessage.IpAndPort + ", Send Data Command  Sign Total "+SignLength + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {
