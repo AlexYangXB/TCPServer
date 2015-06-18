@@ -536,35 +536,35 @@
             // MenuItem_ServerSetting
             // 
             this.MenuItem_ServerSetting.Name = "MenuItem_ServerSetting";
-            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(136, 22);
             this.MenuItem_ServerSetting.Text = "服务器设置";
             this.MenuItem_ServerSetting.Click += new System.EventHandler(this.MenuItem_ServerSetting_Click);
             // 
             // MenuItem_FunctionSetting
             // 
             this.MenuItem_FunctionSetting.Name = "MenuItem_FunctionSetting";
-            this.MenuItem_FunctionSetting.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_FunctionSetting.Size = new System.Drawing.Size(136, 22);
             this.MenuItem_FunctionSetting.Text = "功能设置";
             this.MenuItem_FunctionSetting.Click += new System.EventHandler(this.MenuItem_FunctionSetting_Click);
             // 
             // MenuItem_CRHReview
             // 
             this.MenuItem_CRHReview.Name = "MenuItem_CRHReview";
-            this.MenuItem_CRHReview.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_CRHReview.Size = new System.Drawing.Size(136, 22);
             this.MenuItem_CRHReview.Text = "CRH查看";
             this.MenuItem_CRHReview.Click += new System.EventHandler(this.MenuItem_CRHReview_Click);
             // 
             // MenuItem_Log
             // 
             this.MenuItem_Log.Name = "MenuItem_Log";
-            this.MenuItem_Log.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_Log.Size = new System.Drawing.Size(136, 22);
             this.MenuItem_Log.Text = "日志";
             this.MenuItem_Log.Click += new System.EventHandler(this.MenuItem_Log_Click);
             // 
             // MenuItem_LogOut
             // 
             this.MenuItem_LogOut.Name = "MenuItem_LogOut";
-            this.MenuItem_LogOut.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_LogOut.Size = new System.Drawing.Size(136, 22);
             this.MenuItem_LogOut.Text = "注销";
             this.MenuItem_LogOut.Click += new System.EventHandler(this.MenuItem_LogOut_Click);
             // 

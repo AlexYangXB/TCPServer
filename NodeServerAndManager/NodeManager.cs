@@ -646,9 +646,8 @@ namespace KangYiCollection
                                if (machine.Value.kId == machineId)
                                    currentMachine = machine.Value;
                            }
-                           if (currentMachine == null)
-                               myTcpServer.TCPEvent.OnBussninessLog("机具id是" + data + "已失去连接。");
-                           else if ((DateTime.Now - currentMachine.alive).TotalMinutes < 5)
+
+                           if (currentMachine!=null&&(DateTime.Now - currentMachine.alive).TotalMinutes < 5)
                            {
                                myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss"));
                                businessControl bControl = new businessControl();
@@ -675,7 +674,10 @@ namespace KangYiCollection
                            }
                            else
                            {
-                               myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前时间5分钟，视为未连接。");
+                               if (currentMachine == null)
+                                   myTcpServer.TCPEvent.OnBussninessLog("机具id是" + machineId + "已失去连接。");
+                               else
+                                   myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前时间5分钟，视为未连接。");
                                var obj = new JObject();
                                obj["MachineId"] = machineId;
                                socket.Emit("NoMachine", obj);
@@ -794,6 +796,7 @@ namespace KangYiCollection
         //关闭Socket.Io
         private void SocketIoStop()
         {
+            socket.Disconnect();
             socket.Close();
         }
 
@@ -851,9 +854,14 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void MenuItem_ServerSetting_Click(object sender, EventArgs e)
         {
+            SocketIoStop();
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
             string localIp = KangYiCollection.Properties.Settings.Default.LocalIp;
             int port = KangYiCollection.Properties.Settings.Default.Port;
+
+            //记录设备IP与端口号，当设备IP与端口号发生改变时，
+            string deviceIp = KangYiCollection.Properties.Settings.Default.DeviceIp;
+            int devicePort = KangYiCollection.Properties.Settings.Default.DeviceDbPort;
 
             //记录推送IP与端口号，当推送IP与端口号发生改变时，
             string pushIp = KangYiCollection.Properties.Settings.Default.PushIp;
@@ -872,8 +880,9 @@ namespace KangYiCollection
 
             //获取绑定的网点ID
             string nbindNodeId=JsonConvert.SerializeObject(frm.bindNodeId);
-            //本地IP或者端口号改过之后，要重新启动 TcpServer端
-            if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port)
+            //本地IP或者端口号、设备IP与端口号改过之后，要重新启动 TcpServer端
+            if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port
+                || deviceIp != KangYiCollection.Properties.Settings.Default.DeviceIp || devicePort != KangYiCollection.Properties.Settings.Default.DeviceDbPort)
             {
                 if (myTcpServer.IsRunning)
                 {
@@ -885,16 +894,15 @@ namespace KangYiCollection
                     StartTcpServer();
                 }
             }
-            //当推送IP或端口号、绑定网点id发生改变时
-            if (pushIp != KangYiCollection.Properties.Settings.Default.PushIp || pushPort != KangYiCollection.Properties.Settings.Default.PushPort||(frm.bindNodeId.Count!=0&&obindNodeId != nbindNodeId))
+            
+            //当绑定网点id发生改变时
+            if ((frm.bindNodeId.Count!=0&&obindNodeId != nbindNodeId))
             {
+                
                 bindNodeId = frm.bindNodeId;
-                //停止socket
-                if (socket != null)
-                    socket.Close();
-                //重现连接
-                SocketIoConnect();
+                
             }
+            SocketIoConnect();
         }
         /// <summary>
         /// 日志
