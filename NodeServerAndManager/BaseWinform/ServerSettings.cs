@@ -6,15 +6,22 @@ using System.Windows.Forms;
 using KyBll;
 using KyBll.DBUtility;
 using KyModel.Models;
+using Newtonsoft.Json;
+using System.Threading;
 namespace KangYiCollection.BaseWinform
 {
     public partial class ServerSettings : MaterialSkin.Controls.MaterialForm
     {
-        public string ServerIp="";
-        public string PictureIp="";
-        public string DeviceIp ="";
+        public string ServerIp = "";
+        public string PictureIp = "";
+        public string DeviceIp = "";
         public string LocalIp = "";
         public string PushIp = "";
+        public List<int> bindNodeId = new List<int>();
+        private bool rServerTest = false;
+        private bool rDeviceTest = false;
+        private bool rPushTest = false;
+        private bool rImageTest = false;
         /// <summary>
         /// 等待窗体
         /// </summary>
@@ -25,13 +32,15 @@ namespace KangYiCollection.BaseWinform
         public delegate void delloading();
         public void CloseLoading(IAsyncResult ar)
         {
-            this.Invoke(new delloading(() => { waitingForm.Close(); }));
+            this.Invoke(new delloading(() =>
+            {
+                waitingForm.Close();
+            }));
         }
+        private delegate void TestDelegate();
         public ServerSettings()
         {
             InitializeComponent();
-           
-            
         }
 
         private void ServerSettings_Load(object sender, EventArgs e)
@@ -42,7 +51,7 @@ namespace KangYiCollection.BaseWinform
             DeviceIp = KangYiCollection.Properties.Settings.Default.DeviceIp;
             LocalIp = KangYiCollection.Properties.Settings.Default.LocalIp;
             PushIp = KangYiCollection.Properties.Settings.Default.PushIp;
-            if(LocalIp==""||LocalIp=="192.168.1.1")
+            if (LocalIp == "" || LocalIp == "0.0.0.0")
             {
                 LocalIp = GetLocalIP();
             }
@@ -51,56 +60,25 @@ namespace KangYiCollection.BaseWinform
             ipControl_Device.Text = DeviceIp;
             ipControl_Push.Text = PushIp;
 
-            Application.DoEvents();
-            //启动服务后关闭等待窗体
-            waitingForm.SetText("正在初始化，请稍候...");
-            new Action(ServerSettingInit).BeginInvoke(new AsyncCallback(CloseLoading), null);
-            waitingForm.ShowDialog();
-            cmb_imageServer.Text = PictureIp;
 
             txb_SphinxPort.Text = KangYiCollection.Properties.Settings.Default.ServerDbPort.ToString();
             txb_DevicePort.Text = KangYiCollection.Properties.Settings.Default.DeviceDbPort.ToString();
             txb_ImagePort.Text = KangYiCollection.Properties.Settings.Default.PicturtDbPort.ToString();
             txb_LocalPort.Text = KangYiCollection.Properties.Settings.Default.Port.ToString();
             txb_PushPort.Text = KangYiCollection.Properties.Settings.Default.PushPort.ToString();
-            
+
+            cmb_imageServer.Text = PictureIp;
+            Application.DoEvents();
+
+            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
+            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            waitingForm.SetText("正在初始化...");
+            new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            SettingInit();
         }
 
-        /// <summary>
-        /// 设置初始化
-        /// </summary>
-        private void ServerSettingInit()
-        {
-            if (DeviceIp != "0.0.0.0" && DeviceIp != "")
-            {
-                DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-                bool result = KyDataOperation.TestConnectDevice();
-                if (result)
-                {
-                    List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
-                    cmb_imageServer.DataSource = dt;
-                    cmb_imageServer.DisplayMember = "kIpAddress";
-
-                    List<ky_node> dtNode = KyDataOperation.GetAllNode();
-                    chkList_Node.DataSource = dtNode;
-                    chkList_Node.DisplayMember = "kNodeName";
-                    chkList_Node.ValueMember = "kId";
-                    if (LocalIp != "" && LocalIp != "0.0.0.0")
-                    {
-                        string strMessage = "";
-                        for (var i = 0; i < dtNode.Count; i++)
-                        {
-                            if (LocalIp == dtNode[i].kBindIpAddress)
-                            {
-                                chkList_Node.SetItemChecked(i, true);
-                                strMessage += dtNode[i].kNodeName + ";";
-                            }
-                        }
-                        txb_BindNode.Text = strMessage;
-                    }
-                }
-            }
-        }
         private void btn_Confirm_Click(object sender, EventArgs e)
         {
             //本地IP 端口号
@@ -121,58 +99,56 @@ namespace KangYiCollection.BaseWinform
             //修改自动更新配置文件
             IniFile g = new IniFile(Application.StartupPath + "/config.ini");
             string url = g.ReadString("NETWORK", "URL", "");
-            g.WriteString("NETWORK", "URL", "http://"+KangYiCollection.Properties.Settings.Default.DeviceIp.ToString()+":8888/update/");
-            KangYiCollection.Properties.Settings.Default.Save();
-            //先清除已绑定的项
-            //List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(ipControl_Local.Text);
-            //int[] ids = (from node in nodes select node.kId).ToArray();
-            //KyDataOperation.UpdateNodeTable(ids, "");
+            g.WriteString("NETWORK", "URL", "http://" + KangYiCollection.Properties.Settings.Default.DeviceIp.ToString() + ":8888/update/");
+
             //获取被选中的项
-            List<int> ids=new List<int>();
+            List<int> ids = new List<int>();
             foreach (ky_node dr in chkList_Node.CheckedItems)
             {
                 ids.Add(Convert.ToInt32(dr.kId));
             }
-            if(ids.Count>0)
+            if (ids.Count > 0)
             {
-                List<ky_node> selectNodes = KyDataOperation.GetNodeWithIds(ids);
-                string strMessage = "";
-                List<int> IDS = new List<int>();
-                foreach (ky_node selectNode in selectNodes)
+                if (rDeviceTest)
                 {
-                    string bindIp = selectNode.kBindIpAddress;
-                    if (bindIp != "" && bindIp != ipControl_Local.Text)
+                    List<ky_node> selectNodes = KyDataOperation.GetNodeWithIds(ids);
+                    string strMessage = "";
+                    List<int> IDS = new List<int>();
+                    foreach (ky_node selectNode in selectNodes)
                     {
-                        strMessage += string.Format("{0} 已经绑定了IP：{1}", selectNode.kNodeName, bindIp) + Environment.NewLine;
+                        string bindIp = selectNode.kBindIpAddress;
+                        if (bindIp != "" && bindIp != ipControl_Local.Text)
+                        {
+                            strMessage += string.Format("{0} 已经绑定了IP：{1}", selectNode.kNodeName, bindIp) + Environment.NewLine;
+                        }
+                        else
+                        {
+                            IDS.Add(Convert.ToInt32(selectNode.kId));
+                        }
                     }
-                    else
+                    bool flag = true;
+                    if (strMessage != "")
                     {
-                        IDS.Add(Convert.ToInt32(selectNode.kId));
+                        strMessage += "是否继续？";
+                        if (DialogResult.No == MessageBox.Show(strMessage, "提示", MessageBoxButtons.YesNo))
+                        {
+                            flag = false;
+                        }
                     }
-                }
-                if (strMessage != "")
-                {
-                    strMessage += "是否继续？";
-                    if (DialogResult.Yes == MessageBox.Show(strMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                    if (flag)
                     {
                         bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
                         if (success)
-                            MessageBox.Show("绑定成功！","提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        {
+                            bindNodeId = ids;
+                            KangYiCollection.Properties.Settings.Default.Save();
+                            MessageBox.Show("绑定成功！", "提示", MessageBoxButtons.OK);
+                        }
                         else
-                            MessageBox.Show("绑定失败！","提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                            MessageBox.Show("绑定失败！", "提示", MessageBoxButtons.OK);
                     }
                     else
-                    {
                         return;
-                    }
-                }
-                else
-                {
-                    bool success = KyDataOperation.UpdateNodeTable(ids, ipControl_Local.Text);
-                    if (success)
-                        MessageBox.Show("绑定成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    else
-                        MessageBox.Show("绑定失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             this.Close();
@@ -185,27 +161,38 @@ namespace KangYiCollection.BaseWinform
         /// <param name="e"></param>
         private void lab_ServerTest_Click(object sender, EventArgs e)
         {
-            waitingForm.SetText("正在测试，请稍等...");
-            new Action(SeverTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
-            waitingForm.ShowDialog();
-        }
-        private void SeverTest()
-        {
             if (txb_SphinxPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
                 return;
             }
             KangYiCollection.Properties.Settings.Default.ServerIp = ipControl_Server.Text;
             KangYiCollection.Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
-
-            bool result = KyDataOperation.TestConnectServer();
-            if (result)
-                MessageBox.Show("数据库服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            waitingForm = new WaitingForm();
+            waitingForm.SetText("正在测试数据服务器...");
+            new Action(SeverTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            if (rServerTest)
+                MessageBox.Show("数据服务器连接成功!", "提示", MessageBoxButtons.OK);
             else
-                MessageBox.Show("数据库服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("数据服务器连接失败!", "警告", MessageBoxButtons.OK);
+        }
+        /// <summary>
+        /// 测试数据服务器的连接
+        /// </summary>
+        private void SeverTest()
+        {
+            try
+            {
+                DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
+                rServerTest = KyDataOperation.TestConnectServer();
+            }
+            catch (Exception e)
+            {
+                Log.TestLog(Log.GetExceptionMsg(e, "连接数据服务器异常"));
+            }
+
         }
         /// <summary>
         /// 测试设备服务器的连接
@@ -214,53 +201,79 @@ namespace KangYiCollection.BaseWinform
         /// <param name="e"></param>
         private void lab_DeviceTest_Click(object sender, EventArgs e)
         {
-            waitingForm.SetText("正在测试，请稍等...");
-            new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
-            waitingForm.ShowDialog();
-            List<ky_node> dtNode = KyDataOperation.GetAllNode();
-            chkList_Node.DataSource = dtNode;
-            chkList_Node.DisplayMember = "kNodeName";
-            chkList_Node.ValueMember = "kId";
-            if (LocalIp != "" && LocalIp != "0.0.0.0")
-            {
-                string strMessage = "";
-                for (var i = 0; i < dtNode.Count; i++)
-                {
-                    if (LocalIp == dtNode[i].kBindIpAddress)
-                    {
-                        chkList_Node.SetItemChecked(i, true);
-                        strMessage += dtNode[i].kNodeName + ";";
-                    }
-                    else
-                        chkList_Node.SetItemChecked(i, false);
-                }
-                txb_BindNode.Text = strMessage;
-            }
-            
-        }
-        private void DeviceTest()
-        {
             if (txb_DevicePort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
                 return;
             }
-            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
-            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
-            KangYiCollection.Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
-            bool result = KyDataOperation.TestConnectDevice();
-            if (result)
+            waitingForm.SetText("正在测试设备服务器...");
+            new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            if (rDeviceTest)
             {
-                MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK);
+
+            }
+            else
+                MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK);
+
+
+        }
+        /// <summary>
+        /// 测试设备服务器的连接
+        /// </summary>
+        private void DeviceTest()
+        {
+            try
+            {
+                if (DeviceIp != "0.0.0.0" && DeviceIp != "")
+                {
+                    DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
+                    rDeviceTest = KyDataOperation.TestConnectDevice();
+
+                }
+            }
+            catch (Exception e)
+            {
+                Log.TestLog(Log.GetExceptionMsg(e, "连接设备服务器异常"));
+            }
+
+        }
+        /// <summary>
+        /// 图像数据库、绑定网点初始化
+        /// </summary>
+        private void SettingInit()
+        {
+            if (rDeviceTest)
+            {
                 List<ky_imgserver> dt = KyDataOperation.GetAllImageServer();
                 cmb_imageServer.DataSource = dt;
                 cmb_imageServer.DisplayMember = "kIpAddress";
-               
-                
+
+                List<ky_node> dtNode = KyDataOperation.GetAllNode();
+                chkList_Node.DataSource = dtNode;
+                chkList_Node.DisplayMember = "kNodeName";
+                chkList_Node.ValueMember = "kId";
+                if (LocalIp != "" && LocalIp != "0.0.0.0")
+                {
+                    string strMessage = "";
+                    for (var i = 0; i < dtNode.Count; i++)
+                    {
+                        if (LocalIp == dtNode[i].kBindIpAddress)
+                        {
+                            chkList_Node.SetItemChecked(i, true);
+                            strMessage += dtNode[i].kNodeName + ";";
+                        }
+                    }
+                    txb_BindNode.Text = strMessage;
+                }
             }
             else
-                MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            {
+                cmb_imageServer.DataSource = null;
+                chkList_Node.DataSource = null;
+                txb_BindNode.Text = "";
+            }
         }
         /// <summary>
         /// 测试推送服务器的连接
@@ -269,29 +282,37 @@ namespace KangYiCollection.BaseWinform
         /// <param name="e"></param>
         private void lab_PushTest_Click(object sender, EventArgs e)
         {
-            waitingForm.SetText("正在测试，请稍等...");
-            new Action(PushTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
-            waitingForm.ShowDialog();
-        }
-        private void PushTest()
-        {
             if (txb_PushPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
                 return;
             }
-            string PushIp = ipControl_Push.Text;
-            int PushPort = int.Parse(txb_PushPort.Text);
-            bool result = KyDataOperation.TestConnectPush(PushIp, PushPort);
-            if (result)
+            KangYiCollection.Properties.Settings.Default.PushIp = ipControl_Push.Text;
+            KangYiCollection.Properties.Settings.Default.PushPort = int.Parse(txb_PushPort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            waitingForm.SetText("正在测试推送服务器...");
+            new Action(PushTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            if (rPushTest)
             {
-                MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                KangYiCollection.Properties.Settings.Default.PushIp = PushIp;
-                KangYiCollection.Properties.Settings.Default.PushPort = PushPort;
-                KangYiCollection.Properties.Settings.Default.Save();
+                MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK);
             }
             else
-                MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK);
+        }
+        /// <summary>
+        /// 测试推送服务器的连接
+        /// </summary>
+        private void PushTest()
+        {
+            try
+            {
+                rPushTest = KyDataOperation.TestConnectPush(KangYiCollection.Properties.Settings.Default.PushIp, KangYiCollection.Properties.Settings.Default.PushPort);
+            }
+            catch (Exception e)
+            {
+                Log.TestLog(Log.GetExceptionMsg(e, "连接推送服务器异常"));
+            }
         }
         /// <summary>
         /// 测试图像服务器的连接
@@ -300,22 +321,46 @@ namespace KangYiCollection.BaseWinform
         /// <param name="e"></param>
         private void lab_PictureTest_Click(object sender, EventArgs e)
         {
-            waitingForm.SetText("正在测试，请稍等...");
+            if (txb_ImagePort.Text.Trim() == "")
+            {
+                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
+                return;
+            }
+            waitingForm.SetText("正在测试图像服务器...");
             new Action(PictureTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
-         }
-        private void PictureTest() 
-        {
-            KangYiCollection.Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
-            KangYiCollection.Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
-            KangYiCollection.Properties.Settings.Default.Save();
-            DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
-            bool result = KyDataOperation.TestConnectImage();
-            if (result)
-                MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            if (rImageTest)
+                MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK);
             else
-                MessageBox.Show("图像服务器连接失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-        
+                MessageBox.Show("图像服务器连接失败!", "警告", MessageBoxButtons.OK);
+        }
+        /// <summary>
+        /// 测试图像服务器的连接
+        /// </summary>
+        private void PictureTest()
+        {
+            if (this.InvokeRequired)
+            {
+                TestDelegate d = new TestDelegate(PictureTest);
+                this.Invoke(d);
+            }
+            else
+            {
+                try
+                {
+                    KangYiCollection.Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
+                    KangYiCollection.Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
+                    KangYiCollection.Properties.Settings.Default.Save();
+                    DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+                    rImageTest = KyDataOperation.TestConnectImage();
+                }
+                catch (Exception e)
+                {
+                    Log.TestLog(Log.GetExceptionMsg(e, "连接图像服务器异常"));
+                }
+            }
+
+
         }
 
         private void cmb_imageServer_SelectedIndexChanged(object sender, EventArgs e)
@@ -378,12 +423,19 @@ namespace KangYiCollection.BaseWinform
             }
         }
 
-        private void chkList_Node_Click(object sender, EventArgs e)
+        private void ipControl_Server_Leave(object sender, EventArgs e)
         {
-            
+            ipControl_Device.Value = ipControl_Server.Value;
+            ipControl_Push.Value = ipControl_Server.Value;
+            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
+            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
+            waitingForm.SetText("正在载入数据...");
+            new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
+            SettingInit();
         }
 
-       
 
     }
 }

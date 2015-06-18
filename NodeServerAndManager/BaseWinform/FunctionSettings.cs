@@ -136,7 +136,7 @@ namespace KangYiCollection.BaseWinform
             {
                 foldPath = dialog.SelectedPath;
                 Application.DoEvents();
-                waitingForm.SetText("正在导出CRH，请稍等...");
+                waitingForm.SetText("正在导出CRH...");
                 new Action(ExportToCRH).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
                 if (MessageBox.Show("导出成功！，是否打开导出目录？", "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) == DialogResult.OK)

@@ -118,7 +118,7 @@ namespace MyTcpServer
                 //轮询方式
                 while (result.IsCompleted == false)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(200);
                 }
                 d.EndInvoke(out sokConnection, result);
                 if (sokConnection != null)

@@ -250,7 +250,7 @@ namespace KyBll
             //使用轮询方式来判断异步操作是否完成
             while (result.IsCompleted == false)
             {
-                Thread.Sleep(250);
+                Thread.Sleep(50);
             }
             //获取Begin方法的返回值和所有输入/输出参数
             d.EndInvoke(out ReceiveBytes, result);
@@ -272,7 +272,7 @@ namespace KyBll
             IAsyncResult result = d.BeginInvoke(user, message, null, null);
             while (result.IsCompleted == false)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
             d.EndInvoke(result);
         }

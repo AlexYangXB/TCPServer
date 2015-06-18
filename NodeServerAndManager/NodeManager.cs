@@ -156,7 +156,7 @@ namespace KangYiCollection
         private void btn_Login_Click(object sender, EventArgs e)
         {
 
-            waitingForm.SetText("正在登录，请稍等...");
+            waitingForm.SetText("正在登录...");
             new Action(Login).BeginInvoke(new AsyncCallback(CloseLoading), null);
             Application.DoEvents();
             waitingForm.ShowDialog();
@@ -238,7 +238,7 @@ namespace KangYiCollection
                 Directory.CreateDirectory(path);
             }
             //启动TCP服务、并连接到socket.IO后关闭等待窗体
-            waitingForm.SetText("正在连接到服务器，请稍等...");
+            waitingForm.SetText("正在连接到服务器...");
             Application.DoEvents();
             new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
@@ -858,6 +858,9 @@ namespace KangYiCollection
             //记录推送IP与端口号，当推送IP与端口号发生改变时，
             string pushIp = KangYiCollection.Properties.Settings.Default.PushIp;
             int pushPort = KangYiCollection.Properties.Settings.Default.PushPort;
+
+            //记录绑定网点id
+            string obindNodeId = JsonConvert.SerializeObject(bindNodeId);
             //显示设置界面
             BaseWinform.ServerSettings frm = new ServerSettings();
             frm.ShowDialog();
@@ -866,6 +869,9 @@ namespace KangYiCollection
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
+
+            //获取绑定的网点ID
+            string nbindNodeId=JsonConvert.SerializeObject(frm.bindNodeId);
             //本地IP或者端口号改过之后，要重新启动 TcpServer端
             if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port)
             {
@@ -879,10 +885,10 @@ namespace KangYiCollection
                     StartTcpServer();
                 }
             }
-
-            //当推送IP或端口号发生改变时
-            if (pushIp != KangYiCollection.Properties.Settings.Default.PushIp || pushPort != KangYiCollection.Properties.Settings.Default.PushPort)
+            //当推送IP或端口号、绑定网点id发生改变时
+            if (pushIp != KangYiCollection.Properties.Settings.Default.PushIp || pushPort != KangYiCollection.Properties.Settings.Default.PushPort||(frm.bindNodeId.Count!=0&&obindNodeId != nbindNodeId))
             {
+                bindNodeId = frm.bindNodeId;
                 //停止socket
                 if (socket != null)
                     socket.Close();
