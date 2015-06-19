@@ -1084,10 +1084,10 @@ namespace KangYiCollection
         {
             switch (colorSchemeIndex)
             {
-                case 0://蓝色
+                case 0://黑色
                     materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
                     break;
-                case 1://黑色
+                case 1://蓝色
                     materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
                     break;
                 case 2://绿色

@@ -33,9 +33,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.BussinessLogRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.FSNImortLogRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -45,9 +45,10 @@
             // CommandLogRichTextBox
             // 
             this.CommandLogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CommandLogRichTextBox.Location = new System.Drawing.Point(13, 3);
+            this.CommandLogRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CommandLogRichTextBox.Location = new System.Drawing.Point(3, 3);
             this.CommandLogRichTextBox.Name = "CommandLogRichTextBox";
-            this.CommandLogRichTextBox.Size = new System.Drawing.Size(681, 363);
+            this.CommandLogRichTextBox.Size = new System.Drawing.Size(684, 363);
             this.CommandLogRichTextBox.TabIndex = 0;
             this.CommandLogRichTextBox.Text = "";
             // 
@@ -89,22 +90,12 @@
             // BussinessLogRichTextBox
             // 
             this.BussinessLogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.BussinessLogRichTextBox.Location = new System.Drawing.Point(5, 3);
+            this.BussinessLogRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BussinessLogRichTextBox.Location = new System.Drawing.Point(3, 3);
             this.BussinessLogRichTextBox.Name = "BussinessLogRichTextBox";
-            this.BussinessLogRichTextBox.Size = new System.Drawing.Size(681, 363);
+            this.BussinessLogRichTextBox.Size = new System.Drawing.Size(684, 363);
             this.BussinessLogRichTextBox.TabIndex = 1;
             this.BussinessLogRichTextBox.Text = "";
-            // 
-            // materialTabSelector1
-            // 
-            this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
-            this.materialTabSelector1.Depth = 0;
-            this.materialTabSelector1.Location = new System.Drawing.Point(-20, 25);
-            this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabSelector1.Name = "materialTabSelector1";
-            this.materialTabSelector1.Size = new System.Drawing.Size(721, 45);
-            this.materialTabSelector1.TabIndex = 2;
-            this.materialTabSelector1.Text = "materialTabSelector1";
             // 
             // tabPage3
             // 
@@ -119,11 +110,23 @@
             // FSNImortLogRichTextBox
             // 
             this.FSNImortLogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.FSNImortLogRichTextBox.Location = new System.Drawing.Point(5, 3);
+            this.FSNImortLogRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FSNImortLogRichTextBox.Location = new System.Drawing.Point(0, 0);
             this.FSNImortLogRichTextBox.Name = "FSNImortLogRichTextBox";
-            this.FSNImortLogRichTextBox.Size = new System.Drawing.Size(681, 363);
+            this.FSNImortLogRichTextBox.Size = new System.Drawing.Size(690, 369);
             this.FSNImortLogRichTextBox.TabIndex = 2;
             this.FSNImortLogRichTextBox.Text = "";
+            // 
+            // materialTabSelector1
+            // 
+            this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
+            this.materialTabSelector1.Depth = 0;
+            this.materialTabSelector1.Location = new System.Drawing.Point(-20, 25);
+            this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialTabSelector1.Name = "materialTabSelector1";
+            this.materialTabSelector1.Size = new System.Drawing.Size(721, 45);
+            this.materialTabSelector1.TabIndex = 2;
+            this.materialTabSelector1.Text = "materialTabSelector1";
             // 
             // LogForm
             // 
