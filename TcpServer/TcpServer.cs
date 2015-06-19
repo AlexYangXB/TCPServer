@@ -159,6 +159,7 @@ namespace MyTcpServer
                                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
                                    MessageType = TCPMessageType.ExistConnection
                                });
+                                
                             }
                             //ShowMsg("客户端连接成功！");
                             Thread thr = new Thread(RecMsg);
@@ -375,7 +376,7 @@ namespace MyTcpServer
                                         //if (File.Exists(fileName))
                                         //    File.Delete(fileName);
                                     }
-
+                                    KyDataOperation.UpdateMachineTime(machine[ip].kId, DateTime.Now);
 
                                 }
                                 else if (cmd == 0x0010)//时间同步

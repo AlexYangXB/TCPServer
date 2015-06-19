@@ -28,10 +28,13 @@ namespace KangYiCollection
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            ChangeColorTheme();
             //蓝色
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+           // materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
             //黑色
             //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            //绿色
+            //materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
 
         }
         //用于收数据的server端
@@ -796,8 +799,11 @@ namespace KangYiCollection
         //关闭Socket.Io
         private void SocketIoStop()
         {
-            socket.Disconnect();
-            socket.Close();
+            if (socket != null)
+            {
+                socket.Disconnect();
+                socket.Close();
+            }
         }
 
 
@@ -1061,6 +1067,35 @@ namespace KangYiCollection
             string foldPath = Application.StartupPath;
             System.Diagnostics.Process.Start("explorer.exe", foldPath);
         }
+        private int colorSchemeIndex = KangYiCollection.Properties.Settings.Default.Color;
+
+        private void lab_Version_Click(object sender, EventArgs e)
+        {
+            colorSchemeIndex++;
+            if (colorSchemeIndex > 2) colorSchemeIndex = 0;
+            KangYiCollection.Properties.Settings.Default.Color = colorSchemeIndex;
+            KangYiCollection.Properties.Settings.Default.Save();
+            ChangeColorTheme();
+        }
+        /// <summary>
+        /// 背景主题
+        /// </summary>
+        private void ChangeColorTheme()
+        {
+            switch (colorSchemeIndex)
+            {
+                case 0://蓝色
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+                    break;
+                case 1://黑色
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+                    break;
+                case 2://绿色
+                    materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
+                    break;
+            }
+        }
+
 
 
     }

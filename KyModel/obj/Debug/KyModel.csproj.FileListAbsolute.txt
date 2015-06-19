@@ -13,3 +13,11 @@ C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyModel\bin\Debug\KyModel.pdb
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyModel\bin\Debug\EntityFramework.dll
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyModel\obj\Debug\KyModel.dll
 C:\Users\xiaouyuan\Documents\GitHub\TCPServer\KyModel\obj\Debug\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Debug\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Debug\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Debug\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Debug\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Debug\SqlFu.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Debug\KyModel.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Debug\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Debug\KyModel.pdb

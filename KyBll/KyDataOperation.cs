@@ -537,7 +537,7 @@ namespace KyBll
         }
 
         /// <summary>
-        /// 更新机器的最后上传时间和机具编号
+        /// 更新机器的机具编号和机型
         /// </summary>
         /// <param name="id"></param>
         /// <param name="machineNumber"></param>
@@ -549,16 +549,36 @@ namespace KyBll
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    ky_machine machine = conn.Get<ky_machine>(q => q.kId == id);
-                    machine.kMachineNumber = machineNumber;
-                    machine.kMachineModel = machineModel;
-                    conn.Update<ky_machine>(machine);
+                    conn.Update<ky_machine>(new { kMachineNumber = machineNumber, kMachineModel = machineModel }, p => p.kId == id);
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新机器时间和机具编号异常",e);
+                Log.DataBaseException("更新机器机具编号和机型异常",e);
+                return false;
+            }
+        }
+        /// <summary>
+        /// 更新机器的上传时间
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="machineNumber"></param>
+        /// <param name="machineModel"> </param>
+        /// <returns></returns>
+        public static bool UpdateMachineTime(int id,DateTime time)
+        {
+            try
+            {
+                using (var conn = DbHelperMySQL.OpenDeviceConnection())
+                {
+                    conn.Update<ky_machine>(new {kUpdateTime=time},p=>p.kId==id);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.DataBaseException("更新机器上传时间异常", e);
                 return false;
             }
         }

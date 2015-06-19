@@ -207,6 +207,9 @@ namespace KangYiCollection.BaseWinform
                 return;
             }
             waitingForm.SetText("正在测试设备服务器...");
+            KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
+            KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
+            KangYiCollection.Properties.Settings.Default.Save();
             new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             if (rDeviceTest)
