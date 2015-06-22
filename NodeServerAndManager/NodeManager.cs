@@ -30,7 +30,7 @@ namespace KangYiCollection
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             ChangeColorTheme();
             //蓝色
-           // materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+            // materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
             //黑色
             //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             //绿色
@@ -141,7 +141,7 @@ namespace KangYiCollection
                 }
                 catch (Exception e)
                 {
-                    Log.ConnectionException("启动连接服务器异常！",e);
+                    Log.ConnectionException("启动连接服务器异常！", e);
                     return;
                 }
             }
@@ -214,7 +214,7 @@ namespace KangYiCollection
             {
                 MessageBox.Show("无法连接设备数据库！", "提示", MessageBoxButtons.OK,
                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                Log.DataBaseException("登陆失败！",ex);
+                Log.DataBaseException("登陆失败！", ex);
             }
         }
         #endregion
@@ -408,8 +408,17 @@ namespace KangYiCollection
             }
             else
             {
+                txb_BussinessNumber.Enabled = true;
                 cmb_ATM2.Enabled = false;
-                cmb_CashBox2.Enabled = false;
+            }
+            if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.QK
+                || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CACK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CAQK)
+            {
+                txb_BussinessNumber.Enabled = true;
+            }
+            else
+            {
+                txb_BussinessNumber.Enabled = false;
             }
         }
         //确定
@@ -437,6 +446,15 @@ namespace KangYiCollection
                     if (cmb_ATM2.Text == "" || cmb_CashBox2.Text == "")
                     {
                         MessageBox.Show("请选择ATM编号和钞箱编号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+                if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.QK
+               || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CACK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CAQK)
+                {
+                    if (txb_BussinessNumber.Text.Trim()=="")
+                    {
+                        MessageBox.Show("请填写业务流水号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
@@ -472,6 +490,7 @@ namespace KangYiCollection
                     machine.userId = userId;
                     machine.imgServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
                     machine.importMachineId = machine.importMachineId;
+                    machine.bussinessNumber = txb_BussinessNumber.Text;
                     long batchId = FSNImport.UploadFsn(uploadFile, machine);
                     if (batchId > 0)
                     {
@@ -650,7 +669,7 @@ namespace KangYiCollection
                                    currentMachine = machine.Value;
                            }
 
-                           if (currentMachine!=null&&(DateTime.Now - currentMachine.alive).TotalMinutes < 5)
+                           if (currentMachine != null && (DateTime.Now - currentMachine.alive).TotalMinutes < 5)
                            {
                                myTcpServer.TCPEvent.OnBussninessLog("机器上次连接时间" + currentMachine.alive.ToString("yyyy-MM-dd HH:mm:ss"));
                                businessControl bControl = new businessControl();
@@ -772,7 +791,7 @@ namespace KangYiCollection
                         }
                         var str = "您绑定的网点id" + NodeId + "已被IP地址" + IpAddress + "绑定了！";
                         myTcpServer.TCPEvent.OnBussninessLog(str);
-                        MessageBox.Show(str,"提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        MessageBox.Show(str, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         SocketIoStop();
                     });
                     socket.On("reconnecting", (nextRetry) =>
@@ -792,7 +811,7 @@ namespace KangYiCollection
             }
             catch (Exception e)
             {
-                Log.ConnectionException("推送服务器异常",e);
+                Log.ConnectionException("推送服务器异常", e);
             }
         }
 
@@ -890,7 +909,7 @@ namespace KangYiCollection
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.PictureIp, KangYiCollection.Properties.Settings.Default.PicturtDbPort, DbHelperMySQL.DataBaseServer.Image);
 
             //获取绑定的网点ID
-            string nbindNodeId=JsonConvert.SerializeObject(frm.bindNodeId);
+            string nbindNodeId = JsonConvert.SerializeObject(frm.bindNodeId);
             //本地IP或者端口号、设备IP与端口号改过之后，要重新启动 TcpServer端
             if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port
                 || deviceIp != KangYiCollection.Properties.Settings.Default.DeviceIp || devicePort != KangYiCollection.Properties.Settings.Default.DeviceDbPort)
@@ -905,13 +924,13 @@ namespace KangYiCollection
                     StartTcpServer();
                 }
             }
-            
+
             //当绑定网点id发生改变时
-            if ((frm.bindNodeId.Count!=0&&obindNodeId != nbindNodeId))
+            if ((frm.bindNodeId.Count != 0 && obindNodeId != nbindNodeId))
             {
-                
+
                 bindNodeId = frm.bindNodeId;
-                
+
             }
             SocketIoConnect();
         }
@@ -974,7 +993,7 @@ namespace KangYiCollection
                 string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
                 if (Directory.Exists(importDir))
                 {
-                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp,myTcpServer.TCPEvent);
+                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp, myTcpServer.TCPEvent);
                 }
                 else
                     myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");

@@ -95,6 +95,7 @@ namespace KyBll
             machine.kMachineNumber = machineMac;
             machine.kFactoryId = FacotryId;
             machine.kId = machineId;
+            machine.kNodeId = NodeId;
             machine.importMachineId = machineId2;
             return machine;
 
