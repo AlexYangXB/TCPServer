@@ -81,9 +81,13 @@ namespace KyBll
             if (TCPMessage.MessageType == TCPMessageType.NET_UP)
             {
                 int SignLength = 0;
-                if(TCPMessage.Command.Length>64)
-                    SignLength=BitConverter.ToInt16(TCPMessage.Command, 62);
-                message += TCPMessage.IpAndPort + ", 发送数据命令  纸币张数"+SignLength + CommandFormat;
+                int MsgLength = 0;
+                if (TCPMessage.Command.Length > 64)
+                {
+                    SignLength = BitConverter.ToInt16(TCPMessage.Command, 62);
+                    MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
+                }
+                message += TCPMessage.IpAndPort + ", 发送数据命令 数据包长度 "+MsgLength+"  纸币张数 "+SignLength + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {

@@ -282,7 +282,7 @@ namespace KyBll
                         }
                     }
                 }
-                catch (SocketException se)
+                catch (Exception se)
                 {
                     Log.ConnectionException("通信异常", se);
                     CloseThread();

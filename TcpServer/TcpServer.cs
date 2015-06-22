@@ -157,6 +157,10 @@ namespace MyTcpServer
                         TCPReceive tcpr = new TCPReceive(DataSaveFolder,PictureServerId,TCPEvent,machine);
                         Thread thr = new Thread(tcpr.RecMsg);
                         thr.IsBackground = true;
+
+                        //超时设置  15秒
+                        sokConnection.ReceiveTimeout = 15000;
+                        sokConnection.SendTimeout = 15000;
                         thr.Start(sokConnection);
                         dictThread.Add(tcpr, thr);
                     }
