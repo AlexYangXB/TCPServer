@@ -257,6 +257,7 @@ namespace KangYiCollection.BaseWinform
                 chkList_Node.DataSource = dtNode;
                 chkList_Node.DisplayMember = "kNodeName";
                 chkList_Node.ValueMember = "kId";
+                
                 if (LocalIp != "" && LocalIp != "0.0.0.0")
                 {
                     string strMessage = "";

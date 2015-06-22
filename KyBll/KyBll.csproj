@@ -71,6 +71,7 @@
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyTCP.cs" />
+    <Compile Include="TCPReceive.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KyModel\KyModel.csproj">

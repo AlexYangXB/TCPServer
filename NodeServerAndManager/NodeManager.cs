@@ -821,6 +821,11 @@ namespace KangYiCollection
                 e.Cancel = false;
             else if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                 e.Cancel = true;
+            if (!e.Cancel)
+            {
+                myTcpServer.Stop();
+                SocketIoStop();
+            }
         }
 
         /// <summary>

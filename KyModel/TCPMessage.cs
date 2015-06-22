@@ -37,8 +37,8 @@ namespace KyModel
         /// 心跳命令
         /// </summary>
         NET_CONTINUE=6,
-        ExistConnection=7,
-        UnknownCommand=8,
+        UnknownCommand=7,
+        ExistConnection=8
         
     }
     

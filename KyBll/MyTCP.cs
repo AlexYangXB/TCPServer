@@ -25,8 +25,6 @@ namespace KyBll
             {
                 tmp1 += b.ToString("X2") + " ";
                 var ascii = System.Text.Encoding.ASCII.GetString(new byte[] { b });
-                //var regex = new Regex(@"([^a-zA-z0-9\s])");
-                //ascii = regex.Replace(ascii, ".")+" ";
                 if (b < 32 || b > 126)
                     ascii = "_";
 
@@ -35,7 +33,7 @@ namespace KyBll
                 if (count % 20 == 0)
                 {
                     tmp1 = tmp1.PadRight(60, ' ');
-                    all += tmp1 + " : " + tmp2.Replace('\n', ' ').Replace('\f', ' ') + Environment.NewLine;
+                    all += tmp1 + " : " + tmp2 + Environment.NewLine;
                     tmp1 = tmp2 = "";
                 }
 
@@ -43,7 +41,7 @@ namespace KyBll
             if (tmp1 != "" || tmp2 != "")
             {
                 tmp1 = tmp1.PadRight(60, ' ');
-                all += tmp1 + " : " + tmp2.Replace('\n', ' ').Replace('\f', ' ');
+                all += tmp1 + " : " + tmp2;
             }
             return all;
         }
@@ -58,46 +56,46 @@ namespace KyBll
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
-                CommandFormat = " CMD Length " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
+                CommandFormat = " 命令长度 " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
             }
             if (TCPMessage.MessageType == TCPMessageType.NewConnection)
             {
-                message += " new connection " + TCPMessage.IpAndPort;
+                message += " 新连接 " + TCPMessage.IpAndPort;
             }
             if (TCPMessage.MessageType == TCPMessageType.NoMachineIp)
             {
-                message += TCPMessage.IpAndPort + "Machine Ip not exists ";
+                message += TCPMessage.IpAndPort + "机具IP地址不存在！";
             }
             if (TCPMessage.MessageType == TCPMessageType.ExistConnection)
             {
-                message += TCPMessage.IpAndPort + "Connection exists ";
+                message += TCPMessage.IpAndPort + "连接已存在！";
             }
             if (TCPMessage.MessageType == TCPMessageType.UnknownCommand)
             {
-                message += TCPMessage.IpAndPort + "Unknown Command " + CommandFormat;
+                message += TCPMessage.IpAndPort + "未知命令" + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_SIMPLE)
             {
-                message += TCPMessage.IpAndPort + ", Request upload Command   " + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 请求上传命令   " + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_UP)
             {
                 int SignLength = 0;
                 if(TCPMessage.Command.Length>64)
                     SignLength=BitConverter.ToInt16(TCPMessage.Command, 62);
-                message += TCPMessage.IpAndPort + ", Send Data Command  Sign Total "+SignLength + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 发送数据命令  纸币张数"+SignLength + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {
-                message += TCPMessage.IpAndPort + ", Close connection Command  " + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 关闭连接命令 " + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_TIME)
             {
-                message += TCPMessage.IpAndPort + ",Time Synchronization Command  " + CommandFormat;
+                message += TCPMessage.IpAndPort + ",时间同步命令 " + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CONTINUE)
             {
-                message += TCPMessage.IpAndPort + ",Heart Beat Command  " + CommandFormat;
+                message += TCPMessage.IpAndPort + ",心跳命令  " + CommandFormat;
             }
             message += Environment.NewLine;
             return message;
@@ -231,8 +229,9 @@ namespace KyBll
                 ReceiveBytes = new byte[bytesRead];
                 Array.Copy(readbuf, ReceiveBytes, bytesRead);
             }
-            catch
+            catch(Exception e)
             {
+                Log.ConnectionException("接收命令异常", e);
                 ReceiveBytes = null;
             }
         }
@@ -294,6 +293,9 @@ namespace KyBll
                 Log.ConnectionException("发送命令失败!", e);
             }
         }
+
+
+     
     }
    
 }

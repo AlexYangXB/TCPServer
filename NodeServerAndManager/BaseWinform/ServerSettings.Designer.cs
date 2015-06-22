@@ -429,12 +429,12 @@
         private Control.IpControl ipControl_Local;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.CheckedListBox chkList_Node;
         private System.Windows.Forms.TextBox txb_BindNode;
         private System.Windows.Forms.Label label10;
         private Control.IpControl ipControl_Push;
         private System.Windows.Forms.TextBox txb_PushPort;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label lab_PushTest;
+        private System.Windows.Forms.CheckedListBox chkList_Node;
     }
 }
