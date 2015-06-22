@@ -117,7 +117,7 @@ namespace KyBll
                             catch (Exception ex)
                             {
                                 MoveErrFile(importDir, fi.FullName);
-                                TCPEvent.OnFSNImportLog(fi.Name + "的设备类别不存在！");
+                                TCPEvent.OnFSNImportLog(fi.Name + "的设备类别不存在！",ex);
                                 continue;
 
                             }

@@ -94,7 +94,7 @@ namespace KyBll
                                     Array.Copy(bBuffer, 8, returnBytes, 8, 2);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
                                     Array.Copy(bBuffer, 12, returnBytes, 14, 28);
-                                    MyTCP.SendToClient(sokClient, returnBytes);
+                                    MyTCP.AsyncSendToClient(sokClient, returnBytes);
                                 }
                                 else if (cmd > 0 && cmd < 10)//纸币信息发送命令
                                 {
@@ -112,7 +112,7 @@ namespace KyBll
                                     Array.Copy(bBuffer, 8, returnBytes, 8, 4);//协议版本、requestCmd
                                     Array.Copy(success, 0, returnBytes, 12, success.Length);
                                     Array.Copy(bBuffer, 12, returnBytes, 14, 28);
-                                    MyTCP.SendToClient(sokClient, returnBytes);
+                                    MyTCP.AsyncSendToClient(sokClient, returnBytes);
 
                                     //machineNo = Encoding.ASCII.GetString(bBuffer,4,28).Replace("\0","");
                                     //报文体长度
@@ -245,7 +245,7 @@ namespace KyBll
                                     string time = DateTime.Now.ToString("yyyyMMddHHmmss");
                                     byte[] timeBytes = Encoding.ASCII.GetBytes(time);
                                     Array.Copy(timeBytes, 0, returnBytes, 42, timeBytes.Length);
-                                    MyTCP.SendToClient(sokClient, returnBytes);
+                                    MyTCP.AsyncSendToClient(sokClient, returnBytes);
                                     CloseThread();
                                 }
                                 else if (cmd == 0x000B)//心跳命令

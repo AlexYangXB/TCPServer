@@ -853,49 +853,6 @@ namespace KyBll.DBUtility
             //connectionString = string.Format("server={0};Port={1};User Id={2};database={3};password={4};Charset=utf8", new object[] { strServer, 0xc08, "KangYiSystem", "kydb", "SUppOrt!sUnOftwArE@qq.cOm" });
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sqlStringList"></param>
-        /// <param name="sqlStringParaList"></param>
-        /// <returns></returns>
-        public static int ExecuteSqlTran(List<string> sqlStringList, List<MySqlParameter[]> sqlStringParaList)
-        {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-                using (MySqlTransaction trans = conn.BeginTransaction())
-                {
-                    MySqlCommand cmd = new MySqlCommand { CommandTimeout = 0 };
-                    try
-                    {
-                        if (sqlStringList.Count != sqlStringParaList.Count)
-                        {
-                            return 0;
-                        }
-
-                        int count = 0;
-                        //循环
-                        for (int i = 0; i < sqlStringList.Count; i++)
-                        {
-                            string cmdText = sqlStringList[i];
-                            MySqlParameter[] cmdParms = sqlStringParaList[i];
-                            PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
-                            count += cmd.ExecuteNonQuery();
-                            cmd.Parameters.Clear();
-                        }
-                        trans.Commit();
-                        return count;
-                    }
-                    catch (Exception ee)
-                    {
-                        trans.Rollback();
-                        //LogHelper.CreateErrorLogTxt("ExecuteSqlTran", "1", ex.ToString());
-                        return 0;
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// 执行存储过程，返回SqlDataReader ( 注意：调用该方法后，一定要对SqlDataReader进行Close )

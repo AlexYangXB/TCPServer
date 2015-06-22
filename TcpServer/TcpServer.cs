@@ -89,7 +89,7 @@ namespace MyTcpServer
         }
         private delegate void ListenClientDelegate(out Socket client);
         /// <summary>
-        /// 监听客户端连接
+        /// 监听客户端请求
         /// </summary>
         /// <param name="newClient"></param>
         private void ListenClient(out Socket newClient)
@@ -99,11 +99,15 @@ namespace MyTcpServer
                 //开始监听客户端连接请求，Accept方法会阻断当前的线程
                 newClient = socketWatch.Accept();
             }
-            catch
+            catch(Exception e)
             {
+                Log.ConnectionException("监听客户端请求异常", e);
                 newClient = null;
             }
         }
+        /// <summary>
+        /// 监听客户端请求
+        /// </summary>
         void WatchConnecting()
         {
             while (!_shouldStop)  // 持续不断的监听客户端的连接请求
@@ -119,8 +123,6 @@ namespace MyTcpServer
                 d.EndInvoke(out sokConnection, result);
                 if (sokConnection != null)
                 {
-                    // 想列表控件中添加客户端的IP信息
-                    //lbOnline.Items.Add(sokConnection.RemoteEndPoint.ToString());
                     string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
                     TCPEvent.OnCommandLog(new TCPMessage
                         {
@@ -165,7 +167,9 @@ namespace MyTcpServer
             }
         }
 
-        //停止服务
+        /// <summary>
+        /// 停止服务
+        /// </summary>
         public void Stop()
         {
             foreach (var tcpr in TcpReceives)
@@ -181,8 +185,11 @@ namespace MyTcpServer
             ReceiveThreads.Clear();
             if (socketWatch != null)
                 socketWatch.Close();
-            _shouldStop = true;
-            threadWatch.Join();
+            if (threadWatch != null)
+            {
+                _shouldStop = true;
+                threadWatch.Join();
+            }
             IsRunning = false;
         }
 
@@ -192,7 +199,11 @@ namespace MyTcpServer
             End = 1,
             Cancel = 2,
         };
-        //交易控制
+        /// <summary>
+        /// 交易控制
+        /// </summary>
+        /// <param name="myBusinessStatus"></param>
+        /// <param name="bControl"></param>
         public void BusinessControl(MyBusinessStatus myBusinessStatus, businessControl bControl)
         {
             ky_machine currentMachine = new ky_machine();
