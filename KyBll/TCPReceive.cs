@@ -289,7 +289,10 @@ namespace KyBll
                     break;
                 }
                 if ((DateTime.Now - machine[ip].alive).TotalMinutes > 5)
+                {
+                    Log.ConnectionException("机具编号为" + machine[ip].kMachineNumber + "上次连接时间为" + machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss") + ",大于当前5分钟，将关闭线程!", null);
                     CloseThread();
+                }
             }
         }
         /// <summary>

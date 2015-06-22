@@ -57,8 +57,7 @@ namespace MyTcpServer
         Thread threadWatch = null; // 负责监听客户端连接请求的 线程
         Socket socketWatch = null;
 
-        public List<TCPReceive> TcpReceives = new List<TCPReceive>();
-        public List<Thread> ReceiveThreads = new List<Thread>();
+        private Dictionary<TCPReceive, Thread> dictThread = new Dictionary<TCPReceive, Thread>();
         private volatile bool _shouldStop;
         public void StartListenling(string ip, int port)
         {
@@ -156,13 +155,26 @@ namespace MyTcpServer
                     if (RecFlag)
                     {
                         TCPReceive tcpr = new TCPReceive(DataSaveFolder,PictureServerId,TCPEvent,machine);
-                        TcpReceives.Add(tcpr);
                         Thread thr = new Thread(tcpr.RecMsg);
-                        ReceiveThreads.Add(thr);
                         thr.IsBackground = true;
                         thr.Start(sokConnection);
+                        dictThread.Add(tcpr, thr);
                     }
                 }
+                DateTime start = DateTime.Now;
+                for (int i = 0; i < dictThread.Count; i++)
+                {
+                    TCPReceive tcpr = dictThread.Keys.ElementAt(i);
+                    if (tcpr._shouldStop)
+                    {
+                        if (tcpr.sokClient != null)
+                            tcpr.sokClient.Close();
+                        dictThread[tcpr].Join();
+                        dictThread.Remove(tcpr);
+                    }
+                }
+                TimeSpan span = DateTime.Now - start;
+                KyBll.Log.TestLog("close thread take about " + span.Milliseconds + "ms. total " + dictThread.Count + " threads.");
 
             }
         }
@@ -172,17 +184,13 @@ namespace MyTcpServer
         /// </summary>
         public void Stop()
         {
-            foreach (var tcpr in TcpReceives)
+            foreach (var dict in dictThread)
             {
-                tcpr._shouldStop = true;
-                tcpr.sokClient.Close();
+                dict.Key._shouldStop = true;
+                dict.Key.sokClient.Close();
+                dict.Value.Join();
             }
-            foreach (var thr in ReceiveThreads)
-            {
-                thr.Join();
-            }
-            TcpReceives.Clear();
-            ReceiveThreads.Clear();
+            dictThread.Clear();
             if (socketWatch != null)
                 socketWatch.Close();
             if (threadWatch != null)
