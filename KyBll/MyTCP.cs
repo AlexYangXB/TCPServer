@@ -76,7 +76,7 @@ namespace KyBll
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_SIMPLE)
             {
-                message += TCPMessage.IpAndPort + ", 请求上传命令   " + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 传输数据请求命令   " + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_UP)
             {
@@ -87,11 +87,11 @@ namespace KyBll
                     SignLength = BitConverter.ToInt16(TCPMessage.Command, 62);
                     MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
                 }
-                message += TCPMessage.IpAndPort + ", 发送数据命令 数据包长度 "+MsgLength+"  纸币张数 "+SignLength + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 纸币信息发送命令 数据包长度 " + MsgLength + "  纸币张数 " + SignLength + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {
-                message += TCPMessage.IpAndPort + ", 关闭连接命令 " + CommandFormat;
+                message += TCPMessage.IpAndPort + ", 传输数据结束命令 " + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_TIME)
             {
@@ -100,6 +100,15 @@ namespace KyBll
             if (TCPMessage.MessageType == TCPMessageType.NET_CONTINUE)
             {
                 message += TCPMessage.IpAndPort + ",心跳命令  " + CommandFormat;
+            }
+            if (TCPMessage.MessageType == TCPMessageType.FILE_TOO_BIG)
+            {
+                int MsgLength = 0;
+                if (TCPMessage.Command.Length > 64)
+                {
+                    MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
+                }
+                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength -86)+ "字节,文件大小超过5M！  " + CommandFormat;
             }
             message += Environment.NewLine;
             return message;
@@ -235,7 +244,7 @@ namespace KyBll
             }
             catch(Exception e)
             {
-                Log.ConnectionException("接收命令异常", e);
+                Log.ConnectionException("接收命令超时！", e);
                 ReceiveBytes = null;
             }
         }
@@ -294,7 +303,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.ConnectionException("发送命令失败!", e);
+                Log.ConnectionException("发送命令超时!", e);
             }
         }
 

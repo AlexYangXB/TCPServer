@@ -258,11 +258,23 @@ namespace KyBll
         public static long SaveFsn(string fsnName, ky_machine machine)
         {
             long batchId = KyDataLayer2.GuidToLongID();
-            bool result = false;
-            ky_batch batch = GenerateBatchFromFsn(batchId, fsnName, machine, out result);
+            List<KYDataLayer1.SignTypeL2> signs = new List<KYDataLayer1.SignTypeL2>();
+            ky_batch batch = GenerateBatchFromFsn(batchId, fsnName, machine, out signs);
+            bool result=KyDataOperation.InsertSignBatch(batch);
+            if (result)
+            {
+                for (int i = 0; i < signs.Count; )
+                {
+                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(10000).ToList();
+                    result = KyDataOperation.InsertSign(batchId, i, splitSigns);
+                    i += 10000;
+                }
+            }
             //保存批次
-            KyDataOperation.InsertSignBatch(batch);
-            return batchId;
+            if (result)
+                return batchId;
+            else
+                return 0;
         }
         /// <summary>
         /// 根据FSN文件生成批次信息
@@ -273,26 +285,25 @@ namespace KyBll
         /// <param name="imgServerId"></param>
         /// <param name="importMachineId"></param>
         /// <returns></returns>
-        public static ky_batch GenerateBatchFromFsn(long batchId, string fileName, ky_machine machine, out bool result)
+        public static ky_batch GenerateBatchFromFsn(long batchId, string fileName, ky_machine machine,out List<KYDataLayer1.SignTypeL2> allSigns)
         {
             FileInfo fileInfo = new FileInfo(fileName);
             long fileLenght = fileInfo.Length;
             int signCount = Convert.ToInt32((fileLenght - 32) / 1644);
             ky_batch batch = new ky_batch();
-            result = false;
+            allSigns = new List<KYDataLayer1.SignTypeL2>();
             if (signCount > 0 && KyDataLayer2.IsCorrectFileFormat(fileName, ".FSN"))
             {
                 int pages = (signCount + 999) / 1000;
                 int totalPage, cc;
-                //批次号
-
                 int date = 0;
                 int totalCount = 0, totalValue = 0;
                 for (int i = 0; i < pages; i++)
                 {
                     List<KYDataLayer1.SignTypeL2> signs = new List<KYDataLayer1.SignTypeL2>();
                     signs = KyDataLayer2.ReadFromFSNInPage(fileName, i + 1, 1000, out totalPage, out cc);
-                    result = KyDataOperation.InsertSign(batchId, i * 1000, signs);
+                    allSigns.AddRange(signs);
+                    //result = KyDataOperation.InsertSign(batchId, i * 1000, signs);
                     if (i == 0)
                     {
                         date = DateTimeAndTimeStamp.ConvertDateTimeInt(signs[0].Date);
@@ -356,12 +367,19 @@ namespace KyBll
         {
             bool result = false;
             long batchId = KyDataLayer2.GuidToLongID();
-            ky_batch batch = GenerateBatchFromFsn(batchId, fileName, machine, out result);
+            List<KYDataLayer1.SignTypeL2> signs = new List<KYDataLayer1.SignTypeL2>();
+            ky_batch batch = GenerateBatchFromFsn(batchId, fileName, machine, out signs);
             //保存批次
+            result = KyDataOperation.InsertSignBatch(batch);
             if (result)
-                result = KyDataOperation.InsertSignBatch(batch);
-            else
-                batchId = 0;
+            {
+                for(int i=0;i<signs.Count;)
+                {
+                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(10000).ToList();
+                    result = KyDataOperation.InsertSign(batchId, i, splitSigns);
+                    i += 10000;
+                }
+            }
             //更新冠字号码文件上传表ky_import_file
             //KyDataOperation.
             if (result)

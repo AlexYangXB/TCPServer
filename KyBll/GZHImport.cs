@@ -275,10 +275,13 @@ namespace KyBll
                     string bundleNumber = string.Format("{0}{1,4}", fileTime.ToString("yyMMdd"), startIndex + i).Replace(" ", "0");
                     //②保存FSN文件，获得BatchId
                     long batchId = FSNImport.SaveFsn(FsnFiles[i], machine);
-                    //③保存GzhBundle，获得BundleId
-                    int bundleId = SaveGzhBundle(bundleNumber, batchId, "");
-                    //④保存Package_Bundle信息
-                    result = KyDataOperation.SavePackageBundle(bundleId, packageId);
+                    if (batchId != 0)
+                    {
+                        //③保存GzhBundle，获得BundleId
+                        int bundleId = SaveGzhBundle(bundleNumber, batchId, "");
+                        //④保存Package_Bundle信息
+                        result = KyDataOperation.SavePackageBundle(bundleId, packageId);
+                    }
                 }
             }
             return result;
