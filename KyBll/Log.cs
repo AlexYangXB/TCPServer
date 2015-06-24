@@ -135,7 +135,7 @@ namespace KyBll
             }
             string time = DateTime.Now.ToString("yyyyMMdd");
             string fullName = path + "\\" + time + "_" + fileName;
-            ShareWrite(DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss ] ")+ backStr, fullName);
+            ShareWrite(DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss.fff ] ")+ backStr, fullName);
             if (str != "")
                 ShareWrite(str, fullName);
             

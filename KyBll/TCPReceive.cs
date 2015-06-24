@@ -49,12 +49,11 @@ namespace KyBll
             var ip = ipEndPoint.Address.ToString();
             while (!_shouldStop)
             {
-                Thread.Sleep(300);
                 try
                 {
                     byte[] startBuf = new byte[40];
                     int length = -1;
-                    length = MyTCP.AsyncReceiveFromClient(sokClient, startBuf.Length, out startBuf);
+                    length=MyTCP.AsyncReceiveFromClient(sokClient, startBuf.Length, out startBuf);
                     if (length > 0)
                     {
                         if (length == 40 && BitConverter.ToInt32(startBuf, 0) == 0x4C4A4040)
@@ -169,6 +168,7 @@ namespace KyBll
                     CloseThread();
                     break;
                 }
+                Thread.Sleep(300);
                 if ((DateTime.Now - machine[ip].alive).TotalMinutes > 5)
                 {
                     Log.ConnectionException("机具编号为" + machine[ip].kMachineNumber + "上次连接时间为" + machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss") + ",大于当前5分钟，将关闭线程!", null);

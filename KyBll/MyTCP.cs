@@ -108,7 +108,7 @@ namespace KyBll
                 {
                     MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
                 }
-                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength -86)+ "字节,文件大小超过5M！  " + CommandFormat;
+                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength - 86) + "字节,文件大小超过5M！  " + CommandFormat;
             }
             message += Environment.NewLine;
             return message;
@@ -138,7 +138,7 @@ namespace KyBll
             }
 
         }
-        public void OnAmountCmd( CmdEventArgs e)
+        public void OnAmountCmd(CmdEventArgs e)
         {
             try
             {
@@ -154,10 +154,10 @@ namespace KyBll
         {
             public LogType Type;
             public string Message;
-            public LogEventArgs(LogType type,string message)
+            public LogEventArgs(LogType type, string message)
             {
                 Type = type;
-                Message = DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss ] ")+message+Environment.NewLine;
+                Message = DateTime.Now.ToString("[ yyyy-MM-dd HH:mm:ss.fff ] ") + message + Environment.NewLine;
             }
 
         }
@@ -189,7 +189,7 @@ namespace KyBll
             try
             {
                 string message = MyTCP.TCPMessageFormat(TCPMessage);
-                OnLogEvent(this, new LogEventArgs(LogType.Command,message));
+                OnLogEvent(this, new LogEventArgs(LogType.Command, message));
                 Log.CommandLog(message);
             }
             catch (Exception e)
@@ -213,41 +213,19 @@ namespace KyBll
         {
             try
             {
-                if(ex!=null)
+                if (ex != null)
                     Message += Log.GetExceptionMsg(ex, "");
                 OnLogEvent(this, new LogEventArgs(LogType.FSNImport, Message));
-                Log.ImportLog(Message);  
+                Log.ImportLog(Message);
             }
             catch (Exception e)
             {
                 Log.UnHandleException("记录fsn日志出错", e);
             }
         }
-        
+
         #endregion
 
-
-        /// <summary>
-        /// 接收命令
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="ReceiveBytes"></param>
-        /// <param name="length"></param>
-        public static void ReceiveMessage(Socket user, out byte[] ReceiveBytes, int length)
-        {
-            try
-            {
-                byte[] readbuf = new byte[length];
-                int bytesRead = user.Receive(readbuf, 0, length, SocketFlags.None);
-                ReceiveBytes = new byte[bytesRead];
-                Array.Copy(readbuf, ReceiveBytes, bytesRead);
-            }
-            catch(Exception e)
-            {
-                Log.ConnectionException("接收命令超时！", e);
-                ReceiveBytes = null;
-            }
-        }
         /// <summary>
         /// 异步接收命令
         /// </summary>
@@ -255,60 +233,41 @@ namespace KyBll
         /// <param name="length"></param>
         /// <param name="ReceiveBytes"></param>
         /// <returns></returns>
-        public static int AsyncReceiveFromClient(Socket user, int length, out byte[] ReceiveBytes)
+        public static int AsyncReceiveFromClient(Socket user, int length, out byte[] receiveBuffers)
         {
-            ReceiveMessageDelegate d = new ReceiveMessageDelegate(ReceiveMessage);
-            IAsyncResult result = d.BeginInvoke(user, out ReceiveBytes, length, null, null);
-            //使用轮询方式来判断异步操作是否完成
-            while (result.IsCompleted == false)
+            receiveBuffers = new byte[length];
+            try
             {
-                Thread.Sleep(50);
+                IAsyncResult ar = user.BeginReceive(receiveBuffers, 0, length, 0,null, null);
+                int bytesRead = user.EndReceive(ar);
+                return bytesRead;
             }
-            //获取Begin方法的返回值和所有输入/输出参数
-            d.EndInvoke(out ReceiveBytes, result);
-            if (ReceiveBytes != null)
-                return ReceiveBytes.Length;
-            else
+            catch (Exception e)
+            {
+                Log.ConnectionException("异步接收命令异常!", e);
                 return 0;
+            }
         }
-        delegate void ReceiveMessageDelegate(Socket user, out byte[] ReceiveBytes, int length);
-
         /// <summary>
-        /// 异步发送命令
+        /// 发送命令
         /// </summary>
         /// <param name="user"></param>
         /// <param name="message"></param>
         public static void AsyncSendToClient(Socket user, byte[] message)
         {
-            SendToClientDelegate d = new SendToClientDelegate(SendToClient);
-            IAsyncResult result = d.BeginInvoke(user, message, null, null);
-            while (result.IsCompleted == false)
-            {
-                Thread.Sleep(50);
-            }
-            d.EndInvoke(result);
-        }
-        private delegate void SendToClientDelegate(Socket user, byte[] message);
-       /// <summary>
-       /// 发送命令
-       /// </summary>
-       /// <param name="user"></param>
-       /// <param name="message"></param>
-        public static void SendToClient(Socket user, byte[] message)
-        {
             try
             {
-                //将字符串写入网络流，此方法会自动附加字符串长度前缀
-                user.Send(message, 0, message.Length, SocketFlags.None);
+                user.BeginSend(message, 0, message.Length, 0,null, null);
             }
             catch (Exception e)
             {
-                Log.ConnectionException("发送命令超时!", e);
+                Log.ConnectionException("异步发送命令异常!", e);
             }
         }
 
 
-     
+
+
     }
-   
+
 }

@@ -13,7 +13,7 @@ namespace MyTcpServer
 {
     public class TcpServer
     {
-      
+
 
         public string DataSaveFolder = "";
         public int PictureServerId = 0;
@@ -23,6 +23,8 @@ namespace MyTcpServer
         //machine表
         private List<ky_machine> dt;
         public MyTCP TCPEvent;
+        // Thread signal.
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
         public TcpServer()
         {
             TCPEvent = new MyTCP();
@@ -75,7 +77,7 @@ namespace MyTcpServer
             }
             catch (SocketException e)
             {
-                Log.ConnectionException("启动监听服务异常",e);
+                Log.ConnectionException("启动监听服务异常", e);
                 return;
             }
             // 设置监听队列的长度
@@ -85,103 +87,85 @@ namespace MyTcpServer
             threadWatch.IsBackground = true;
             threadWatch.Start();
             IsRunning = true;
+
         }
-        private delegate void ListenClientDelegate(out Socket client);
-        /// <summary>
-        /// 监听客户端请求
-        /// </summary>
-        /// <param name="newClient"></param>
-        private void ListenClient(out Socket newClient)
+        public void WatchConnecting()
         {
-            try
+            while (!_shouldStop)
             {
-                //开始监听客户端连接请求，Accept方法会阻断当前的线程
-                newClient = socketWatch.Accept();
-            }
-            catch(Exception e)
-            {
-                Log.ConnectionException("监听客户端请求异常", e);
-                newClient = null;
+                allDone.Reset();
+                socketWatch.BeginAccept(new AsyncCallback(AcceptCallback),socketWatch);
+                allDone.WaitOne();
             }
         }
-        /// <summary>
-        /// 监听客户端请求
-        /// </summary>
-        void WatchConnecting()
+        public void AcceptCallback(IAsyncResult ar)
         {
-            while (!_shouldStop)  // 持续不断的监听客户端的连接请求
+            allDone.Set();
+
+            Socket listener = (Socket)ar.AsyncState;
+            Socket sokConnection = listener.EndAccept(ar);
+            if (sokConnection != null)
             {
-                Socket sokConnection = null;
-                ListenClientDelegate d = new ListenClientDelegate(ListenClient);
-                IAsyncResult result = d.BeginInvoke(out sokConnection, null, null);
-                //轮询方式
-                while (result.IsCompleted == false)
+                string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
+                TCPEvent.OnCommandLog(new TCPMessage
                 {
-                    Thread.Sleep(200);
+                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                    MessageType = TCPMessageType.NewConnection
+                });
+                bool RecFlag = false;
+                //IP地址在数据库中，才会接收数据
+                if (machine.ContainsKey(ipPort[0]))
+                {
+                    RecFlag = true;
                 }
-                d.EndInvoke(out sokConnection, result);
-                if (sokConnection != null)
+                else
                 {
-                    string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                    TCPEvent.OnCommandLog(new TCPMessage
-                        {
-                            IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                            MessageType = TCPMessageType.NewConnection
-                        });
-                    bool RecFlag = false;
-                    //IP地址在数据库中，才会接收数据
-                    if (machine.ContainsKey(ipPort[0]))
+                    ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
+                    if (newmachine != null)
                     {
                         RecFlag = true;
+                        machine.Add(newmachine.kIpAddress, newmachine);
                     }
                     else
                     {
-                        ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
-                        if (newmachine != null)
+                        TCPEvent.OnCommandLog(new TCPMessage
                         {
-                            RecFlag = true;
-                            machine.Add(newmachine.kIpAddress, newmachine);
-                        }
-                        else
-                        {
-                            TCPEvent.OnCommandLog(new TCPMessage
-                                {
-                                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                                    MessageType = TCPMessageType.NoMachineIp
-                                });
-                            sokConnection.Close();
-                        }
-                    }
-                    if (RecFlag)
-                    {
-                        TCPReceive tcpr = new TCPReceive(DataSaveFolder,PictureServerId,TCPEvent,machine);
-                        Thread thr = new Thread(tcpr.RecMsg);
-                        thr.IsBackground = true;
-
-                        //超时设置  15秒
-                        sokConnection.ReceiveTimeout = 15000;
-                        sokConnection.SendTimeout = 15000;
-                        thr.Start(sokConnection);
-                        dictThread.Add(tcpr, thr);
+                            IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                            MessageType = TCPMessageType.NoMachineIp
+                        });
+                        sokConnection.Close();
                     }
                 }
-                DateTime start = DateTime.Now;
-                for (int i = 0; i < dictThread.Count; i++)
+                if (RecFlag)
                 {
-                    TCPReceive tcpr = dictThread.Keys.ElementAt(i);
-                    if (tcpr._shouldStop)
-                    {
-                        if (tcpr.sokClient != null)
-                            tcpr.sokClient.Close();
-                        dictThread[tcpr].Join();
-                        dictThread.Remove(tcpr);
-                    }
-                }
-                TimeSpan span = DateTime.Now - start;
-                KyBll.Log.TestLog("close thread take about " + span.Milliseconds + "ms. total " + dictThread.Count + " threads.");
+                    TCPReceive tcpr = new TCPReceive(DataSaveFolder, PictureServerId, TCPEvent, machine);
+                    Thread thr = new Thread(tcpr.RecMsg);
+                    thr.IsBackground = true;
 
+                    //超时设置  15秒
+                    sokConnection.ReceiveTimeout = 15000;
+                    sokConnection.SendTimeout = 15000;
+                    thr.Start(sokConnection);
+                    dictThread.Add(tcpr, thr);
+                }
             }
+            DateTime start = DateTime.Now;
+            //结束状态_shouldStop为True的线程
+            for (int i = 0; i < dictThread.Count; i++)
+            {
+                TCPReceive tcpr = dictThread.Keys.ElementAt(i);
+                if (tcpr._shouldStop)
+                {
+                    if (tcpr.sokClient != null)
+                        tcpr.sokClient.Close();
+                    dictThread[tcpr].Join();
+                    dictThread.Remove(tcpr);
+                }
+            }
+            TimeSpan span = DateTime.Now - start;
+            KyBll.Log.TestLog("close thread take about " + span.Milliseconds + "ms. total " + dictThread.Count + " threads.");
         }
+
 
         /// <summary>
         /// 停止服务
@@ -195,12 +179,15 @@ namespace MyTcpServer
                 dict.Value.Join();
             }
             dictThread.Clear();
-            if (socketWatch != null)
-                socketWatch.Close();
+            _shouldStop = true;
+            
             if (threadWatch != null)
             {
-                _shouldStop = true;
                 threadWatch.Join();
+            }
+            if (socketWatch != null)
+            {
+                socketWatch.Close();
             }
             IsRunning = false;
         }
@@ -272,7 +259,7 @@ namespace MyTcpServer
                                     List<string> saveFiles = new List<string>();
                                     foreach (var bundle in bundleNumbers)
                                     {
-                                        string saveFile=tmpPath+"\\"+bundle+".FSN";
+                                        string saveFile = tmpPath + "\\" + bundle + ".FSN";
                                         if (File.Exists(saveFile))
                                             saveFiles.Add(saveFile);
                                     }

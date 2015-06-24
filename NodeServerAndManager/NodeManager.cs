@@ -842,8 +842,11 @@ namespace KangYiCollection
                 e.Cancel = true;
             if (!e.Cancel)
             {
-                myTcpServer.Stop();
+                waitingForm.SetText("正在停止监听...");
+                new Action(myTcpServer.Stop).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                waitingForm.ShowDialog();
                 SocketIoStop();
+                
             }
         }
 
