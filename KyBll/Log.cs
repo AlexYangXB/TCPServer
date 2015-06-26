@@ -172,7 +172,7 @@ namespace KyBll
         /// <param name="file"></param>
         public static void ShareWrite(string content, string file)
         {
-            FileStream fs = new FileStream(file, FileMode.Append, FileAccess.Write, FileShare.Read);
+            FileStream fs = new FileStream(file, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
             try
             {
                 if (fs.CanWrite)

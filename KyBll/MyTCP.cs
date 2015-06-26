@@ -10,6 +10,15 @@ namespace KyBll
 {
     public class MyTCP
     {
+        private static int BufferSize = 8192;
+        private static ManualResetEvent receiveDone = new ManualResetEvent(false);
+        private static ManualResetEvent sendDone = new ManualResetEvent(false);
+        public class StateObject
+        {
+            public Socket workSocket = null;
+            public byte[] buffer = new byte[BufferSize];
+            public int bytesRead = 0;
+        }
         /// <summary>
         /// 将命令byte数组格式化十六进制和ASCII
         /// </summary>
@@ -64,15 +73,15 @@ namespace KyBll
             }
             if (TCPMessage.MessageType == TCPMessageType.NoMachineIp)
             {
-                message += TCPMessage.IpAndPort + "机具IP地址不存在！";
+                message += TCPMessage.IpAndPort + " IP地址未知,请确认已添加IP地址，再重启客户端或等待5分钟自动更新！";
             }
             if (TCPMessage.MessageType == TCPMessageType.ExistConnection)
             {
-                message += TCPMessage.IpAndPort + "连接已存在！";
+                message += TCPMessage.IpAndPort + " 连接已存在！";
             }
             if (TCPMessage.MessageType == TCPMessageType.UnknownCommand)
             {
-                message += TCPMessage.IpAndPort + "未知命令" + CommandFormat;
+                message += TCPMessage.IpAndPort + " 未知命令" + CommandFormat;
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_SIMPLE)
             {
@@ -108,7 +117,27 @@ namespace KyBll
                 {
                     MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
                 }
-                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength - 86) + "字节,文件大小超过5M！  " + CommandFormat;
+                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength - 86) + "字节,文件大小超过5M,将关闭连接！ " + CommandFormat;
+            }
+            if (TCPMessage.MessageType == TCPMessageType.Reach_Max_Connection)
+            {
+                message += "达到最大连接数30的限制！";
+            }
+            if (TCPMessage.MessageType == TCPMessageType.Reach_Max_File)
+            {
+                message += TCPMessage.IpAndPort + ",一次请求文件数超过30个，将关闭连接！";
+            }
+            if (TCPMessage.MessageType == TCPMessageType.Exception)
+            {
+                message += TCPMessage.IpAndPort +Environment.NewLine+TCPMessage.Message;
+            }
+            if (TCPMessage.MessageType == TCPMessageType.Out_Of_Date)
+            {
+                message += TCPMessage.IpAndPort + " " + TCPMessage.Message;
+            }
+            if (TCPMessage.MessageType == TCPMessageType.Thread_Close)
+            {
+                message += TCPMessage.IpAndPort + " 关闭线程!";
             }
             message += Environment.NewLine;
             return message;
@@ -233,36 +262,62 @@ namespace KyBll
         /// <param name="length"></param>
         /// <param name="ReceiveBytes"></param>
         /// <returns></returns>
-        public static int AsyncReceiveFromClient(Socket user, int length, out byte[] receiveBuffers)
+        public static int AsyncReceiveFromClient(Socket socket, int length, out byte[] receiveBuffers)
         {
-            receiveBuffers = new byte[length];
+            receiveDone.Reset();
+            int len = BufferSize;
+            if (length < BufferSize)
+                len = length;
+            StateObject staObject = new StateObject() { workSocket = socket };
+            IAsyncResult ar = socket.BeginReceive(staObject.buffer, 0, len, 0, new AsyncCallback(ReadCallback), staObject);
+            receiveDone.WaitOne();
+            receiveBuffers = staObject.buffer;
+            return staObject.bytesRead;
+        }
+        public static void ReadCallback(IAsyncResult ar)
+        {
+            StateObject state = (StateObject)ar.AsyncState;
             try
             {
-                IAsyncResult ar = user.BeginReceive(receiveBuffers, 0, length, 0,null, null);
-                int bytesRead = user.EndReceive(ar);
-                return bytesRead;
+                int bytesRead = state.workSocket.EndReceive(ar);
+                byte[] realBuffers = new byte[bytesRead];
+                Array.Copy(state.buffer, 0, realBuffers, 0, bytesRead);
+                state.buffer = realBuffers;
+                state.bytesRead = bytesRead;
+                
             }
             catch (Exception e)
             {
-                Log.ConnectionException("异步接收命令异常!", e);
-                return 0;
+                Log.ConnectionException("异步接收命令异常", e);
+                state.bytesRead = -1;
+                state.buffer = null;
             }
+            receiveDone.Set();
         }
         /// <summary>
         /// 发送命令
         /// </summary>
         /// <param name="user"></param>
         /// <param name="message"></param>
-        public static void AsyncSendToClient(Socket user, byte[] message)
+        public static void AsyncSendToClient(Socket socket, byte[] message)
+        {
+            sendDone.Reset();
+            socket.BeginSend(message, 0, message.Length, 0, new AsyncCallback(SendCallback), socket);
+            sendDone.WaitOne();
+        }
+        private static void SendCallback(IAsyncResult ar)
         {
             try
             {
-                user.BeginSend(message, 0, message.Length, 0,null, null);
+                Socket handler = (Socket)ar.AsyncState;
+                int bytesSent = handler.EndSend(ar);
+                
             }
             catch (Exception e)
             {
-                Log.ConnectionException("异步发送命令异常!", e);
+                Log.ConnectionException("异步发送命令异常", e);
             }
+            sendDone.Set();
         }
 
 

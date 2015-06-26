@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ServerForm")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lenovo (Beijing) Limited")]
+[assembly: AssemblyCompany("广州康艺电子有限公司")]
 [assembly: AssemblyProduct("ServerForm")]
-[assembly: AssemblyCopyright("Copyright © Lenovo (Beijing) Limited 2015")]
+[assembly: AssemblyCopyright("Copyright © 广州康艺电子有限公司  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

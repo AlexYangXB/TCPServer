@@ -41,10 +41,12 @@ namespace KyBll
         //机器信息集合，key为IP地址，Value为机具信息
         public Dictionary<string, ky_machine> machine = new Dictionary<string, ky_machine>();
         public Socket sokClient;
+        private int ReceiveFileCnt = 0;
+        private string ipAndPort = "";
         public void RecMsg(object sokConnectionparn)
         {
             sokClient = sokConnectionparn as Socket;
-            var ipAndPort = sokClient.RemoteEndPoint.ToString();
+            ipAndPort = sokClient.RemoteEndPoint.ToString();
             var ipEndPoint = ((IPEndPoint)sokClient.RemoteEndPoint);
             var ip = ipEndPoint.Address.ToString();
             while (!_shouldStop)
@@ -53,7 +55,7 @@ namespace KyBll
                 {
                     byte[] startBuf = new byte[40];
                     int length = -1;
-                    length=MyTCP.AsyncReceiveFromClient(sokClient, startBuf.Length, out startBuf);
+                    length = MyTCP.AsyncReceiveFromClient(sokClient, startBuf.Length, out startBuf);
                     if (length > 0)
                     {
                         if (length == 40 && BitConverter.ToInt32(startBuf, 0) == 0x4C4A4040)
@@ -66,20 +68,27 @@ namespace KyBll
                             byte[] bBuffer = new byte[msgLen];
                             Array.Copy(startBuf, 0, bBuffer, 0, 40);
                             byte[] readBuf = new byte[1024 * 8];
+
                             for (int i = 40; i < msgLen; )
                             {
-                                length = MyTCP.AsyncReceiveFromClient(sokClient, readBuf.Length, out readBuf);
+                                length = MyTCP.AsyncReceiveFromClient(sokClient, msgLen - i, out readBuf);
                                 if (length == 0)
                                     throw new Exception("网速过慢");
+                                if (length == -1)
+                                {
+                                    CloseThread();
+                                    break;
+                                }
                                 Array.Copy(readBuf, 0, bBuffer, i, length);
                                 i += length;
                             }
+
                             if (cmd == 0x00A1)//传输数据请求命令 54字节
                             {
                                 machine[ip].alive = DateTime.Now;
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
-                                    IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                    IpAndPort = ipAndPort,
                                     Command = bBuffer.Take(54).ToArray(),
                                     MessageType = TCPMessageType.NET_SIMPLE
                                 });
@@ -88,6 +97,19 @@ namespace KyBll
                             }
                             else if (cmd > 0 && cmd <= 10)//纸币信息发送命令 86+1644*N字节
                             {
+                                ReceiveFileCnt++;
+                                machine[ip].alive = DateTime.Now;
+                                //接收文件数超过30将关闭连接
+                                if (ReceiveFileCnt > 30)
+                                {
+                                    TCPEvent.OnCommandLog(new TCPMessage
+                                    {
+                                        IpAndPort = ipAndPort,
+                                        MessageType = TCPMessageType.Reach_Max_File
+                                    });
+                                    CloseThread();
+                                    break;
+                                }
                                 //报文体长度
                                 int bodyLen = msgLen - 84 - 2;
                                 //文件长度大于等于5M,将关闭连接
@@ -95,7 +117,7 @@ namespace KyBll
                                 {
                                     TCPEvent.OnCommandLog(new TCPMessage
                                     {
-                                        IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                        IpAndPort = ipAndPort,
                                         Command = bBuffer.Take(200).ToArray(),
                                         MessageType = TCPMessageType.FILE_TOO_BIG
                                     });
@@ -106,7 +128,7 @@ namespace KyBll
                                 //应答回复
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
-                                    IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                    IpAndPort = ipAndPort,
                                     Command = bBuffer.Take(200).ToArray(),
                                     MessageType = TCPMessageType.NET_UP
                                 });
@@ -122,7 +144,7 @@ namespace KyBll
                                 //发送回复信息
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
-                                    IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                    IpAndPort = ipAndPort,
                                     Command = bBuffer.Take(42).ToArray(),
                                     MessageType = TCPMessageType.NET_TIME
                                 });
@@ -133,7 +155,7 @@ namespace KyBll
                             {
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
-                                    IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                    IpAndPort = ipAndPort,
                                     Command = bBuffer,
                                     MessageType = TCPMessageType.NET_CONTINUE
                                 });
@@ -144,34 +166,58 @@ namespace KyBll
                             {
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
-                                    IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                    IpAndPort = ipAndPort,
                                     Command = bBuffer.Take(44).ToArray(),
                                     MessageType = TCPMessageType.NET_CLOSE
                                 });
                                 CloseThread();
+                            }
+                            else
+                            {
+                                TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = ipAndPort,
+                                    Command = startBuf,
+                                    MessageType = TCPMessageType.UnknownCommand
+                                });
                             }
                         }
                         else
                         {
                             TCPEvent.OnCommandLog(new TCPMessage
                             {
-                                IpAndPort = sokClient.RemoteEndPoint.ToString(),
+                                IpAndPort = ipAndPort,
                                 Command = startBuf,
                                 MessageType = TCPMessageType.UnknownCommand
                             });
                         }
                     }
+                    else
+                    {
+                        CloseThread();
+                        break;
+                    }
                 }
                 catch (Exception se)
                 {
-                    Log.ConnectionException("通信异常", se);
+                    TCPEvent.OnCommandLog(new TCPMessage
+                    {
+                        IpAndPort = ipAndPort,
+                        Message = Log.GetExceptionMsg(se, "通信异常"),
+                        MessageType = TCPMessageType.Exception
+                    });
                     CloseThread();
                     break;
                 }
-                Thread.Sleep(300);
+                Thread.Sleep(100);
                 if ((DateTime.Now - machine[ip].alive).TotalMinutes > 5)
                 {
-                    Log.ConnectionException("机具编号为" + machine[ip].kMachineNumber + "上次连接时间为" + machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss") + ",大于当前5分钟，将关闭线程!", null);
+                    TCPEvent.OnCommandLog(new TCPMessage
+                    {
+                        IpAndPort = ipAndPort,
+                        Message = "机具编号为" + machine[ip].kMachineNumber + "上次连接时间为" + machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前5分钟，将关闭线程!",
+                        MessageType = TCPMessageType.Out_Of_Date
+                    });
                     CloseThread();
                 }
             }
@@ -181,8 +227,17 @@ namespace KyBll
         /// </summary>
         private void CloseThread()
         {
+            TCPEvent.OnCommandLog(new TCPMessage
+            {
+                IpAndPort = ipAndPort,
+                MessageType = TCPMessageType.Thread_Close
+            });
             _shouldStop = true;
-            sokClient.Close();
+            if (sokClient.Connected)
+            {
+                sokClient.Shutdown(SocketShutdown.Both);
+                sokClient.Close();
+            }
         }
         /// <summary>
         /// 处理纸币信息发送命令
@@ -207,16 +262,16 @@ namespace KyBll
                     machine[ip].fileName = fileName;
                 else
                     fileName = machine[ip].fileName;
-                string tmpPath = machine[ip].tmpPath;
 
                 if (machine[ip].business == BussinessType.KHDK)
                 {
-
+                    string tmpPath = machine[ip].tmpPath;
                     if (!Directory.Exists(tmpPath))
                     {
                         Directory.CreateDirectory(tmpPath);
                     }
                     List<string> modifyFiles = GZHImport.MergeLastFile(Fsn, tmpPath, machine[ip].bundleCount);
+                    fileName = modifyFiles.FirstOrDefault();
                     foreach (string file in modifyFiles)
                     {
                         KYDataLayer1.Amount amount;
@@ -227,7 +282,7 @@ namespace KyBll
                     }
                 }
                 //文件不存在
-                if (!File.Exists(fileName))
+                else if (!File.Exists(fileName))
                 {
                     using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                     {
@@ -259,16 +314,7 @@ namespace KyBll
                     amount.BundleNumber = 999999;
                     MyTCP.CmdEventArgs e = new MyTCP.CmdEventArgs(ip, amount);
                     TCPEvent.OnAmountCmd(e);
-                    //更新机具列表
-                    //机器最后上传时间和机具编号
-                    string machineNumber = "", machineModel = "";
-                    string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
-                    if (str.Length == 3)
-                        machineNumber = str[2];
-                    if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
-                        KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
-                    machine[ip].kMachineNumber = machineNumber;
-                    machine[ip].kMachineModel = machineModel;
+
                 }
 
             }
@@ -282,20 +328,26 @@ namespace KyBll
                 machine[ip].imgServerId = PictureServerId;
                 machine[ip].business = BussinessType.HM;
                 FSNImport.SaveFsn(fileName, machine[ip]);
-                //更新机具列表
-                //机器最后上传时间和机具编号
+
+
+                //删除文件
+                //if (File.Exists(fileName))
+                //    File.Delete(fileName);
+            }
+            if (File.Exists(fileName))
+            {
+                //更新机具编号和机型
                 string machineNumber = "", machineModel = "";
                 string[] str = KyDataLayer2.GetMachineNumberFromFSN(fileName, out machineModel).Split("/".ToCharArray());
                 if (str.Length == 3)
                     machineNumber = str[2];
                 if (machine[ip].kMachineNumber != machineNumber && machineNumber != "" || machine[ip].kMachineModel != machineModel && machineModel != "")
+                {
                     KyDataOperation.UpdateMachine(machine[ip].kId, machineNumber, machineModel);
-                machine[ip].kMachineNumber = machineNumber;
-                machine[ip].kMachineModel = machineModel;
+                    machine[ip].kMachineNumber = machineNumber;
+                    machine[ip].kMachineModel = machineModel;
+                }
 
-                //删除文件
-                //if (File.Exists(fileName))
-                //    File.Delete(fileName);
             }
             KyDataOperation.UpdateMachineTime(machine[ip].kId, DateTime.Now);
         }

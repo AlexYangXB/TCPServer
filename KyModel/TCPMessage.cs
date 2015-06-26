@@ -10,6 +10,7 @@ namespace KyModel
         public string IpAndPort { get; set; }
         public byte[] Command { get; set; }
         public TCPMessageType MessageType { get; set; }
+        public string Message { get; set; }
         
     }
     public enum TCPMessageType
@@ -42,7 +43,27 @@ namespace KyModel
         /// </summary>
         UnknownCommand=7,
         ExistConnection=8,
-        FILE_TOO_BIG=9
+        FILE_TOO_BIG=9,
+        /// <summary>
+        /// 达到最大连接数 默认30
+        /// </summary>
+        Reach_Max_Connection=10,
+        /// <summary>
+        /// 达到一次连接文件数最大值 默认不超过30
+        /// </summary>
+        Reach_Max_File=11,
+        /// <summary>
+        /// 上一次心跳时间超过当前5分钟
+        /// </summary>
+        Out_Of_Date=12,
+        /// <summary>
+        /// 异常
+        /// </summary>
+        Exception=13,
+        /// <summary>
+        /// 关闭线程
+        /// </summary>
+        Thread_Close=14
 
         
     }

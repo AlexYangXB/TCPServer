@@ -84,12 +84,12 @@ namespace KangYiCollection
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Log.UnHandleException( e.ToString(),e.ExceptionObject as Exception);
-            MessageBox.Show(null, "未知错误: " + ((Exception)e.ExceptionObject).ToString(), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MessageBox.Show(null, Log.GetExceptionMsg((Exception)e.ExceptionObject,"未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Log.UnHandleException( e.ToString(),e.Exception);
-            MessageBox.Show(null, "未知错误: " + e.Exception, "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MessageBox.Show(null, Log.GetExceptionMsg(e.Exception, "未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
        
     }

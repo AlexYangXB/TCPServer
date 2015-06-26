@@ -133,7 +133,7 @@ namespace KangYiCollection.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PushIp {
             get {
                 return ((string)(this["PushIp"]));

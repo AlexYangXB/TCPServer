@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MyTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Lenovo (Beijing) Limited")]
+[assembly: AssemblyCompany("广州康艺电子有限公司")]
 [assembly: AssemblyProduct("MyTest")]
-[assembly: AssemblyCopyright("Copyright © Lenovo (Beijing) Limited 2014")]
+[assembly: AssemblyCopyright("Copyright © 广州康艺电子有限公司  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

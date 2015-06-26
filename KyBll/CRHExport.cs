@@ -169,6 +169,8 @@ namespace KyBll
                 };
                 batch.Machine = machine;
             }
+            if(batch.Machine.kMachineModel.Trim()=="")
+                throw new Exception("机具id的机型编号为空！");
             int nodeId = batch.knode;
 
             batch.Node = KyDataOperation.GetNodeByNodeId(nodeId);

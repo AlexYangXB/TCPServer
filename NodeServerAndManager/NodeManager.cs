@@ -136,8 +136,7 @@ namespace KangYiCollection
                         myTcpServer.StartListenling(KangYiCollection.Properties.Settings.Default.LocalIp, KangYiCollection.Properties.Settings.Default.Port);
                         result = true;
                     }
-                    //连接到soket.IO
-                    SocketIoConnect();
+                    
                 }
                 catch (Exception e)
                 {
@@ -240,12 +239,15 @@ namespace KangYiCollection
             {
                 Directory.CreateDirectory(path);
             }
-            //启动TCP服务、并连接到socket.IO后关闭等待窗体
-            waitingForm.SetText("正在连接到服务器...");
             Application.DoEvents();
+            //启动TCP服务
+            waitingForm.SetText("正在启动监听...");
             new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
-
+            //连接到socket.IO
+            waitingForm.SetText("正在启动推送...");
+            new Action(SocketIoConnect).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
             this.tabPage1.Parent = null;
             this.tabPage2.Parent = null;
             //其他厂家接入FSN
@@ -845,7 +847,10 @@ namespace KangYiCollection
                 waitingForm.SetText("正在停止监听...");
                 new Action(myTcpServer.Stop).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
-                SocketIoStop();
+                waitingForm.SetText("正在停止推送...");
+                new Action(SocketIoStop).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                waitingForm.ShowDialog();
+                System.Environment.Exit(0);
                 
             }
         }
@@ -887,7 +892,9 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void MenuItem_ServerSetting_Click(object sender, EventArgs e)
         {
-            SocketIoStop();
+            waitingForm.SetText("正在停止推送...");
+            new Action(SocketIoStop).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
             //记录本地IP与端口号，当本地IP与端口号发生改变时，重启TcpServer端
             string localIp = KangYiCollection.Properties.Settings.Default.LocalIp;
             int port = KangYiCollection.Properties.Settings.Default.Port;
@@ -917,15 +924,16 @@ namespace KangYiCollection
             if (localIp != KangYiCollection.Properties.Settings.Default.LocalIp || port != KangYiCollection.Properties.Settings.Default.Port
                 || deviceIp != KangYiCollection.Properties.Settings.Default.DeviceIp || devicePort != KangYiCollection.Properties.Settings.Default.DeviceDbPort)
             {
+                Application.DoEvents();
                 if (myTcpServer.IsRunning)
                 {
-                    myTcpServer.Stop();
-                    StartTcpServer();
+                    waitingForm.SetText("正在停止监听...");
+                    new Action(myTcpServer.Stop).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                    waitingForm.ShowDialog();
                 }
-                else
-                {
-                    StartTcpServer();
-                }
+                waitingForm.SetText("正在启动监听...");
+                new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                waitingForm.ShowDialog();
             }
 
             //当绑定网点id发生改变时
@@ -935,7 +943,9 @@ namespace KangYiCollection
                 bindNodeId = frm.bindNodeId;
 
             }
-            SocketIoConnect();
+            waitingForm.SetText("正在启动推送...");
+            new Action(SocketIoConnect).BeginInvoke(new AsyncCallback(CloseLoading), null);
+            waitingForm.ShowDialog();
         }
         /// <summary>
         /// 日志
@@ -1044,8 +1054,10 @@ namespace KangYiCollection
                         CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
                     }
                     else
-                        myTcpServer.TCPEvent.OnFSNImportLog(exportDir + "路径不存在！");
+                        Log.CRHLog(exportDir + "路径不存在！");
                 }
+                else
+                    Log.CRHLog("CRH导出未启用！");
             }
         }
 

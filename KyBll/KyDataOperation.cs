@@ -8,6 +8,7 @@ using KyModel;
 using KyModel.Models;
 using SqlFu;
 using MySql.Data.MySqlClient;
+using System.Threading;
 namespace KyBll
 {
     public class KyDataOperation
@@ -36,12 +37,12 @@ namespace KyBll
 
                 }
                 TimeSpan span = DateTime.Now - start;
-                KyBll.Log.TestLog("batch insert take about " + span.Milliseconds + "ms.");
+                KyBll.Log.TestLog("batch insert take  " + span.TotalMilliseconds + "ms.");
                 return true;
             }
             catch (Exception e)
             {
-                KyBll.Log.DataBaseException("保存批次异常",e);
+                KyBll.Log.DataBaseException("保存批次异常", e);
                 return false;
             }
         }
@@ -99,28 +100,38 @@ namespace KyBll
                         DateTime start = DateTime.Now;
                         conn.Execute(strSql);
                         TimeSpan span = DateTime.Now - start;
-                        KyBll.Log.TestLog("sign data insert take about " + span.Milliseconds + "ms. total " + count + ".");
+                        KyBll.Log.TestLog("sign insert take  " + span.TotalMilliseconds + "ms. total " + count + ".");
                     }
-                    using (var conn = DbHelperMySQL.OpenImageConnection())
-                    {
-                        DateTime start = DateTime.Now;
-                        conn.InsertAll<ky_picture>(pictures);
-                        //foreach (var pic in pictures)
-                        //    conn.Insert(pic);
-                        TimeSpan span = DateTime.Now - start;
-                        KyBll.Log.TestLog("sign picture insert take about " + span.Milliseconds + "ms. total " + count + ".");
-                    }
+
+                    Thread picInsert = new Thread(InsertPicture);
+                    picInsert.IsBackground = true;
+                    picInsert.Start(pictures);
+
+
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存冠字号码或图像异常",e );
+                Log.DataBaseException("保存冠字号码或图像异常", e);
                 return false;
             }
 
         }
 
+        private static void InsertPicture(Object obj)
+        {
+            var pictures = (List < ky_picture >) obj;
+            using (var conn = DbHelperMySQL.OpenImageConnection())
+            {
+                DateTime start = DateTime.Now;
+                conn.InsertAll<ky_picture>(pictures);
+                //foreach (var pic in pictures)
+                //    conn.Insert(pic);
+                TimeSpan span = DateTime.Now - start;
+                KyBll.Log.TestLog(" picture insert take " + span.TotalMilliseconds + "ms. total " + pictures.Count + ".");
+            }
+        }
         /// <summary>
         /// 根据时间范围获取批次总数
         /// </summary>
@@ -142,7 +153,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("获取批次总数异常",e);
+                Log.DataBaseException("获取批次总数异常", e);
             }
             return totalCount;
         }
@@ -170,7 +181,7 @@ namespace KyBll
                 }
                 catch (Exception e)
                 {
-                    Log.DataBaseException("获取批次异常",e);
+                    Log.DataBaseException("获取批次异常", e);
                 }
             }
             return batches;
@@ -196,7 +207,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException( "获取冠字号码信息异常",e);
+                Log.DataBaseException("获取冠字号码信息异常", e);
             }
             return signs;
         }
@@ -260,7 +271,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新绑定IP地址异常",e);
+                Log.DataBaseException("更新绑定IP地址异常", e);
                 return false;
             }
         }
@@ -391,7 +402,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加厂家信息异常",e);
+                Log.DataBaseException("添加厂家信息异常", e);
                 return 0;
             }
         }
@@ -414,7 +425,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.ConnectionException("获取机具异常",e );
+                Log.ConnectionException("获取机具异常", e);
                 return null;
             }
 
@@ -555,7 +566,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新机器机具编号和机型异常",e);
+                Log.DataBaseException("更新机器机具编号和机型异常", e);
                 return false;
             }
         }
@@ -566,13 +577,13 @@ namespace KyBll
         /// <param name="machineNumber"></param>
         /// <param name="machineModel"> </param>
         /// <returns></returns>
-        public static bool UpdateMachineTime(int id,DateTime time)
+        public static bool UpdateMachineTime(int id, DateTime time)
         {
             try
             {
                 using (var conn = DbHelperMySQL.OpenDeviceConnection())
                 {
-                    conn.Update<ky_machine>(new {kUpdateTime=time},p=>p.kId==id);
+                    conn.Update<ky_machine>(new { kUpdateTime = time }, p => p.kId == id);
                 }
                 return true;
             }
@@ -646,7 +657,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加ATM信息异常",e);
+                Log.DataBaseException("添加ATM信息异常", e);
                 return 0;
             }
         }
@@ -699,7 +710,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加ATM信息异常",e);
+                Log.DataBaseException("添加ATM信息异常", e);
                 return 0;
             }
         }
@@ -806,7 +817,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("导入机具异常",e);
+                Log.DataBaseException("导入机具异常", e);
             }
             return id;
         }
@@ -840,7 +851,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传文件异常",e);
+                Log.DataBaseException("上传文件异常", e);
                 return false;
             }
         }
@@ -881,7 +892,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传GZH文件异常",e);
+                Log.DataBaseException("上传GZH文件异常", e);
                 return false;
 
             }
@@ -924,7 +935,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存GZH的包信息异常",e);
+                Log.DataBaseException("保存GZH的包信息异常", e);
             }
             return id;
         }
@@ -951,7 +962,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存GZH捆钞异常",e);
+                Log.DataBaseException("保存GZH捆钞异常", e);
                 return false;
             }
         }
@@ -977,7 +988,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试数据服务器连接失败",e );
+                Log.DataBaseException("测试数据服务器连接失败", e);
                 return false;
             }
         }
@@ -1000,7 +1011,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试设备数据库连接失败",e);
+                Log.DataBaseException("测试设备数据库连接失败", e);
                 return false;
             }
         }
@@ -1020,7 +1031,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试推送服务器连接失败",e);
+                Log.DataBaseException("测试推送服务器连接失败", e);
                 return false;
             }
         }
@@ -1042,7 +1053,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试图像数据库连接失败",e);
+                Log.DataBaseException("测试图像数据库连接失败", e);
                 return false;
             }
         }

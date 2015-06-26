@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
             this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
@@ -42,6 +42,8 @@
             this.txb_FilePath = new System.Windows.Forms.TextBox();
             this.btn_Scan = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txb_BussinessNumber = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.cmb_BusinessType = new System.Windows.Forms.ComboBox();
@@ -78,8 +80,6 @@
             this.notifyIcon_Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip_Tray = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.MenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txb_BussinessNumber = new System.Windows.Forms.TextBox();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -92,7 +92,7 @@
             // 
             // timer_UpdateMachine
             // 
-            this.timer_UpdateMachine.Interval = 600000;
+            this.timer_UpdateMachine.Interval = 180000;
             this.timer_UpdateMachine.Tick += new System.EventHandler(this.timer_UpdateMachine_Tick);
             // 
             // materialTabControl1
@@ -215,6 +215,24 @@
             this.groupBox1.Size = new System.Drawing.Size(420, 192);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
+            // 
+            // txb_BussinessNumber
+            // 
+            this.txb_BussinessNumber.Enabled = false;
+            this.txb_BussinessNumber.Location = new System.Drawing.Point(90, 158);
+            this.txb_BussinessNumber.Name = "txb_BussinessNumber";
+            this.txb_BussinessNumber.Size = new System.Drawing.Size(313, 21);
+            this.txb_BussinessNumber.TabIndex = 25;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(6, 159);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 14);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "业务流水号";
             // 
             // label12
             // 
@@ -356,14 +374,14 @@
             // 
             this.dgv_machine.AllowUserToAddRows = false;
             this.dgv_machine.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv_machine.ColumnHeadersHeight = 24;
             this.dgv_machine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_machine.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -581,7 +599,7 @@
             // timer_ExportCRH
             // 
             this.timer_ExportCRH.Enabled = true;
-            this.timer_ExportCRH.Interval = 3000;
+            this.timer_ExportCRH.Interval = 1000;
             this.timer_ExportCRH.Tick += new System.EventHandler(this.timer_ExportCRH_Tick);
             // 
             // notifyIcon_Tray
@@ -608,24 +626,6 @@
             this.MenuItem_Exit.Size = new System.Drawing.Size(100, 22);
             this.MenuItem_Exit.Text = "退出";
             this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(6, 159);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 14);
-            this.label3.TabIndex = 24;
-            this.label3.Text = "业务流水号";
-            // 
-            // txb_BussinessNumber
-            // 
-            this.txb_BussinessNumber.Enabled = false;
-            this.txb_BussinessNumber.Location = new System.Drawing.Point(90, 158);
-            this.txb_BussinessNumber.Name = "txb_BussinessNumber";
-            this.txb_BussinessNumber.Size = new System.Drawing.Size(313, 21);
-            this.txb_BussinessNumber.TabIndex = 25;
             // 
             // NodeManager
             // 

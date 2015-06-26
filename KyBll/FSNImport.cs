@@ -265,9 +265,9 @@ namespace KyBll
             {
                 for (int i = 0; i < signs.Count; )
                 {
-                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(10000).ToList();
+                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(1000).ToList();
                     result = KyDataOperation.InsertSign(batchId, i, splitSigns);
-                    i += 10000;
+                    i += 1000;
                 }
             }
             //保存批次
@@ -375,9 +375,9 @@ namespace KyBll
             {
                 for(int i=0;i<signs.Count;)
                 {
-                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(10000).ToList();
+                    List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(1000).ToList();
                     result = KyDataOperation.InsertSign(batchId, i, splitSigns);
-                    i += 10000;
+                    i += 1000;
                 }
             }
             //更新冠字号码文件上传表ky_import_file

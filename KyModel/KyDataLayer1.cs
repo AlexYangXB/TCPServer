@@ -475,6 +475,7 @@ namespace KyModel
                 int machineSN0Len = 0, machineLen = 0;
                 machineSN0Len = res & 0X000F;
                 machineLen = (res >> 4) & 0X000F;
+                sign.MachineModel = "";
                 if(machineSN0Len>4&&machineLen>0)
                 {
                     string machineMM = "";

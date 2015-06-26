@@ -30,7 +30,7 @@
       <Value Profile="(Default)">9303</Value>
     </Setting>
     <Setting Name="PushIp" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.1.1</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FileIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

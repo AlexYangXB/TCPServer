@@ -1,7 +1,27 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MyTest.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PerFileCount" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="FileCnt" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="MachineNumber" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9000A9L0001</Value>
+    </Setting>
+    <Setting Name="Value" Type="System.String" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Interval" Type="System.String" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ServerIp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.157</Value>
+    </Setting>
+    <Setting Name="ServerPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

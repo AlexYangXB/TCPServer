@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyTest.KangYiCollection.Properties {
+namespace MyTest.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,90 @@ namespace MyTest.KangYiCollection.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public string PerFileCount {
+            get {
+                return ((string)(this["PerFileCount"]));
+            }
+            set {
+                this["PerFileCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public string FileCnt {
+            get {
+                return ((string)(this["FileCnt"]));
+            }
+            set {
+                this["FileCnt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9000A9L0001")]
+        public string MachineNumber {
+            get {
+                return ((string)(this["MachineNumber"]));
+            }
+            set {
+                this["MachineNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public string Value {
+            get {
+                return ((string)(this["Value"]));
+            }
+            set {
+                this["Value"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public string Interval {
+            get {
+                return ((string)(this["Interval"]));
+            }
+            set {
+                this["Interval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.157")]
+        public string ServerIp {
+            get {
+                return ((string)(this["ServerIp"]));
+            }
+            set {
+                this["ServerIp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public string ServerPort {
+            get {
+                return ((string)(this["ServerPort"]));
+            }
+            set {
+                this["ServerPort"] = value;
             }
         }
     }

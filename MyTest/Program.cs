@@ -14,7 +14,7 @@ namespace MyTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form2Test());
+            Application.Run(new TCPClient());
         }
     }
 }

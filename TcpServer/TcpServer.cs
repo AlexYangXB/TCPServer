@@ -35,6 +35,7 @@ namespace MyTcpServer
             {
                 dt = value;
                 machine.Clear();
+                //新增的机具
                 foreach (ky_machine m in dt)
                 {
                     if (!machine.ContainsKey(m.kIpAddress))
@@ -42,16 +43,27 @@ namespace MyTcpServer
                         machine.Add(m.kIpAddress, m);
                     }
                 }
+                
             }
             get { return dt; }
         }
 
         public void UpdateMachineTable(List<ky_machine> dt)
         {
+            //新增的机具
             foreach (var m in dt)
             {
                 if (!machine.ContainsKey(m.kIpAddress))
                     machine.Add(m.kIpAddress, m);
+            }
+            //被删除的机具
+            for (var i = 0; i < machine.Count; i++)
+            {
+                var key = machine.Keys.ElementAt(i);
+                if (dt.Find(p => p.kIpAddress == key) == null)
+                {
+                    machine.Remove(key);
+                }
             }
         }
 
@@ -93,38 +105,57 @@ namespace MyTcpServer
         {
             while (!_shouldStop)
             {
+                DateTime start = DateTime.Now;
+                //结束状态_shouldStop为True的线程
+                Dictionary<TCPReceive, Thread> tmpDict = new Dictionary<TCPReceive, Thread>();
+                foreach(var dict in dictThread)
+                {
+                    if (dict.Key._shouldStop)
+                    {
+                        if (dict.Key.sokClient != null)
+                            dict.Key.sokClient.Close();
+                        dictThread[dict.Key].Join();
+                    }
+                    else
+                        tmpDict.Add(dict.Key,dict.Value);
+                }
+                dictThread = tmpDict;
+                TimeSpan span = DateTime.Now - start;
+                KyBll.Log.TestLog("close thread take about " + span.TotalMilliseconds + "ms. total " + dictThread.Count + " threads.");
+                if (dictThread.Count >= 30)
+                {
+                    TCPEvent.OnCommandLog(new TCPMessage
+                    {
+                        MessageType = TCPMessageType.Reach_Max_Connection
+                    });
+                    continue;
+                }
                 allDone.Reset();
-                socketWatch.BeginAccept(new AsyncCallback(AcceptCallback),socketWatch);
+                socketWatch.BeginAccept(new AsyncCallback(AcceptCallback), socketWatch);
                 allDone.WaitOne();
             }
         }
         public void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
-
-            Socket listener = (Socket)ar.AsyncState;
-            Socket sokConnection = listener.EndAccept(ar);
-            if (sokConnection != null)
+            if (!_shouldStop)
             {
-                string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
-                TCPEvent.OnCommandLog(new TCPMessage
+                Socket sokConnection = null;
+                Socket listener = (Socket)ar.AsyncState;
+                sokConnection = listener.EndAccept(ar);
+                if (sokConnection != null)
                 {
-                    IpAndPort = sokConnection.RemoteEndPoint.ToString(),
-                    MessageType = TCPMessageType.NewConnection
-                });
-                bool RecFlag = false;
-                //IP地址在数据库中，才会接收数据
-                if (machine.ContainsKey(ipPort[0]))
-                {
-                    RecFlag = true;
-                }
-                else
-                {
-                    ky_machine newmachine = KyDataOperation.GetMachineWithIp(ipPort[0]);
-                    if (newmachine != null)
+                    string[] ipPort = sokConnection.RemoteEndPoint.ToString().Split(":".ToCharArray());
+                    TCPEvent.OnCommandLog(new TCPMessage
+                    {
+                        IpAndPort = sokConnection.RemoteEndPoint.ToString(),
+                        MessageType = TCPMessageType.NewConnection
+                    });
+                    bool RecFlag = false;
+                    //IP地址在数据库中，才会接收数据
+                    if (machine.ContainsKey(ipPort[0]))
                     {
                         RecFlag = true;
-                        machine.Add(newmachine.kIpAddress, newmachine);
                     }
                     else
                     {
@@ -134,36 +165,22 @@ namespace MyTcpServer
                             MessageType = TCPMessageType.NoMachineIp
                         });
                         sokConnection.Close();
+
+                    }
+                    if (RecFlag)
+                    {
+                        TCPReceive tcpr = new TCPReceive(DataSaveFolder, PictureServerId, TCPEvent, machine);
+                        Thread thr = new Thread(tcpr.RecMsg);
+                        thr.IsBackground = true;
+
+                        //超时设置  15秒
+                        sokConnection.ReceiveTimeout = 15000;
+                        sokConnection.SendTimeout = 15000;
+                        thr.Start(sokConnection);
+                        dictThread.Add(tcpr, thr);
                     }
                 }
-                if (RecFlag)
-                {
-                    TCPReceive tcpr = new TCPReceive(DataSaveFolder, PictureServerId, TCPEvent, machine);
-                    Thread thr = new Thread(tcpr.RecMsg);
-                    thr.IsBackground = true;
-
-                    //超时设置  15秒
-                    sokConnection.ReceiveTimeout = 15000;
-                    sokConnection.SendTimeout = 15000;
-                    thr.Start(sokConnection);
-                    dictThread.Add(tcpr, thr);
-                }
             }
-            DateTime start = DateTime.Now;
-            //结束状态_shouldStop为True的线程
-            for (int i = 0; i < dictThread.Count; i++)
-            {
-                TCPReceive tcpr = dictThread.Keys.ElementAt(i);
-                if (tcpr._shouldStop)
-                {
-                    if (tcpr.sokClient != null)
-                        tcpr.sokClient.Close();
-                    dictThread[tcpr].Join();
-                    dictThread.Remove(tcpr);
-                }
-            }
-            TimeSpan span = DateTime.Now - start;
-            KyBll.Log.TestLog("close thread take about " + span.Milliseconds + "ms. total " + dictThread.Count + " threads.");
         }
 
 
@@ -175,12 +192,13 @@ namespace MyTcpServer
             foreach (var dict in dictThread)
             {
                 dict.Key._shouldStop = true;
+                dict.Key.sokClient.Shutdown(SocketShutdown.Both);
                 dict.Key.sokClient.Close();
                 dict.Value.Join();
             }
             dictThread.Clear();
             _shouldStop = true;
-            
+            allDone.Set();
             if (threadWatch != null)
             {
                 threadWatch.Join();
