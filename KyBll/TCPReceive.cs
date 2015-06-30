@@ -73,7 +73,7 @@ namespace KyBll
                             {
                                 length = MyTCP.AsyncReceiveFromClient(sokClient, msgLen - i, out readBuf);
                                 if (length == 0)
-                                    throw new Exception("网速过慢");
+                                    throw new Exception("网络异常");
                                 if (length == -1)
                                 {
                                     CloseThread();
@@ -255,7 +255,9 @@ namespace KyBll
                               "-" + machineNo + ".FSN";
             //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
             DateTime fileTime = FSNFormat.GetDateTime(Fsn);
-            TCPEvent.OnBussninessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss") + ",机具" + ip + "的开始标志是" + machine[ip].startBusinessCtl);
+            TCPEvent.OnBussninessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss"));
+            if(machine[ip].startBusinessCtl)
+                TCPEvent.OnBussninessLog( "机具" + ip + "正在进行交易控制!");
             if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
             {
                 if (machine[ip].fileName == null || machine[ip].fileName == "")

@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
+using System.Threading;
 namespace KangYiCollection
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
@@ -136,7 +137,7 @@ namespace KangYiCollection
                         myTcpServer.StartListenling(KangYiCollection.Properties.Settings.Default.LocalIp, KangYiCollection.Properties.Settings.Default.Port);
                         result = true;
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -228,8 +229,7 @@ namespace KangYiCollection
         {
             CheckForIllegalCrossThreadCalls = false;
             myTcpServer.TCPEvent.CmdEvent += new EventHandler<MyTCP.CmdEventArgs>(myTcpServer_CmdEvent);
-            //打开定时器
-            timer_UpdateMachine.Start();
+
             //设置数据库连接字符串
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.ServerIp, KangYiCollection.Properties.Settings.Default.ServerDbPort, DbHelperMySQL.DataBaseServer.Sphinx);
             DbHelperMySQL.SetConnectionString(KangYiCollection.Properties.Settings.Default.DeviceIp, KangYiCollection.Properties.Settings.Default.DeviceDbPort, DbHelperMySQL.DataBaseServer.Device);
@@ -250,10 +250,12 @@ namespace KangYiCollection
             waitingForm.ShowDialog();
             this.tabPage1.Parent = null;
             this.tabPage2.Parent = null;
-            //其他厂家接入FSN
-            this.timer_ImportFSN.Tick += new System.EventHandler(this.timer_ImportFSN_Tick);
-
-
+            //打开定时器
+            timer_ExportCRH = new System.Threading.Timer(new TimerCallback(timer_ExportCRH_Tick), this, 1000, 1000);
+            timer_ImportFSN = new System.Threading.Timer(new TimerCallback(timer_ImportFSN_Tick), this, 1000, 3000);
+            timer_UpdateMachine = new System.Threading.Timer(new TimerCallback(timer_UpdateMachine_Tick), this, 1000, 180000);
+            timer_UploadSql = new System.Threading.Timer(new TimerCallback(timer_UploadSql_Tick), this, 1000, 3000);
+            timer_UploadPictures = new System.Threading.Timer(new TimerCallback(timer_UploadPictures_Tick), this, 1000, 3000);
         }
         /// <summary>
         /// 发送冠字号信息给SOCKET.IO服务端
@@ -454,7 +456,7 @@ namespace KangYiCollection
                 if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.QK
                || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CACK || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.CAQK)
                 {
-                    if (txb_BussinessNumber.Text.Trim()=="")
+                    if (txb_BussinessNumber.Text.Trim() == "")
                     {
                         MessageBox.Show("请填写业务流水号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
@@ -590,32 +592,38 @@ namespace KangYiCollection
 
         #endregion
 
+        private bool UpdateMachine_Status = false;
         /// <summary>
         /// 每10分钟更新一次 从数据库中查询一次机具信息，并更新到Server端中
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer_UpdateMachine_Tick(object sender, EventArgs e)
+        private void timer_UpdateMachine_Tick(object sender)
         {
-            if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
+            if (!UpdateMachine_Status)
             {
-                //获取绑定网点内的机器
-                int[] nodeIds = new int[bindNodeId.Count];
-                if (nodeIds.Length > 0)
+                if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
                 {
-                    bindNodeId.CopyTo(nodeIds);
-                    List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
-                    myTcpServer.UpdateMachineTable(machineDt);
-                    idIp.Clear();
-                    foreach (var m in machineDt)
+                    UpdateMachine_Status = true;
+                    //获取绑定网点内的机器
+                    int[] nodeIds = new int[bindNodeId.Count];
+                    if (nodeIds.Length > 0)
                     {
-                        int machineId = Convert.ToInt32(m.kId);
-                        string ip = m.kIpAddress.Trim();
-                        if (!idIp.ContainsKey(machineId))
+                        bindNodeId.CopyTo(nodeIds);
+                        List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                        myTcpServer.UpdateMachineTable(machineDt);
+                        idIp.Clear();
+                        foreach (var m in machineDt)
                         {
-                            idIp.Add(machineId, ip);
+                            int machineId = Convert.ToInt32(m.kId);
+                            string ip = m.kIpAddress.Trim();
+                            if (!idIp.ContainsKey(machineId))
+                            {
+                                idIp.Add(machineId, ip);
+                            }
                         }
                     }
+                    UpdateMachine_Status = false;
                 }
             }
         }
@@ -851,7 +859,7 @@ namespace KangYiCollection
                 new Action(SocketIoStop).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
                 System.Environment.Exit(0);
-                
+
             }
         }
 
@@ -993,23 +1001,29 @@ namespace KangYiCollection
 
         #endregion
 
+        private bool ImportFSN_Status = false;
         /// <summary>
         /// 其他厂家FSN接入
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer_ImportFSN_Tick(object sender, EventArgs e)
+        private void timer_ImportFSN_Tick(object sender)
         {
-            bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
-            if (flag)
+            if (!ImportFSN_Status)
             {
-                string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
-                if (Directory.Exists(importDir))
+                bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
+                if (flag)
                 {
-                    FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp, myTcpServer.TCPEvent);
+                    ImportFSN_Status = true;
+                    string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
+                    if (Directory.Exists(importDir))
+                    {
+                        FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp, myTcpServer.TCPEvent);
+                    }
+                    else
+                        myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");
+                    ImportFSN_Status = false;
                 }
-                else
-                    myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");
             }
         }
         /// <summary>
@@ -1022,42 +1036,48 @@ namespace KangYiCollection
             CRHReview CRHReview = new CRHReview();
             CRHReview.ShowDialog();
         }
+        private bool ExportCRH_Status = false;
         /// <summary>
         /// 导出CRH
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer_ExportCRH_Tick(object sender, EventArgs e)
+        private void timer_ExportCRH_Tick(object sender)
         {
-            string Time = DateTime.Now.ToString("HH:mm:ss");
-            if (Time == KangYiCollection.Properties.Settings.Default.CRHStartTime)
+            if (!ExportCRH_Status)
             {
-                bool flag = KangYiCollection.Properties.Settings.Default.CRHExport;
-                if (flag)
+                string Time = DateTime.Now.ToString("HH:mm:ss");
+                if (Time == KangYiCollection.Properties.Settings.Default.CRHStartTime)
                 {
-                    string exportDir = KangYiCollection.Properties.Settings.Default.CRHDir;
-                    if (Directory.Exists(exportDir))
+                    ExportCRH_Status = true;
+                    bool flag = KangYiCollection.Properties.Settings.Default.CRHExport;
+                    if (flag)
                     {
-                        DateTime startTime;
-                        DateTime endTime;
-                        if (KangYiCollection.Properties.Settings.Default.CRHYesterday)
+                        string exportDir = KangYiCollection.Properties.Settings.Default.CRHDir;
+                        if (Directory.Exists(exportDir))
                         {
-                            startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
-                            endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                            DateTime startTime;
+                            DateTime endTime;
+                            if (KangYiCollection.Properties.Settings.Default.CRHYesterday)
+                            {
+                                startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
+                                endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                            }
+                            else
+                            {
+                                //默认导出当天
+                                startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+                            }
+                            CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
                         }
                         else
-                        {
-                            //默认导出当天
-                            startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
-                            endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
-                        }
-                        CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
+                            Log.CRHLog(exportDir + "路径不存在！");
                     }
                     else
-                        Log.CRHLog(exportDir + "路径不存在！");
+                        Log.CRHLog("CRH导出未启用！");
+                    ExportCRH_Status = false;
                 }
-                else
-                    Log.CRHLog("CRH导出未启用！");
             }
         }
 
@@ -1133,6 +1153,56 @@ namespace KangYiCollection
                     materialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
                     break;
             }
+        }
+        private bool UploadSql_Status = false;
+        private void timer_UploadSql_Tick(object sender)
+        {
+            if (!UploadSql_Status)
+            {
+                UploadSql_Status = true;
+                List<string> strSqls = new List<string>();
+                for (int i = 0; i < 100; i++)
+                {
+                    if (KyDataOperation.sqlQueue.Count > 0)
+                    {
+                        strSqls.Add(KyDataOperation.sqlQueue.Dequeue());
+                    }
+                }
+
+                if (strSqls.Count > 0)
+                    KyDataOperation.InsertWithSql(strSqls);
+                if (KyDataOperation.sqlQueue.Count > 0)
+                    Log.TestLog("当前队列还有" + KyDataOperation.sqlQueue.Count + "条SQL等待执行...");
+                UploadSql_Status = false;
+            }
+        }
+        private bool UploadPictures_Status = false;
+        private void timer_UploadPictures_Tick(object sender)
+        {
+            KyDataOperation.pictureQueue.Clear();
+            //if (!UploadPictures_Status)
+            //{
+            //    UploadPictures_Status = true;
+            //    List<ky_picture> pics = new List<ky_picture>();
+            //    for (int i = 0; i < 1000; i++)
+            //    {
+            //        if (KyDataOperation.pictureQueue.Count > 0)
+            //        {
+            //            ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
+            //            pics.Add(pic);
+            //        }
+            //    }
+
+            //    if (pics.Count > 0)
+            //    {
+            //        myTcpServer.TCPEvent.OnCommandLog( new KyModel.TCPMessage() {
+            //            MessageType = TCPMessageType.Common_Message,
+            //            Message = "当前队列还有" + KyDataOperation.pictureQueue.Count + "张图像等待上传..."
+            //        });
+            //        KyDataOperation.InsertPictures(pics);
+            //    }
+            //    UploadPictures_Status = false;
+            //}
         }
 
 

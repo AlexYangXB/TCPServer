@@ -43,7 +43,7 @@ namespace MyTcpServer
                         machine.Add(m.kIpAddress, m);
                     }
                 }
-                
+
             }
             get { return dt; }
         }
@@ -105,10 +105,10 @@ namespace MyTcpServer
         {
             while (!_shouldStop)
             {
-                DateTime start = DateTime.Now;
                 //结束状态_shouldStop为True的线程
                 Dictionary<TCPReceive, Thread> tmpDict = new Dictionary<TCPReceive, Thread>();
-                foreach(var dict in dictThread)
+                var tmp = dictThread;
+                foreach (var dict in tmp)
                 {
                     if (dict.Key._shouldStop)
                     {
@@ -117,11 +117,11 @@ namespace MyTcpServer
                         dictThread[dict.Key].Join();
                     }
                     else
-                        tmpDict.Add(dict.Key,dict.Value);
+                        tmpDict.Add(dict.Key, dict.Value);
                 }
                 dictThread = tmpDict;
-                TimeSpan span = DateTime.Now - start;
-                KyBll.Log.TestLog("close thread take about " + span.TotalMilliseconds + "ms. total " + dictThread.Count + " threads.");
+                if (dictThread.Count > 0)
+                    KyBll.Log.TestLog("当前总共 " + dictThread.Count + "条收数据线程!");
                 if (dictThread.Count >= 30)
                 {
                     TCPEvent.OnCommandLog(new TCPMessage

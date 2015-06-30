@@ -139,6 +139,10 @@ namespace KyBll
             {
                 message += TCPMessage.IpAndPort + " 关闭线程!";
             }
+            if (TCPMessage.MessageType == TCPMessageType.Common_Message)
+            {
+                message += TCPMessage.Message;
+            }
             message += Environment.NewLine;
             return message;
         }
@@ -265,6 +269,7 @@ namespace KyBll
         public static int AsyncReceiveFromClient(Socket socket, int length, out byte[] receiveBuffers)
         {
             receiveDone.Reset();
+            //接收数据大小不超过BufferSize
             int len = BufferSize;
             if (length < BufferSize)
                 len = length;
@@ -295,7 +300,7 @@ namespace KyBll
             receiveDone.Set();
         }
         /// <summary>
-        /// 发送命令
+        /// 异步发送命令
         /// </summary>
         /// <param name="user"></param>
         /// <param name="message"></param>

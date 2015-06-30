@@ -15,7 +15,13 @@ namespace KyModel
     }
     public enum TCPMessageType
     {
+        /// <summary>
+        /// 新连接
+        /// </summary>
         NewConnection=0,
+        /// <summary>
+        /// 没有当前的机具IP
+        /// </summary>
         NoMachineIp=1,
         
         /// <summary>
@@ -42,7 +48,13 @@ namespace KyModel
         /// 未知命令
         /// </summary>
         UnknownCommand=7,
+        /// <summary>
+        /// 存在相同的连接
+        /// </summary>
         ExistConnection=8,
+        /// <summary>
+        /// 文件太大，超过5M
+        /// </summary>
         FILE_TOO_BIG=9,
         /// <summary>
         /// 达到最大连接数 默认30
@@ -63,7 +75,11 @@ namespace KyModel
         /// <summary>
         /// 关闭线程
         /// </summary>
-        Thread_Close=14
+        Thread_Close=14,
+        /// <summary>
+        /// 普通消息
+        /// </summary>
+        Common_Message=15
 
         
     }

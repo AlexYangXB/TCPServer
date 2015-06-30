@@ -1,4 +1,5 @@
-﻿namespace KangYiCollection
+﻿using System.Threading;
+namespace KangYiCollection
 {
     partial class NodeManager
     {
@@ -29,9 +30,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
-            this.timer_UpdateMachine = new System.Windows.Forms.Timer(this.components);
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btn_Ok = new System.Windows.Forms.Button();
@@ -75,8 +75,6 @@
             this.MenuItem_CRHReview = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Log = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_LogOut = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer_ImportFSN = new System.Windows.Forms.Timer(this.components);
-            this.timer_ExportCRH = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon_Tray = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip_Tray = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.MenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,11 +87,8 @@
             this.contextMenuStrip_Main.SuspendLayout();
             this.contextMenuStrip_Tray.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // timer_UpdateMachine
-            // 
-            this.timer_UpdateMachine.Interval = 180000;
-            this.timer_UpdateMachine.Tick += new System.EventHandler(this.timer_UpdateMachine_Tick);
+
+            
             // 
             // materialTabControl1
             // 
@@ -374,14 +369,14 @@
             // 
             this.dgv_machine.AllowUserToAddRows = false;
             this.dgv_machine.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_machine.ColumnHeadersHeight = 24;
             this.dgv_machine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_machine.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -591,17 +586,6 @@
             this.MenuItem_LogOut.Text = "注销";
             this.MenuItem_LogOut.Click += new System.EventHandler(this.MenuItem_LogOut_Click);
             // 
-            // timer_ImportFSN
-            // 
-            this.timer_ImportFSN.Enabled = true;
-            this.timer_ImportFSN.Interval = 10000;
-            // 
-            // timer_ExportCRH
-            // 
-            this.timer_ExportCRH.Enabled = true;
-            this.timer_ExportCRH.Interval = 1000;
-            this.timer_ExportCRH.Tick += new System.EventHandler(this.timer_ExportCRH_Tick);
-            // 
             // notifyIcon_Tray
             // 
             this.notifyIcon_Tray.ContextMenuStrip = this.contextMenuStrip_Tray;
@@ -618,12 +602,12 @@
             this.MenuItem_Exit});
             this.contextMenuStrip_Tray.MouseState = MaterialSkin.MouseState.HOVER;
             this.contextMenuStrip_Tray.Name = "contextMenuStrip_Tray";
-            this.contextMenuStrip_Tray.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip_Tray.Size = new System.Drawing.Size(153, 48);
             // 
             // MenuItem_Exit
             // 
             this.MenuItem_Exit.Name = "MenuItem_Exit";
-            this.MenuItem_Exit.Size = new System.Drawing.Size(100, 22);
+            this.MenuItem_Exit.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_Exit.Text = "退出";
             this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
             // 
@@ -659,7 +643,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer timer_UpdateMachine;
         private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -699,15 +682,18 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Log;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_LogOut;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FunctionSetting;
-        private System.Windows.Forms.Timer timer_ImportFSN;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_CRHReview;
-        private System.Windows.Forms.Timer timer_ExportCRH;
         private System.Windows.Forms.NotifyIcon notifyIcon_Tray;
         private MaterialSkin.Controls.MaterialContextMenuStrip contextMenuStrip_Tray;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Exit;
         private System.Windows.Forms.Label lb_OpenMainDir;
         private System.Windows.Forms.TextBox txb_BussinessNumber;
         private System.Windows.Forms.Label label3;
+        private System.Threading.Timer timer_ExportCRH;
+        private System.Threading.Timer timer_ImportFSN;
+        private System.Threading.Timer timer_UpdateMachine;
+        private System.Threading.Timer timer_UploadSql;
+        private System.Threading.Timer timer_UploadPictures;
     }
 }
 

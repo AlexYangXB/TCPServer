@@ -191,6 +191,7 @@ namespace KangYiCollection.BaseWinform
             if (rDeviceTest)
             {
                 MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK);
+                SettingInit();
 
             }
             else

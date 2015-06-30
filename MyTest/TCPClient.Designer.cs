@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btn_Start = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.tf_FileCnt = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.tf_MachineNumber = new MaterialSkin.Controls.MaterialSingleLineTextField();
@@ -42,21 +41,8 @@
             this.tf_ServerPort = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             this.rb_Log = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Start = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btn_Start
-            // 
-            this.btn_Start.Depth = 0;
-            this.btn_Start.Location = new System.Drawing.Point(143, 202);
-            this.btn_Start.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Primary = true;
-            this.btn_Start.Size = new System.Drawing.Size(99, 51);
-            this.btn_Start.TabIndex = 1;
-            this.btn_Start.Text = "开始";
-            this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.materialRaisedButton1_Click);
             // 
             // materialLabel1
             // 
@@ -269,22 +255,22 @@
             this.rb_Log.TabIndex = 16;
             this.rb_Log.Text = "";
             // 
-            // button1
+            // btn_Start
             // 
-            this.button1.Location = new System.Drawing.Point(277, 216);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_Start.Location = new System.Drawing.Point(133, 205);
+            this.btn_Start.Name = "btn_Start";
+            this.btn_Start.Size = new System.Drawing.Size(158, 45);
+            this.btn_Start.TabIndex = 17;
+            this.btn_Start.Text = "开始";
+            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // TCPClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 521);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.rb_Log);
             this.Controls.Add(this.tf_ServerPort);
             this.Controls.Add(this.materialLabel7);
@@ -298,7 +284,6 @@
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.tf_FileCnt);
             this.Controls.Add(this.materialLabel1);
-            this.Controls.Add(this.btn_Start);
             this.Name = "TCPClient";
             this.Text = "模拟客户端";
             this.Load += new System.EventHandler(this.TCPClient_Load);
@@ -309,7 +294,6 @@
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialRaisedButton btn_Start;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private MaterialSkin.Controls.MaterialSingleLineTextField tf_FileCnt;
         private MaterialSkin.Controls.MaterialSingleLineTextField tf_MachineNumber;
@@ -323,7 +307,7 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField tf_ServerPort;
         private MaterialSkin.Controls.MaterialLabel materialLabel7;
         private System.Windows.Forms.RichTextBox rb_Log;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Start;
 
     }
 }

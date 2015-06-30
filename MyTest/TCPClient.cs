@@ -42,17 +42,7 @@ namespace MyTest
         public static byte[] NET_CLOSE = new byte[] { 0xA2, 0x00 };
         private void materialRaisedButton1_Click(object sender, EventArgs e)
         {
-            MyTest.Properties.Settings.Default.FileCnt = tf_FileCnt.Text;
-            MyTest.Properties.Settings.Default.PerFileCount = tf_PerFileCount.Text;
-            MyTest.Properties.Settings.Default.MachineNumber = tf_MachineNumber.Text;
-            MyTest.Properties.Settings.Default.Value = tf_Value.Text;
-            MyTest.Properties.Settings.Default.ServerIp = tf_ServerIp.Text;
-            MyTest.Properties.Settings.Default.ServerPort = tf_ServerPort.Text;
-            MyTest.Properties.Settings.Default.Save();
-            btn_Start.Enabled = false;
-            Thread client = new Thread(StartClient);
-            client.IsBackground = true;
-            client.Start();
+           
             
         }
         private static ManualResetEvent connectDone =new ManualResetEvent(false);
@@ -79,7 +69,6 @@ namespace MyTest
             }
         }
         private int FileCnt = 0;
-        private int FileIndex = 0;
         private  void ConnectCallback(IAsyncResult ar)
         {
             try
@@ -88,21 +77,26 @@ namespace MyTest
 
                 client.EndConnect(ar);
                 connectDone.Set();
+                sendDone.Reset();
                 StateObject StaObject = new StateObject() { MessageType=TCPMessageType.NET_SIMPLE,workSocket=client};
                 Send(new StateObject() { MessageType=TCPMessageType.NET_SIMPLE,workSocket=client}, NetSimpleCmd());
+                sendDone.WaitOne();
                 FileCnt = Convert.ToInt32(MyTest.Properties.Settings.Default.FileCnt);
                 
                 for (int i = 0; i < FileCnt; i++)
                 {
+                    sendDone.Reset();
                     int Value = Convert.ToInt32(MyTest.Properties.Settings.Default.Value);
                     int PerFileCount = Convert.ToInt32(MyTest.Properties.Settings.Default.PerFileCount);
                     byte[] fsn = MakeFsn.ExportFSN(Value, PerFileCount, MyTest.Properties.Settings.Default.MachineNumber);
                     Send(new StateObject() { MessageType=TCPMessageType.NET_UP,workSocket=client}, NetUpCmd(fsn));
+                    sendDone.WaitOne();
                 }
-
+                sendDone.Reset();
                 Send(new StateObject() { MessageType = TCPMessageType.NET_CLOSE, workSocket = client }, NetCloseCmd());
                 //client.Shutdown(SocketShutdown.Both);
                 //client.Close();
+                sendDone.WaitOne();
                 SetButton();
                 
             }
@@ -239,6 +233,21 @@ namespace MyTest
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(Convert.ToInt32(1024*1024)+"");
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            MyTest.Properties.Settings.Default.FileCnt = tf_FileCnt.Text;
+            MyTest.Properties.Settings.Default.PerFileCount = tf_PerFileCount.Text;
+            MyTest.Properties.Settings.Default.MachineNumber = tf_MachineNumber.Text;
+            MyTest.Properties.Settings.Default.Value = tf_Value.Text;
+            MyTest.Properties.Settings.Default.ServerIp = tf_ServerIp.Text;
+            MyTest.Properties.Settings.Default.ServerPort = tf_ServerPort.Text;
+            MyTest.Properties.Settings.Default.Save();
+            btn_Start.Enabled = false;
+            Thread client = new Thread(StartClient);
+            client.IsBackground = true;
+            client.Start();
         }
     }
 }

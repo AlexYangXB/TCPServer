@@ -18,7 +18,6 @@ namespace KyBll
         /// <param name="pictureIp"></param>
         public static void FsnImport(string importDir,string pictureIp,MyTCP TCPEvent)
         {
-            TCPEvent.OnFSNImportLog("FSN导入正在运行");
             string[] allFiles = Directory.GetFiles(importDir, "*",SearchOption.AllDirectories);
             List<string> dataFiles=new List<string>();
             foreach (var file in allFiles)

@@ -49,9 +49,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SqlFu">
-      <HintPath>..\Lib\ORM\SqlFu.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -80,6 +77,10 @@
     <ProjectReference Include="..\KyModel\KyModel.csproj">
       <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
       <Name>KyModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\SqlFu\SqlFu.csproj">
+      <Project>{0A6D3405-840F-46A0-B1D1-5A8058CFED75}</Project>
+      <Name>SqlFu</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
