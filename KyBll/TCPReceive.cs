@@ -333,8 +333,11 @@ namespace KyBll
 
 
                 //删除文件
-                //if (File.Exists(fileName))
-                //    File.Delete(fileName);
+                if (!MySetting.GetProgramValue("SaveFile"))
+                {
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
             }
             if (File.Exists(fileName))
             {

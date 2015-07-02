@@ -301,6 +301,10 @@ namespace MyTcpServer
                                                 saveFiles.Add(saveFile);
                                         }
                                         GZHImport.SaveKHDK(saveFiles, currentMachine);
+                                        if (!MySetting.GetProgramValue("SaveFile"))
+                                        {
+                                            Directory.Delete(tmpPath, true);
+                                        }
                                     }
                                     else
                                         TCPEvent.OnBussninessLog("KHDK中临时路径" + tmpPath + "不存在！");
