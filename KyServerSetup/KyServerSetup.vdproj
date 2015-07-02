@@ -7,7 +7,10 @@
 "LanguageId" = "3:2052"
 "CodePage" = "3:936"
 "UILanguageId" = "3:2052"
-
+"SccProjectName" = "8:"
+"SccLocalPath" = "8:"
+"SccAuxPath" = "8:"
+"SccProvider" = "8:"
     "Hierarchy"
     {
         "Entry"
@@ -31,13 +34,13 @@
         "Entry"
         {
         "MsmKey" = "8:_5C2AAE60C28DC5CC1FB29A91A13A9B79"
-        "OwnerKey" = "8:_68FB67F3B699496A913DE1F80F5733F0"
+        "OwnerKey" = "8:_980A49A95A6C094460A96B3B5CCD9A51"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5C2AAE60C28DC5CC1FB29A91A13A9B79"
-        "OwnerKey" = "8:_980A49A95A6C094460A96B3B5CCD9A51"
+        "OwnerKey" = "8:_68FB67F3B699496A913DE1F80F5733F0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -127,43 +130,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2A13127DB29340FFA5A28BD06C800B4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6324681F467FC6EA2103705B0635AB6C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_74EF819984A11693079C779C09F36B1F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FDD19CA1EE9C487CEF296CC65E7E46B2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_980A49A95A6C094460A96B3B5CCD9A51"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8E65169C6B177369A25ED02B29D75E56"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B9AAD3ACB39C2BB968EBD9F4D73D6D02"
+        "OwnerKey" = "8:_788405FC8624492B5A36B0AAC4F82282"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -175,7 +142,43 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_788405FC8624492B5A36B0AAC4F82282"
+        "OwnerKey" = "8:_B9AAD3ACB39C2BB968EBD9F4D73D6D02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8E65169C6B177369A25ED02B29D75E56"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_980A49A95A6C094460A96B3B5CCD9A51"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FDD19CA1EE9C487CEF296CC65E7E46B2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_74EF819984A11693079C779C09F36B1F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6324681F467FC6EA2103705B0635AB6C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2A13127DB29340FFA5A28BD06C800B4F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -341,11 +344,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5C2AAE60C28DC5CC1FB29A91A13A9B79"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -372,11 +370,6 @@
             "AssemblyAsmDisplayName" = "8:System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_6324681F467FC6EA2103705B0635AB6C"
-                    {
-                    "Name" = "8:System.Threading.Tasks.NET35.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Threading.Tasks.NET35.dll"
             "TargetName" = "8:"
@@ -403,11 +396,6 @@
             "AssemblyAsmDisplayName" = "8:SocketIoClientDotNet, Version=0.9.10.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_74EF819984A11693079C779C09F36B1F"
-                    {
-                    "Name" = "8:SocketIoClientDotNet.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SocketIoClientDotNet.dll"
             "TargetName" = "8:"
@@ -434,11 +422,6 @@
             "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_788405FC8624492B5A36B0AAC4F82282"
-                    {
-                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
@@ -505,11 +488,6 @@
             "AssemblyAsmDisplayName" = "8:WebSocket4Net, Version=0.11.0.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_8E65169C6B177369A25ED02B29D75E56"
-                    {
-                    "Name" = "8:WebSocket4Net.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:WebSocket4Net.dll"
             "TargetName" = "8:"
@@ -536,11 +514,6 @@
             "AssemblyAsmDisplayName" = "8:EngineIoClientDotNet, Version=0.9.17.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_980A49A95A6C094460A96B3B5CCD9A51"
-                    {
-                    "Name" = "8:EngineIoClientDotNet.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EngineIoClientDotNet.dll"
             "TargetName" = "8:"
@@ -567,11 +540,6 @@
             "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.6.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B9AAD3ACB39C2BB968EBD9F4D73D6D02"
-                    {
-                    "Name" = "8:MySql.Data.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MySql.Data.dll"
             "TargetName" = "8:"
@@ -618,11 +586,6 @@
             "AssemblyAsmDisplayName" = "8:MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_FDD19CA1EE9C487CEF296CC65E7E46B2"
-                    {
-                    "Name" = "8:MaterialSkin.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MaterialSkin.dll"
             "TargetName" = "8:"
@@ -650,7 +613,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_10D524FE05CC42C2BD199D6C2836197F"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:D:\\KangYi\\KangYiCollection"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"

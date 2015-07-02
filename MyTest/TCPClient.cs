@@ -52,16 +52,23 @@ namespace MyTest
         {
             try
             {
-                connectDone.Reset();
-                var ipAddress = IPAddress.Parse(MyTest.Properties.Settings.Default.ServerIp);
-                var port = Convert.ToInt32(MyTest.Properties.Settings.Default.ServerPort);
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+                int CycleTime = Convert.ToInt32(MyTest.Properties.Settings.Default.CycleTime);
+                for (int i = 0; i < CycleTime; i++)
+                {
+                    SetButton();
+                    connectDone.Reset();
+                    var ipAddress = IPAddress.Parse(MyTest.Properties.Settings.Default.ServerIp);
+                    var port = Convert.ToInt32(MyTest.Properties.Settings.Default.ServerPort);
+                    IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
-                Socket client = new Socket(AddressFamily.InterNetwork,
-                    SocketType.Stream, ProtocolType.Tcp);
+                    Socket client = new Socket(AddressFamily.InterNetwork,
+                        SocketType.Stream, ProtocolType.Tcp);
 
-                client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
-                connectDone.WaitOne();
+                    client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
+                    connectDone.WaitOne();
+                    client.Shutdown(SocketShutdown.Both);
+                    client.Close();
+                }
             }
             catch (Exception e)
             {
@@ -76,7 +83,7 @@ namespace MyTest
                 Socket client = (Socket)ar.AsyncState;
 
                 client.EndConnect(ar);
-                connectDone.Set();
+               
                 sendDone.Reset();
                 StateObject StaObject = new StateObject() { MessageType=TCPMessageType.NET_SIMPLE,workSocket=client};
                 Send(new StateObject() { MessageType=TCPMessageType.NET_SIMPLE,workSocket=client}, NetSimpleCmd());
@@ -98,6 +105,7 @@ namespace MyTest
                 //client.Close();
                 sendDone.WaitOne();
                 SetButton();
+                connectDone.Set();
                 
             }
             catch (Exception e)
@@ -196,6 +204,7 @@ namespace MyTest
             tf_Value.Text = MyTest.Properties.Settings.Default.Value;
             tf_ServerIp.Text = MyTest.Properties.Settings.Default.ServerIp;
             tf_ServerPort.Text = MyTest.Properties.Settings.Default.ServerPort;
+            tf_CycleTime.Text = MyTest.Properties.Settings.Default.CycleTime;
         }
         public delegate void LogInvoke(string str);
         private void LogStr(string str)
@@ -243,8 +252,8 @@ namespace MyTest
             MyTest.Properties.Settings.Default.Value = tf_Value.Text;
             MyTest.Properties.Settings.Default.ServerIp = tf_ServerIp.Text;
             MyTest.Properties.Settings.Default.ServerPort = tf_ServerPort.Text;
+            MyTest.Properties.Settings.Default.CycleTime = tf_CycleTime.Text;
             MyTest.Properties.Settings.Default.Save();
-            btn_Start.Enabled = false;
             Thread client = new Thread(StartClient);
             client.IsBackground = true;
             client.Start();

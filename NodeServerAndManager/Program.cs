@@ -8,30 +8,6 @@ namespace KangYiCollection
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [DllImport("User32.dll", EntryPoint = "FindWindow")]
-        private static extern int FindWindow(string lpClassName, string lpWindowName);
-        [DllImport("User32.dll")]
-        private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
-        [DllImport("User32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-        private const int SW_SHOWMAXIMIZED = 3;
-        //列举所有窗口
-        [DllImport("user32.dll", EntryPoint = "EnumWindows")]
-        public static extern int EnumWindows(EnumWindowsCallback callback, int lParam);
-        public delegate bool EnumWindowsCallback(int hWnd, int lParam);//EnumWindows的回调函数
-
-        //判断窗口句柄是否有效
-        [DllImport("user32.dll", EntryPoint = "IsWindow")]
-        public static extern bool IsWindow(int hWnd);
-
-        //判断窗口是否可见
-        [DllImport("user32.dll", EntryPoint = "IsWindowVisible")]
-        public static extern bool IsWindowVisible(int hwnd);
-      
-        //static System.Threading.Timer gcScheduler = new System.Threading.Timer(state => GC.Collect(), null, 0, 30000);
-        /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
@@ -41,14 +17,16 @@ namespace KangYiCollection
 
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-            //开机自启动
-            //string fileName = Application.StartupPath + @"/KangYiCollection.exe";
-            //SystemOperation.SetAutoRun(fileName, true);
-            //调用软件升级程序
-            System.Diagnostics.Process p = new Process();
-            p.StartInfo.FileName = Application.StartupPath + "\\KangYiUpdate.exe";
-            p.Start();
-            p.WaitForExit();
+            Process[] updates = Process.GetProcessesByName("KangYiUpdate.exe");
+            if (updates.Length == 0)
+            {
+                //调用软件升级程序
+                System.Diagnostics.Process p = new Process();
+                p.StartInfo.FileName = Application.StartupPath + "\\KangYiUpdate.exe";
+                p.Start();
+                updates = Process.GetProcessesByName("KangYiUpdate");
+                p.WaitForExit();
+            }
             try
             {
                 //判断该系统是否已打开

@@ -29,7 +29,11 @@ namespace KyBll
                     "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
                     batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
                     batch.kuser, batch.kimgserver, batch.hjson);
-                sqlQueue.Enqueue(strSql);
+                object synObj = new object();
+                lock (synObj)
+                {
+                    sqlQueue.Enqueue(strSql);
+                }
                 return true;
             }
             catch (Exception e)
@@ -51,30 +55,38 @@ namespace KyBll
         {
             try
             {
-                if (signs.Count > 0)
+                //线程访问控制
+                object synObj = new object();
+                lock (synObj)
                 {
-                    DateTime now = DateTime.Now;
-                    int count = 0;
-                    string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
-                    foreach (var sign in signs)
+                    if (signs.Count > 0)
                     {
-                        if (count != 0)
+                        DateTime now = DateTime.Now;
+                        int count = 0;
+                        string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
+                        foreach (var sign in signs)
                         {
-                            strSql += ",";
-                        }
-                        int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
-                        Int64 id = KyDataLayer2.GuidToLongID();
-                        ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
-                        pictureQueue.Enqueue(picture);
+                            if (count != 0)
+                            {
+                                strSql += ",";
+                            }
+                            int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
+                            Int64 id = KyDataLayer2.GuidToLongID();
+                            ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
 
-                        strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
-                                                   sign.Sign, batchId, sign.Value, sign.Version,
-                                                   sign.Currency, sign.True, startIndex + count, 0);
-                        count++;
+                            pictureQueue.Enqueue(picture);
+
+                            strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
+                                                       sign.Sign, batchId, sign.Value, sign.Version,
+                                                       sign.Currency, sign.True, startIndex + count, 0);
+                            count++;
+                        }
+
+                        sqlQueue.Enqueue(strSql);
+
                     }
-                    sqlQueue.Enqueue(strSql);
+                    return true;
                 }
-                return true;
             }
             catch (Exception e)
             {
@@ -93,7 +105,7 @@ namespace KyBll
                     DateTime start = DateTime.Now;
                     conn.InsertAll<ky_picture>(pictures);
                     TimeSpan span = DateTime.Now - start;
-                    KyBll.Log.TestLog(pictures.Count+" 张图像上传用时" + span.TotalMilliseconds + "ms.");
+                    KyBll.Log.TestLog(pictures.Count + " 张图像上传用时" + span.TotalMilliseconds + "ms.");
                 }
                 return true;
             }
@@ -117,7 +129,7 @@ namespace KyBll
 
                 }
                 TimeSpan span = DateTime.Now - start;
-                KyBll.Log.TestLog(strSqls.Count+" 条Sql执行用时 " + span.TotalMilliseconds + "ms.");
+                KyBll.Log.TestLog(strSqls.Count + " 条Sql执行用时 " + span.TotalMilliseconds + "ms.");
                 return true;
             }
             catch (Exception e)

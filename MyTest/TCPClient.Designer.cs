@@ -42,6 +42,8 @@
             this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             this.rb_Log = new System.Windows.Forms.RichTextBox();
             this.btn_Start = new System.Windows.Forms.Button();
+            this.tf_CycleTime = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
             // 
             // materialLabel1
@@ -116,7 +118,7 @@
             this.tf_Value.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tf_Value.Depth = 0;
             this.tf_Value.Hint = "";
-            this.tf_Value.Location = new System.Drawing.Point(534, 212);
+            this.tf_Value.Location = new System.Drawing.Point(534, 208);
             this.tf_Value.MaxLength = 32767;
             this.tf_Value.MouseState = MaterialSkin.MouseState.HOVER;
             this.tf_Value.Name = "tf_Value";
@@ -138,7 +140,7 @@
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel3.Location = new System.Drawing.Point(408, 216);
+            this.materialLabel3.Location = new System.Drawing.Point(408, 212);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
             this.materialLabel3.Size = new System.Drawing.Size(109, 19);
@@ -265,11 +267,47 @@
             this.btn_Start.UseVisualStyleBackColor = true;
             this.btn_Start.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // tf_CycleTime
+            // 
+            this.tf_CycleTime.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.tf_CycleTime.Depth = 0;
+            this.tf_CycleTime.Hint = "";
+            this.tf_CycleTime.Location = new System.Drawing.Point(534, 246);
+            this.tf_CycleTime.MaxLength = 32767;
+            this.tf_CycleTime.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tf_CycleTime.Name = "tf_CycleTime";
+            this.tf_CycleTime.Padding = new System.Windows.Forms.Padding(5);
+            this.tf_CycleTime.PasswordChar = '\0';
+            this.tf_CycleTime.SelectedText = "";
+            this.tf_CycleTime.SelectionLength = 0;
+            this.tf_CycleTime.SelectionStart = 0;
+            this.tf_CycleTime.Size = new System.Drawing.Size(132, 23);
+            this.tf_CycleTime.TabIndex = 19;
+            this.tf_CycleTime.TabStop = false;
+            this.tf_CycleTime.Text = "100";
+            this.tf_CycleTime.UseSystemPasswordChar = false;
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel4.Location = new System.Drawing.Point(439, 250);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(77, 19);
+            this.materialLabel4.TabIndex = 18;
+            this.materialLabel4.Text = "循环次数:";
+            // 
             // TCPClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 521);
+            this.Controls.Add(this.tf_CycleTime);
+            this.Controls.Add(this.materialLabel4);
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.rb_Log);
             this.Controls.Add(this.tf_ServerPort);
@@ -308,6 +346,8 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel7;
         private System.Windows.Forms.RichTextBox rb_Log;
         private System.Windows.Forms.Button btn_Start;
+        private MaterialSkin.Controls.MaterialSingleLineTextField tf_CycleTime;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
 
     }
 }

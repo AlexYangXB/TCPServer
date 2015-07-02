@@ -23,5 +23,8 @@
     <Setting Name="ServerPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
+    <Setting Name="CycleTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

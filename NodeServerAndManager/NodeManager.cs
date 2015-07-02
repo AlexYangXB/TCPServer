@@ -1180,29 +1180,30 @@ namespace KangYiCollection
         private void timer_UploadPictures_Tick(object sender)
         {
             KyDataOperation.pictureQueue.Clear();
-            //if (!UploadPictures_Status)
-            //{
-            //    UploadPictures_Status = true;
-            //    List<ky_picture> pics = new List<ky_picture>();
-            //    for (int i = 0; i < 1000; i++)
-            //    {
-            //        if (KyDataOperation.pictureQueue.Count > 0)
-            //        {
-            //            ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
-            //            pics.Add(pic);
-            //        }
-            //    }
+            if (!UploadPictures_Status)
+            {
+                UploadPictures_Status = true;
+                List<ky_picture> pics = new List<ky_picture>();
+                for (int i = 0; i < 1000; i++)
+                {
+                    if (KyDataOperation.pictureQueue.Count > 0)
+                    {
+                        ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
+                        pics.Add(pic);
+                    }
+                }
 
-            //    if (pics.Count > 0)
-            //    {
-            //        myTcpServer.TCPEvent.OnCommandLog( new KyModel.TCPMessage() {
-            //            MessageType = TCPMessageType.Common_Message,
-            //            Message = "当前队列还有" + KyDataOperation.pictureQueue.Count + "张图像等待上传..."
-            //        });
-            //        KyDataOperation.InsertPictures(pics);
-            //    }
-            //    UploadPictures_Status = false;
-            //}
+                if (pics.Count > 0)
+                {
+                    myTcpServer.TCPEvent.OnCommandLog(new KyModel.TCPMessage()
+                    {
+                        MessageType = TCPMessageType.Common_Message,
+                        Message = "当前队列还有" + KyDataOperation.pictureQueue.Count + "张图像等待上传..."
+                    });
+                    KyDataOperation.InsertPictures(pics);
+                }
+                UploadPictures_Status = false;
+            }
         }
 
 
