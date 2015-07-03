@@ -385,7 +385,7 @@ namespace KyBll
             {
                 fileName = Path.GetFileName(fileName);
                 result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, DateTime.Now, machine.business.ToString(), machine.kNodeId);
-                Log.ImportLog(fileName + "的冠字号码时间是" + DateTimeAndTimeStamp.GetTime(batch.kdate.ToString()).ToString("yyyy-MM-dd HH:mm:ss"));
+                MyLog.ImportLog(fileName + "的冠字号码时间是" + DateTimeAndTimeStamp.GetTime(batch.kdate.ToString()).ToString("yyyy-MM-dd HH:mm:ss"));
             }
             else
                 batchId = 0;

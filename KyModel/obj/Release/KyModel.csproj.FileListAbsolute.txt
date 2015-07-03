@@ -1,0 +1,9 @@
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\SqlFu.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\bin\Release\SqlFu.xml
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Release\KyModel.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Release\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyModel\obj\Release\KyModel.pdb

@@ -89,7 +89,7 @@ namespace MyTest
             }
             catch (Exception e)
             {
-                Log.UnHandleException("写入FSN异常", e);
+                MyLog.UnHandleException("写入FSN异常", e);
                 return null;
             }
         }

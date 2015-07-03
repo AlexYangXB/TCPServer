@@ -1,0 +1,16 @@
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\TcpServer.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\TcpServer.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\KyBll.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\ICSharpCode.SharpZipLib.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\MySql.Data.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\Newtonsoft.Json.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\KyBll.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\SqlFu.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\bin\Release\SqlFu.xml
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Release\MyTcpServer.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Release\TcpServer.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\TcpServer\obj\Release\TcpServer.pdb

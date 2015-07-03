@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using KyModel;
 using System.Net.Sockets;
 using System.Threading;
+using System.Management;
 namespace KyBll
 {
     public class MyTCP
@@ -146,7 +147,49 @@ namespace KyBll
             message += Environment.NewLine;
             return message;
         }
+        /// <summary>
+        /// 获取本机IP且过滤非真实网卡
+        /// </summary>
+        /// <returns></returns>
+        public static string GetLocalIp()
+        {
+             List<string> listIP = new List<string>();
+            ManagementClass mcNetworkAdapterConfig = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc_NetworkAdapterConfig = mcNetworkAdapterConfig.GetInstances();
+            foreach (ManagementObject mo in moc_NetworkAdapterConfig)
+            {
+                string mServiceName = mo["ServiceName"] as string;
 
+                //过滤非真实的网卡
+                if (!(bool)mo["IPEnabled"])
+                { continue; }
+                if (mServiceName.ToLower().Contains("vmnetadapter")
+                 || mServiceName.ToLower().Contains("ppoe")
+                 || mServiceName.ToLower().Contains("bthpan")
+                 || mServiceName.ToLower().Contains("tapvpn")
+                 || mServiceName.ToLower().Contains("ndisip")
+                 || mServiceName.ToLower().Contains("sinforvnic"))
+                { continue; }
+
+                string[] mIPAddress = mo["IPAddress"] as string[];
+                if (mIPAddress != null)
+                {
+
+                    foreach (string ip in mIPAddress)
+                    {
+                        if (ip != "0.0.0.0")
+                        {
+                            listIP.Add(ip);
+                        }
+                    }
+                }
+                mo.Dispose();
+            }
+            if (listIP.Count > 0)
+                return listIP[0];
+            else
+                return "";
+        }
         #region 委托、事件定义
         //委托
         public delegate void CmdEventHandler(Object sender, CmdEventArgs e);
@@ -179,7 +222,7 @@ namespace KyBll
             }
             catch (Exception ex)
             {
-                Log.UnHandleException("记录Amount日志出错", ex);
+                MyLog.UnHandleException("记录Amount日志出错", ex);
             }
         }
         //日志参数定义
@@ -223,11 +266,11 @@ namespace KyBll
             {
                 string message = MyTCP.TCPMessageFormat(TCPMessage);
                 OnLogEvent(this, new LogEventArgs(LogType.Command, message));
-                Log.CommandLog(message);
+                MyLog.CommandLog(message);
             }
             catch (Exception e)
             {
-                Log.UnHandleException("记录command日志出错", e);
+                MyLog.UnHandleException("记录command日志出错", e);
             }
         }
         public void OnBussninessLog(string Message)
@@ -235,11 +278,11 @@ namespace KyBll
             try
             {
                 OnLogEvent(this, new LogEventArgs(LogType.Bussiness, Message));
-                Log.BussinessLog(Message);
+                MyLog.BussinessLog(Message);
             }
             catch (Exception e)
             {
-                Log.UnHandleException("记录bussiness日志出错", e);
+                MyLog.UnHandleException("记录bussiness日志出错", e);
             }
         }
         public void OnFSNImportLog(string Message, Exception ex = null)
@@ -247,13 +290,13 @@ namespace KyBll
             try
             {
                 if (ex != null)
-                    Message += Log.GetExceptionMsg(ex, "");
+                    Message += MyLog.GetExceptionMsg(ex, "");
                 OnLogEvent(this, new LogEventArgs(LogType.FSNImport, Message));
-                Log.ImportLog(Message);
+                MyLog.ImportLog(Message);
             }
             catch (Exception e)
             {
-                Log.UnHandleException("记录fsn日志出错", e);
+                MyLog.UnHandleException("记录fsn日志出错", e);
             }
         }
 
@@ -293,7 +336,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.ConnectionException("异步接收命令异常", e);
+                MyLog.ConnectionException("异步接收命令异常", e);
                 state.bytesRead = -1;
                 state.buffer = null;
             }
@@ -320,7 +363,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.ConnectionException("异步发送命令异常", e);
+                MyLog.ConnectionException("异步发送命令异常", e);
             }
             sendDone.Set();
         }

@@ -60,6 +60,7 @@ namespace KyBll
                     {
                         if (length == 40 && BitConverter.ToInt32(startBuf, 0) == 0x4C4A4040)
                         {
+                            machine[ip].alive = DateTime.Now;
                             int msgLen = BitConverter.ToInt32(startBuf, 4);
                             Int16 cmd = BitConverter.ToInt16(startBuf, 10);
                             string machineNo = "";
@@ -85,7 +86,6 @@ namespace KyBll
 
                             if (cmd == 0x00A1)//传输数据请求命令 54字节
                             {
-                                machine[ip].alive = DateTime.Now;
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
                                     IpAndPort = ipAndPort,
@@ -98,7 +98,6 @@ namespace KyBll
                             else if (cmd > 0 && cmd <= 10)//纸币信息发送命令 86+1644*N字节
                             {
                                 ReceiveFileCnt++;
-                                machine[ip].alive = DateTime.Now;
                                 //接收文件数超过30将关闭连接
                                 if (ReceiveFileCnt > 30)
                                 {
@@ -159,7 +158,6 @@ namespace KyBll
                                     Command = bBuffer,
                                     MessageType = TCPMessageType.NET_CONTINUE
                                 });
-                                machine[ip].alive = DateTime.Now;
                                 CloseThread();
                             }
                             else if (cmd == 0x00A2)//传输数据结束命令 44字节
@@ -203,7 +201,7 @@ namespace KyBll
                     TCPEvent.OnCommandLog(new TCPMessage
                     {
                         IpAndPort = ipAndPort,
-                        Message = Log.GetExceptionMsg(se, "通信异常"),
+                        Message = MyLog.GetExceptionMsg(se, "通信异常"),
                         MessageType = TCPMessageType.Exception
                     });
                     CloseThread();

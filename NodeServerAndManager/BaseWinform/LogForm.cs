@@ -73,7 +73,7 @@ namespace KangYiCollection.BaseWinform
                 }
                 catch (Exception ex)
                 {
-                    Log.ConnectionException("日志输出异常!", ex);
+                    MyLog.ConnectionException("日志输出异常!", ex);
                 }
             }
         }

@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 namespace KyBll
 {
-    public class Log
+    public class MyLog
     {
         /// <summary>
         /// 测试记录日志  日期_test.log

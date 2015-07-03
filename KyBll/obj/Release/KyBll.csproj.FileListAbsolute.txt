@@ -1,0 +1,14 @@
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\KyBll.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\KyBll.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\CavemanTools.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\ICSharpCode.SharpZipLib.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\KyModel.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\MySql.Data.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\Newtonsoft.Json.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\SqlFu.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\KyModel.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\SqlFu.pdb
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\bin\Release\SqlFu.xml
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Release\KyBll.csprojResolveAssemblyReference.cache
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Release\KyBll.dll
+C:\Users\davidhxy\Documents\GitHub\TCPServer\KyBll\obj\Release\KyBll.pdb

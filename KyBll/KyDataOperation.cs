@@ -8,6 +8,8 @@ using KyModel;
 using KyModel.Models;
 using SqlFu;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 namespace KyBll
 {
     public class KyDataOperation
@@ -38,7 +40,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                KyBll.Log.DataBaseException("保存批次异常", e);
+                KyBll.MyLog.DataBaseException("保存批次异常", e);
                 return false;
             }
         }
@@ -72,13 +74,20 @@ namespace KyBll
                             }
                             int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
                             Int64 id = KyDataLayer2.GuidToLongID();
-                            ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
 
-                            pictureQueue.Enqueue(picture);
+                            if (MySetting.GetProgramValue("UploadPicture"))
+                            {
+                                ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
 
-                            strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},{9})", id, time,
+                                pictureQueue.Enqueue(picture);
+                            }
+                            JObject jo = new JObject();
+                            if(sign.ErrorCode!="0-0-0")
+                                jo["kerrcode"]=sign.ErrorCode;
+
+                            strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}')", id, time,
                                                        sign.Sign, batchId, sign.Value, sign.Version,
-                                                       sign.Currency, sign.True, startIndex + count, 0);
+                                                       sign.Currency, sign.True, startIndex + count, JsonConvert.SerializeObject(jo));
                             count++;
                         }
 
@@ -90,7 +99,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存冠字号码异常", e);
+                MyLog.DataBaseException("保存冠字号码异常", e);
                 return false;
             }
 
@@ -105,13 +114,13 @@ namespace KyBll
                     DateTime start = DateTime.Now;
                     conn.InsertAll<ky_picture>(pictures);
                     TimeSpan span = DateTime.Now - start;
-                    KyBll.Log.TestLog(pictures.Count + " 张图像上传用时" + span.TotalMilliseconds + "ms.");
+                    KyBll.MyLog.TestLog(pictures.Count + " 张图像上传用时" + span.TotalMilliseconds + "ms.");
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存图像异常", e);
+                MyLog.DataBaseException("保存图像异常", e);
                 return false;
             }
         }
@@ -129,12 +138,12 @@ namespace KyBll
 
                 }
                 TimeSpan span = DateTime.Now - start;
-                KyBll.Log.TestLog(strSqls.Count + " 条Sql执行用时 " + span.TotalMilliseconds + "ms.");
+                KyBll.MyLog.TestLog(strSqls.Count + " 条Sql执行用时 " + span.TotalMilliseconds + "ms.");
                 return true;
             }
             catch (Exception e)
             {
-                Log.DataBaseException("执行Sql异常", e);
+                MyLog.DataBaseException("执行Sql异常", e);
                 return false;
             }
         }
@@ -159,7 +168,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("获取批次总数异常", e);
+                MyLog.DataBaseException("获取批次总数异常", e);
             }
             return totalCount;
         }
@@ -187,7 +196,7 @@ namespace KyBll
                 }
                 catch (Exception e)
                 {
-                    Log.DataBaseException("获取批次异常", e);
+                    MyLog.DataBaseException("获取批次异常", e);
                 }
             }
             return batches;
@@ -213,7 +222,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("获取冠字号码信息异常", e);
+                MyLog.DataBaseException("获取冠字号码信息异常", e);
             }
             return signs;
         }
@@ -277,7 +286,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新绑定IP地址异常", e);
+                MyLog.DataBaseException("更新绑定IP地址异常", e);
                 return false;
             }
         }
@@ -408,7 +417,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加厂家信息异常", e);
+                MyLog.DataBaseException("添加厂家信息异常", e);
                 return 0;
             }
         }
@@ -431,7 +440,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.ConnectionException("获取机具异常", e);
+                MyLog.ConnectionException("获取机具异常", e);
                 return null;
             }
 
@@ -572,7 +581,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新机器机具编号和机型异常", e);
+                MyLog.DataBaseException("更新机器机具编号和机型异常", e);
                 return false;
             }
         }
@@ -595,7 +604,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("更新机器上传时间异常", e);
+                MyLog.DataBaseException("更新机器上传时间异常", e);
                 return false;
             }
         }
@@ -663,7 +672,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加ATM信息异常", e);
+                MyLog.DataBaseException("添加ATM信息异常", e);
                 return 0;
             }
         }
@@ -716,7 +725,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("添加ATM信息异常", e);
+                MyLog.DataBaseException("添加ATM信息异常", e);
                 return 0;
             }
         }
@@ -823,7 +832,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("导入机具异常", e);
+                MyLog.DataBaseException("导入机具异常", e);
             }
             return id;
         }
@@ -857,7 +866,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传文件异常", e);
+                MyLog.DataBaseException("上传文件异常", e);
                 return false;
             }
         }
@@ -898,7 +907,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("上传GZH文件异常", e);
+                MyLog.DataBaseException("上传GZH文件异常", e);
                 return false;
 
             }
@@ -941,7 +950,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存GZH的包信息异常", e);
+                MyLog.DataBaseException("保存GZH的包信息异常", e);
             }
             return id;
         }
@@ -968,7 +977,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("保存GZH捆钞异常", e);
+                MyLog.DataBaseException("保存GZH捆钞异常", e);
                 return false;
             }
         }
@@ -994,7 +1003,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试数据服务器连接失败", e);
+                MyLog.DataBaseException("测试数据服务器连接失败", e);
                 return false;
             }
         }
@@ -1017,7 +1026,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试设备数据库连接失败", e);
+                MyLog.DataBaseException("测试设备数据库连接失败", e);
                 return false;
             }
         }
@@ -1037,7 +1046,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试推送服务器连接失败", e);
+                MyLog.DataBaseException("测试推送服务器连接失败", e);
                 return false;
             }
         }
@@ -1059,7 +1068,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                Log.DataBaseException("测试图像数据库连接失败", e);
+                MyLog.DataBaseException("测试图像数据库连接失败", e);
                 return false;
             }
         }

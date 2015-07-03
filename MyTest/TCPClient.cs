@@ -72,7 +72,7 @@ namespace MyTest
             }
             catch (Exception e)
             {
-                MessageBox.Show(KyBll.Log.GetExceptionMsg(e, "连接服务器异常"));
+                MessageBox.Show(KyBll.MyLog.GetExceptionMsg(e, "连接服务器异常"));
             }
         }
         private int FileCnt = 0;
@@ -110,7 +110,7 @@ namespace MyTest
             }
             catch (Exception e)
             {
-                MessageBox.Show(KyBll.Log.GetExceptionMsg(e, "连接服务器异常"));
+                MessageBox.Show(KyBll.MyLog.GetExceptionMsg(e, "连接服务器异常"));
             }
         }
         private void Send(StateObject StaObject, byte[] data)

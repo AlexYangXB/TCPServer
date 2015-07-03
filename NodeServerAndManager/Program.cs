@@ -45,8 +45,8 @@ namespace KangYiCollection
                 if (!IsOpen)//未打开，打开系统
                 {
                     //清除日志
-                    Log.CleanLogs();
-                    Log.CleanFsnFloder();
+                    MyLog.CleanLogs();
+                    MyLog.CleanFsnFloder();
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new NodeManager());
@@ -61,13 +61,13 @@ namespace KangYiCollection
         }
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Log.UnHandleException( e.ToString(),e.ExceptionObject as Exception);
-            MessageBox.Show(null, Log.GetExceptionMsg((Exception)e.ExceptionObject,"未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MyLog.UnHandleException( e.ToString(),e.ExceptionObject as Exception);
+            MessageBox.Show(null, MyLog.GetExceptionMsg((Exception)e.ExceptionObject,"未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            Log.UnHandleException( e.ToString(),e.Exception);
-            MessageBox.Show(null, Log.GetExceptionMsg(e.Exception, "未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MyLog.UnHandleException( e.ToString(),e.Exception);
+            MessageBox.Show(null, MyLog.GetExceptionMsg(e.Exception, "未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
        
     }

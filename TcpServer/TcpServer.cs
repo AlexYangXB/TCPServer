@@ -93,7 +93,7 @@ namespace MyTcpServer
             }
             catch (SocketException e)
             {
-                Log.ConnectionException("启动监听服务异常", e);
+                MyLog.ConnectionException("启动监听服务异常", e);
                 return;
             }
         }
@@ -119,7 +119,7 @@ namespace MyTcpServer
                     }
                     dictThread = tmpDict;
                     if (dictThread.Count > 0)
-                        KyBll.Log.TestLog("当前总共 " + dictThread.Count + "条收数据线程!");
+                        KyBll.MyLog.TestLog("当前总共 " + dictThread.Count + "条收数据线程!");
                     if (dictThread.Count >= 30)
                     {
                         TCPEvent.OnCommandLog(new TCPMessage
@@ -133,7 +133,7 @@ namespace MyTcpServer
                 }
                 catch (Exception e)
                 {
-                    Log.ConnectionException("监听连接异常", e);
+                    MyLog.ConnectionException("监听连接异常", e);
                     continue;
                 }
             }
@@ -188,7 +188,7 @@ namespace MyTcpServer
                 }
                 catch (Exception e)
                 {
-                    Log.ConnectionException("启动接收数据线程异常", e);
+                    MyLog.ConnectionException("启动接收数据线程异常", e);
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace MyTcpServer
             }
             catch (Exception e)
             {
-                Log.ConnectionException("停止服务异常", e);
+                MyLog.ConnectionException("停止服务异常", e);
             }
         }
 
@@ -324,7 +324,7 @@ namespace MyTcpServer
             }
             catch (Exception e)
             {
-                Log.BussinessLog(Log.GetExceptionMsg(e,"交易控制异常"));
+                MyLog.BussinessLog(MyLog.GetExceptionMsg(e,"交易控制异常"));
             }
         }
     }

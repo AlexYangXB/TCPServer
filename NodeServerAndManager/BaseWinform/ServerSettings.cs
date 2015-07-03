@@ -44,7 +44,7 @@ namespace KangYiCollection.BaseWinform
 
             if (KangYiCollection.Properties.Settings.Default.LocalIp == "" || KangYiCollection.Properties.Settings.Default.LocalIp == "0.0.0.0")
             {
-                KangYiCollection.Properties.Settings.Default.LocalIp = GetLocalIp();
+                KangYiCollection.Properties.Settings.Default.LocalIp = MyTCP.GetLocalIp();
             }
             ipControl_Local.Text = KangYiCollection.Properties.Settings.Default.LocalIp;
             ipControl_Server.Text = KangYiCollection.Properties.Settings.Default.ServerIp;
@@ -166,7 +166,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                Log.TestLog(Log.GetExceptionMsg(e, "连接数据服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接数据服务器异常"));
             }
 
         }
@@ -212,7 +212,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                Log.TestLog(Log.GetExceptionMsg(e, "连接设备服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接设备服务器异常"));
             }
 
         }
@@ -289,7 +289,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                Log.TestLog(Log.GetExceptionMsg(e, "连接推送服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接推送服务器异常"));
             }
         }
         /// <summary>
@@ -328,7 +328,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                Log.TestLog(Log.GetExceptionMsg(e, "连接图像服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接图像服务器异常"));
             }
 
 
@@ -359,24 +359,7 @@ namespace KangYiCollection.BaseWinform
             }
         }
 
-        /// <summary>
-        /// 获取本机IP
-        /// </summary>
-        /// <returns></returns>
-        private static string GetLocalIp() //获取本地IP
-        {
-            IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddr = ipHost.AddressList[0];
-            for (int i = 0; i < ipHost.AddressList.Length; i++)
-            {
-                if (ipHost.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
-                {
-                    ipAddr = ipHost.AddressList[i];
-                }
-            }
-            //IPAddress ipAddr = ipHost.AddressList[0];
-            return ipAddr.ToString();
-        }
+       
 
         private void chkList_Node_SelectedIndexChanged(object sender, EventArgs e)
         {

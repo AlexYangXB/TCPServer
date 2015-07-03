@@ -141,7 +141,7 @@ namespace KangYiCollection
                 }
                 catch (Exception e)
                 {
-                    Log.ConnectionException("启动连接服务器异常！", e);
+                    MyLog.ConnectionException("启动连接服务器异常！", e);
                     return;
                 }
             }
@@ -214,7 +214,7 @@ namespace KangYiCollection
             {
                 MessageBox.Show("无法连接设备数据库！", "提示", MessageBoxButtons.OK,
                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                Log.DataBaseException("登陆失败！", ex);
+                MyLog.DataBaseException("登陆失败！", ex);
             }
         }
         #endregion
@@ -821,7 +821,7 @@ namespace KangYiCollection
             }
             catch (Exception e)
             {
-                Log.ConnectionException("推送服务器异常", e);
+                MyLog.ConnectionException("推送服务器异常", e);
             }
         }
 
@@ -1072,10 +1072,10 @@ namespace KangYiCollection
                             CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
                         }
                         else
-                            Log.CRHLog(exportDir + "路径不存在！");
+                            MyLog.CRHLog(exportDir + "路径不存在！");
                     }
                     else
-                        Log.CRHLog("CRH导出未启用！");
+                        MyLog.CRHLog("CRH导出未启用！");
                     ExportCRH_Status = false;
                 }
             }
@@ -1172,7 +1172,7 @@ namespace KangYiCollection
                 if (strSqls.Count > 0)
                     KyDataOperation.InsertWithSql(strSqls);
                 if (KyDataOperation.sqlQueue.Count > 0)
-                    Log.TestLog("当前队列还有" + KyDataOperation.sqlQueue.Count + "条SQL等待执行...");
+                    MyLog.TestLog("当前队列还有" + KyDataOperation.sqlQueue.Count + "条SQL等待执行...");
                 UploadSql_Status = false;
             }
         }
@@ -1206,6 +1206,8 @@ namespace KangYiCollection
                     }
                     UploadPictures_Status = false;
                 }
+                else
+                    KyDataOperation.pictureQueue.Clear();
             }
         }
 
