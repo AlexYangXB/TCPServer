@@ -60,13 +60,15 @@ namespace KyBll
         /// </summary>
         /// <param name="TCPMessage"></param>
         /// <returns></returns>
-        public static string TCPMessageFormat(TCPMessage TCPMessage)
+        public static string TCPMessageFormat(TCPMessage TCPMessage,bool Command)
         {
             string message = "";
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
-                CommandFormat = " 命令长度 " + TCPMessage.Command.Length + Environment.NewLine + MyTCP.ByteToStringX2(TCPMessage.Command);
+                CommandFormat = " 命令长度 " + TCPMessage.Command.Length ;
+                if (Command)
+                    CommandFormat += Environment.NewLine+MyTCP.ByteToStringX2(TCPMessage.Command);
             }
             if (TCPMessage.MessageType == TCPMessageType.NewConnection)
             {
@@ -264,8 +266,9 @@ namespace KyBll
         {
             try
             {
-                string message = MyTCP.TCPMessageFormat(TCPMessage);
+                string message = MyTCP.TCPMessageFormat(TCPMessage,false);
                 OnLogEvent(this, new LogEventArgs(LogType.Command, message));
+                message = MyTCP.TCPMessageFormat(TCPMessage, true);
                 MyLog.CommandLog(message);
             }
             catch (Exception e)

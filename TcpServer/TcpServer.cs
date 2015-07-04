@@ -204,7 +204,6 @@ namespace MyTcpServer
                 foreach (var dict in dictThread)
                 {
                     dict.Key._shouldStop = true;
-                    dict.Key.sokClient.Shutdown(SocketShutdown.Both);
                     dict.Key.sokClient.Close();
                     dict.Value.Join();
                 }

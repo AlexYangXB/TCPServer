@@ -1165,7 +1165,11 @@ namespace KangYiCollection
                 {
                     if (KyDataOperation.sqlQueue.Count > 0)
                     {
-                        strSqls.Add(KyDataOperation.sqlQueue.Dequeue());
+                        object synObj = new object();
+                        lock (synObj)
+                        {
+                            strSqls.Add(KyDataOperation.sqlQueue.Dequeue());
+                        }
                     }
                 }
 
@@ -1190,12 +1194,17 @@ namespace KangYiCollection
                     {
                         if (KyDataOperation.pictureQueue.Count > 0)
                         {
-                            ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
-                            pics.Add(pic);
+                            object synObj = new object();
+                            lock (synObj)
+                            {
+                                ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
+                                if (pic != null)
+                                    pics.Add(pic);
+                            }
                         }
                     }
 
-                    if (pics.Count > 0)
+                    if (KyDataOperation.pictureQueue.Count > 0)
                     {
                         myTcpServer.TCPEvent.OnCommandLog(new KyModel.TCPMessage()
                         {

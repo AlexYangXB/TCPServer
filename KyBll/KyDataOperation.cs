@@ -57,45 +57,45 @@ namespace KyBll
         {
             try
             {
-                //线程访问控制
-                object synObj = new object();
-                lock (synObj)
+                if (signs.Count > 0)
                 {
-                    if (signs.Count > 0)
+                    DateTime now = DateTime.Now;
+                    int count = 0;
+                    string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
+                    foreach (var sign in signs)
                     {
-                        DateTime now = DateTime.Now;
-                        int count = 0;
-                        string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
-                        foreach (var sign in signs)
+                        if (count != 0)
                         {
-                            if (count != 0)
-                            {
-                                strSql += ",";
-                            }
-                            int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
-                            Int64 id = KyDataLayer2.GuidToLongID();
-
-                            if (MySetting.GetProgramValue("UploadPicture"))
-                            {
-                                ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
-
-                                pictureQueue.Enqueue(picture);
-                            }
-                            JObject jo = new JObject();
-                            if(sign.ErrorCode!="0-0-0")
-                                jo["kerrcode"]=sign.ErrorCode;
-
-                            strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}')", id, time,
-                                                       sign.Sign, batchId, sign.Value, sign.Version,
-                                                       sign.Currency, sign.True, startIndex + count, JsonConvert.SerializeObject(jo));
-                            count++;
+                            strSql += ",";
                         }
+                        int time = DateTimeAndTimeStamp.ConvertDateTimeInt(sign.Date);
+                        Int64 id = KyDataLayer2.GuidToLongID();
 
-                        sqlQueue.Enqueue(strSql);
+                        if (MySetting.GetProgramValue("UploadPicture"))
+                        {
+                            ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
+                            object synObj = new object();
+                            lock (synObj)
+                            {
+                                if (picture != null)
+                                    pictureQueue.Enqueue(picture);
+                            }
+                        }
+                        JObject jo = new JObject();
+                        if (sign.ErrorCode != "0-0-0")
+                            jo["kerrcode"] = sign.ErrorCode;
 
+                        strSql += string.Format("({0},{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}')", id, time,
+                                                   sign.Sign, batchId, sign.Value, sign.Version,
+                                                   sign.Currency, sign.True, startIndex + count, JsonConvert.SerializeObject(jo));
+                        count++;
                     }
-                    return true;
+
+                    sqlQueue.Enqueue(strSql);
+
                 }
+                return true;
+
             }
             catch (Exception e)
             {
@@ -106,12 +106,12 @@ namespace KyBll
         }
         public static bool InsertPictures(List<ky_picture> pictures)
         {
+            DateTime start = DateTime.Now;
             try
             {
                 using (var conn = DbHelperMySQL.OpenImageConnection())
                 {
                     SqlFuDao.OnCommand = cmd => cmd.CommandTimeout = 120;
-                    DateTime start = DateTime.Now;
                     conn.InsertAll<ky_picture>(pictures);
                     TimeSpan span = DateTime.Now - start;
                     KyBll.MyLog.TestLog(pictures.Count + " 张图像上传用时" + span.TotalMilliseconds + "ms.");
@@ -120,19 +120,21 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.DataBaseException("保存图像异常", e);
+                TimeSpan span = DateTime.Now - start;
+                MyLog.DataBaseException("保存图像异常,已运行"+span.TotalMilliseconds+"ms", e);
                 return false;
             }
         }
         public static bool InsertWithSql(List<string> strSqls)
         {
+            DateTime start = DateTime.Now;
             try
             {
-                DateTime start = DateTime.Now;
                 using (var conn = DbHelperMySQL.OpenSphinxConnection())
                 {
                     foreach (var strSql in strSqls)
                     {
+                        SqlFuDao.OnCommand = cmd => cmd.CommandTimeout = 120;
                         conn.Execute(strSql);
                     }
 
@@ -143,7 +145,8 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.DataBaseException("执行Sql异常", e);
+                TimeSpan span = DateTime.Now - start;
+                MyLog.DataBaseException("执行Sql异常,已运行"+span.TotalMilliseconds+"ms", e);
                 return false;
             }
         }
