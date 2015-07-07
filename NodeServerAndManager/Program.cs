@@ -3,6 +3,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KyBll;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 namespace KangYiCollection
 {
     static class Program
@@ -13,7 +16,7 @@ namespace KangYiCollection
         [STAThread]
         static void Main()
         {
-            
+
 
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
@@ -47,6 +50,24 @@ namespace KangYiCollection
                     //清除日志
                     MyLog.CleanLogs();
                     MyLog.CleanFsnFloder();
+                    //加载未导入的图像文件和Sql
+                    if (Directory.Exists(KyDataOperation.PictureFileDir))
+                    {
+                        string[] pictureFiles = Directory.GetFiles(KyDataOperation.PictureFileDir).Take(KyDataOperation.MaxPictureFileCount).ToArray();
+                        foreach (var pic in pictureFiles)
+                        {
+                            KyDataOperation.pictureQueue.Enqueue(pic);
+                        }
+                    }
+                    string sqlFile = KyDataOperation.SqlDir + "\\UnUpload.sql";
+                    List<string> sqls = FileOperation.ReadLines(KyDataOperation.SqlDir, sqlFile, KyDataOperation.MaxSqlCount);
+                    if (sqls.Count > 0)
+                    {
+                        foreach (var sql in sqls)
+                        {
+                            KyDataOperation.sqlQueue.Enqueue(sql);
+                        }
+                    }
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new NodeManager());
@@ -54,21 +75,21 @@ namespace KangYiCollection
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
-            
+
         }
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MyLog.UnHandleException( e.ToString(),e.ExceptionObject as Exception);
-            MessageBox.Show(null, MyLog.GetExceptionMsg((Exception)e.ExceptionObject,"未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MyLog.UnHandleException(e.ToString(), e.ExceptionObject as Exception);
+            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg((Exception)e.ExceptionObject, "未知错误！"),"提示",10000);
         }
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            MyLog.UnHandleException( e.ToString(),e.Exception);
-            MessageBox.Show(null, MyLog.GetExceptionMsg(e.Exception, "未知错误！"), "错误:", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            MyLog.UnHandleException(e.ToString(), e.Exception);
+            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(e.Exception, "未知错误！"), "提示", 10000);
         }
-       
+
     }
 }

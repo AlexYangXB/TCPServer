@@ -393,6 +393,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ServerSettings";
+            this.RightToLeftLayout = true;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "服务器设置";

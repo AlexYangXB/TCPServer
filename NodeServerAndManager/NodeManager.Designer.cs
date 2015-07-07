@@ -87,8 +87,6 @@ namespace KangYiCollection
             this.contextMenuStrip_Main.SuspendLayout();
             this.contextMenuStrip_Tray.SuspendLayout();
             this.SuspendLayout();
-
-            
             // 
             // materialTabControl1
             // 
@@ -96,11 +94,11 @@ namespace KangYiCollection
             this.materialTabControl1.Controls.Add(this.tabPage2);
             this.materialTabControl1.Controls.Add(this.tabPage3);
             this.materialTabControl1.Depth = 0;
-            this.materialTabControl1.Location = new System.Drawing.Point(0, 79);
+            this.materialTabControl1.Location = new System.Drawing.Point(0, 86);
             this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(653, 469);
+            this.materialTabControl1.Size = new System.Drawing.Size(653, 508);
             this.materialTabControl1.TabIndex = 8;
             this.materialTabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -117,16 +115,16 @@ namespace KangYiCollection
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(645, 443);
+            this.tabPage1.Size = new System.Drawing.Size(645, 482);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "文件上传";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // btn_Ok
             // 
-            this.btn_Ok.Location = new System.Drawing.Point(298, 402);
+            this.btn_Ok.Location = new System.Drawing.Point(298, 436);
             this.btn_Ok.Name = "btn_Ok";
-            this.btn_Ok.Size = new System.Drawing.Size(75, 23);
+            this.btn_Ok.Size = new System.Drawing.Size(75, 25);
             this.btn_Ok.TabIndex = 34;
             this.btn_Ok.Text = "确定";
             this.btn_Ok.UseVisualStyleBackColor = true;
@@ -135,26 +133,26 @@ namespace KangYiCollection
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(144, 280);
+            this.label13.Location = new System.Drawing.Point(144, 303);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(59, 12);
+            this.label13.Size = new System.Drawing.Size(58, 13);
             this.label13.TabIndex = 33;
             this.label13.Text = "上传提示:";
             // 
             // txb_Message
             // 
-            this.txb_Message.Location = new System.Drawing.Point(146, 295);
+            this.txb_Message.Location = new System.Drawing.Point(146, 320);
             this.txb_Message.Multiline = true;
             this.txb_Message.Name = "txb_Message";
-            this.txb_Message.Size = new System.Drawing.Size(385, 97);
+            this.txb_Message.Size = new System.Drawing.Size(385, 105);
             this.txb_Message.TabIndex = 32;
             // 
             // rad_GZH
             // 
             this.rad_GZH.AutoSize = true;
-            this.rad_GZH.Location = new System.Drawing.Point(84, 63);
+            this.rad_GZH.Location = new System.Drawing.Point(84, 68);
             this.rad_GZH.Name = "rad_GZH";
-            this.rad_GZH.Size = new System.Drawing.Size(65, 16);
+            this.rad_GZH.Size = new System.Drawing.Size(72, 17);
             this.rad_GZH.TabIndex = 31;
             this.rad_GZH.Text = "GZH文件";
             this.rad_GZH.UseVisualStyleBackColor = true;
@@ -164,9 +162,9 @@ namespace KangYiCollection
             // 
             this.rad_FSN.AutoSize = true;
             this.rad_FSN.Checked = true;
-            this.rad_FSN.Location = new System.Drawing.Point(84, 40);
+            this.rad_FSN.Location = new System.Drawing.Point(84, 43);
             this.rad_FSN.Name = "rad_FSN";
-            this.rad_FSN.Size = new System.Drawing.Size(65, 16);
+            this.rad_FSN.Size = new System.Drawing.Size(70, 17);
             this.rad_FSN.TabIndex = 30;
             this.rad_FSN.TabStop = true;
             this.rad_FSN.Text = "FSN文件";
@@ -176,16 +174,16 @@ namespace KangYiCollection
             // txb_FilePath
             // 
             this.txb_FilePath.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_FilePath.Location = new System.Drawing.Point(176, 40);
+            this.txb_FilePath.Location = new System.Drawing.Point(176, 43);
             this.txb_FilePath.Name = "txb_FilePath";
             this.txb_FilePath.Size = new System.Drawing.Size(299, 23);
             this.txb_FilePath.TabIndex = 28;
             // 
             // btn_Scan
             // 
-            this.btn_Scan.Location = new System.Drawing.Point(481, 40);
+            this.btn_Scan.Location = new System.Drawing.Point(481, 43);
             this.btn_Scan.Name = "btn_Scan";
-            this.btn_Scan.Size = new System.Drawing.Size(75, 23);
+            this.btn_Scan.Size = new System.Drawing.Size(75, 25);
             this.btn_Scan.TabIndex = 29;
             this.btn_Scan.Text = "选择文件";
             this.btn_Scan.UseVisualStyleBackColor = true;
@@ -205,25 +203,25 @@ namespace KangYiCollection
             this.groupBox1.Controls.Add(this.cmb_ATM2);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.cmb_Node);
-            this.groupBox1.Location = new System.Drawing.Point(118, 85);
+            this.groupBox1.Location = new System.Drawing.Point(118, 92);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(420, 192);
+            this.groupBox1.Size = new System.Drawing.Size(420, 208);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             // 
             // txb_BussinessNumber
             // 
             this.txb_BussinessNumber.Enabled = false;
-            this.txb_BussinessNumber.Location = new System.Drawing.Point(90, 158);
+            this.txb_BussinessNumber.Location = new System.Drawing.Point(90, 171);
             this.txb_BussinessNumber.Name = "txb_BussinessNumber";
-            this.txb_BussinessNumber.Size = new System.Drawing.Size(313, 21);
+            this.txb_BussinessNumber.Size = new System.Drawing.Size(313, 20);
             this.txb_BussinessNumber.TabIndex = 25;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(6, 159);
+            this.label3.Location = new System.Drawing.Point(6, 172);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 14);
             this.label3.TabIndex = 24;
@@ -233,7 +231,7 @@ namespace KangYiCollection
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(20, 71);
+            this.label12.Location = new System.Drawing.Point(20, 77);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(63, 14);
             this.label12.TabIndex = 12;
@@ -243,7 +241,7 @@ namespace KangYiCollection
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label15.Location = new System.Drawing.Point(20, 17);
+            this.label15.Location = new System.Drawing.Point(20, 18);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(63, 14);
             this.label15.TabIndex = 22;
@@ -260,7 +258,7 @@ namespace KangYiCollection
             "柜面存款",
             "ATM配钞",
             "ATM清钞"});
-            this.cmb_BusinessType.Location = new System.Drawing.Point(89, 68);
+            this.cmb_BusinessType.Location = new System.Drawing.Point(89, 74);
             this.cmb_BusinessType.Name = "cmb_BusinessType";
             this.cmb_BusinessType.Size = new System.Drawing.Size(314, 22);
             this.cmb_BusinessType.TabIndex = 9;
@@ -270,7 +268,7 @@ namespace KangYiCollection
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(20, 99);
+            this.label11.Location = new System.Drawing.Point(20, 107);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(63, 14);
             this.label11.TabIndex = 13;
@@ -290,7 +288,7 @@ namespace KangYiCollection
             "柜面存款",
             "ATM配钞",
             "ATM清钞"});
-            this.cmb_CashBox2.Location = new System.Drawing.Point(90, 124);
+            this.cmb_CashBox2.Location = new System.Drawing.Point(90, 134);
             this.cmb_CashBox2.Name = "cmb_CashBox2";
             this.cmb_CashBox2.Size = new System.Drawing.Size(314, 22);
             this.cmb_CashBox2.TabIndex = 23;
@@ -299,7 +297,7 @@ namespace KangYiCollection
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(13, 128);
+            this.label10.Location = new System.Drawing.Point(13, 139);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(70, 14);
             this.label10.TabIndex = 14;
@@ -310,7 +308,7 @@ namespace KangYiCollection
             this.cmb_Factory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Factory.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmb_Factory.FormattingEnabled = true;
-            this.cmb_Factory.Location = new System.Drawing.Point(89, 13);
+            this.cmb_Factory.Location = new System.Drawing.Point(89, 14);
             this.cmb_Factory.Name = "cmb_Factory";
             this.cmb_Factory.Size = new System.Drawing.Size(314, 22);
             this.cmb_Factory.TabIndex = 22;
@@ -329,7 +327,7 @@ namespace KangYiCollection
             "柜面存款",
             "ATM配钞",
             "ATM清钞"});
-            this.cmb_ATM2.Location = new System.Drawing.Point(89, 96);
+            this.cmb_ATM2.Location = new System.Drawing.Point(89, 104);
             this.cmb_ATM2.Name = "cmb_ATM2";
             this.cmb_ATM2.Size = new System.Drawing.Size(314, 22);
             this.cmb_ATM2.TabIndex = 18;
@@ -338,7 +336,7 @@ namespace KangYiCollection
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.Location = new System.Drawing.Point(20, 44);
+            this.label14.Location = new System.Drawing.Point(20, 48);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(63, 14);
             this.label14.TabIndex = 19;
@@ -349,7 +347,7 @@ namespace KangYiCollection
             this.cmb_Node.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_Node.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmb_Node.FormattingEnabled = true;
-            this.cmb_Node.Location = new System.Drawing.Point(89, 40);
+            this.cmb_Node.Location = new System.Drawing.Point(89, 43);
             this.cmb_Node.Name = "cmb_Node";
             this.cmb_Node.Size = new System.Drawing.Size(314, 22);
             this.cmb_Node.TabIndex = 20;
@@ -360,7 +358,7 @@ namespace KangYiCollection
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(645, 443);
+            this.tabPage2.Size = new System.Drawing.Size(645, 482);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "设备监控";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -390,7 +388,7 @@ namespace KangYiCollection
             this.dgv_machine.ReadOnly = true;
             this.dgv_machine.RowHeadersVisible = false;
             this.dgv_machine.RowTemplate.Height = 23;
-            this.dgv_machine.Size = new System.Drawing.Size(639, 437);
+            this.dgv_machine.Size = new System.Drawing.Size(639, 476);
             this.dgv_machine.TabIndex = 1;
             // 
             // kId
@@ -445,7 +443,7 @@ namespace KangYiCollection
             this.tabPage3.Controls.Add(this.txb_User);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(645, 443);
+            this.tabPage3.Size = new System.Drawing.Size(645, 482);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "用户登录";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -455,7 +453,7 @@ namespace KangYiCollection
             this.lb_OpenMainDir.AutoSize = true;
             this.lb_OpenMainDir.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lb_OpenMainDir.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.lb_OpenMainDir.Location = new System.Drawing.Point(527, 397);
+            this.lb_OpenMainDir.Location = new System.Drawing.Point(527, 430);
             this.lb_OpenMainDir.Name = "lb_OpenMainDir";
             this.lb_OpenMainDir.Size = new System.Drawing.Size(77, 14);
             this.lb_OpenMainDir.TabIndex = 17;
@@ -465,11 +463,11 @@ namespace KangYiCollection
             // btn_Login
             // 
             this.btn_Login.Depth = 0;
-            this.btn_Login.Location = new System.Drawing.Point(277, 255);
+            this.btn_Login.Location = new System.Drawing.Point(277, 276);
             this.btn_Login.MouseState = MaterialSkin.MouseState.HOVER;
             this.btn_Login.Name = "btn_Login";
             this.btn_Login.Primary = true;
-            this.btn_Login.Size = new System.Drawing.Size(115, 39);
+            this.btn_Login.Size = new System.Drawing.Size(115, 42);
             this.btn_Login.TabIndex = 16;
             this.btn_Login.Text = "登录";
             this.btn_Login.UseVisualStyleBackColor = true;
@@ -478,9 +476,9 @@ namespace KangYiCollection
             // lab_Version
             // 
             this.lab_Version.AutoSize = true;
-            this.lab_Version.Location = new System.Drawing.Point(19, 411);
+            this.lab_Version.Location = new System.Drawing.Point(19, 445);
             this.lab_Version.Name = "lab_Version";
-            this.lab_Version.Size = new System.Drawing.Size(101, 12);
+            this.lab_Version.Size = new System.Drawing.Size(91, 13);
             this.lab_Version.TabIndex = 13;
             this.lab_Version.Text = "软件版本:1.0.0.0";
             this.lab_Version.Click += new System.EventHandler(this.lab_Version_Click);
@@ -489,7 +487,7 @@ namespace KangYiCollection
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(216, 209);
+            this.label2.Location = new System.Drawing.Point(216, 226);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 16);
             this.label2.TabIndex = 11;
@@ -499,7 +497,7 @@ namespace KangYiCollection
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(216, 147);
+            this.label1.Location = new System.Drawing.Point(216, 159);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 16);
             this.label1.TabIndex = 10;
@@ -508,7 +506,7 @@ namespace KangYiCollection
             // txb_PassWord
             // 
             this.txb_PassWord.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_PassWord.Location = new System.Drawing.Point(262, 206);
+            this.txb_PassWord.Location = new System.Drawing.Point(262, 223);
             this.txb_PassWord.Name = "txb_PassWord";
             this.txb_PassWord.PasswordChar = '*';
             this.txb_PassWord.Size = new System.Drawing.Size(157, 26);
@@ -518,7 +516,7 @@ namespace KangYiCollection
             // txb_User
             // 
             this.txb_User.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_User.Location = new System.Drawing.Point(262, 144);
+            this.txb_User.Location = new System.Drawing.Point(262, 156);
             this.txb_User.Name = "txb_User";
             this.txb_User.Size = new System.Drawing.Size(157, 26);
             this.txb_User.TabIndex = 8;
@@ -530,10 +528,10 @@ namespace KangYiCollection
             this.materialTabSelector1.Depth = 0;
             this.materialTabSelector1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.materialTabSelector1.ForeColor = System.Drawing.SystemColors.Control;
-            this.materialTabSelector1.Location = new System.Drawing.Point(0, 28);
+            this.materialTabSelector1.Location = new System.Drawing.Point(0, 30);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabSelector1.Name = "materialTabSelector1";
-            this.materialTabSelector1.Size = new System.Drawing.Size(680, 45);
+            this.materialTabSelector1.Size = new System.Drawing.Size(680, 49);
             this.materialTabSelector1.TabIndex = 1;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
@@ -549,40 +547,40 @@ namespace KangYiCollection
             this.MenuItem_LogOut});
             this.contextMenuStrip_Main.MouseState = MaterialSkin.MouseState.HOVER;
             this.contextMenuStrip_Main.Name = "materialContextMenuStrip1";
-            this.contextMenuStrip_Main.Size = new System.Drawing.Size(137, 114);
+            this.contextMenuStrip_Main.Size = new System.Drawing.Size(135, 114);
             // 
             // MenuItem_ServerSetting
             // 
             this.MenuItem_ServerSetting.Name = "MenuItem_ServerSetting";
-            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_ServerSetting.Size = new System.Drawing.Size(134, 22);
             this.MenuItem_ServerSetting.Text = "服务器设置";
             this.MenuItem_ServerSetting.Click += new System.EventHandler(this.MenuItem_ServerSetting_Click);
             // 
             // MenuItem_FunctionSetting
             // 
             this.MenuItem_FunctionSetting.Name = "MenuItem_FunctionSetting";
-            this.MenuItem_FunctionSetting.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_FunctionSetting.Size = new System.Drawing.Size(134, 22);
             this.MenuItem_FunctionSetting.Text = "功能设置";
             this.MenuItem_FunctionSetting.Click += new System.EventHandler(this.MenuItem_FunctionSetting_Click);
             // 
             // MenuItem_CRHReview
             // 
             this.MenuItem_CRHReview.Name = "MenuItem_CRHReview";
-            this.MenuItem_CRHReview.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_CRHReview.Size = new System.Drawing.Size(134, 22);
             this.MenuItem_CRHReview.Text = "CRH查看";
             this.MenuItem_CRHReview.Click += new System.EventHandler(this.MenuItem_CRHReview_Click);
             // 
             // MenuItem_Log
             // 
             this.MenuItem_Log.Name = "MenuItem_Log";
-            this.MenuItem_Log.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_Log.Size = new System.Drawing.Size(134, 22);
             this.MenuItem_Log.Text = "日志";
             this.MenuItem_Log.Click += new System.EventHandler(this.MenuItem_Log_Click);
             // 
             // MenuItem_LogOut
             // 
             this.MenuItem_LogOut.Name = "MenuItem_LogOut";
-            this.MenuItem_LogOut.Size = new System.Drawing.Size(136, 22);
+            this.MenuItem_LogOut.Size = new System.Drawing.Size(134, 22);
             this.MenuItem_LogOut.Text = "注销";
             this.MenuItem_LogOut.Click += new System.EventHandler(this.MenuItem_LogOut_Click);
             // 
@@ -602,20 +600,20 @@ namespace KangYiCollection
             this.MenuItem_Exit});
             this.contextMenuStrip_Tray.MouseState = MaterialSkin.MouseState.HOVER;
             this.contextMenuStrip_Tray.Name = "contextMenuStrip_Tray";
-            this.contextMenuStrip_Tray.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip_Tray.Size = new System.Drawing.Size(99, 26);
             // 
             // MenuItem_Exit
             // 
             this.MenuItem_Exit.Name = "MenuItem_Exit";
-            this.MenuItem_Exit.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_Exit.Size = new System.Drawing.Size(98, 22);
             this.MenuItem_Exit.Text = "退出";
             this.MenuItem_Exit.Click += new System.EventHandler(this.MenuItem_Exit_Click);
             // 
             // NodeManager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 549);
+            this.ClientSize = new System.Drawing.Size(654, 595);
             this.Controls.Add(this.materialTabControl1);
             this.Controls.Add(this.materialTabSelector1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

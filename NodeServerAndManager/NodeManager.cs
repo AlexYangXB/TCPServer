@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
 using System.Threading;
+using System.Runtime.InteropServices;
 namespace KangYiCollection
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
@@ -71,83 +72,79 @@ namespace KangYiCollection
             bool result = false;
             if (KangYiCollection.Properties.Settings.Default.ServerIp != "" && KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KangYiCollection.Properties.Settings.Default.PictureIp != "" && KangYiCollection.Properties.Settings.Default.LocalIp != "")
             {
-                //SPHINX数据服务器连接
-                result = KyDataOperation.TestConnectServer();
-                if (!result)
-                {
-                    MessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
-                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    return;
-                }
                 result = KyDataOperation.TestConnectDevice();
                 //Device数据库连接
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    return;
+                    AutoClosingMessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
                 }
-                //图像数据库
-                result = KyDataOperation.TestConnectImage();
-                if (!result)
+                else
                 {
-                    MessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    return;
+                    try
+                    {
+                        //获取绑定的网点ID
+                        bindNodeId.Clear();
+                        List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(KangYiCollection.Properties.Settings.Default.LocalIp);
+                        bindNodeId = (from node in nodes select node.kId).ToList();
+                        List<ky_machine> machineDt = new List<ky_machine>();
+                        //获取绑定网点内的机器
+                        if (bindNodeId.Count > 0)
+                        {
+                            int[] nodeIds = bindNodeId.ToArray();
+                            machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                        }
+                        idIp.Clear();
+                        foreach (ky_machine machine in machineDt)
+                        {
+                            int machineId = Convert.ToInt32(machine.kId);
+                            string ip = machine.kIpAddress.Trim();
+                            if (!idIp.ContainsKey(machineId))
+                            {
+                                idIp.Add(machineId, ip);
+                            }
+                        }
+                        //启动TcpServer线程接收数据
+
+                        if (result)
+                        {
+                            myTcpServer.DTable = machineDt;
+                            myTcpServer.DataSaveFolder = path;
+                            int pictureServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
+                            myTcpServer.PictureServerId = pictureServerId;
+                            myTcpServer.StartListenling(KangYiCollection.Properties.Settings.Default.LocalIp, KangYiCollection.Properties.Settings.Default.Port);
+                            result = true;
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        MyLog.ConnectionException("启动监听异常！", e);
+                        AutoClosingMessageBox.Show("启动监听异常!", "提示", 5000);
+                        return;
+                    }
                 }
+                //推送服务
                 result = KyDataOperation.TestConnectPush(KangYiCollection.Properties.Settings.Default.PushIp, KangYiCollection.Properties.Settings.Default.PushPort);
                 if (!result)
                 {
-                    MessageBox.Show("无法连接‘推送服务器’，请查看‘服务器设置’是否正确？", "提示", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    return;
+                    AutoClosingMessageBox.Show("无法连接‘推送服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
                 }
-
-                try
+                //数据服务
+                result = KyDataOperation.TestConnectServer();
+                if (!result)
                 {
-                    //获取绑定的网点ID
-                    bindNodeId.Clear();
-                    List<ky_node> nodes = KyDataOperation.GetNodeWithBindIp(KangYiCollection.Properties.Settings.Default.LocalIp);
-                    bindNodeId = (from node in nodes select node.kId).ToList();
-                    List<ky_machine> machineDt = new List<ky_machine>();
-                    //获取绑定网点内的机器
-                    if (bindNodeId.Count > 0)
-                    {
-                        int[] nodeIds = bindNodeId.ToArray();
-                        machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
-                    }
-                    idIp.Clear();
-                    foreach (ky_machine machine in machineDt)
-                    {
-                        int machineId = Convert.ToInt32(machine.kId);
-                        string ip = machine.kIpAddress.Trim();
-                        if (!idIp.ContainsKey(machineId))
-                        {
-                            idIp.Add(machineId, ip);
-                        }
-                    }
-                    //启动TcpServer线程接收数据
-
-                    if (result)
-                    {
-                        myTcpServer.DTable = machineDt;
-                        myTcpServer.DataSaveFolder = path;
-                        int pictureServerId = KyDataOperation.GetPictureServerId(KangYiCollection.Properties.Settings.Default.PictureIp);
-                        myTcpServer.PictureServerId = pictureServerId;
-                        myTcpServer.StartListenling(KangYiCollection.Properties.Settings.Default.LocalIp, KangYiCollection.Properties.Settings.Default.Port);
-                        result = true;
-                    }
-
+                    AutoClosingMessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
                 }
-                catch (Exception e)
+                //图像服务
+                result = KyDataOperation.TestConnectImage();
+                if (!result)
                 {
-                    MyLog.ConnectionException("启动连接服务器异常！", e);
-                    return;
+                    AutoClosingMessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", 5000);
                 }
+
             }
             else
-                MessageBox.Show("服务器还未配置，请在菜单下选择‘服务器设置’进行配置！", "提示", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                AutoClosingMessageBox.Show("服务器还未配置，请在菜单下选择‘服务器设置’进行配置！", "提示", 5000);
             return;
         }
 
@@ -198,23 +195,20 @@ namespace KangYiCollection
                     }
                     else
                     {
-                        MessageBox.Show("密码错误,请重新输入！", "提示", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        OnTopMessageBox.Show("密码错误,请重新输入！", "提示");
                         txb_PassWord.Focus();
                     }
                 }
                 else
                 {
-                    MessageBox.Show("用户不存在！", "提示", MessageBoxButtons.OKCancel,
-                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    OnTopMessageBox.Show("用户不存在！", "提示");
                     txb_User.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("无法连接设备数据库！", "提示", MessageBoxButtons.OK,
-                           MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                MyLog.DataBaseException("登陆失败！", ex);
+                MyLog.DataBaseException("无法连接设备数据库！", ex);
+                OnTopMessageBox.Show("无法连接设备数据库！", "提示");
             }
         }
         #endregion
@@ -592,41 +586,7 @@ namespace KangYiCollection
 
         #endregion
 
-        private bool UpdateMachine_Status = false;
-        /// <summary>
-        /// 每10分钟更新一次 从数据库中查询一次机具信息，并更新到Server端中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timer_UpdateMachine_Tick(object sender)
-        {
-            if (!UpdateMachine_Status)
-            {
-                if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
-                {
-                    UpdateMachine_Status = true;
-                    //获取绑定网点内的机器
-                    int[] nodeIds = new int[bindNodeId.Count];
-                    if (nodeIds.Length > 0)
-                    {
-                        bindNodeId.CopyTo(nodeIds);
-                        List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
-                        myTcpServer.UpdateMachineTable(machineDt);
-                        idIp.Clear();
-                        foreach (var m in machineDt)
-                        {
-                            int machineId = Convert.ToInt32(m.kId);
-                            string ip = m.kIpAddress.Trim();
-                            if (!idIp.ContainsKey(machineId))
-                            {
-                                idIp.Add(machineId, ip);
-                            }
-                        }
-                    }
-                    UpdateMachine_Status = false;
-                }
-            }
-        }
+
 
 
         #region socket.IO
@@ -799,23 +759,30 @@ namespace KangYiCollection
                         {
                             IpAddress = d["IpAddress"].ToString();
                         }
-                        var str = "您绑定的网点id" + NodeId + "已被IP地址" + IpAddress + "绑定了！";
+                        var str = "您绑定的网点id" + NodeId + "已被IP地址" + IpAddress + "绑定了,一分钟后将尝试重连！";
                         myTcpServer.TCPEvent.OnBussninessLog(str);
-                        MessageBox.Show(str, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        AutoClosingMessageBox.Show(str, "提示", 5000);
                         SocketIoStop();
+                        Thread.Sleep(60000);
+                        SocketIoConnect();
                     });
                     socket.On("reconnecting", (nextRetry) =>
                     {
-                        myTcpServer.TCPEvent.OnBussninessLog("尝试重连，等待" + nextRetry + "秒。");
+                        string str = "尝试重连，已等待" + nextRetry + "秒。";
+                        myTcpServer.TCPEvent.OnBussninessLog(str);
+                        
                     });
                     socket.On("disconnect", (data) =>
                     {
-                        myTcpServer.TCPEvent.OnBussninessLog("断开连接！");
+                        string str = "已断开到推送服务的连接！";
+                        myTcpServer.TCPEvent.OnBussninessLog(str);
                     });
                 }
                 else
                 {
-                    MessageBox.Show("该客户端未绑定网点，请先绑定网点！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string str = "该客户端未绑定网点，请先绑定网点！";
+                    myTcpServer.TCPEvent.OnBussninessLog(str);
+                    AutoClosingMessageBox.Show(str, "提示", 5000);
                 }
 
             }
@@ -857,6 +824,9 @@ namespace KangYiCollection
                 waitingForm.ShowDialog();
                 waitingForm.SetText("正在停止推送...");
                 new Action(SocketIoStop).BeginInvoke(new AsyncCallback(CloseLoading), null);
+                waitingForm.ShowDialog();
+                waitingForm.SetText("正在保存文件...");
+                new Action(KyDataOperation.SaveSqlToFile).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
                 System.Environment.Exit(0);
 
@@ -972,7 +942,8 @@ namespace KangYiCollection
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MyLog.UnHandleException("打开日志窗体异常!", ex);
+                AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(ex, "打开日志窗体异常!"), "提示", 5000);
             }
         }
         /// <summary>
@@ -1001,31 +972,7 @@ namespace KangYiCollection
 
         #endregion
 
-        private bool ImportFSN_Status = false;
-        /// <summary>
-        /// 其他厂家FSN接入
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timer_ImportFSN_Tick(object sender)
-        {
-            if (!ImportFSN_Status)
-            {
-                bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
-                if (flag)
-                {
-                    ImportFSN_Status = true;
-                    string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
-                    if (Directory.Exists(importDir))
-                    {
-                        FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp, myTcpServer.TCPEvent);
-                    }
-                    else
-                        myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");
-                    ImportFSN_Status = false;
-                }
-            }
-        }
+
         /// <summary>
         /// CRH查看
         /// </summary>
@@ -1036,50 +983,7 @@ namespace KangYiCollection
             CRHReview CRHReview = new CRHReview();
             CRHReview.ShowDialog();
         }
-        private bool ExportCRH_Status = false;
-        /// <summary>
-        /// 导出CRH
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timer_ExportCRH_Tick(object sender)
-        {
-            if (!ExportCRH_Status)
-            {
-                string Time = DateTime.Now.ToString("HH:mm:ss");
-                if (Time == KangYiCollection.Properties.Settings.Default.CRHStartTime)
-                {
-                    ExportCRH_Status = true;
-                    bool flag = KangYiCollection.Properties.Settings.Default.CRHExport;
-                    if (flag)
-                    {
-                        string exportDir = KangYiCollection.Properties.Settings.Default.CRHDir;
-                        if (Directory.Exists(exportDir))
-                        {
-                            DateTime startTime;
-                            DateTime endTime;
-                            if (KangYiCollection.Properties.Settings.Default.CRHYesterday)
-                            {
-                                startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
-                                endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
-                            }
-                            else
-                            {
-                                //默认导出当天
-                                startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
-                                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
-                            }
-                            CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
-                        }
-                        else
-                            MyLog.CRHLog(exportDir + "路径不存在！");
-                    }
-                    else
-                        MyLog.CRHLog("CRH导出未启用！");
-                    ExportCRH_Status = false;
-                }
-            }
-        }
+
 
         private void NodeManager_Resize(object sender, EventArgs e)
         {
@@ -1154,69 +1058,236 @@ namespace KangYiCollection
                     break;
             }
         }
-        private bool UploadSql_Status = false;
-        private void timer_UploadSql_Tick(object sender)
+        private object UpdateMachineObj = new object();
+        /// <summary>
+        /// 每10分钟更新一次 从数据库中查询一次机具信息，并更新到Server端中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_UpdateMachine_Tick(object sender)
         {
-            if (!UploadSql_Status)
+            if (Monitor.TryEnter(UpdateMachineObj, 500))
             {
-                UploadSql_Status = true;
-                List<string> strSqls = new List<string>();
-                for (int i = 0; i < 100; i++)
+                if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
                 {
-                    if (KyDataOperation.sqlQueue.Count > 0)
+                    //获取绑定网点内的机器
+                    int[] nodeIds = new int[bindNodeId.Count];
+                    if (nodeIds.Length > 0)
                     {
-                        object synObj = new object();
-                        lock (synObj)
+                        bindNodeId.CopyTo(nodeIds);
+                        List<ky_machine> machineDt = KyDataOperation.GetMachineWithNodeIds(nodeIds);
+                        myTcpServer.UpdateMachineTable(machineDt);
+                        idIp.Clear();
+                        foreach (var m in machineDt)
                         {
-                            strSqls.Add(KyDataOperation.sqlQueue.Dequeue());
+                            int machineId = Convert.ToInt32(m.kId);
+                            string ip = m.kIpAddress.Trim();
+                            if (!idIp.ContainsKey(machineId))
+                            {
+                                idIp.Add(machineId, ip);
+                            }
                         }
                     }
                 }
-
-                if (strSqls.Count > 0)
-                    KyDataOperation.InsertWithSql(strSqls);
-                if (KyDataOperation.sqlQueue.Count > 0)
-                    MyLog.TestLog("当前队列还有" + KyDataOperation.sqlQueue.Count + "条SQL等待执行...");
-                UploadSql_Status = false;
+                Monitor.Exit(UpdateMachineObj);
             }
         }
-        private bool UploadPictures_Status = false;
-        private void timer_UploadPictures_Tick(object sender)
+        private object ImportFSNObj = new object();
+        /// <summary>
+        /// 其他厂家FSN接入
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_ImportFSN_Tick(object sender)
         {
-
-            if (!UploadPictures_Status)
+            if (Monitor.TryEnter(ImportFSNObj, 500))
             {
-                if (MySetting.GetProgramValue("UploadPicture"))
+                bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
+                if (flag)
                 {
-                    UploadPictures_Status = true;
-                    List<ky_picture> pics = new List<ky_picture>();
-                    for (int i = 0; i < 1000; i++)
+                    string importDir = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
+                    if (Directory.Exists(importDir))
                     {
-                        if (KyDataOperation.pictureQueue.Count > 0)
+                        FSNImport.FsnImport(importDir, KangYiCollection.Properties.Settings.Default.PictureIp, myTcpServer.TCPEvent);
+                    }
+                    else
+                        myTcpServer.TCPEvent.OnFSNImportLog(importDir + "路径不存在！");
+                }
+                Monitor.Exit(ImportFSNObj);
+            }
+        }
+        private object ExportCRHObj = new object();
+        /// <summary>
+        /// 导出CRH
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_ExportCRH_Tick(object sender)
+        {
+            if (Monitor.TryEnter(ExportCRHObj, 500))
+            {
+                string Time = DateTime.Now.ToString("HH:mm:ss");
+                if (Time == KangYiCollection.Properties.Settings.Default.CRHStartTime)
+                {
+                    bool flag = KangYiCollection.Properties.Settings.Default.CRHExport;
+                    if (flag)
+                    {
+                        string exportDir = KangYiCollection.Properties.Settings.Default.CRHDir;
+                        if (Directory.Exists(exportDir))
                         {
-                            object synObj = new object();
-                            lock (synObj)
+                            DateTime startTime;
+                            DateTime endTime;
+                            if (KangYiCollection.Properties.Settings.Default.CRHYesterday)
                             {
-                                ky_picture pic = KyDataOperation.pictureQueue.Dequeue();
-                                if (pic != null)
-                                    pics.Add(pic);
+                                startTime = Convert.ToDateTime(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"));
+                                endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                            }
+                            else
+                            {
+                                //默认导出当天
+                                startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+                            }
+                            CRHExport crhExport = new CRHExport(startTime, endTime, exportDir);
+                        }
+                        else
+                            MyLog.CRHLog(exportDir + "路径不存在！");
+                    }
+                    else
+                        MyLog.CRHLog("CRH导出未启用！");
+                }
+                Monitor.Exit(ExportCRHObj);
+            }
+        }
+        private object UploadSqlObj = new object();
+        /// <summary>
+        /// 上传Sql
+        /// </summary>
+        /// <param name="sender"></param>
+        private void timer_UploadSql_Tick(object sender)
+        {
+            if (Monitor.TryEnter(UploadSqlObj, 500))
+            {
+                if (KyDataOperation.TestConnectServer())
+                {
+                    if (KyDataOperation.sqlQueue.Count < KyDataOperation.MaxSqlCount)
+                    {
+                        string sqlFile = KyDataOperation.SqlDir + "\\UnUpload.sql";
+                        List<string> sqls = FileOperation.ReadLines(KyDataOperation.SqlDir, sqlFile, 100);
+                        if (sqls.Count > 0)
+                        {
+                            foreach (var sql in sqls)
+                            {
+                                KyDataOperation.sqlQueue.Enqueue(sql);
+                            }
+                        }
+                    }
+                    List<string> strSqls = new List<string>();
+                    for (int i = 0; i < 100; i++)
+                    {
+                        if (KyDataOperation.sqlQueue.Count > 0)
+                        {
+                            string sql = KyDataOperation.sqlQueue.Dequeue();
+                            if (sql != null && sql != "")
+                            {
+                                strSqls.Add(sql);
                             }
                         }
                     }
 
-                    if (KyDataOperation.pictureQueue.Count > 0)
+                    if (strSqls.Count > 0)
                     {
-                        myTcpServer.TCPEvent.OnCommandLog(new KyModel.TCPMessage()
+                        if (!KyDataOperation.InsertWithSql(strSqls))
                         {
-                            MessageType = TCPMessageType.Common_Message,
-                            Message = "当前队列还有" + KyDataOperation.pictureQueue.Count + "张图像等待上传..."
-                        });
-                        KyDataOperation.InsertPictures(pics);
+                            foreach (var sql in strSqls)
+                            {
+                                KyDataOperation.SqlEnqueue(sql);
+                            }
+                        }
                     }
-                    UploadPictures_Status = false;
+                    if (KyDataOperation.sqlQueue.Count > 0)
+                        MyLog.TestLog("当前队列还有" + KyDataOperation.sqlQueue.Count + "条SQL...");
                 }
                 else
-                    KyDataOperation.pictureQueue.Clear();
+                {
+                    Thread.Sleep(60000);
+                }
+                Monitor.Exit(UploadSqlObj);
+            }
+        }
+        private object UploadPicturesObj = new object();
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <param name="sender"></param>
+        private void timer_UploadPictures_Tick(object sender)
+        {
+            if (Monitor.TryEnter(UploadPicturesObj, 500))
+            {
+                if (KyDataOperation.TestConnectImage())
+                {
+                    if (MySetting.GetProgramValue("UploadPicture"))
+                    {
+                        if (KyDataOperation.pictureQueue.Count < KyDataOperation.MaxPictureFileCount)
+                        {
+                            if (Directory.Exists(KyDataOperation.PictureFileDir))
+                            {
+                                string[] pictureFiles = Directory.GetFiles(KyDataOperation.PictureFileDir).Except(KyDataOperation.pictureQueue).Take(KyDataOperation.MaxPictureFileCount).ToArray();
+                                foreach (var pic in pictureFiles)
+                                {
+                                    if (!KyDataOperation.pictureQueue.Contains(pic))
+                                        KyDataOperation.pictureQueue.Enqueue(pic);
+                                }
+                            }
+                        }
+                        List<ky_picture> pics = new List<ky_picture>();
+                        string fileName = "";
+                        if (KyDataOperation.pictureQueue.Count > 0)
+                        {
+                            fileName = KyDataOperation.pictureQueue.Dequeue();
+                            if (fileName != null)
+                            {
+                                pics = ObjectToFile.DeSerializeObject<List<ky_picture>>(fileName);
+                            }
+
+                        }
+
+                        if (KyDataOperation.pictureQueue.Count > 0)
+                        {
+                            myTcpServer.TCPEvent.OnCommandLog(new KyModel.TCPMessage()
+                            {
+                                MessageType = TCPMessageType.Common_Message,
+                                Message = "当前队列还有" + KyDataOperation.pictureQueue.Count + "个图像文件等待上传..."
+                            });
+
+                        }
+                        if (pics != null && pics.Count > 0)
+                        {
+                            if (KyDataOperation.InsertPictures(pics))
+                            {
+                                if (File.Exists(fileName))
+                                    File.Delete(fileName);
+                            }
+                            else
+                            {
+                                myTcpServer.TCPEvent.OnCommandLog(new KyModel.TCPMessage()
+                                {
+                                    MessageType = TCPMessageType.Common_Message,
+                                    Message = fileName + "图像文件上传失败,将添加到队列结尾处"
+                                });
+
+                                KyDataOperation.pictureQueue.Enqueue(fileName);
+                            }
+                        }
+                    }
+                    else
+                        KyDataOperation.pictureQueue.Clear();
+                }
+                else
+                {
+                    Thread.Sleep(60000);
+                }
+                Monitor.Exit(UploadPicturesObj);
             }
         }
 

@@ -10,12 +10,20 @@ using SqlFu;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Windows.Forms;
+using System.IO;
 namespace KyBll
 {
     public class KyDataOperation
     {
-        public static Queue<ky_picture> pictureQueue = new Queue<ky_picture>();
+        public static Queue<string> pictureQueue = new Queue<string>();
         public static Queue<string> sqlQueue = new Queue<string>();
+        public static string SqlDir = Application.StartupPath + "\\SqlFile";
+        public static string PictureFileDir = Application.StartupPath + "\\PictureFile";
+        private static object SignObj = new object();
+        private static object SqlObj = new object();
+        public static int MaxSqlCount = 500;
+        public static int MaxPictureFileCount = 300;
         #region 保存冠字号码数据到Sphinx
 
         /// <summary>
@@ -31,11 +39,7 @@ namespace KyBll
                     "INSERT INTO ky_batch(id,ktype,kdate,knode,kfactory,kmachine,ktotalnumber,ktotalvalue,kuser,kimgserver,hjson) values({0},'{1}',{2},{3},{4},({5}),{6},{7},{8},{9},'{10}')",
                     batch.id, batch.ktype, batch.kdate, batch.knode, batch.kfactory, batch.kmachine, batch.ktotalnumber, batch.ktotalvalue,
                     batch.kuser, batch.kimgserver, batch.hjson);
-                object synObj = new object();
-                lock (synObj)
-                {
-                    sqlQueue.Enqueue(strSql);
-                }
+                    SqlEnqueue(strSql);
                 return true;
             }
             catch (Exception e)
@@ -62,6 +66,7 @@ namespace KyBll
                     DateTime now = DateTime.Now;
                     int count = 0;
                     string strSql = "INSERT INTO ky_sign(id,kdate,ksign,kbatchid,kvalue,kversion,kcurrency,kstatus,knumber,hjson) values";
+                    List<ky_picture> pics = new List<ky_picture>();
                     foreach (var sign in signs)
                     {
                         if (count != 0)
@@ -74,12 +79,8 @@ namespace KyBll
                         if (MySetting.GetProgramValue("UploadPicture"))
                         {
                             ky_picture picture = new ky_picture { kId = id, kImageSNo = sign.imageData, kInsertTime = now, kImageType = sign.ImageType };
-                            object synObj = new object();
-                            lock (synObj)
-                            {
-                                if (picture != null)
-                                    pictureQueue.Enqueue(picture);
-                            }
+                            pics.Add(picture);
+
                         }
                         JObject jo = new JObject();
                         if (sign.ErrorCode != "0-0-0")
@@ -90,8 +91,18 @@ namespace KyBll
                                                    sign.Currency, sign.True, startIndex + count, JsonConvert.SerializeObject(jo));
                         count++;
                     }
-
-                    sqlQueue.Enqueue(strSql);
+                    SqlEnqueue(strSql);
+                    if (pics.Count > 0)
+                    {
+                        lock (SignObj)
+                        {
+                            if (!Directory.Exists(PictureFileDir))
+                                Directory.CreateDirectory(PictureFileDir);
+                            string fileName = PictureFileDir + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".picture";
+                            ObjectToFile.SerializeObject(pics, fileName);
+                            pictureQueue.Enqueue(fileName);
+                        }
+                    }
 
                 }
                 return true;
@@ -104,6 +115,11 @@ namespace KyBll
             }
 
         }
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <param name="pictures"></param>
+        /// <returns></returns>
         public static bool InsertPictures(List<ky_picture> pictures)
         {
             DateTime start = DateTime.Now;
@@ -121,10 +137,15 @@ namespace KyBll
             catch (Exception e)
             {
                 TimeSpan span = DateTime.Now - start;
-                MyLog.DataBaseException("保存图像异常,已运行"+span.TotalMilliseconds+"ms", e);
+                MyLog.DataBaseException("保存图像异常,已运行" + span.TotalMilliseconds + "ms", e);
                 return false;
             }
         }
+        /// <summary>
+        /// 上传Sql
+        /// </summary>
+        /// <param name="strSqls"></param>
+        /// <returns></returns>
         public static bool InsertWithSql(List<string> strSqls)
         {
             DateTime start = DateTime.Now;
@@ -137,7 +158,6 @@ namespace KyBll
                         SqlFuDao.OnCommand = cmd => cmd.CommandTimeout = 120;
                         conn.Execute(strSql);
                     }
-
                 }
                 TimeSpan span = DateTime.Now - start;
                 KyBll.MyLog.TestLog(strSqls.Count + " 条Sql执行用时 " + span.TotalMilliseconds + "ms.");
@@ -146,8 +166,27 @@ namespace KyBll
             catch (Exception e)
             {
                 TimeSpan span = DateTime.Now - start;
-                MyLog.DataBaseException("执行Sql异常,已运行"+span.TotalMilliseconds+"ms", e);
+                MyLog.DataBaseException("执行Sql异常,已运行" + span.TotalMilliseconds + "ms", e);
                 return false;
+            }
+        }
+        /// <summary>
+        /// 超过MaxSqlCount行将写入UnUpload.sql，否则添加到sqlQueue队里中
+        /// </summary>
+        /// <param name="sql"></param>
+        public static void SqlEnqueue(string sql)
+        {
+            lock (SqlObj)
+            {
+                if (sqlQueue.Count > MaxSqlCount)
+                {
+                    if (!Directory.Exists(SqlDir))
+                        Directory.CreateDirectory(SqlDir);
+                    string fileName = SqlDir + "\\UnUpload.sql";
+                    MyLog.ShareWrite(sql, fileName);
+                }
+                else
+                    KyDataOperation.sqlQueue.Enqueue(sql);
             }
         }
         /// <summary>
@@ -176,6 +215,23 @@ namespace KyBll
             return totalCount;
         }
 
+        public static void SaveSqlToFile()
+        {
+
+            if (!Directory.Exists(SqlDir))
+                Directory.CreateDirectory(SqlDir);
+            string fileName = SqlDir + "\\UnUpload.sql";
+            while (sqlQueue.Count > 0)
+            {
+                string sql = sqlQueue.Dequeue();
+                if (sql != null)
+                {
+                    //写入到文件中
+                    MyLog.ShareWrite(sql, fileName);
+                }
+
+            }
+        }
 
         /// <summary>
         /// 根据时间范围获取批次

@@ -66,8 +66,6 @@ namespace MyTest
 
                     client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
                     connectDone.WaitOne();
-                    client.Shutdown(SocketShutdown.Both);
-                    client.Close();
                 }
             }
             catch (Exception e)
@@ -101,9 +99,13 @@ namespace MyTest
                 }
                 sendDone.Reset();
                 Send(new StateObject() { MessageType = TCPMessageType.NET_CLOSE, workSocket = client }, NetCloseCmd());
-                //client.Shutdown(SocketShutdown.Both);
-                //client.Close();
+               
                 sendDone.WaitOne();
+                byte[] rec = new byte[1024 * 1024 * 8];
+                client.Receive(rec);
+                Thread.Sleep(1000);
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
                 SetButton();
                 connectDone.Set();
                 

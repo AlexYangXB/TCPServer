@@ -177,7 +177,7 @@ namespace KyBll
             {
                 if (fs.CanWrite)
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(content+"\r\n");
+                    byte[] buffer = Encoding.UTF8.GetBytes(content+Environment.NewLine);
                     if (buffer.Length > 0)
                     {
                         fs.Write(buffer, 0, buffer.Length);
