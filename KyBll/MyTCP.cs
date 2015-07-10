@@ -12,8 +12,6 @@ namespace KyBll
     public class MyTCP
     {
         private static int BufferSize = 8192;
-        private static ManualResetEvent receiveDone = new ManualResetEvent(false);
-        private static ManualResetEvent sendDone = new ManualResetEvent(false);
         public class StateObject
         {
             public Socket workSocket = null;
@@ -314,36 +312,28 @@ namespace KyBll
         /// <returns></returns>
         public static int AsyncReceiveFromClient(Socket socket, int length, out byte[] receiveBuffers)
         {
-            receiveDone.Reset();
-            //接收数据大小不超过BufferSize
-            int len = BufferSize;
-            if (length < BufferSize)
-                len = length;
-            StateObject staObject = new StateObject() { workSocket = socket };
-            IAsyncResult ar = socket.BeginReceive(staObject.buffer, 0, len, 0, new AsyncCallback(ReadCallback), staObject);
-            receiveDone.WaitOne();
-            receiveBuffers = staObject.buffer;
-            return staObject.bytesRead;
-        }
-        public static void ReadCallback(IAsyncResult ar)
-        {
-            StateObject state = (StateObject)ar.AsyncState;
+
             try
             {
+                //接收数据大小不超过BufferSize
+                int len = BufferSize;
+                if (length < BufferSize)
+                    len = length;
+                StateObject staObject = new StateObject() { workSocket = socket };
+                IAsyncResult ar = socket.BeginReceive(staObject.buffer, 0, len, 0, null, staObject);
+                StateObject state = (StateObject)ar.AsyncState;
                 int bytesRead = state.workSocket.EndReceive(ar);
                 byte[] realBuffers = new byte[bytesRead];
                 Array.Copy(state.buffer, 0, realBuffers, 0, bytesRead);
-                state.buffer = realBuffers;
-                state.bytesRead = bytesRead;
-                
+                receiveBuffers = realBuffers;
+                return bytesRead;
             }
             catch (Exception e)
             {
                 MyLog.ConnectionException("异步接收命令异常", e);
-                state.bytesRead = -1;
-                state.buffer = null;
+                receiveBuffers = null;
+                return -1;
             }
-            receiveDone.Set();
         }
         /// <summary>
         /// 异步发送命令
@@ -352,23 +342,14 @@ namespace KyBll
         /// <param name="message"></param>
         public static void AsyncSendToClient(Socket socket, byte[] message)
         {
-            sendDone.Reset();
-            socket.BeginSend(message, 0, message.Length, 0, new AsyncCallback(SendCallback), socket);
-            sendDone.WaitOne();
-        }
-        private static void SendCallback(IAsyncResult ar)
-        {
             try
             {
-                Socket handler = (Socket)ar.AsyncState;
-                int bytesSent = handler.EndSend(ar);
-                
+                socket.BeginSend(message, 0, message.Length, 0, null, socket);
             }
             catch (Exception e)
             {
                 MyLog.ConnectionException("异步发送命令异常", e);
             }
-            sendDone.Set();
         }
 
 

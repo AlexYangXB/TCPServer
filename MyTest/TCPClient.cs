@@ -96,6 +96,7 @@ namespace MyTest
                     byte[] fsn = MakeFsn.ExportFSN(Value, PerFileCount, MyTest.Properties.Settings.Default.MachineNumber);
                     Send(new StateObject() { MessageType=TCPMessageType.NET_UP,workSocket=client}, NetUpCmd(fsn));
                     sendDone.WaitOne();
+                    Thread.Sleep(2000);
                 }
                 sendDone.Reset();
                 Send(new StateObject() { MessageType = TCPMessageType.NET_CLOSE, workSocket = client }, NetCloseCmd());
