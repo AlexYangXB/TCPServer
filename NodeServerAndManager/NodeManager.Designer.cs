@@ -480,7 +480,7 @@ namespace KangYiCollection
             this.lab_Version.Name = "lab_Version";
             this.lab_Version.Size = new System.Drawing.Size(91, 13);
             this.lab_Version.TabIndex = 13;
-            this.lab_Version.Text = "软件版本:1.0.0.0";
+            this.lab_Version.Text = "软件版本:1.1.0.0";
             this.lab_Version.Click += new System.EventHandler(this.lab_Version_Click);
             // 
             // label2
