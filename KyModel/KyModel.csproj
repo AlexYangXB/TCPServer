@@ -84,7 +84,7 @@
     <Compile Include="TCPMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:\SqlFu\SqlFu.csproj">
+    <ProjectReference Include="..\..\SqlFu\SqlFu.csproj">
       <Project>{0A6D3405-840F-46A0-B1D1-5A8058CFED75}</Project>
       <Name>SqlFu</Name>
     </ProjectReference>

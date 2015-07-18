@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using KangYiCollection.BaseWinform;
 using KyBll;
@@ -14,8 +15,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Client;
-using System.Threading;
-using System.Runtime.InteropServices;
 namespace KangYiCollection
 {
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
@@ -293,6 +292,12 @@ namespace KangYiCollection
         }
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            List<int> nodeIds = new List<int>();
+            if(bindNodeId.Count==0)
+            {
+                List<ky_node> nodes=KyDataOperation.GetAllNode();
+                nodeIds = (from node in nodes select node.kId).ToList();
+            }
             bool flag = true;
             foreach (TabPage tab in materialTabControl1.TabPages)
             {
@@ -318,7 +323,7 @@ namespace KangYiCollection
                                 cmb_Factory.Items.Add(str);
                             }
                             //所属网点
-                            List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(bindNodeId);
+                            List<ky_node> dtNode = KyDataOperation.GetNodeWithIds(nodeIds);
                             cmb_Node.Items.Clear();
                             foreach (var node in dtNode)
                             {
@@ -326,7 +331,7 @@ namespace KangYiCollection
                                 cmb_Node.Items.Add(str);
                             }
                             //ATM编号
-                            List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(bindNodeId);
+                            List<ky_atm> dtATM2 = KyDataOperation.GetAtmWithNodeId(nodeIds);
                             cmb_ATM2.Items.Clear();
                             foreach (var atm in dtATM2)
                             {
@@ -334,7 +339,7 @@ namespace KangYiCollection
                                 cmb_ATM2.Items.Add(str);
                             }
                             //钞箱编号
-                            List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(bindNodeId);
+                            List<ky_cashbox> dtCashBox2 = KyDataOperation.GetCashBoxWithNodeId(nodeIds);
                             cmb_CashBox2.Items.Clear();
                             foreach (var cashbox in dtCashBox2)
                             {
@@ -347,7 +352,7 @@ namespace KangYiCollection
                         //设备监控
                         if (KyDataOperation.TestConnectDevice())
                         {
-                            List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(bindNodeId);
+                            List<ky_machine> dtMachine = KyDataOperation.GetMachineStatus(nodeIds);
                             if (dtMachine != null)
                             {
                                 dgv_machine.DataSource = dtMachine;
@@ -616,7 +621,7 @@ namespace KangYiCollection
             try
             {
                 string node = JsonConvert.SerializeObject(bindNodeId);
-                if (node != "")
+                if (node != "[]")
                 {
                     var options = CreateOptions();
                     var uri = CreateUri();
