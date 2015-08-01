@@ -68,11 +68,11 @@
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.liv_CRHRecord = new System.Windows.Forms.ListView();
-            this.number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.recordtime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.recordsign = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.recordversion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.recordvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CRHRecord_number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CRHRecord_recordtime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CRHRecord_recordsign = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CRHRecord_recordversion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CRHRecord_recordvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lab_CRHCommon = new MaterialSkin.Controls.MaterialLabel();
             this.lab_CRHRecord = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
@@ -134,11 +134,11 @@
             // liv_CRHRecord
             // 
             this.liv_CRHRecord.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.number,
-            this.recordtime,
-            this.recordsign,
-            this.recordversion,
-            this.recordvalue});
+            this.CRHRecord_number,
+            this.CRHRecord_recordtime,
+            this.CRHRecord_recordsign,
+            this.CRHRecord_recordversion,
+            this.CRHRecord_recordvalue});
             this.liv_CRHRecord.Location = new System.Drawing.Point(565, 158);
             this.liv_CRHRecord.Name = "liv_CRHRecord";
             this.liv_CRHRecord.Size = new System.Drawing.Size(466, 308);
@@ -146,35 +146,35 @@
             this.liv_CRHRecord.UseCompatibleStateImageBehavior = false;
             this.liv_CRHRecord.View = System.Windows.Forms.View.Details;
             // 
-            // number
+            // CRHRecord_number
             // 
-            this.number.Text = "序号";
+            this.CRHRecord_number.Text = "序号";
             // 
-            // recordtime
+            // CRHRecord_recordtime
             // 
-            this.recordtime.Text = "记录时间";
-            this.recordtime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.recordtime.Width = 119;
+            this.CRHRecord_recordtime.Text = "记录时间";
+            this.CRHRecord_recordtime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CRHRecord_recordtime.Width = 119;
             // 
-            // recordsign
+            // CRHRecord_recordsign
             // 
-            this.recordsign.Text = "冠字号码";
-            this.recordsign.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.recordsign.Width = 111;
+            this.CRHRecord_recordsign.Text = "冠字号码";
+            this.CRHRecord_recordsign.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CRHRecord_recordsign.Width = 111;
             // 
-            // recordversion
+            // CRHRecord_recordversion
             // 
-            this.recordversion.DisplayIndex = 4;
-            this.recordversion.Text = "版别";
-            this.recordversion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.recordversion.Width = 84;
+            this.CRHRecord_recordversion.DisplayIndex = 4;
+            this.CRHRecord_recordversion.Text = "版别";
+            this.CRHRecord_recordversion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CRHRecord_recordversion.Width = 84;
             // 
-            // recordvalue
+            // CRHRecord_recordvalue
             // 
-            this.recordvalue.DisplayIndex = 3;
-            this.recordvalue.Text = "币值";
-            this.recordvalue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.recordvalue.Width = 80;
+            this.CRHRecord_recordvalue.DisplayIndex = 3;
+            this.CRHRecord_recordvalue.Text = "币值";
+            this.CRHRecord_recordvalue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CRHRecord_recordvalue.Width = 80;
             // 
             // lab_CRHCommon
             // 
@@ -231,12 +231,12 @@
         private System.Windows.Forms.ColumnHeader value;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ListView liv_CRHRecord;
-        private System.Windows.Forms.ColumnHeader recordtime;
-        private System.Windows.Forms.ColumnHeader recordsign;
-        private System.Windows.Forms.ColumnHeader recordversion;
-        private System.Windows.Forms.ColumnHeader recordvalue;
+        private System.Windows.Forms.ColumnHeader CRHRecord_recordtime;
+        private System.Windows.Forms.ColumnHeader CRHRecord_recordsign;
+        private System.Windows.Forms.ColumnHeader CRHRecord_recordversion;
+        private System.Windows.Forms.ColumnHeader CRHRecord_recordvalue;
         private MaterialSkin.Controls.MaterialLabel lab_CRHCommon;
         private MaterialSkin.Controls.MaterialLabel lab_CRHRecord;
-        private System.Windows.Forms.ColumnHeader number;
+        private System.Windows.Forms.ColumnHeader CRHRecord_number;
     }
 }

@@ -41,7 +41,7 @@ namespace KangYiCollection.BaseWinform
         private void SystemSettings_Load(object sender, EventArgs e)
         {
             //其他厂家接入
-            chk_OtherFactoryAccess.Checked = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
+            chk_FactoryAccess.Checked = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
             txb_OtherFactoryAccessDir.Text = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
             //CRH导出
             chk_CRHExport.Checked = KangYiCollection.Properties.Settings.Default.CRHExport;
@@ -55,7 +55,7 @@ namespace KangYiCollection.BaseWinform
         {
             bool flag = true;
             //其他厂家接入保存
-            if (chk_OtherFactoryAccess.Checked)
+            if (chk_FactoryAccess.Checked)
             {
                 if (Directory.Exists(txb_OtherFactoryAccessDir.Text))
                 {
@@ -84,7 +84,7 @@ namespace KangYiCollection.BaseWinform
             if (flag)
             {
                 //其他厂家接入保存
-                KangYiCollection.Properties.Settings.Default.OtherFactoryAccess = chk_OtherFactoryAccess.Checked;
+                KangYiCollection.Properties.Settings.Default.OtherFactoryAccess = chk_FactoryAccess.Checked;
                 //CRH导出
                 KangYiCollection.Properties.Settings.Default.CRHStartTime = dt_CRHStartTime.Value.ToString("HH:mm:ss");
                 KangYiCollection.Properties.Settings.Default.CRHToday = rb_CRHToday.Checked;
@@ -96,7 +96,7 @@ namespace KangYiCollection.BaseWinform
             
         }
 
-        private void btn_OtherFactoryAccess_Click(object sender, EventArgs e)
+        private void btn_FactoryDirLook_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)

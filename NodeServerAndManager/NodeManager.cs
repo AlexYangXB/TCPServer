@@ -20,8 +20,10 @@ namespace KangYiCollection
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
+        private string CurrentLanguage = "zh-TW";
         public NodeManager()
         {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
             showMenu = true;
             InitializeComponent();
             //只显示绑定数据的信息
@@ -75,7 +77,7 @@ namespace KangYiCollection
                 //Device数据库连接
                 if (!result)
                 {
-                    AutoClosingMessageBox.Show("无法连接‘设备服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
+                    AutoClosingMessageBox.Show(clsMsg.getMsg("msg_1"), clsMsg.getMsg("msg_Tip"), 5000);
                 }
                 else
                 {
@@ -117,8 +119,8 @@ namespace KangYiCollection
                     }
                     catch (Exception e)
                     {
-                        MyLog.ConnectionException("启动监听异常！", e);
-                        AutoClosingMessageBox.Show("启动监听异常!", "提示", 5000);
+                        MyLog.ConnectionException(clsMsg.getMsg("msg_2"), e);
+                        AutoClosingMessageBox.Show(clsMsg.getMsg("msg_2"), clsMsg.getMsg("msg_Tip"), 5000);
                         return;
                     }
                 }
@@ -126,24 +128,24 @@ namespace KangYiCollection
                 result = KyDataOperation.TestConnectPush(KangYiCollection.Properties.Settings.Default.PushIp, KangYiCollection.Properties.Settings.Default.PushPort);
                 if (!result)
                 {
-                    AutoClosingMessageBox.Show("无法连接‘推送服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
+                    AutoClosingMessageBox.Show(clsMsg.getMsg("msg_3"), clsMsg.getMsg("msg_Tip"), 5000);
                 }
                 //数据服务
                 result = KyDataOperation.TestConnectServer();
                 if (!result)
                 {
-                    AutoClosingMessageBox.Show("无法连接‘数据服务器’，请查看‘服务器设置’是否正确？", "提示", 5000);
+                    AutoClosingMessageBox.Show(clsMsg.getMsg("msg_4"), clsMsg.getMsg("msg_Tip"), 5000);
                 }
                 //图像服务
                 result = KyDataOperation.TestConnectImage();
                 if (!result)
                 {
-                    AutoClosingMessageBox.Show("无法连接‘图像数据库’，请查看‘服务器设置’是否正确？", "提示", 5000);
+                    AutoClosingMessageBox.Show(clsMsg.getMsg("msg_5"), clsMsg.getMsg("msg_Tip"), 5000);
                 }
 
             }
             else
-                AutoClosingMessageBox.Show("服务器还未配置，请在菜单下选择‘服务器设置’进行配置！", "提示", 5000);
+                AutoClosingMessageBox.Show(clsMsg.getMsg("msg_6"), clsMsg.getMsg("msg_Tip"), 5000);
             return;
         }
 
@@ -155,15 +157,15 @@ namespace KangYiCollection
         private void btn_Login_Click(object sender, EventArgs e)
         {
 
-            waitingForm.SetText("正在登录...");
+            waitingForm.SetText(clsMsg.getMsg("wf_Login"));
             new Action(Login).BeginInvoke(new AsyncCallback(CloseLoading), null);
             Application.DoEvents();
             waitingForm.ShowDialog();
             if (userId != 0)
             {
-                this.tabPage1.Parent = materialTabControl1;
-                this.tabPage2.Parent = materialTabControl1;
-                this.tabPage3.Parent = null;
+                this.tab_FileUpload.Parent = materialTabControl1;
+                this.tab_DeviceControl.Parent = materialTabControl1;
+                this.tab_UserLogin.Parent = null;
             }
 
         }
@@ -194,20 +196,20 @@ namespace KangYiCollection
                     }
                     else
                     {
-                        OnTopMessageBox.Show("密码错误,请重新输入！", "提示");
+                        OnTopMessageBox.Show(clsMsg.getMsg("msg_7"), clsMsg.getMsg("msg_Tip"));
                         txb_PassWord.Focus();
                     }
                 }
                 else
                 {
-                    OnTopMessageBox.Show("用户不存在！", "提示");
+                    OnTopMessageBox.Show(clsMsg.getMsg("msg_8"), clsMsg.getMsg("msg_Tip"));
                     txb_User.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MyLog.DataBaseException("无法连接设备数据库！", ex);
-                OnTopMessageBox.Show("无法连接设备数据库！", "提示");
+                MyLog.DataBaseException(clsMsg.getMsg("msg_9"), ex);
+                OnTopMessageBox.Show(clsMsg.getMsg("msg_9"), clsMsg.getMsg("msg_Tip"));
             }
         }
         #endregion
@@ -234,15 +236,15 @@ namespace KangYiCollection
             }
             Application.DoEvents();
             //启动TCP服务
-            waitingForm.SetText("正在启动监听...");
+            waitingForm.SetText(clsMsg.getMsg("wf_StartListen"));
             new Action(StartTcpServer).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             //连接到socket.IO
-            waitingForm.SetText("正在启动推送...");
+            waitingForm.SetText(clsMsg.getMsg("wf_StartPush"));
             new Action(SocketIoConnect).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
-            this.tabPage1.Parent = null;
-            this.tabPage2.Parent = null;
+            this.tab_FileUpload.Parent = null;
+            this.tab_DeviceControl.Parent = null;
             //打开定时器
             timer_ExportCRH = new System.Threading.Timer(new TimerCallback(timer_ExportCRH_Tick), this, 1000, 1000);
             timer_ImportFSN = new System.Threading.Timer(new TimerCallback(timer_ImportFSN_Tick), this, 1000, 3000);
@@ -301,7 +303,7 @@ namespace KangYiCollection
             bool flag = true;
             foreach (TabPage tab in materialTabControl1.TabPages)
             {
-                if (tab.Text == "用户登录")
+                if (tab.Text == clsMsg.getMsg(tab_UserLogin.Name))
                     flag = false;
 
             }
@@ -431,24 +433,24 @@ namespace KangYiCollection
             {
                 if (cmb_Factory.Text == "")
                 {
-                    MessageBox.Show("请选择文件所属厂家", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(clsMsg.getMsg("msg_11"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 if (cmb_Node.Text == "")
                 {
-                    MessageBox.Show("请选择所属网点", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(clsMsg.getMsg("msg_12"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 if (cmb_BusinessType.Text == "")
                 {
-                    MessageBox.Show("请选择交易类型", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(clsMsg.getMsg("msg_13"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 if ((BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMP || (BussinessType)cmb_BusinessType.SelectedIndex == BussinessType.ATMQ)
                 {
                     if (cmb_ATM2.Text == "" || cmb_CashBox2.Text == "")
                     {
-                        MessageBox.Show("请选择ATM编号和钞箱编号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(clsMsg.getMsg("msg_14"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
@@ -457,7 +459,7 @@ namespace KangYiCollection
                 {
                     if (txb_BussinessNumber.Text.Trim() == "")
                     {
-                        MessageBox.Show("请填写业务流水号", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(clsMsg.getMsg("msg_15"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
@@ -739,7 +741,7 @@ namespace KangYiCollection
                                               bControl.packageNumber = "";
                                           if (d["BundleNumbers"] != null)
                                           {
-                                              myTcpServer.TCPEvent.OnBussninessLog("捆钞序号是是" + d["BundleNumbers"].ToString());
+                                              myTcpServer.TCPEvent.OnBussninessLog("捆钞序号是" + d["BundleNumbers"].ToString());
                                               bControl.bundleNumbers = d["BundleNumbers"].ToString();
                                           }
                                           else
@@ -766,7 +768,7 @@ namespace KangYiCollection
                         }
                         var str = "您绑定的网点id" + NodeId + "已被IP地址" + IpAddress + "绑定了,一分钟后将尝试重连！";
                         myTcpServer.TCPEvent.OnBussninessLog(str);
-                        AutoClosingMessageBox.Show(str, "提示", 5000);
+                        AutoClosingMessageBox.Show(str, clsMsg.getMsg("msg_Tip"), 5000);
                         SocketIoStop();
                         Thread.Sleep(60000);
                         SocketIoConnect();
@@ -787,13 +789,13 @@ namespace KangYiCollection
                 {
                     string str = "该客户端未绑定网点，请先绑定网点！";
                     myTcpServer.TCPEvent.OnBussninessLog(str);
-                    AutoClosingMessageBox.Show(str, "提示", 5000);
+                    AutoClosingMessageBox.Show(str, clsMsg.getMsg("msg_Tip"), 5000);
                 }
 
             }
             catch (Exception e)
             {
-                MyLog.ConnectionException("推送服务器异常", e);
+                MyLog.ConnectionException("推送服务器异常！", e);
             }
         }
 
@@ -820,17 +822,17 @@ namespace KangYiCollection
         {
             if (Exit)
                 e.Cancel = false;
-            else if (DialogResult.No == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+            else if (DialogResult.No == MessageBox.Show(clsMsg.getMsg("msg_10"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                 e.Cancel = true;
             if (!e.Cancel)
             {
-                waitingForm.SetText("正在停止监听...");
+                waitingForm.SetText(clsMsg.getMsg("wf_StopListen"));
                 new Action(myTcpServer.Stop).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
-                waitingForm.SetText("正在停止推送...");
+                waitingForm.SetText(clsMsg.getMsg("wf_StopPush"));
                 new Action(SocketIoStop).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
-                waitingForm.SetText("正在保存文件...");
+                waitingForm.SetText(clsMsg.getMsg("wf_SaveFile"));
                 new Action(KyDataOperation.SaveSqlToFile).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
                 System.Environment.Exit(0);
@@ -948,7 +950,7 @@ namespace KangYiCollection
             catch (Exception ex)
             {
                 MyLog.UnHandleException("打开日志窗体异常!", ex);
-                AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(ex, "打开日志窗体异常!"), "提示", 5000);
+                AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(ex, "打开日志窗体异常!"), clsMsg.getMsg("msg_Tip"), 5000);
             }
         }
         /// <summary>
@@ -960,9 +962,9 @@ namespace KangYiCollection
         {
             userId = 0;
             userNumber = "";
-            this.tabPage1.Parent = null;
-            this.tabPage2.Parent = null;
-            this.tabPage3.Parent = materialTabControl1;
+            this.tab_FileUpload.Parent = null;
+            this.tab_DeviceControl.Parent = null;
+            this.tab_UserLogin.Parent = materialTabControl1;
         }
         /// <summary>
         /// 功能设置
@@ -1023,7 +1025,7 @@ namespace KangYiCollection
 
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {
-            if (DialogResult.Yes == MessageBox.Show("退出软件后将无法接收纸币数据，是否退出软件？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+            if (DialogResult.Yes == MessageBox.Show(clsMsg.getMsg("msg_10"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.YesNo, MessageBoxIcon.Information))
             {
                 Exit = true;
                 Close();

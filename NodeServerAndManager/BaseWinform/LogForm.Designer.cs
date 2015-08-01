@@ -30,16 +30,16 @@
         {
             this.CommandLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tab_Cmd = new System.Windows.Forms.TabPage();
+            this.tab_Bussiness = new System.Windows.Forms.TabPage();
             this.BussinessLogRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tab_FsnImport = new System.Windows.Forms.TabPage();
             this.FSNImortLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialTabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tab_Cmd.SuspendLayout();
+            this.tab_Bussiness.SuspendLayout();
+            this.tab_FsnImport.SuspendLayout();
             this.SuspendLayout();
             // 
             // CommandLogRichTextBox
@@ -54,9 +54,9 @@
             // 
             // materialTabControl1
             // 
-            this.materialTabControl1.Controls.Add(this.tabPage1);
-            this.materialTabControl1.Controls.Add(this.tabPage2);
-            this.materialTabControl1.Controls.Add(this.tabPage3);
+            this.materialTabControl1.Controls.Add(this.tab_Cmd);
+            this.materialTabControl1.Controls.Add(this.tab_Bussiness);
+            this.materialTabControl1.Controls.Add(this.tab_FsnImport);
             this.materialTabControl1.Depth = 0;
             this.materialTabControl1.Location = new System.Drawing.Point(3, 71);
             this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -65,27 +65,27 @@
             this.materialTabControl1.Size = new System.Drawing.Size(698, 395);
             this.materialTabControl1.TabIndex = 1;
             // 
-            // tabPage1
+            // tab_Cmd
             // 
-            this.tabPage1.Controls.Add(this.CommandLogRichTextBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(690, 369);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "命令日志";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tab_Cmd.Controls.Add(this.CommandLogRichTextBox);
+            this.tab_Cmd.Location = new System.Drawing.Point(4, 22);
+            this.tab_Cmd.Name = "tab_Cmd";
+            this.tab_Cmd.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Cmd.Size = new System.Drawing.Size(690, 369);
+            this.tab_Cmd.TabIndex = 0;
+            this.tab_Cmd.Text = "命令日志";
+            this.tab_Cmd.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // tab_Bussiness
             // 
-            this.tabPage2.Controls.Add(this.BussinessLogRichTextBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(690, 369);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "业务日志";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tab_Bussiness.Controls.Add(this.BussinessLogRichTextBox);
+            this.tab_Bussiness.Location = new System.Drawing.Point(4, 22);
+            this.tab_Bussiness.Name = "tab_Bussiness";
+            this.tab_Bussiness.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Bussiness.Size = new System.Drawing.Size(690, 369);
+            this.tab_Bussiness.TabIndex = 1;
+            this.tab_Bussiness.Text = "业务日志";
+            this.tab_Bussiness.UseVisualStyleBackColor = true;
             // 
             // BussinessLogRichTextBox
             // 
@@ -97,15 +97,15 @@
             this.BussinessLogRichTextBox.TabIndex = 1;
             this.BussinessLogRichTextBox.Text = "";
             // 
-            // tabPage3
+            // tab_FsnImport
             // 
-            this.tabPage3.Controls.Add(this.FSNImortLogRichTextBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(690, 369);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "FSN导入日志";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tab_FsnImport.Controls.Add(this.FSNImortLogRichTextBox);
+            this.tab_FsnImport.Location = new System.Drawing.Point(4, 22);
+            this.tab_FsnImport.Name = "tab_FsnImport";
+            this.tab_FsnImport.Size = new System.Drawing.Size(690, 369);
+            this.tab_FsnImport.TabIndex = 2;
+            this.tab_FsnImport.Text = "FSN导入日志";
+            this.tab_FsnImport.UseVisualStyleBackColor = true;
             // 
             // FSNImortLogRichTextBox
             // 
@@ -144,9 +144,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "日志";
             this.materialTabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
+            this.tab_Cmd.ResumeLayout(false);
+            this.tab_Bussiness.ResumeLayout(false);
+            this.tab_FsnImport.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -155,11 +155,11 @@
 
         private System.Windows.Forms.RichTextBox CommandLogRichTextBox;
         private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tab_Cmd;
+        private System.Windows.Forms.TabPage tab_Bussiness;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
         private System.Windows.Forms.RichTextBox BussinessLogRichTextBox;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tab_FsnImport;
         private System.Windows.Forms.RichTextBox FSNImortLogRichTextBox;
     }
 }
