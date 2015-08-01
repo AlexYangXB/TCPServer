@@ -13,6 +13,33 @@ namespace KangYiCollection.BaseWinform
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             InitializeComponent();
+            this.Text = clsMsg.getMsg("MenuItem_CRHReview");
+            foreach (var item in this.Controls)
+            {
+                if (item is Label)
+                {
+                    Label lab = (Label)item;
+                    lab.Text = clsMsg.getMsg(lab.Name);
+                }
+                if (item is Button)
+                {
+                    Button btn = (Button)item;
+                    btn.Text = clsMsg.getMsg(btn.Name);
+                }
+            }
+            int index = 0;
+            foreach (ListViewItem item in this.liv_CRHCommon.Items)
+            {
+                item.SubItems[0].Text = clsMsg.getMsg("CRHCommon_"+index);
+                index++;
+            }
+            foreach (ColumnHeader ch in liv_CRHRecord.Columns)
+            {
+                ch.Text = clsMsg.getMsg(ch.Tag.ToString());
+            }
+            this.key.Text = clsMsg.getMsg(this.key.Name);
+            this.value.Text = clsMsg.getMsg(this.value.Name);
+
         }
 
         private void btn_CRHOpenFile_Click(object sender, EventArgs e)

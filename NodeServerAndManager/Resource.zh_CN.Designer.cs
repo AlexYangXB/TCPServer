@@ -61,11 +61,29 @@ namespace KangYiCollection {
         }
         
         /// <summary>
+        ///   查找类似 确定 的本地化字符串。
+        /// </summary>
+        internal static string btn_Confirm {
+            get {
+                return ResourceManager.GetString("btn_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 手动导出 的本地化字符串。
         /// </summary>
-        internal static string btn_CRHExport {
+        internal static string btn_CRHManual {
             get {
-                return ResourceManager.GetString("btn_CRHExport", resourceCulture);
+                return ResourceManager.GetString("btn_CRHManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 打开文件 的本地化字符串。
+        /// </summary>
+        internal static string btn_CRHOpenFile {
+            get {
+                return ResourceManager.GetString("btn_CRHOpenFile", resourceCulture);
             }
         }
         
@@ -84,6 +102,15 @@ namespace KangYiCollection {
         internal static string btn_Look {
             get {
                 return ResourceManager.GetString("btn_Look", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择文件 的本地化字符串。
+        /// </summary>
+        internal static string btn_Scan {
+            get {
+                return ResourceManager.GetString("btn_Scan", resourceCulture);
             }
         }
         
@@ -295,6 +322,15 @@ namespace KangYiCollection {
         }
         
         /// <summary>
+        ///   查找类似 号码记录,柜面取款,柜面存款,ATM配钞,ATM清钞 的本地化字符串。
+        /// </summary>
+        internal static string cmb_BusinessType {
+            get {
+                return ResourceManager.GetString("cmb_BusinessType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 记录日期 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_0 {
@@ -484,6 +520,15 @@ namespace KangYiCollection {
         }
         
         /// <summary>
+        ///   查找类似 字段 的本地化字符串。
+        /// </summary>
+        internal static string key {
+            get {
+                return ResourceManager.GetString("key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 设备IP 的本地化字符串。
         /// </summary>
         internal static string kIpAddress {
@@ -576,9 +621,9 @@ namespace KangYiCollection {
         /// <summary>
         ///   查找类似 文件夹： 的本地化字符串。
         /// </summary>
-        internal static string lab_Dir {
+        internal static string lab_Directory {
             get {
-                return ResourceManager.GetString("lab_Dir", resourceCulture);
+                return ResourceManager.GetString("lab_Directory", resourceCulture);
             }
         }
         
@@ -700,6 +745,51 @@ namespace KangYiCollection {
         }
         
         /// <summary>
+        ///   查找类似 {0} 路径不存在！ 的本地化字符串。
+        /// </summary>
+        internal static string log_1 {
+            get {
+                return ResourceManager.GetString("log_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 CRH导出未启用！ 的本地化字符串。
+        /// </summary>
+        internal static string log_2 {
+            get {
+                return ResourceManager.GetString("log_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 当前队列还有{0}条执行语句... 的本地化字符串。
+        /// </summary>
+        internal static string log_3 {
+            get {
+                return ResourceManager.GetString("log_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 当前队列还有{0}个图像文件等待上传... 的本地化字符串。
+        /// </summary>
+        internal static string log_4 {
+            get {
+                return ResourceManager.GetString("log_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} 图像文件上传失败,将添加到队列末尾 的本地化字符串。
+        /// </summary>
+        internal static string log_5 {
+            get {
+                return ResourceManager.GetString("log_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 CRH查看 的本地化字符串。
         /// </summary>
         internal static string MenuItem_CRHReview {
@@ -804,6 +894,15 @@ namespace KangYiCollection {
         internal static string msg_15 {
             get {
                 return ResourceManager.GetString("msg_15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 打开日志窗体异常！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_16 {
+            get {
+                return ResourceManager.GetString("msg_16", resourceCulture);
             }
         }
         
@@ -925,6 +1024,24 @@ namespace KangYiCollection {
         }
         
         /// <summary>
+        ///   查找类似 导入失败 的本地化字符串。
+        /// </summary>
+        internal static string str_ImportFail {
+            get {
+                return ResourceManager.GetString("str_ImportFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 导入成功 的本地化字符串。
+        /// </summary>
+        internal static string str_ImportSuccess {
+            get {
+                return ResourceManager.GetString("str_ImportSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 业务日志 的本地化字符串。
         /// </summary>
         internal static string tab_Bussiness {
@@ -993,6 +1110,15 @@ namespace KangYiCollection {
         internal static string tab_UserLogin {
             get {
                 return ResourceManager.GetString("tab_UserLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 值 的本地化字符串。
+        /// </summary>
+        internal static string value {
+            get {
+                return ResourceManager.GetString("value", resourceCulture);
             }
         }
         

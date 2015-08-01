@@ -47,19 +47,19 @@
             this.lab_LocalPort = new System.Windows.Forms.Label();
             this.txb_LocalPort = new System.Windows.Forms.TextBox();
             this.lab_LocalIp = new System.Windows.Forms.Label();
-            this.ipControl_Local = new KangYiCollection.Control.IpControl();
             this.gb_DataSetting = new System.Windows.Forms.GroupBox();
             this.lab_PushPort = new System.Windows.Forms.Label();
-            this.ipControl_Push = new KangYiCollection.Control.IpControl();
             this.txb_PushPort = new System.Windows.Forms.TextBox();
             this.lab_PushIp = new System.Windows.Forms.Label();
             this.lab_PushTest = new System.Windows.Forms.Label();
-            this.ipControl_Server = new KangYiCollection.Control.IpControl();
-            this.ipControl_Device = new KangYiCollection.Control.IpControl();
             this.gb_BindNode = new System.Windows.Forms.GroupBox();
             this.txb_BindNode = new System.Windows.Forms.TextBox();
             this.lab_BindNode = new System.Windows.Forms.Label();
             this.chkList_Node = new System.Windows.Forms.CheckedListBox();
+            this.ipControl_Push = new KangYiCollection.Control.IpControl();
+            this.ipControl_Server = new KangYiCollection.Control.IpControl();
+            this.ipControl_Device = new KangYiCollection.Control.IpControl();
+            this.ipControl_Local = new KangYiCollection.Control.IpControl();
             this.gb_BaseSetting.SuspendLayout();
             this.gb_DataSetting.SuspendLayout();
             this.gb_BindNode.SuspendLayout();
@@ -106,7 +106,7 @@
             // 
             this.lab_ServerTest.AutoSize = true;
             this.lab_ServerTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_ServerTest.Location = new System.Drawing.Point(442, 28);
+            this.lab_ServerTest.Location = new System.Drawing.Point(439, 30);
             this.lab_ServerTest.Name = "lab_ServerTest";
             this.lab_ServerTest.Size = new System.Drawing.Size(29, 12);
             this.lab_ServerTest.TabIndex = 7;
@@ -117,7 +117,7 @@
             // 
             this.lab_DeviceTest.AutoSize = true;
             this.lab_DeviceTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_DeviceTest.Location = new System.Drawing.Point(442, 66);
+            this.lab_DeviceTest.Location = new System.Drawing.Point(438, 66);
             this.lab_DeviceTest.Name = "lab_DeviceTest";
             this.lab_DeviceTest.Size = new System.Drawing.Size(29, 12);
             this.lab_DeviceTest.TabIndex = 8;
@@ -128,7 +128,7 @@
             // 
             this.lab_PictureTest.AutoSize = true;
             this.lab_PictureTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_PictureTest.Location = new System.Drawing.Point(442, 142);
+            this.lab_PictureTest.Location = new System.Drawing.Point(439, 142);
             this.lab_PictureTest.Name = "lab_PictureTest";
             this.lab_PictureTest.Size = new System.Drawing.Size(29, 12);
             this.lab_PictureTest.TabIndex = 9;
@@ -156,7 +156,7 @@
             // 
             // txb_SphinxPort
             // 
-            this.txb_SphinxPort.Location = new System.Drawing.Point(358, 27);
+            this.txb_SphinxPort.Location = new System.Drawing.Point(361, 25);
             this.txb_SphinxPort.Name = "txb_SphinxPort";
             this.txb_SphinxPort.Size = new System.Drawing.Size(72, 21);
             this.txb_SphinxPort.TabIndex = 1;
@@ -164,7 +164,7 @@
             // 
             // txb_DevicePort
             // 
-            this.txb_DevicePort.Location = new System.Drawing.Point(358, 63);
+            this.txb_DevicePort.Location = new System.Drawing.Point(361, 61);
             this.txb_DevicePort.Name = "txb_DevicePort";
             this.txb_DevicePort.Size = new System.Drawing.Size(72, 21);
             this.txb_DevicePort.TabIndex = 3;
@@ -181,8 +181,7 @@
             // 
             // txb_ImagePort
             // 
-            this.txb_ImagePort.Enabled = false;
-            this.txb_ImagePort.Location = new System.Drawing.Point(358, 139);
+            this.txb_ImagePort.Location = new System.Drawing.Point(361, 137);
             this.txb_ImagePort.Name = "txb_ImagePort";
             this.txb_ImagePort.Size = new System.Drawing.Size(72, 21);
             this.txb_ImagePort.TabIndex = 7;
@@ -213,7 +212,7 @@
             // lab_LocalPort
             // 
             this.lab_LocalPort.AutoSize = true;
-            this.lab_LocalPort.Location = new System.Drawing.Point(326, 25);
+            this.lab_LocalPort.Location = new System.Drawing.Point(327, 28);
             this.lab_LocalPort.Name = "lab_LocalPort";
             this.lab_LocalPort.Size = new System.Drawing.Size(29, 12);
             this.lab_LocalPort.TabIndex = 6;
@@ -221,7 +220,7 @@
             // 
             // txb_LocalPort
             // 
-            this.txb_LocalPort.Location = new System.Drawing.Point(358, 21);
+            this.txb_LocalPort.Location = new System.Drawing.Point(361, 22);
             this.txb_LocalPort.Name = "txb_LocalPort";
             this.txb_LocalPort.Size = new System.Drawing.Size(72, 21);
             this.txb_LocalPort.TabIndex = 7;
@@ -234,15 +233,6 @@
             this.lab_LocalIp.Size = new System.Drawing.Size(41, 12);
             this.lab_LocalIp.TabIndex = 5;
             this.lab_LocalIp.Text = "本机IP";
-            // 
-            // ipControl_Local
-            // 
-            this.ipControl_Local.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Local.Location = new System.Drawing.Point(83, 14);
-            this.ipControl_Local.Name = "ipControl_Local";
-            this.ipControl_Local.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Local.TabIndex = 4;
-            this.ipControl_Local.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Local.Value")));
             // 
             // gb_DataSetting
             // 
@@ -276,24 +266,15 @@
             // lab_PushPort
             // 
             this.lab_PushPort.AutoSize = true;
-            this.lab_PushPort.Location = new System.Drawing.Point(328, 104);
+            this.lab_PushPort.Location = new System.Drawing.Point(327, 104);
             this.lab_PushPort.Name = "lab_PushPort";
             this.lab_PushPort.Size = new System.Drawing.Size(29, 12);
             this.lab_PushPort.TabIndex = 20;
             this.lab_PushPort.Text = "端口";
             // 
-            // ipControl_Push
-            // 
-            this.ipControl_Push.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
-            this.ipControl_Push.Name = "ipControl_Push";
-            this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Push.TabIndex = 4;
-            this.ipControl_Push.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Push.Value")));
-            // 
             // txb_PushPort
             // 
-            this.txb_PushPort.Location = new System.Drawing.Point(359, 100);
+            this.txb_PushPort.Location = new System.Drawing.Point(362, 98);
             this.txb_PushPort.Name = "txb_PushPort";
             this.txb_PushPort.Size = new System.Drawing.Size(72, 21);
             this.txb_PushPort.TabIndex = 4;
@@ -312,31 +293,12 @@
             // 
             this.lab_PushTest.AutoSize = true;
             this.lab_PushTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_PushTest.Location = new System.Drawing.Point(443, 103);
+            this.lab_PushTest.Location = new System.Drawing.Point(439, 103);
             this.lab_PushTest.Name = "lab_PushTest";
             this.lab_PushTest.Size = new System.Drawing.Size(29, 12);
             this.lab_PushTest.TabIndex = 19;
             this.lab_PushTest.Text = "测试";
             this.lab_PushTest.Click += new System.EventHandler(this.lab_PushTest_Click);
-            // 
-            // ipControl_Server
-            // 
-            this.ipControl_Server.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Server.Location = new System.Drawing.Point(83, 15);
-            this.ipControl_Server.Name = "ipControl_Server";
-            this.ipControl_Server.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Server.TabIndex = 0;
-            this.ipControl_Server.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Server.Value")));
-            this.ipControl_Server.Leave += new System.EventHandler(this.ipControl_Server_Leave);
-            // 
-            // ipControl_Device
-            // 
-            this.ipControl_Device.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Device.Location = new System.Drawing.Point(83, 51);
-            this.ipControl_Device.Name = "ipControl_Device";
-            this.ipControl_Device.Size = new System.Drawing.Size(248, 39);
-            this.ipControl_Device.TabIndex = 2;
-            this.ipControl_Device.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Device.Value")));
             // 
             // gb_BindNode
             // 
@@ -379,6 +341,43 @@
             this.chkList_Node.Size = new System.Drawing.Size(288, 66);
             this.chkList_Node.TabIndex = 1;
             this.chkList_Node.SelectedIndexChanged += new System.EventHandler(this.chkList_Node_SelectedIndexChanged);
+            // 
+            // ipControl_Push
+            // 
+            this.ipControl_Push.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
+            this.ipControl_Push.Name = "ipControl_Push";
+            this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Push.TabIndex = 4;
+            this.ipControl_Push.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Push.Value")));
+            // 
+            // ipControl_Server
+            // 
+            this.ipControl_Server.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Server.Location = new System.Drawing.Point(83, 15);
+            this.ipControl_Server.Name = "ipControl_Server";
+            this.ipControl_Server.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Server.TabIndex = 0;
+            this.ipControl_Server.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Server.Value")));
+            this.ipControl_Server.Leave += new System.EventHandler(this.ipControl_Server_Leave);
+            // 
+            // ipControl_Device
+            // 
+            this.ipControl_Device.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Device.Location = new System.Drawing.Point(83, 51);
+            this.ipControl_Device.Name = "ipControl_Device";
+            this.ipControl_Device.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Device.TabIndex = 2;
+            this.ipControl_Device.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Device.Value")));
+            // 
+            // ipControl_Local
+            // 
+            this.ipControl_Local.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipControl_Local.Location = new System.Drawing.Point(83, 14);
+            this.ipControl_Local.Name = "ipControl_Local";
+            this.ipControl_Local.Size = new System.Drawing.Size(248, 39);
+            this.ipControl_Local.TabIndex = 4;
+            this.ipControl_Local.Value = ((System.Net.IPAddress)(resources.GetObject("ipControl_Local.Value")));
             // 
             // ServerSettings
             // 

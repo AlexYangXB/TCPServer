@@ -36,13 +36,76 @@ namespace KangYiCollection.BaseWinform
             InitializeComponent();
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
+            foreach (TabPage tabPage in materialTabControl1.TabPages)
+            {
+                tabPage.Text = clsMsg.getMsg(tabPage.Name);
+                foreach (var item in tabPage.Controls)
+                {
+                    if (item is Label)
+                    {
+                        Label lab = (Label)item;
+                        if (lab.Name.Contains("Directory"))
+                            lab.Text = clsMsg.getMsg("lab_Directory");
+                        else
+                            lab.Text = clsMsg.getMsg(lab.Name);
+                    }
+                    if (item is Button)
+                    {
+                        Button btn = (Button)item;
+                        if (btn.Name.Contains("Look"))
+                            btn.Text = clsMsg.getMsg("btn_Look");
+                        else
+                            btn.Text = clsMsg.getMsg(btn.Name);
+                    }
+                    if (item is MaterialSkin.Controls.MaterialCheckBox)
+                    {
+                        MaterialSkin.Controls.MaterialCheckBox mchk = (MaterialSkin.Controls.MaterialCheckBox)item;
+                        mchk.Text = clsMsg.getMsg(mchk.Name);
+                    }
+                    if (item is GroupBox)
+                    {
+                        GroupBox gb = (GroupBox)item;
+                        gb.Text = clsMsg.getMsg(gb.Name);
+                        foreach (var subitem in gb.Controls)
+                        {
+                            if (subitem is Label)
+                            {
+                                Label lab = (Label)subitem;
+                                if (lab.Name.Contains("Directory"))
+                                    lab.Text = clsMsg.getMsg("lab_Directory");
+                                else
+                                    lab.Text = clsMsg.getMsg(lab.Name);
+                            }
+                            if (subitem is Button)
+                            {
+                                Button btn = (Button)subitem;
+                                if (btn.Name.Contains("Look"))
+                                    btn.Text = clsMsg.getMsg("btn_Look");
+                                else
+                                    btn.Text = clsMsg.getMsg(btn.Name);
+                            }
+                            if (subitem is MaterialSkin.Controls.MaterialCheckBox)
+                            {
+                                MaterialSkin.Controls.MaterialCheckBox mchk = (MaterialSkin.Controls.MaterialCheckBox)subitem;
+                                mchk.Text = clsMsg.getMsg(mchk.Name);
+                            }
+                            if (subitem is MaterialSkin.Controls.MaterialRadioButton)
+                            {
+                                MaterialSkin.Controls.MaterialRadioButton mrad = (MaterialSkin.Controls.MaterialRadioButton)subitem;
+                                mrad.Text = clsMsg.getMsg(mrad.Name);
+                            }
+                        }
+                    }
+                }
+            }
+            this.Text = clsMsg.getMsg("MenuItem_CRHReview");
         }
 
         private void SystemSettings_Load(object sender, EventArgs e)
         {
             //其他厂家接入
             chk_FactoryAccess.Checked = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
-            txb_OtherFactoryAccessDir.Text = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
+            txb_FactoryDir.Text = KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir;
             //CRH导出
             chk_CRHExport.Checked = KangYiCollection.Properties.Settings.Default.CRHExport;
             dt_CRHStartTime.Value = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + KangYiCollection.Properties.Settings.Default.CRHStartTime);
@@ -57,9 +120,9 @@ namespace KangYiCollection.BaseWinform
             //其他厂家接入保存
             if (chk_FactoryAccess.Checked)
             {
-                if (Directory.Exists(txb_OtherFactoryAccessDir.Text))
+                if (Directory.Exists(txb_FactoryDir.Text))
                 {
-                    KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir = txb_OtherFactoryAccessDir.Text;
+                    KangYiCollection.Properties.Settings.Default.OtherFactoryAccessDir = txb_FactoryDir.Text;
                 }
                 else
                 {
@@ -93,20 +156,20 @@ namespace KangYiCollection.BaseWinform
             }
             else
                 e.Cancel = true;
-            
+
         }
 
-        private void btn_FactoryDirLook_Click(object sender, EventArgs e)
+        private void btn_FactoryLook_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string foldPath = dialog.SelectedPath;
-                txb_OtherFactoryAccessDir.Text = foldPath;
+                txb_FactoryDir.Text = foldPath;
             }
         }
 
-        private void btn_CRHDir_Click(object sender, EventArgs e)
+        private void btn_CRHLook_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -116,7 +179,7 @@ namespace KangYiCollection.BaseWinform
             }
         }
 
-        private void btn_CRHExport_Click(object sender, EventArgs e)
+        private void btn_CRHManual_Click(object sender, EventArgs e)
         {
             if (rb_CRHYesterday.Checked)
             {
@@ -144,7 +207,7 @@ namespace KangYiCollection.BaseWinform
                     System.Diagnostics.Process.Start("explorer.exe", foldPath);
                 }
             }
-           
+
         }
         private void ExportToCRH()
         {

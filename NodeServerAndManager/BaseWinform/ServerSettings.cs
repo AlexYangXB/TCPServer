@@ -36,6 +36,30 @@ namespace KangYiCollection.BaseWinform
         public ServerSettings()
         {
             InitializeComponent();
+            this.Text = clsMsg.getMsg("MenuItem_ServerSetting");
+            foreach (var item in this.Controls)
+            {
+                if (item is GroupBox)
+                {
+                    GroupBox gb = (GroupBox)item;
+                    gb.Text = clsMsg.getMsg(gb.Name);
+                    foreach (var subitem in gb.Controls)
+                    {
+                        if (subitem is Label)
+                        {
+                            Label lab = (Label)subitem;
+                            if (lab.Name.Contains("Port"))
+                                lab.Text = clsMsg.getMsg("lab_Port");
+                            else if (lab.Name.Contains("Test"))
+                                lab.Text = clsMsg.getMsg("lab_Test");
+                            else
+                                lab.Text = clsMsg.getMsg(lab.Name);
+                        }
+                    }
+                }
+            }
+            lab_BindNode.Text = clsMsg.getMsg(gb_BindNode.Name);
+            btn_Confirm.Text = clsMsg.getMsg(btn_Confirm.Name);
         }
 
         private void ServerSettings_Load(object sender, EventArgs e)
@@ -359,7 +383,7 @@ namespace KangYiCollection.BaseWinform
             }
         }
 
-       
+
 
         private void chkList_Node_SelectedIndexChanged(object sender, EventArgs e)
         {

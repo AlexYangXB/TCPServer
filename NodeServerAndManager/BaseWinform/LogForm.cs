@@ -2,6 +2,7 @@
 using KyBll;
 using KyModel;
 using MyTcpServer;
+using System.Windows.Forms;
 namespace KangYiCollection.BaseWinform
 {
     public partial class LogForm : MaterialSkin.Controls.MaterialForm
@@ -10,6 +11,10 @@ namespace KangYiCollection.BaseWinform
         public LogForm()
         {
             InitializeComponent();
+            foreach (TabPage tabPage in materialTabControl1.TabPages)
+            {
+                tabPage.Text = clsMsg.getMsg(tabPage.Name);
+            }
 
         }
         public void myTcpServer_LogEvent(object sender, MyTCP.LogEventArgs e)

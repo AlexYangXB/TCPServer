@@ -30,18 +30,18 @@
         {
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tab_OtherFactoryAccess = new System.Windows.Forms.TabPage();
-            this.lab_FactoryDir = new System.Windows.Forms.Label();
-            this.btn_FactoryDirLook = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.txb_OtherFactoryAccessDir = new System.Windows.Forms.TextBox();
+            this.lab_FactoryDirectory = new System.Windows.Forms.Label();
+            this.btn_FactoryLook = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.txb_FactoryDir = new System.Windows.Forms.TextBox();
             this.chk_FactoryAccess = new MaterialSkin.Controls.MaterialCheckBox();
             this.tab_CRHExport = new System.Windows.Forms.TabPage();
-            this.btn_CRHExport = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.btn_CRHManual = new MaterialSkin.Controls.MaterialRaisedButton();
             this.gb_CRH1 = new System.Windows.Forms.GroupBox();
             this.dt_CRHStartTime = new System.Windows.Forms.DateTimePicker();
             this.chk_CRHExport = new MaterialSkin.Controls.MaterialCheckBox();
             this.gb_CRH3 = new System.Windows.Forms.GroupBox();
-            this.lab_CRHDir = new System.Windows.Forms.Label();
-            this.btn_CRHDir = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.lab_CRHDirectory = new System.Windows.Forms.Label();
+            this.btn_CRHLook = new MaterialSkin.Controls.MaterialRaisedButton();
             this.txb_CHRDir = new System.Windows.Forms.TextBox();
             this.gb_CRH2 = new System.Windows.Forms.GroupBox();
             this.rb_CRHYesterday = new MaterialSkin.Controls.MaterialRadioButton();
@@ -69,9 +69,9 @@
             // 
             // tab_OtherFactoryAccess
             // 
-            this.tab_OtherFactoryAccess.Controls.Add(this.lab_FactoryDir);
-            this.tab_OtherFactoryAccess.Controls.Add(this.btn_FactoryDirLook);
-            this.tab_OtherFactoryAccess.Controls.Add(this.txb_OtherFactoryAccessDir);
+            this.tab_OtherFactoryAccess.Controls.Add(this.lab_FactoryDirectory);
+            this.tab_OtherFactoryAccess.Controls.Add(this.btn_FactoryLook);
+            this.tab_OtherFactoryAccess.Controls.Add(this.txb_FactoryDir);
             this.tab_OtherFactoryAccess.Controls.Add(this.chk_FactoryAccess);
             this.tab_OtherFactoryAccess.Location = new System.Drawing.Point(4, 22);
             this.tab_OtherFactoryAccess.Name = "tab_OtherFactoryAccess";
@@ -80,36 +80,36 @@
             this.tab_OtherFactoryAccess.Text = "他厂接入";
             this.tab_OtherFactoryAccess.UseVisualStyleBackColor = true;
             // 
-            // lab_FactoryDir
+            // lab_FactoryDirectory
             // 
-            this.lab_FactoryDir.AutoSize = true;
-            this.lab_FactoryDir.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_FactoryDir.Location = new System.Drawing.Point(63, 76);
-            this.lab_FactoryDir.Name = "lab_FactoryDir";
-            this.lab_FactoryDir.Size = new System.Drawing.Size(63, 14);
-            this.lab_FactoryDir.TabIndex = 11;
-            this.lab_FactoryDir.Text = "文件夹：";
+            this.lab_FactoryDirectory.AutoSize = true;
+            this.lab_FactoryDirectory.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_FactoryDirectory.Location = new System.Drawing.Point(63, 76);
+            this.lab_FactoryDirectory.Name = "lab_FactoryDirectory";
+            this.lab_FactoryDirectory.Size = new System.Drawing.Size(63, 14);
+            this.lab_FactoryDirectory.TabIndex = 11;
+            this.lab_FactoryDirectory.Text = "文件夹：";
             // 
-            // btn_FactoryDirLook
+            // btn_FactoryLook
             // 
-            this.btn_FactoryDirLook.Depth = 0;
-            this.btn_FactoryDirLook.Location = new System.Drawing.Point(505, 65);
-            this.btn_FactoryDirLook.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btn_FactoryDirLook.Name = "btn_FactoryDirLook";
-            this.btn_FactoryDirLook.Primary = true;
-            this.btn_FactoryDirLook.Size = new System.Drawing.Size(75, 38);
-            this.btn_FactoryDirLook.TabIndex = 10;
-            this.btn_FactoryDirLook.Text = "浏览";
-            this.btn_FactoryDirLook.UseVisualStyleBackColor = true;
-            this.btn_FactoryDirLook.Click += new System.EventHandler(this.btn_FactoryDirLook_Click);
+            this.btn_FactoryLook.Depth = 0;
+            this.btn_FactoryLook.Location = new System.Drawing.Point(505, 65);
+            this.btn_FactoryLook.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btn_FactoryLook.Name = "btn_FactoryLook";
+            this.btn_FactoryLook.Primary = true;
+            this.btn_FactoryLook.Size = new System.Drawing.Size(75, 38);
+            this.btn_FactoryLook.TabIndex = 10;
+            this.btn_FactoryLook.Text = "浏览";
+            this.btn_FactoryLook.UseVisualStyleBackColor = true;
+            this.btn_FactoryLook.Click += new System.EventHandler(this.btn_FactoryLook_Click);
             // 
-            // txb_OtherFactoryAccessDir
+            // txb_FactoryDir
             // 
-            this.txb_OtherFactoryAccessDir.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txb_OtherFactoryAccessDir.Location = new System.Drawing.Point(132, 71);
-            this.txb_OtherFactoryAccessDir.Name = "txb_OtherFactoryAccessDir";
-            this.txb_OtherFactoryAccessDir.Size = new System.Drawing.Size(350, 26);
-            this.txb_OtherFactoryAccessDir.TabIndex = 9;
+            this.txb_FactoryDir.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txb_FactoryDir.Location = new System.Drawing.Point(132, 71);
+            this.txb_FactoryDir.Name = "txb_FactoryDir";
+            this.txb_FactoryDir.Size = new System.Drawing.Size(350, 26);
+            this.txb_FactoryDir.TabIndex = 9;
             // 
             // chk_FactoryAccess
             // 
@@ -129,7 +129,7 @@
             // 
             // tab_CRHExport
             // 
-            this.tab_CRHExport.Controls.Add(this.btn_CRHExport);
+            this.tab_CRHExport.Controls.Add(this.btn_CRHManual);
             this.tab_CRHExport.Controls.Add(this.gb_CRH1);
             this.tab_CRHExport.Controls.Add(this.gb_CRH3);
             this.tab_CRHExport.Controls.Add(this.gb_CRH2);
@@ -140,18 +140,18 @@
             this.tab_CRHExport.Text = "CRH导出";
             this.tab_CRHExport.UseVisualStyleBackColor = true;
             // 
-            // btn_CRHExport
+            // btn_CRHManual
             // 
-            this.btn_CRHExport.Depth = 0;
-            this.btn_CRHExport.Location = new System.Drawing.Point(270, 276);
-            this.btn_CRHExport.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btn_CRHExport.Name = "btn_CRHExport";
-            this.btn_CRHExport.Primary = true;
-            this.btn_CRHExport.Size = new System.Drawing.Size(131, 40);
-            this.btn_CRHExport.TabIndex = 14;
-            this.btn_CRHExport.Text = "手动导出";
-            this.btn_CRHExport.UseVisualStyleBackColor = true;
-            this.btn_CRHExport.Click += new System.EventHandler(this.btn_CRHExport_Click);
+            this.btn_CRHManual.Depth = 0;
+            this.btn_CRHManual.Location = new System.Drawing.Point(270, 276);
+            this.btn_CRHManual.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btn_CRHManual.Name = "btn_CRHManual";
+            this.btn_CRHManual.Primary = true;
+            this.btn_CRHManual.Size = new System.Drawing.Size(131, 40);
+            this.btn_CRHManual.TabIndex = 14;
+            this.btn_CRHManual.Text = "手动导出";
+            this.btn_CRHManual.UseVisualStyleBackColor = true;
+            this.btn_CRHManual.Click += new System.EventHandler(this.btn_CRHManual_Click);
             // 
             // gb_CRH1
             // 
@@ -191,8 +191,8 @@
             // 
             // gb_CRH3
             // 
-            this.gb_CRH3.Controls.Add(this.lab_CRHDir);
-            this.gb_CRH3.Controls.Add(this.btn_CRHDir);
+            this.gb_CRH3.Controls.Add(this.lab_CRHDirectory);
+            this.gb_CRH3.Controls.Add(this.btn_CRHLook);
             this.gb_CRH3.Controls.Add(this.txb_CHRDir);
             this.gb_CRH3.Location = new System.Drawing.Point(62, 175);
             this.gb_CRH3.Name = "gb_CRH3";
@@ -201,28 +201,28 @@
             this.gb_CRH3.TabStop = false;
             this.gb_CRH3.Text = "自动导出路径设置";
             // 
-            // lab_CRHDir
+            // lab_CRHDirectory
             // 
-            this.lab_CRHDir.AutoSize = true;
-            this.lab_CRHDir.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_CRHDir.Location = new System.Drawing.Point(22, 44);
-            this.lab_CRHDir.Name = "lab_CRHDir";
-            this.lab_CRHDir.Size = new System.Drawing.Size(63, 14);
-            this.lab_CRHDir.TabIndex = 15;
-            this.lab_CRHDir.Text = "文件夹：";
+            this.lab_CRHDirectory.AutoSize = true;
+            this.lab_CRHDirectory.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_CRHDirectory.Location = new System.Drawing.Point(22, 44);
+            this.lab_CRHDirectory.Name = "lab_CRHDirectory";
+            this.lab_CRHDirectory.Size = new System.Drawing.Size(63, 14);
+            this.lab_CRHDirectory.TabIndex = 15;
+            this.lab_CRHDirectory.Text = "文件夹：";
             // 
-            // btn_CRHDir
+            // btn_CRHLook
             // 
-            this.btn_CRHDir.Depth = 0;
-            this.btn_CRHDir.Location = new System.Drawing.Point(449, 29);
-            this.btn_CRHDir.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btn_CRHDir.Name = "btn_CRHDir";
-            this.btn_CRHDir.Primary = true;
-            this.btn_CRHDir.Size = new System.Drawing.Size(75, 36);
-            this.btn_CRHDir.TabIndex = 13;
-            this.btn_CRHDir.Text = "浏览";
-            this.btn_CRHDir.UseVisualStyleBackColor = true;
-            this.btn_CRHDir.Click += new System.EventHandler(this.btn_CRHDir_Click);
+            this.btn_CRHLook.Depth = 0;
+            this.btn_CRHLook.Location = new System.Drawing.Point(449, 29);
+            this.btn_CRHLook.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btn_CRHLook.Name = "btn_CRHLook";
+            this.btn_CRHLook.Primary = true;
+            this.btn_CRHLook.Size = new System.Drawing.Size(75, 36);
+            this.btn_CRHLook.TabIndex = 13;
+            this.btn_CRHLook.Text = "浏览";
+            this.btn_CRHLook.UseVisualStyleBackColor = true;
+            this.btn_CRHLook.Click += new System.EventHandler(this.btn_CRHLook_Click);
             // 
             // txb_CHRDir
             // 
@@ -326,21 +326,21 @@
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
         private System.Windows.Forms.TabPage tab_OtherFactoryAccess;
         private MaterialSkin.Controls.MaterialCheckBox chk_FactoryAccess;
-        private MaterialSkin.Controls.MaterialRaisedButton btn_FactoryDirLook;
-        private System.Windows.Forms.TextBox txb_OtherFactoryAccessDir;
+        private MaterialSkin.Controls.MaterialRaisedButton btn_FactoryLook;
+        private System.Windows.Forms.TextBox txb_FactoryDir;
         private System.Windows.Forms.TabPage tab_CRHExport;
         private MaterialSkin.Controls.MaterialRadioButton rb_CRHToday;
         private MaterialSkin.Controls.MaterialRadioButton rb_CRHYesterday;
         private MaterialSkin.Controls.MaterialCheckBox chk_CRHExport;
         private System.Windows.Forms.GroupBox gb_CRH2;
         private System.Windows.Forms.GroupBox gb_CRH3;
-        private MaterialSkin.Controls.MaterialRaisedButton btn_CRHDir;
+        private MaterialSkin.Controls.MaterialRaisedButton btn_CRHLook;
         private System.Windows.Forms.TextBox txb_CHRDir;
         private System.Windows.Forms.GroupBox gb_CRH1;
-        private MaterialSkin.Controls.MaterialRaisedButton btn_CRHExport;
+        private MaterialSkin.Controls.MaterialRaisedButton btn_CRHManual;
         private System.Windows.Forms.DateTimePicker dt_CRHStartTime;
-        private System.Windows.Forms.Label lab_FactoryDir;
-        private System.Windows.Forms.Label lab_CRHDir;
+        private System.Windows.Forms.Label lab_FactoryDirectory;
+        private System.Windows.Forms.Label lab_CRHDirectory;
 
     }
 }

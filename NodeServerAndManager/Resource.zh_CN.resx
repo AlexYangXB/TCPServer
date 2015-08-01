@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btn_CRHExport" xml:space="preserve">
+  <data name="btn_CRHManual" xml:space="preserve">
     <value>手动导出</value>
   </data>
   <data name="btn_Login" xml:space="preserve">
@@ -288,7 +288,7 @@
   <data name="lab_DeviceIp" xml:space="preserve">
     <value>设备服务器IP</value>
   </data>
-  <data name="lab_Dir" xml:space="preserve">
+  <data name="lab_Directory" xml:space="preserve">
     <value>文件夹：</value>
   </data>
   <data name="lab_Factory" xml:space="preserve">
@@ -446,5 +446,47 @@
   </data>
   <data name="wf_StopPush" xml:space="preserve">
     <value>正在停止推送...</value>
+  </data>
+  <data name="btn_Confirm" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="btn_CRHOpenFile" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="btn_Scan" xml:space="preserve">
+    <value>选择文件</value>
+  </data>
+  <data name="cmb_BusinessType" xml:space="preserve">
+    <value>号码记录,柜面取款,柜面存款,ATM配钞,ATM清钞</value>
+  </data>
+  <data name="key" xml:space="preserve">
+    <value>字段</value>
+  </data>
+  <data name="log_1" xml:space="preserve">
+    <value>{0} 路径不存在！</value>
+  </data>
+  <data name="log_2" xml:space="preserve">
+    <value>CRH导出未启用！</value>
+  </data>
+  <data name="log_3" xml:space="preserve">
+    <value>当前队列还有{0}条执行语句...</value>
+  </data>
+  <data name="log_4" xml:space="preserve">
+    <value>当前队列还有{0}个图像文件等待上传...</value>
+  </data>
+  <data name="log_5" xml:space="preserve">
+    <value>{0} 图像文件上传失败,将添加到队列末尾</value>
+  </data>
+  <data name="msg_16" xml:space="preserve">
+    <value>打开日志窗体异常！</value>
+  </data>
+  <data name="str_ImportFail" xml:space="preserve">
+    <value>导入失败</value>
+  </data>
+  <data name="str_ImportSuccess" xml:space="preserve">
+    <value>导入成功</value>
+  </data>
+  <data name="value" xml:space="preserve">
+    <value>值</value>
   </data>
 </root>

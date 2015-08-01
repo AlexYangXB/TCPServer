@@ -30,11 +30,11 @@ namespace KangYiCollection
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NodeManager));
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tab_FileUpload = new System.Windows.Forms.TabPage();
-            this.btn_Ok = new System.Windows.Forms.Button();
+            this.btn_Confirm = new System.Windows.Forms.Button();
             this.lab_UploadTip = new System.Windows.Forms.Label();
             this.txb_Message = new System.Windows.Forms.TextBox();
             this.rad_GZH = new System.Windows.Forms.RadioButton();
@@ -104,7 +104,7 @@ namespace KangYiCollection
             // 
             // tab_FileUpload
             // 
-            this.tab_FileUpload.Controls.Add(this.btn_Ok);
+            this.tab_FileUpload.Controls.Add(this.btn_Confirm);
             this.tab_FileUpload.Controls.Add(this.lab_UploadTip);
             this.tab_FileUpload.Controls.Add(this.txb_Message);
             this.tab_FileUpload.Controls.Add(this.rad_GZH);
@@ -120,15 +120,15 @@ namespace KangYiCollection
             this.tab_FileUpload.Text = "文件上传";
             this.tab_FileUpload.UseVisualStyleBackColor = true;
             // 
-            // btn_Ok
+            // btn_Confirm
             // 
-            this.btn_Ok.Location = new System.Drawing.Point(298, 402);
-            this.btn_Ok.Name = "btn_Ok";
-            this.btn_Ok.Size = new System.Drawing.Size(75, 23);
-            this.btn_Ok.TabIndex = 34;
-            this.btn_Ok.Text = "确定";
-            this.btn_Ok.UseVisualStyleBackColor = true;
-            this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
+            this.btn_Confirm.Location = new System.Drawing.Point(298, 402);
+            this.btn_Confirm.Name = "btn_Confirm";
+            this.btn_Confirm.Size = new System.Drawing.Size(75, 23);
+            this.btn_Confirm.TabIndex = 34;
+            this.btn_Confirm.Text = "确定";
+            this.btn_Confirm.UseVisualStyleBackColor = true;
+            this.btn_Confirm.Click += new System.EventHandler(this.btn_Confirm_Click);
             // 
             // lab_UploadTip
             // 
@@ -221,7 +221,7 @@ namespace KangYiCollection
             // 
             this.lab_BussinessNumber.AutoSize = true;
             this.lab_BussinessNumber.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_BussinessNumber.Location = new System.Drawing.Point(6, 159);
+            this.lab_BussinessNumber.Location = new System.Drawing.Point(3, 159);
             this.lab_BussinessNumber.Name = "lab_BussinessNumber";
             this.lab_BussinessNumber.Size = new System.Drawing.Size(77, 14);
             this.lab_BussinessNumber.TabIndex = 24;
@@ -231,7 +231,7 @@ namespace KangYiCollection
             // 
             this.lab_DealType.AutoSize = true;
             this.lab_DealType.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_DealType.Location = new System.Drawing.Point(20, 71);
+            this.lab_DealType.Location = new System.Drawing.Point(18, 71);
             this.lab_DealType.Name = "lab_DealType";
             this.lab_DealType.Size = new System.Drawing.Size(63, 14);
             this.lab_DealType.TabIndex = 12;
@@ -241,7 +241,7 @@ namespace KangYiCollection
             // 
             this.lab_Factory.AutoSize = true;
             this.lab_Factory.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_Factory.Location = new System.Drawing.Point(20, 17);
+            this.lab_Factory.Location = new System.Drawing.Point(17, 17);
             this.lab_Factory.Name = "lab_Factory";
             this.lab_Factory.Size = new System.Drawing.Size(63, 14);
             this.lab_Factory.TabIndex = 22;
@@ -268,7 +268,7 @@ namespace KangYiCollection
             // 
             this.lab_ATM.AutoSize = true;
             this.lab_ATM.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_ATM.Location = new System.Drawing.Point(27, 99);
+            this.lab_ATM.Location = new System.Drawing.Point(25, 99);
             this.lab_ATM.Name = "lab_ATM";
             this.lab_ATM.Size = new System.Drawing.Size(56, 14);
             this.lab_ATM.TabIndex = 13;
@@ -280,14 +280,6 @@ namespace KangYiCollection
             this.cmb_CashBox2.Enabled = false;
             this.cmb_CashBox2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmb_CashBox2.FormattingEnabled = true;
-            this.cmb_CashBox2.Items.AddRange(new object[] {
-            "号码记录",
-            "付款",
-            "收款",
-            "柜面取款",
-            "柜面存款",
-            "ATM配钞",
-            "ATM清钞"});
             this.cmb_CashBox2.Location = new System.Drawing.Point(90, 124);
             this.cmb_CashBox2.Name = "cmb_CashBox2";
             this.cmb_CashBox2.Size = new System.Drawing.Size(314, 22);
@@ -297,7 +289,7 @@ namespace KangYiCollection
             // 
             this.lab_CashBox.AutoSize = true;
             this.lab_CashBox.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_CashBox.Location = new System.Drawing.Point(19, 128);
+            this.lab_CashBox.Location = new System.Drawing.Point(17, 128);
             this.lab_CashBox.Name = "lab_CashBox";
             this.lab_CashBox.Size = new System.Drawing.Size(63, 14);
             this.lab_CashBox.TabIndex = 14;
@@ -319,14 +311,6 @@ namespace KangYiCollection
             this.cmb_ATM2.Enabled = false;
             this.cmb_ATM2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmb_ATM2.FormattingEnabled = true;
-            this.cmb_ATM2.Items.AddRange(new object[] {
-            "号码记录",
-            "付款",
-            "收款",
-            "柜面取款",
-            "柜面存款",
-            "ATM配钞",
-            "ATM清钞"});
             this.cmb_ATM2.Location = new System.Drawing.Point(89, 96);
             this.cmb_ATM2.Name = "cmb_ATM2";
             this.cmb_ATM2.Size = new System.Drawing.Size(314, 22);
@@ -336,7 +320,7 @@ namespace KangYiCollection
             // 
             this.lab_Node.AutoSize = true;
             this.lab_Node.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_Node.Location = new System.Drawing.Point(20, 44);
+            this.lab_Node.Location = new System.Drawing.Point(18, 44);
             this.lab_Node.Name = "lab_Node";
             this.lab_Node.Size = new System.Drawing.Size(63, 14);
             this.lab_Node.TabIndex = 19;
@@ -367,14 +351,14 @@ namespace KangYiCollection
             // 
             this.dgv_machine.AllowUserToAddRows = false;
             this.dgv_machine.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_machine.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_machine.ColumnHeadersHeight = 24;
             this.dgv_machine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_machine.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -487,7 +471,7 @@ namespace KangYiCollection
             // 
             this.lab_Password.AutoSize = true;
             this.lab_Password.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_Password.Location = new System.Drawing.Point(216, 209);
+            this.lab_Password.Location = new System.Drawing.Point(212, 210);
             this.lab_Password.Name = "lab_Password";
             this.lab_Password.Size = new System.Drawing.Size(40, 16);
             this.lab_Password.TabIndex = 11;
@@ -497,7 +481,7 @@ namespace KangYiCollection
             // 
             this.lab_User.AutoSize = true;
             this.lab_User.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_User.Location = new System.Drawing.Point(216, 147);
+            this.lab_User.Location = new System.Drawing.Point(212, 148);
             this.lab_User.Name = "lab_User";
             this.lab_User.Size = new System.Drawing.Size(40, 16);
             this.lab_User.TabIndex = 10;
@@ -645,7 +629,7 @@ namespace KangYiCollection
         private System.Windows.Forms.TabPage tab_FileUpload;
         private System.Windows.Forms.TabPage tab_DeviceControl;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
-        private System.Windows.Forms.Button btn_Ok;
+        private System.Windows.Forms.Button btn_Confirm;
         private System.Windows.Forms.Label lab_UploadTip;
         private System.Windows.Forms.TextBox txb_Message;
         private System.Windows.Forms.RadioButton rad_GZH;

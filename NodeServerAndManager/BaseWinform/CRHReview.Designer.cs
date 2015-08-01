@@ -148,16 +148,19 @@
             // 
             // CRHRecord_number
             // 
+            this.CRHRecord_number.Tag = "CRHRecord_number";
             this.CRHRecord_number.Text = "序号";
             // 
             // CRHRecord_recordtime
             // 
+            this.CRHRecord_recordtime.Tag = "CRHRecord_recordtime";
             this.CRHRecord_recordtime.Text = "记录时间";
             this.CRHRecord_recordtime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.CRHRecord_recordtime.Width = 119;
             // 
             // CRHRecord_recordsign
             // 
+            this.CRHRecord_recordsign.Tag = "CRHRecord_recordsign";
             this.CRHRecord_recordsign.Text = "冠字号码";
             this.CRHRecord_recordsign.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.CRHRecord_recordsign.Width = 111;
@@ -165,6 +168,7 @@
             // CRHRecord_recordversion
             // 
             this.CRHRecord_recordversion.DisplayIndex = 4;
+            this.CRHRecord_recordversion.Tag = "CRHRecord_recordversion";
             this.CRHRecord_recordversion.Text = "版别";
             this.CRHRecord_recordversion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.CRHRecord_recordversion.Width = 84;
@@ -172,6 +176,7 @@
             // CRHRecord_recordvalue
             // 
             this.CRHRecord_recordvalue.DisplayIndex = 3;
+            this.CRHRecord_recordvalue.Tag = "CRHRecord_recordvalue";
             this.CRHRecord_recordvalue.Text = "币值";
             this.CRHRecord_recordvalue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.CRHRecord_recordvalue.Width = 80;
