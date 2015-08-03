@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KangYiCollection {
+namespace KyBll {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace KangYiCollection {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource_zh_CN {
+    internal class Resource_zh_TW {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource_zh_CN() {
+        internal Resource_zh_TW() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace KangYiCollection {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KangYiCollection.Resource.zh_CN", typeof(Resource_zh_CN).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KyBll.Resource.zh_TW", typeof(Resource_zh_TW).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 确定 的本地化字符串。
+        ///   查找类似 T确定 的本地化字符串。
         /// </summary>
         internal static string btn_Confirm {
             get {
@@ -70,7 +70,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 手动导出 的本地化字符串。
+        ///   查找类似 T手动导出 的本地化字符串。
         /// </summary>
         internal static string btn_CRHManual {
             get {
@@ -79,7 +79,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 打开文件 的本地化字符串。
+        ///   查找类似 T打开文件 的本地化字符串。
         /// </summary>
         internal static string btn_CRHOpenFile {
             get {
@@ -88,7 +88,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 登录 的本地化字符串。
+        ///   查找类似 T登录 的本地化字符串。
         /// </summary>
         internal static string btn_Login {
             get {
@@ -97,7 +97,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 浏览 的本地化字符串。
+        ///   查找类似 T浏览 的本地化字符串。
         /// </summary>
         internal static string btn_Look {
             get {
@@ -106,7 +106,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 选择文件 的本地化字符串。
+        ///   查找类似 T选择文件 的本地化字符串。
         /// </summary>
         internal static string btn_Scan {
             get {
@@ -115,7 +115,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 发送绑定网点id：{0} 的本地化字符串。
+        ///   查找类似 T发送绑定网点id：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_1 {
             get {
@@ -124,7 +124,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 业务流水号是：{0} 的本地化字符串。
+        ///   查找类似 T业务流水号是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_10 {
             get {
@@ -133,7 +133,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 ATM的id是：{0} 的本地化字符串。
+        ///   查找类似 TATM的id是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_11 {
             get {
@@ -142,7 +142,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 钞箱编号的id是：{0} 的本地化字符串。
+        ///   查找类似 T钞箱编号的id是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_12 {
             get {
@@ -151,7 +151,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 是否为清分中心：{0} 的本地化字符串。
+        ///   查找类似 T是否为清分中心：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_13 {
             get {
@@ -160,7 +160,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 包号是：{0} 的本地化字符串。
+        ///   查找类似 T包号是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_14 {
             get {
@@ -169,7 +169,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 捆钞序号是：{0} 的本地化字符串。
+        ///   查找类似 T捆钞序号是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_15 {
             get {
@@ -178,7 +178,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 用户已关闭浏览器,用户选择的机具id是：{0} 的本地化字符串。
+        ///   查找类似 T用户已关闭浏览器,用户选择的机具id是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_16 {
             get {
@@ -187,7 +187,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 您绑定的网点id是：{0} 已被IP地址是：{1} 绑定了,一分钟后将尝试重连！ 的本地化字符串。
+        ///   查找类似 T您绑定的网点id是：{0} 已被IP地址是：{1} 绑定了,一分钟后将尝试重连！ 的本地化字符串。
         /// </summary>
         internal static string buss_17 {
             get {
@@ -196,7 +196,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 尝试重连，已等待 {0} 次。 的本地化字符串。
+        ///   查找类似 T尝试重连，已等待 {0} 次。 的本地化字符串。
         /// </summary>
         internal static string buss_18 {
             get {
@@ -205,7 +205,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 已断开到推送服务的连接！ 的本地化字符串。
+        ///   查找类似 T已断开到推送服务的连接！ 的本地化字符串。
         /// </summary>
         internal static string buss_19 {
             get {
@@ -214,7 +214,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 收到开始命令，机具id是：{0} ，业务类型是：{1}，用户id是：{2} 的本地化字符串。
+        ///   查找类似 T收到开始命令，机具id是：{0} ，业务类型是：{1}，用户id是：{2} 的本地化字符串。
         /// </summary>
         internal static string buss_2 {
             get {
@@ -223,7 +223,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 该客户端未绑定网点，请先绑定网点！ 的本地化字符串。
+        ///   查找类似 T该客户端未绑定网点，请先绑定网点！ 的本地化字符串。
         /// </summary>
         internal static string buss_20 {
             get {
@@ -232,7 +232,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 推送服务器异常！ 的本地化字符串。
+        ///   查找类似 T推送服务器异常！ 的本地化字符串。
         /// </summary>
         internal static string buss_21 {
             get {
@@ -241,7 +241,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 机器上次连接时间：{0} 的本地化字符串。
+        ///   查找类似 T机器上次连接时间：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_3 {
             get {
@@ -250,7 +250,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 一批张数是：{0} 的本地化字符串。
+        ///   查找类似 T一批张数是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_4 {
             get {
@@ -259,7 +259,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 解析业务类型为：{0} 的本地化字符串。
+        ///   查找类似 T解析业务类型为：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_5 {
             get {
@@ -268,7 +268,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 机具id是：{0} 已失去连接。 的本地化字符串。
+        ///   查找类似 T机具id是：{0} 已失去连接。 的本地化字符串。
         /// </summary>
         internal static string buss_6 {
             get {
@@ -277,7 +277,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 机器上次连接时间： {0} 大于当前时间5分钟，视为未连接。 的本地化字符串。
+        ///   查找类似 T机器上次连接时间： {0} 大于当前时间5分钟，视为未连接。 的本地化字符串。
         /// </summary>
         internal static string buss_7 {
             get {
@@ -286,7 +286,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 收到结束命令,机具id是：{0} 的本地化字符串。
+        ///   查找类似 T收到结束命令,机具id是：{0} 的本地化字符串。
         /// </summary>
         internal static string buss_8 {
             get {
@@ -295,7 +295,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 收到撤销命令 的本地化字符串。
+        ///   查找类似 T收到撤销命令 的本地化字符串。
         /// </summary>
         internal static string buss_9 {
             get {
@@ -304,7 +304,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 启用自动导出 的本地化字符串。
+        ///   查找类似 T启用自动导出 的本地化字符串。
         /// </summary>
         internal static string chk_CRHExport {
             get {
@@ -313,7 +313,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 将指定文件夹下的FSN文件导入系统 的本地化字符串。
+        ///   查找类似 T将指定文件夹下的FSN文件导入系统 的本地化字符串。
         /// </summary>
         internal static string chk_FactoryAccess {
             get {
@@ -322,7 +322,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 号码记录,柜面取款,柜面存款,ATM配钞,ATM清钞 的本地化字符串。
+        ///   查找类似 T号码记录,柜面取款,柜面存款,ATM配钞,ATM清钞 的本地化字符串。
         /// </summary>
         internal static string cmb_BusinessType {
             get {
@@ -331,7 +331,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 记录日期 的本地化字符串。
+        ///   查找类似 T记录日期 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_0 {
             get {
@@ -340,7 +340,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 报送银行编码 的本地化字符串。
+        ///   查找类似 T报送银行编码 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_1 {
             get {
@@ -349,7 +349,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 业务关联信息 的本地化字符串。
+        ///   查找类似 T业务关联信息 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_10 {
             get {
@@ -358,7 +358,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 生成网点编码 的本地化字符串。
+        ///   查找类似 T生成网点编码 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_2 {
             get {
@@ -367,7 +367,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 业务类型 的本地化字符串。
+        ///   查找类似 T业务类型 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_3 {
             get {
@@ -376,7 +376,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 记录数 的本地化字符串。
+        ///   查找类似 T记录数 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_4 {
             get {
@@ -385,7 +385,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 现金清分中心 的本地化字符串。
+        ///   查找类似 T现金清分中心 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_5 {
             get {
@@ -394,7 +394,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 文件版本 的本地化字符串。
+        ///   查找类似 T文件版本 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_6 {
             get {
@@ -403,7 +403,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 设备类别 的本地化字符串。
+        ///   查找类似 T设备类别 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_7 {
             get {
@@ -412,7 +412,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 机型 的本地化字符串。
+        ///   查找类似 T机型 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_8 {
             get {
@@ -421,7 +421,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 设备编号 的本地化字符串。
+        ///   查找类似 T设备编号 的本地化字符串。
         /// </summary>
         internal static string CRHCommon_9 {
             get {
@@ -430,7 +430,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 序号 的本地化字符串。
+        ///   查找类似 T序号 的本地化字符串。
         /// </summary>
         internal static string CRHRecord_number {
             get {
@@ -439,7 +439,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 冠字号码 的本地化字符串。
+        ///   查找类似 T冠字号码 的本地化字符串。
         /// </summary>
         internal static string CRHRecord_recordsign {
             get {
@@ -448,7 +448,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 记录时间 的本地化字符串。
+        ///   查找类似 T记录时间 的本地化字符串。
         /// </summary>
         internal static string CRHRecord_recordtime {
             get {
@@ -457,7 +457,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 币值 的本地化字符串。
+        ///   查找类似 T币值 的本地化字符串。
         /// </summary>
         internal static string CRHRecord_recordvalue {
             get {
@@ -466,7 +466,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 版别 的本地化字符串。
+        ///   查找类似 T版别 的本地化字符串。
         /// </summary>
         internal static string CRHRecord_recordversion {
             get {
@@ -475,7 +475,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 CRH查看 的本地化字符串。
+        ///   查找类似 TCRH查看 的本地化字符串。
         /// </summary>
         internal static string CRHReview {
             get {
@@ -484,7 +484,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 绑定网点 的本地化字符串。
+        ///   查找类似 T绑定网点 的本地化字符串。
         /// </summary>
         internal static string gb_BindNode {
             get {
@@ -493,7 +493,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 功能设置 的本地化字符串。
+        ///   查找类似 T功能设置 的本地化字符串。
         /// </summary>
         internal static string gb_CRH1 {
             get {
@@ -502,7 +502,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 数据时间范围设置 的本地化字符串。
+        ///   查找类似 T数据时间范围设置 的本地化字符串。
         /// </summary>
         internal static string gb_CRH2 {
             get {
@@ -511,7 +511,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 自动导出路径设置 的本地化字符串。
+        ///   查找类似 T自动导出路径设置 的本地化字符串。
         /// </summary>
         internal static string gb_CRH3 {
             get {
@@ -520,7 +520,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 字段 的本地化字符串。
+        ///   查找类似 T字段 的本地化字符串。
         /// </summary>
         internal static string key {
             get {
@@ -529,7 +529,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 设备IP 的本地化字符串。
+        ///   查找类似 T设备IP 的本地化字符串。
         /// </summary>
         internal static string kIpAddress {
             get {
@@ -538,7 +538,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 状态 的本地化字符串。
+        ///   查找类似 T状态 的本地化字符串。
         /// </summary>
         internal static string kStatus {
             get {
@@ -547,7 +547,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 最近上传时间 的本地化字符串。
+        ///   查找类似 T最近上传时间 的本地化字符串。
         /// </summary>
         internal static string kUpdateTime {
             get {
@@ -556,7 +556,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 ATM编号 的本地化字符串。
+        ///   查找类似 TATM编号 的本地化字符串。
         /// </summary>
         internal static string lab_ATM {
             get {
@@ -565,7 +565,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 业务流水号 的本地化字符串。
+        ///   查找类似 T业务流水号 的本地化字符串。
         /// </summary>
         internal static string lab_BussinessNumber {
             get {
@@ -574,7 +574,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 钞箱编号 的本地化字符串。
+        ///   查找类似 T钞箱编号 的本地化字符串。
         /// </summary>
         internal static string lab_CashBox {
             get {
@@ -583,7 +583,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 公共信息部分： 的本地化字符串。
+        ///   查找类似 T公共信息部分： 的本地化字符串。
         /// </summary>
         internal static string lab_CRHCommon {
             get {
@@ -592,7 +592,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 冠字号码记录部分： 的本地化字符串。
+        ///   查找类似 T冠字号码记录部分： 的本地化字符串。
         /// </summary>
         internal static string lab_CRHRecord {
             get {
@@ -601,7 +601,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 交易类型 的本地化字符串。
+        ///   查找类似 T交易类型 的本地化字符串。
         /// </summary>
         internal static string lab_DealType {
             get {
@@ -610,7 +610,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 设备服务器IP 的本地化字符串。
+        ///   查找类似 T设备服务器IP 的本地化字符串。
         /// </summary>
         internal static string lab_DeviceIp {
             get {
@@ -619,7 +619,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 文件夹： 的本地化字符串。
+        ///   查找类似 T文件夹： 的本地化字符串。
         /// </summary>
         internal static string lab_Directory {
             get {
@@ -628,7 +628,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 所属厂家 的本地化字符串。
+        ///   查找类似 T所属厂家 的本地化字符串。
         /// </summary>
         internal static string lab_Factory {
             get {
@@ -637,7 +637,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 本机IP 的本地化字符串。
+        ///   查找类似 T本机IP 的本地化字符串。
         /// </summary>
         internal static string lab_LocalIp {
             get {
@@ -646,7 +646,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 所属网点 的本地化字符串。
+        ///   查找类似 T所属网点 的本地化字符串。
         /// </summary>
         internal static string lab_Node {
             get {
@@ -655,7 +655,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 打开主目录 的本地化字符串。
+        ///   查找类似 T打开主目录 的本地化字符串。
         /// </summary>
         internal static string lab_OpenMainDir {
             get {
@@ -664,7 +664,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 密码 的本地化字符串。
+        ///   查找类似 T密码 的本地化字符串。
         /// </summary>
         internal static string lab_Password {
             get {
@@ -673,7 +673,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 图像数据库IP 的本地化字符串。
+        ///   查找类似 T图像数据库IP 的本地化字符串。
         /// </summary>
         internal static string lab_PictureIp {
             get {
@@ -682,7 +682,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 端口 的本地化字符串。
+        ///   查找类似 T端口 的本地化字符串。
         /// </summary>
         internal static string lab_Port {
             get {
@@ -691,7 +691,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 推送服务器IP 的本地化字符串。
+        ///   查找类似 T推送服务器IP 的本地化字符串。
         /// </summary>
         internal static string lab_PushIp {
             get {
@@ -700,7 +700,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 数据服务器IP 的本地化字符串。
+        ///   查找类似 T数据服务器IP 的本地化字符串。
         /// </summary>
         internal static string lab_ServerIp {
             get {
@@ -709,7 +709,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 测试 的本地化字符串。
+        ///   查找类似 T测试 的本地化字符串。
         /// </summary>
         internal static string lab_Test {
             get {
@@ -718,7 +718,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 上传提示： 的本地化字符串。
+        ///   查找类似 T上传提示： 的本地化字符串。
         /// </summary>
         internal static string lab_UploadTip {
             get {
@@ -727,7 +727,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 用户 的本地化字符串。
+        ///   查找类似 T用户 的本地化字符串。
         /// </summary>
         internal static string lab_User {
             get {
@@ -736,7 +736,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 软件版本：1.1.0.1 的本地化字符串。
+        ///   查找类似 T软件版本：1.1.0.1 的本地化字符串。
         /// </summary>
         internal static string lab_Version {
             get {
@@ -745,7 +745,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 {0} 路径不存在！ 的本地化字符串。
+        ///   查找类似 T{0} 路径不存在！ 的本地化字符串。
         /// </summary>
         internal static string log_1 {
             get {
@@ -754,7 +754,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 CRH导出未启用！ 的本地化字符串。
+        ///   查找类似 TCRH导出未启用！ 的本地化字符串。
         /// </summary>
         internal static string log_2 {
             get {
@@ -763,7 +763,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 当前队列还有{0}条执行语句... 的本地化字符串。
+        ///   查找类似 T当前队列还有{0}条执行语句... 的本地化字符串。
         /// </summary>
         internal static string log_3 {
             get {
@@ -772,7 +772,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 当前队列还有{0}个图像文件等待上传... 的本地化字符串。
+        ///   查找类似 T当前队列还有{0}个图像文件等待上传... 的本地化字符串。
         /// </summary>
         internal static string log_4 {
             get {
@@ -781,7 +781,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 {0} 图像文件上传失败,将添加到队列末尾 的本地化字符串。
+        ///   查找类似 T{0} 图像文件上传失败,将添加到队列末尾 的本地化字符串。
         /// </summary>
         internal static string log_5 {
             get {
@@ -790,7 +790,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 CRH查看 的本地化字符串。
+        ///   查找类似 TCRH查看 的本地化字符串。
         /// </summary>
         internal static string MenuItem_CRHReview {
             get {
@@ -799,7 +799,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 功能设置 的本地化字符串。
+        ///   查找类似 T功能设置 的本地化字符串。
         /// </summary>
         internal static string MenuItem_FunctionSetting {
             get {
@@ -808,7 +808,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 日志 的本地化字符串。
+        ///   查找类似 T日志 的本地化字符串。
         /// </summary>
         internal static string MenuItem_Log {
             get {
@@ -817,7 +817,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 注销 的本地化字符串。
+        ///   查找类似 T注销 的本地化字符串。
         /// </summary>
         internal static string MenuItem_LogOut {
             get {
@@ -826,7 +826,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 服务器设置 的本地化字符串。
+        ///   查找类似 T服务器设置 的本地化字符串。
         /// </summary>
         internal static string MenuItem_ServerSetting {
             get {
@@ -835,7 +835,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 无法连接‘设备服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
+        ///   查找类似 T无法连接‘设备服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
         /// </summary>
         internal static string msg_1 {
             get {
@@ -844,7 +844,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 退出软件后将无法接收纸币数据，是否退出软件？ 的本地化字符串。
+        ///   查找类似 T退出软件后将无法接收纸币数据，是否退出软件？ 的本地化字符串。
         /// </summary>
         internal static string msg_10 {
             get {
@@ -853,7 +853,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 请选择文件所属厂家 的本地化字符串。
+        ///   查找类似 T请选择文件所属厂家 的本地化字符串。
         /// </summary>
         internal static string msg_11 {
             get {
@@ -862,7 +862,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 请选择所属网点 的本地化字符串。
+        ///   查找类似 T请选择所属网点 的本地化字符串。
         /// </summary>
         internal static string msg_12 {
             get {
@@ -871,7 +871,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 请选择交易类型 的本地化字符串。
+        ///   查找类似 T请选择交易类型 的本地化字符串。
         /// </summary>
         internal static string msg_13 {
             get {
@@ -880,7 +880,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 请选择ATM编号和钞箱编号 的本地化字符串。
+        ///   查找类似 T请选择ATM编号和钞箱编号 的本地化字符串。
         /// </summary>
         internal static string msg_14 {
             get {
@@ -889,7 +889,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 请填写业务流水号 的本地化字符串。
+        ///   查找类似 T请填写业务流水号 的本地化字符串。
         /// </summary>
         internal static string msg_15 {
             get {
@@ -898,7 +898,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 打开日志窗体异常！ 的本地化字符串。
+        ///   查找类似 T打开日志窗体异常！ 的本地化字符串。
         /// </summary>
         internal static string msg_16 {
             get {
@@ -907,7 +907,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 启动监听异常！ 的本地化字符串。
+        ///   查找类似 T启动监听异常！ 的本地化字符串。
         /// </summary>
         internal static string msg_2 {
             get {
@@ -916,7 +916,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 无法连接‘推送服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
+        ///   查找类似 T无法连接‘推送服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
         /// </summary>
         internal static string msg_3 {
             get {
@@ -925,7 +925,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 无法连接‘数据服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
+        ///   查找类似 T无法连接‘数据服务器’，请查看‘服务器设置’是否正确？ 的本地化字符串。
         /// </summary>
         internal static string msg_4 {
             get {
@@ -934,7 +934,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 无法连接‘图像数据库’，请查看‘服务器设置’是否正确？ 的本地化字符串。
+        ///   查找类似 T无法连接‘图像数据库’，请查看‘服务器设置’是否正确？ 的本地化字符串。
         /// </summary>
         internal static string msg_5 {
             get {
@@ -943,7 +943,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 服务器还未配置，请在菜单下选择‘服务器设置’进行配置！ 的本地化字符串。
+        ///   查找类似 T服务器还未配置，请在菜单下选择‘服务器设置’进行配置！ 的本地化字符串。
         /// </summary>
         internal static string msg_6 {
             get {
@@ -952,7 +952,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 密码错误,请重新输入！ 的本地化字符串。
+        ///   查找类似 T密码错误,请重新输入！ 的本地化字符串。
         /// </summary>
         internal static string msg_7 {
             get {
@@ -961,7 +961,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 用户不存在！ 的本地化字符串。
+        ///   查找类似 T用户不存在！ 的本地化字符串。
         /// </summary>
         internal static string msg_8 {
             get {
@@ -970,7 +970,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 无法连接设备数据库！ 的本地化字符串。
+        ///   查找类似 T无法连接设备数据库！ 的本地化字符串。
         /// </summary>
         internal static string msg_9 {
             get {
@@ -979,7 +979,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 提示 的本地化字符串。
+        ///   查找类似 T提示 的本地化字符串。
         /// </summary>
         internal static string msg_Tip {
             get {
@@ -988,7 +988,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 FSN文件 的本地化字符串。
+        ///   查找类似 TFSN文件 的本地化字符串。
         /// </summary>
         internal static string rad_FSN {
             get {
@@ -997,7 +997,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 GZH文件 的本地化字符串。
+        ///   查找类似 TGZH文件 的本地化字符串。
         /// </summary>
         internal static string rad_GZH {
             get {
@@ -1006,7 +1006,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 今天 的本地化字符串。
+        ///   查找类似 T今天 的本地化字符串。
         /// </summary>
         internal static string rb_CRHToday {
             get {
@@ -1015,7 +1015,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 昨天 的本地化字符串。
+        ///   查找类似 T昨天 的本地化字符串。
         /// </summary>
         internal static string rb_CRHYesterday {
             get {
@@ -1024,7 +1024,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 导入失败 的本地化字符串。
+        ///   查找类似 T导入失败 的本地化字符串。
         /// </summary>
         internal static string str_ImportFail {
             get {
@@ -1033,7 +1033,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 导入成功 的本地化字符串。
+        ///   查找类似 T导入成功 的本地化字符串。
         /// </summary>
         internal static string str_ImportSuccess {
             get {
@@ -1042,7 +1042,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 业务日志 的本地化字符串。
+        ///   查找类似 T业务日志 的本地化字符串。
         /// </summary>
         internal static string tab_Bussiness {
             get {
@@ -1051,7 +1051,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 命令日志 的本地化字符串。
+        ///   查找类似 T命令日志 的本地化字符串。
         /// </summary>
         internal static string tab_Cmd {
             get {
@@ -1060,7 +1060,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 CRH导出 的本地化字符串。
+        ///   查找类似 TCRH导出 的本地化字符串。
         /// </summary>
         internal static string tab_CRHExport {
             get {
@@ -1069,7 +1069,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 设备监控 的本地化字符串。
+        ///   查找类似 T设备监控 的本地化字符串。
         /// </summary>
         internal static string tab_DeviceControl {
             get {
@@ -1078,7 +1078,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 文件上传 的本地化字符串。
+        ///   查找类似 T文件上传 的本地化字符串。
         /// </summary>
         internal static string tab_FileUpload {
             get {
@@ -1087,7 +1087,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 FSN导入日志 的本地化字符串。
+        ///   查找类似 TFSN导入日志 的本地化字符串。
         /// </summary>
         internal static string tab_FsnImport {
             get {
@@ -1096,7 +1096,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 他厂接入 的本地化字符串。
+        ///   查找类似 T他厂接入 的本地化字符串。
         /// </summary>
         internal static string tab_OtherFactoryAccess {
             get {
@@ -1105,7 +1105,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 用户登录 的本地化字符串。
+        ///   查找类似 T用户登录 的本地化字符串。
         /// </summary>
         internal static string tab_UserLogin {
             get {
@@ -1114,7 +1114,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 值 的本地化字符串。
+        ///   查找类似 T值 的本地化字符串。
         /// </summary>
         internal static string value {
             get {
@@ -1123,7 +1123,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在登录... 的本地化字符串。
+        ///   查找类似 T正在登录... 的本地化字符串。
         /// </summary>
         internal static string wf_Login {
             get {
@@ -1132,7 +1132,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在保存文件... 的本地化字符串。
+        ///   查找类似 T正在保存文件... 的本地化字符串。
         /// </summary>
         internal static string wf_SaveFile {
             get {
@@ -1141,7 +1141,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在启动监听... 的本地化字符串。
+        ///   查找类似 T正在启动监听... 的本地化字符串。
         /// </summary>
         internal static string wf_StartListen {
             get {
@@ -1150,7 +1150,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在启动推送... 的本地化字符串。
+        ///   查找类似 T正在启动推送... 的本地化字符串。
         /// </summary>
         internal static string wf_StartPush {
             get {
@@ -1159,7 +1159,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在停止监听... 的本地化字符串。
+        ///   查找类似 T正在停止监听... 的本地化字符串。
         /// </summary>
         internal static string wf_StopListen {
             get {
@@ -1168,7 +1168,7 @@ namespace KangYiCollection {
         }
         
         /// <summary>
-        ///   查找类似 正在停止推送... 的本地化字符串。
+        ///   查找类似 T正在停止推送... 的本地化字符串。
         /// </summary>
         internal static string wf_StopPush {
             get {

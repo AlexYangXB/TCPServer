@@ -74,7 +74,7 @@ namespace KyBll
                             {
                                 length = MyTCP.AsyncReceiveFromClient(sokClient, msgLen - i, out readBuf);
                                 if (length == 0)
-                                    throw new Exception("网络异常");
+                                    throw new Exception(clsMsg.getMsg("log_6"));
                                 if (length == -1)
                                 {
                                     CloseThread();
@@ -201,7 +201,7 @@ namespace KyBll
                     TCPEvent.OnCommandLog(new TCPMessage
                     {
                         IpAndPort = ipAndPort,
-                        Message = MyLog.GetExceptionMsg(se, "通信异常"),
+                        Message = MyLog.GetExceptionMsg(se, clsMsg.getMsg("log_7")),
                         MessageType = TCPMessageType.Exception
                     });
                     CloseThread();
@@ -213,7 +213,7 @@ namespace KyBll
                     TCPEvent.OnCommandLog(new TCPMessage
                     {
                         IpAndPort = ipAndPort,
-                        Message = "机具编号为" + machine[ip].kMachineNumber + "上次连接时间为" + machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss") + "大于当前5分钟，将关闭线程!",
+                        Message =string.Format(clsMsg.getMsg("log_8"),ipAndPort,machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss")),
                         MessageType = TCPMessageType.Out_Of_Date
                     });
                     CloseThread();
@@ -253,9 +253,9 @@ namespace KyBll
                               "-" + machineNo + ".FSN";
             //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
             DateTime fileTime = FSNFormat.GetDateTime(Fsn);
-            TCPEvent.OnBussninessLog("收到文件的时间是" + fileTime.ToString("yyyy-MM-dd HH:mm:ss"));
+            TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_22"), fileTime.ToString("yyyy-MM-dd HH:mm:ss")));
             if(machine[ip].startBusinessCtl)
-                TCPEvent.OnBussninessLog( "机具" + ip + "正在进行交易控制!");
+                TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_23"), ip));
             if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
             {
                 if (machine[ip].fileName == null || machine[ip].fileName == "")

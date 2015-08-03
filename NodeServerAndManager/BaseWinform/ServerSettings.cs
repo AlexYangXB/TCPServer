@@ -88,7 +88,7 @@ namespace KangYiCollection.BaseWinform
             KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
             KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
-            waitingForm.SetText("正在初始化...");
+            waitingForm.SetText(clsMsg.getMsg("wf_Init"));
             new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             SettingInit();
@@ -120,7 +120,7 @@ namespace KangYiCollection.BaseWinform
                         string bindIp = selectNode.kBindIpAddress;
                         if (bindIp != "" && bindIp != ipControl_Local.Text)
                         {
-                            strMessage += string.Format("{0} 已经绑定了IP：{1}", selectNode.kNodeName, bindIp) + Environment.NewLine;
+                            strMessage += string.Format(clsMsg.getMsg("msg_32"), selectNode.kNodeName, bindIp) + Environment.NewLine;
                         }
                         else
                         {
@@ -130,8 +130,8 @@ namespace KangYiCollection.BaseWinform
                     bool flag = true;
                     if (strMessage != "")
                     {
-                        strMessage += "是否继续？";
-                        if (DialogResult.No == MessageBox.Show(strMessage, "提示", MessageBoxButtons.YesNo))
+                        strMessage += clsMsg.getMsg("msg_33");
+                        if (DialogResult.No == MessageBox.Show(strMessage, clsMsg.getMsg("msg_Tip"), MessageBoxButtons.YesNo))
                         {
                             flag = false;
                         }
@@ -142,10 +142,10 @@ namespace KangYiCollection.BaseWinform
                         if (success)
                         {
                             bindNodeId = ids;
-                            MessageBox.Show("绑定成功！", "提示", MessageBoxButtons.OK);
+                            MessageBox.Show(clsMsg.getMsg("msg_30"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                         }
                         else
-                            MessageBox.Show("绑定失败！", "提示", MessageBoxButtons.OK);
+                            MessageBox.Show(clsMsg.getMsg("msg_31"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                     }
                     else
                         return;
@@ -163,20 +163,20 @@ namespace KangYiCollection.BaseWinform
         {
             if (txb_SphinxPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_21"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                 return;
             }
             KangYiCollection.Properties.Settings.Default.ServerIp = ipControl_Server.Text;
             KangYiCollection.Properties.Settings.Default.ServerDbPort = int.Parse(txb_SphinxPort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
             waitingForm = new WaitingForm();
-            waitingForm.SetText("正在测试数据服务器...");
+            waitingForm.SetText(clsMsg.getMsg("wf_TestServer"));
             new Action(SeverTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             if (rServerTest)
-                MessageBox.Show("数据服务器连接成功!", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_28"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
             else
-                MessageBox.Show("数据服务器连接失败!", "警告", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_29"), clsMsg.getMsg("msg_Warn"), MessageBoxButtons.OK);
         }
         /// <summary>
         /// 测试数据服务器的连接
@@ -190,7 +190,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接数据服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, clsMsg.getMsg("log_17")));
             }
 
         }
@@ -203,10 +203,10 @@ namespace KangYiCollection.BaseWinform
         {
             if (txb_DevicePort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_21"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                 return;
             }
-            waitingForm.SetText("正在测试设备服务器...");
+            waitingForm.SetText(clsMsg.getMsg("wf_TestDevice"));
             KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
             KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
@@ -214,12 +214,12 @@ namespace KangYiCollection.BaseWinform
             waitingForm.ShowDialog();
             if (rDeviceTest)
             {
-                MessageBox.Show("设备服务器连接成功!", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_26"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                 SettingInit();
 
             }
             else
-                MessageBox.Show("设备服务器连接失败!", "警告", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_27"), clsMsg.getMsg("msg_Warn"), MessageBoxButtons.OK);
 
 
         }
@@ -236,7 +236,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接设备服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, clsMsg.getMsg("log_18")));
             }
 
         }
@@ -286,21 +286,21 @@ namespace KangYiCollection.BaseWinform
         {
             if (txb_PushPort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_21"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                 return;
             }
             KangYiCollection.Properties.Settings.Default.PushIp = ipControl_Push.Text;
             KangYiCollection.Properties.Settings.Default.PushPort = int.Parse(txb_PushPort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
-            waitingForm.SetText("正在测试推送服务器...");
+            waitingForm.SetText(clsMsg.getMsg("wf_TestPush"));
             new Action(PushTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             if (rPushTest)
             {
-                MessageBox.Show("推送服务器连接成功!", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_22"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
             }
             else
-                MessageBox.Show("推送服务器连接失败!", "警告", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_23"), clsMsg.getMsg("msg_Warn"), MessageBoxButtons.OK);
         }
         /// <summary>
         /// 测试推送服务器的连接
@@ -313,7 +313,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接推送服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, clsMsg.getMsg("log_19")));
             }
         }
         /// <summary>
@@ -325,19 +325,19 @@ namespace KangYiCollection.BaseWinform
         {
             if (txb_ImagePort.Text.Trim() == "")
             {
-                MessageBox.Show("请设置端口号", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_21"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
                 return;
             }
             KangYiCollection.Properties.Settings.Default.PictureIp = cmb_imageServer.Text;
             KangYiCollection.Properties.Settings.Default.PicturtDbPort = int.Parse(txb_ImagePort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
-            waitingForm.SetText("正在测试图像服务器...");
+            waitingForm.SetText(clsMsg.getMsg("wf_TestPicture"));
             new Action(PictureTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             if (rImageTest)
-                MessageBox.Show("图像服务器连接成功!", "提示", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_24"), clsMsg.getMsg("msg_Tip"), MessageBoxButtons.OK);
             else
-                MessageBox.Show("图像服务器连接失败!", "警告", MessageBoxButtons.OK);
+                MessageBox.Show(clsMsg.getMsg("msg_25"), clsMsg.getMsg("msg_Warn"), MessageBoxButtons.OK);
         }
         /// <summary>
         /// 测试图像服务器的连接
@@ -352,7 +352,7 @@ namespace KangYiCollection.BaseWinform
             }
             catch (Exception e)
             {
-                MyLog.TestLog(MyLog.GetExceptionMsg(e, "连接图像服务器异常"));
+                MyLog.TestLog(MyLog.GetExceptionMsg(e, clsMsg.getMsg("log_20")));
             }
 
 
@@ -408,7 +408,7 @@ namespace KangYiCollection.BaseWinform
             KangYiCollection.Properties.Settings.Default.DeviceIp = ipControl_Device.Text;
             KangYiCollection.Properties.Settings.Default.DeviceDbPort = int.Parse(txb_DevicePort.Text);
             KangYiCollection.Properties.Settings.Default.Save();
-            waitingForm.SetText("正在载入数据...");
+            waitingForm.SetText(clsMsg.getMsg("wf_LoadData"));
             new Action(DeviceTest).BeginInvoke(new AsyncCallback(CloseLoading), null);
             waitingForm.ShowDialog();
             SettingInit();

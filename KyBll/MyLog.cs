@@ -149,18 +149,18 @@ namespace KyBll
         public static string GetExceptionMsg(Exception ex, string backStr)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("****************************异常文本****************************");
-            sb.AppendLine("【呈现时候】：" + DateTime.Now.ToString());
+            sb.AppendLine(string.Format("****************************{0}****************************", clsMsg.getMsg("log_10")));
+            sb.AppendLine(string.Format("【{0}】：{1}",clsMsg.getMsg("log_11"),DateTime.Now.ToString()));
             if (ex != null)
-            {
-                sb.AppendLine("【异常类型】：" + ex.GetType().Name);
-                sb.AppendLine("【异常信息】：" + ex.Message);
-                sb.AppendLine("【堆栈调用】：" + ex.StackTrace);
-                sb.AppendLine("【异常办法】：" + ex.TargetSite);
+            {        
+                sb.AppendLine(string.Format("【{0}】：{1}",clsMsg.getMsg("log_12"),ex.GetType().Name));
+                sb.AppendLine(string.Format("【{0}】：{1}",clsMsg.getMsg("log_13"),ex.Message));
+                sb.AppendLine(string.Format("【{0}】：{1}",clsMsg.getMsg("log_14"),ex.StackTrace));
+                sb.AppendLine( string.Format("【{0}】：{1}",clsMsg.getMsg("log_15"),ex.TargetSite));
             }
             else
             {
-                sb.AppendLine("【未处理惩罚异常】：" + backStr);
+                sb.AppendLine(string.Format("【{0}】：{1}", clsMsg.getMsg("log_16"), backStr));
             }
             sb.AppendLine("***************************************************************");
             return sb.ToString();

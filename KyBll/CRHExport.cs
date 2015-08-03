@@ -18,23 +18,23 @@ namespace KyBll
         /// <param name="endTime"></param>
         public CRHExport(DateTime startTime, DateTime endTime, string path)
         {
-            MyLog.CRHLog("导出CRH开始。" );
+            MyLog.CRHLog(clsMsg.getMsg("CRHLog_1"));
             List<ky_agent_batch> batches = GetBatchesByTime(startTime, endTime);
-            MyLog.CRHLog( "总共"+batches.Count+"个批次需要导出CRH文件。");
+            MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_2"), batches.Count));
             if (batches.Count > 0)
             {
                 List<CRH> crhs = BatchesToCRH(batches);
                 if (crhs.Count > 0)
                 {
                     string tmpPath = path + "/" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "/";
-                    MyLog.CRHLog("建立临时目录"+tmpPath);
+                    MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_3"), tmpPath));
                     string BankCode =System.Text.Encoding.ASCII.GetString(crhs[0].BankCode).Replace("_","");
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);
                     foreach (CRH crh in crhs)
                     {
                         string crhFileName = tmpPath + crh.fileName;
-                        MyLog.CRHLog( "建立新CRH文件" + crhFileName);
+                        MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_4"), crhFileName));
                         using (FileStream fs = new FileStream(crhFileName, FileMode.Create, FileAccess.Write))
                         {
                             fs.Write(crh.Date, 0, sizeof(ushort));
@@ -66,18 +66,18 @@ namespace KyBll
                     }
                     ZipClass Zc = new ZipClass();
                     string zipFileName =path+"/"+  BankCode + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip";
-                    MyLog.CRHLog( "生成CRH压缩包" + zipFileName);
-                    MyLog.CRHLog("银行编码是" + BankCode);
+                    MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_5"), zipFileName));
+                    MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_6"), BankCode));
                     Zc.ZipDirFile(tmpPath, zipFileName);
                     Directory.Delete(tmpPath, true);
                 }
                 else
                 {
-                    MyLog.CRHLog( "未能找到批次信息！");
+                    MyLog.CRHLog(clsMsg.getMsg("CRHLog_7"));
                 }
             }
             else
-                MyLog.CRHLog("未能找到批次信息！");
+                MyLog.CRHLog(clsMsg.getMsg("CRHLog_7"));
             
         }
         /// <summary>
@@ -127,7 +127,7 @@ namespace KyBll
                 }
                 catch (Exception e)
                 {
-                    MyLog.CRHLog("批次id为" + batch.id + "网点id为"+batch.knode+"机具id为"+batch.kmachine+"转CRH异常",e );
+                    MyLog.CRHLog(string.Format(clsMsg.getMsg("CRHLog_8"), batch.id, batch.knode, batch.kmachine), e);
                     continue;
                 }
             }
@@ -152,12 +152,12 @@ namespace KyBll
             {
                 batch.Machine = KyDataOperation.GetMachineByMachineId(machineId);
                 if(batch.Machine==null)
-                    throw new Exception("未能找到id为" + machineId + "的机具！");
+                    throw new Exception(string.Format(clsMsg.getMsg("CRHLog_9"), machineId));
             }
             else
             {
                 if (hjson.kmachine == 0)
-                    throw new Exception("未能找到id为" + hjson.kmachine + "的非协议机具！");
+                    throw new Exception(string.Format(clsMsg.getMsg("CRHLog_10"), hjson.kmachine));
                 ky_import_machine import_machine = KyDataOperation.GetmportMachineByImportMachineId(hjson.kmachine);
                 ky_machine machine = new ky_machine
                 {
@@ -170,15 +170,15 @@ namespace KyBll
                 batch.Machine = machine;
             }
             if(batch.Machine.kMachineModel.Trim()=="")
-                throw new Exception("机具id的机型编号为空！");
+                throw new Exception(string.Format(clsMsg.getMsg("CRHLog_11"), machineId));
             int nodeId = batch.knode;
-
+            
             batch.Node = KyDataOperation.GetNodeByNodeId(nodeId);
             if(batch.Node==null)
-                throw new Exception("未能找到id为" + nodeId + "的网点！");
+                throw new Exception(string.Format(clsMsg.getMsg("CRHLog_12"), nodeId));
             batch.Branch = KyDataOperation.GetBranchWithNodeId(nodeId);
             if (batch.Node == null)
-                throw new Exception("未能找到id为" + nodeId + "的网点从属的银行！");
+                throw new Exception(string.Format(clsMsg.getMsg("CRHLog_13"), nodeId));
             batch.BussinessNumber = hjson.kbussinessnumber;
             batch.Date = DateTimeAndTimeStamp.GetTime(batch.kdate.ToString());
             switch (batch.ktype)

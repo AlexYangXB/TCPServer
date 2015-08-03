@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsMsg.cs" />
     <Compile Include="FileOperation.cs" />
     <Compile Include="MyMessageBox.cs" />
     <Compile Include="Base\FtpClient.cs" />
@@ -76,6 +77,16 @@
     <Compile Include="ObjectToFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyTCP.cs" />
+    <Compile Include="Resource.zh_CN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.zh_CN.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resource.zh_TW.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.zh_TW.resx</DependentUpon>
+    </Compile>
     <Compile Include="TCPReceive.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +98,18 @@
       <Project>{9B783E31-459C-49CD-A681-B94460AE90A9}</Project>
       <Name>KyModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource.zh_CN.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.zh_CN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.zh_TW.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.zh_TW.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

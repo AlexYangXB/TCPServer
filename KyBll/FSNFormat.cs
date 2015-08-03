@@ -112,7 +112,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.CommandLog("获取文件中的第一个点钞时间出错！",e);
+                MyLog.CommandLog(clsMsg.getMsg("log_9"), e);
                 return DateTime.Now;
             }
         }

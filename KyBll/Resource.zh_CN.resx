@@ -481,12 +481,258 @@
     <value>打开日志窗体异常！</value>
   </data>
   <data name="str_ImportFail" xml:space="preserve">
-    <value>导入失败</value>
+    <value>导入失败！</value>
   </data>
   <data name="str_ImportSuccess" xml:space="preserve">
-    <value>导入成功</value>
+    <value>导入成功！</value>
   </data>
   <data name="value" xml:space="preserve">
     <value>值</value>
+  </data>
+  <data name="buss_22" xml:space="preserve">
+    <value>收到文件的第一个冠字号码时间是 {0}</value>
+  </data>
+  <data name="buss_23" xml:space="preserve">
+    <value>机具 {0} 正在进行交易控制！</value>
+  </data>
+  <data name="CRHLog_1" xml:space="preserve">
+    <value>导出CRH开始。</value>
+  </data>
+  <data name="CRHLog_10" xml:space="preserve">
+    <value>无法找到id为 {0} 的非协议机具！</value>
+  </data>
+  <data name="CRHLog_11" xml:space="preserve">
+    <value>机具id为 {0} 的机型编号为空！</value>
+  </data>
+  <data name="CRHLog_12" xml:space="preserve">
+    <value>无法找到id为 {0} 的网点！</value>
+  </data>
+  <data name="CRHLog_13" xml:space="preserve">
+    <value>无法找到id为 {0} 的网点所属的银行！</value>
+  </data>
+  <data name="CRHLog_2" xml:space="preserve">
+    <value>总共 {0} 个批次需要导出CRH文件。</value>
+  </data>
+  <data name="CRHLog_3" xml:space="preserve">
+    <value>建立临时目录 {0}</value>
+  </data>
+  <data name="CRHLog_4" xml:space="preserve">
+    <value>建立新CRH文件 {0}</value>
+  </data>
+  <data name="CRHLog_5" xml:space="preserve">
+    <value>生成CRH压缩包 {0}</value>
+  </data>
+  <data name="CRHLog_6" xml:space="preserve">
+    <value>银行编码是 {0}</value>
+  </data>
+  <data name="CRHLog_7" xml:space="preserve">
+    <value>无法找到批次信息！</value>
+  </data>
+  <data name="CRHLog_8" xml:space="preserve">
+    <value>批次id为 {0} 网点id为 {1} 机具id为 {2} 转CRH发生异常！</value>
+  </data>
+  <data name="CRHLog_9" xml:space="preserve">
+    <value>无法找到id为 {0} 的机具！</value>
+  </data>
+  <data name="FSNLog_1" xml:space="preserve">
+    <value>{0} 扩展名不是FSN或者fsn，移入ErrFiles文件夹</value>
+  </data>
+  <data name="FSNLog_2" xml:space="preserve">
+    <value>{0} 文件格式不正确！</value>
+  </data>
+  <data name="FSNLog_3" xml:space="preserve">
+    <value>{0} 的文件版本不正确！</value>
+  </data>
+  <data name="FSNLog_4" xml:space="preserve">
+    <value>{0} 中的厂家简称不存在！</value>
+  </data>
+  <data name="FSNLog_5" xml:space="preserve">
+    <value>{0} 中的网点编号不存在！</value>
+  </data>
+  <data name="FSNLog_6" xml:space="preserve">
+    <value>{0} 的设备类别不存在！</value>
+  </data>
+  <data name="FSNLog_7" xml:space="preserve">
+    <value>FSN文件导入异常！</value>
+  </data>
+  <data name="log_10" xml:space="preserve">
+    <value>异常文本</value>
+  </data>
+  <data name="log_11" xml:space="preserve">
+    <value>呈现时候</value>
+  </data>
+  <data name="log_12" xml:space="preserve">
+    <value>异常类型</value>
+  </data>
+  <data name="log_13" xml:space="preserve">
+    <value>异常信息</value>
+  </data>
+  <data name="log_14" xml:space="preserve">
+    <value>堆栈调用</value>
+  </data>
+  <data name="log_15" xml:space="preserve">
+    <value>异常办法</value>
+  </data>
+  <data name="log_16" xml:space="preserve">
+    <value>未处理惩罚异常</value>
+  </data>
+  <data name="log_17" xml:space="preserve">
+    <value>连接数据服务器异常！</value>
+  </data>
+  <data name="log_18" xml:space="preserve">
+    <value>连接设备服务器异常！</value>
+  </data>
+  <data name="log_19" xml:space="preserve">
+    <value>连接推送服务器异常！</value>
+  </data>
+  <data name="log_20" xml:space="preserve">
+    <value>连接图像服务器异常！</value>
+  </data>
+  <data name="log_6" xml:space="preserve">
+    <value>网络异常！</value>
+  </data>
+  <data name="log_7" xml:space="preserve">
+    <value>通信异常！</value>
+  </data>
+  <data name="log_8" xml:space="preserve">
+    <value>机具IP地址为为 {0} 上次连接时间为 {1} 大于当前5分钟，将关闭线程！</value>
+  </data>
+  <data name="log_9" xml:space="preserve">
+    <value>获取文件中的第一个点钞时间出错！</value>
+  </data>
+  <data name="msg_17" xml:space="preserve">
+    <value>其他厂家接入文件夹路径不存在！</value>
+  </data>
+  <data name="msg_18" xml:space="preserve">
+    <value>CRH导出路径不存在！</value>
+  </data>
+  <data name="msg_19" xml:space="preserve">
+    <value>导出成功！是否打开导出目录？</value>
+  </data>
+  <data name="msg_20" xml:space="preserve">
+    <value>{0} 秒后将自动关闭</value>
+  </data>
+  <data name="msg_21" xml:space="preserve">
+    <value>请设置端口号</value>
+  </data>
+  <data name="msg_22" xml:space="preserve">
+    <value>推送服务器连接成功！</value>
+  </data>
+  <data name="msg_23" xml:space="preserve">
+    <value>推送服务器连接失败！</value>
+  </data>
+  <data name="msg_24" xml:space="preserve">
+    <value>图像服务器连接成功！</value>
+  </data>
+  <data name="msg_25" xml:space="preserve">
+    <value>图像服务器连接失败！</value>
+  </data>
+  <data name="msg_26" xml:space="preserve">
+    <value>设备服务器连接成功！</value>
+  </data>
+  <data name="msg_27" xml:space="preserve">
+    <value>设备服务器连接失败！</value>
+  </data>
+  <data name="msg_28" xml:space="preserve">
+    <value>数据服务器连接成功！</value>
+  </data>
+  <data name="msg_29" xml:space="preserve">
+    <value>数据服务器连接失败！</value>
+  </data>
+  <data name="msg_30" xml:space="preserve">
+    <value>绑定成功！</value>
+  </data>
+  <data name="msg_31" xml:space="preserve">
+    <value>绑定失败！</value>
+  </data>
+  <data name="msg_32" xml:space="preserve">
+    <value>{0} 已经绑定了IP：{1}</value>
+  </data>
+  <data name="msg_33" xml:space="preserve">
+    <value>是否继续？</value>
+  </data>
+  <data name="msg_Warn" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="TCPLog_1" xml:space="preserve">
+    <value>异步接收命令异常！</value>
+  </data>
+  <data name="TCPLog_10" xml:space="preserve">
+    <value>{0}，传输数据结束命令 {1}</value>
+  </data>
+  <data name="TCPLog_11" xml:space="preserve">
+    <value>{0}，时间同步命令 {1}</value>
+  </data>
+  <data name="TCPLog_12" xml:space="preserve">
+    <value>{0}，心跳命令 {1}</value>
+  </data>
+  <data name="TCPLog_13" xml:space="preserve">
+    <value>{0}，文件大小 {1} 字节,文件大小超过5M,将关闭连接！ {2}</value>
+  </data>
+  <data name="TCPLog_14" xml:space="preserve">
+    <value>达到最大连接数30的限制！</value>
+  </data>
+  <data name="TCPLog_15" xml:space="preserve">
+    <value>{0}，一次请求文件数超过30个，将关闭连接！</value>
+  </data>
+  <data name="TCPLog_16" xml:space="preserve">
+    <value>{0}关闭线程！</value>
+  </data>
+  <data name="TCPLog_17" xml:space="preserve">
+    <value>记录Amount日志异常！</value>
+  </data>
+  <data name="TCPLog_18" xml:space="preserve">
+    <value>记录命令日志异常！</value>
+  </data>
+  <data name="TCPLog_19" xml:space="preserve">
+    <value>记录业务日志异常！</value>
+  </data>
+  <data name="TCPLog_2" xml:space="preserve">
+    <value>异步发送命令异常！</value>
+  </data>
+  <data name="TCPLog_20" xml:space="preserve">
+    <value>记录FSN日志异常！</value>
+  </data>
+  <data name="TCPLog_3" xml:space="preserve">
+    <value>命令长度 {0}</value>
+  </data>
+  <data name="TCPLog_4" xml:space="preserve">
+    <value>新连接 {0}</value>
+  </data>
+  <data name="TCPLog_5" xml:space="preserve">
+    <value>{0}  IP地址未知,请确认已添加IP地址，再重启客户端或等待5分钟自动更新！</value>
+  </data>
+  <data name="TCPLog_6" xml:space="preserve">
+    <value>{0} 连接已存在！</value>
+  </data>
+  <data name="TCPLog_7" xml:space="preserve">
+    <value>{0} 未知命令 {1}</value>
+  </data>
+  <data name="TCPLog_8" xml:space="preserve">
+    <value>{0}，传输数据请求命令 {1}</value>
+  </data>
+  <data name="TCPLog_9" xml:space="preserve">
+    <value>{0}，纸币信息发送命令 数据包长度 {1}  纸币张数 {2} {3}</value>
+  </data>
+  <data name="wf_CRHExport" xml:space="preserve">
+    <value>正在导出CRH...</value>
+  </data>
+  <data name="wf_Init" xml:space="preserve">
+    <value>正在初始化...</value>
+  </data>
+  <data name="wf_LoadData" xml:space="preserve">
+    <value>正在载入数据...</value>
+  </data>
+  <data name="wf_TestDevice" xml:space="preserve">
+    <value>正在测试设备服务器...</value>
+  </data>
+  <data name="wf_TestPicture" xml:space="preserve">
+    <value>正在测试图像服务器...</value>
+  </data>
+  <data name="wf_TestPush" xml:space="preserve">
+    <value>正在测试推送服务器...</value>
+  </data>
+  <data name="wf_TestServer" xml:space="preserve">
+    <value>正在测试数据服务器...</value>
   </data>
 </root>

@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using KyModel;
 using MaterialSkin;
+using KyBll;
 namespace KangYiCollection.BaseWinform
 {
     public partial class CRHReview : MaterialSkin.Controls.MaterialForm

@@ -35,7 +35,7 @@ namespace KyBll
                     FileInfo fi = new FileInfo(fileName);
                     if (fi.Extension != ".FSN" && fi.Extension != ".fsn")
                     {
-                        TCPEvent.OnFSNImportLog(fi.FullName+"扩展名不是FSN或者fsn，移入ErrFiles");
+                        TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_1"), fi.Name));
                         MoveErrFile(importDir, fi.FullName);
                         continue;
                     }
@@ -54,14 +54,14 @@ namespace KyBll
                     if (info.Length < 9)
                     {
                         MoveErrFile(importDir, fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "文件格式不正确！");
+                        TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_2"), fi.Name));
                         continue;
                     }
                     int verStart = info[0].IndexOf("13");
                     if (verStart == -1)
                     {
                         MoveErrFile(importDir, fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "的文件版本不正确！");
+                        TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_3"), fi.Name));
                         continue;
                     }
                     string currency = "", factory = "",
@@ -80,14 +80,14 @@ namespace KyBll
                     if (factoryId == 0)
                     {
                         MoveErrFile(importDir, fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "中的厂家简称不存在！");
+                        TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_4"), fi.Name));
                         continue;
                     }
                     int nodeId = KyDataOperation.GetNodeIdByNodeNumber(node);
                     if (nodeId == 0)
                     {
                         MoveErrFile(importDir, fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "中的网点编号不存在！");
+                        TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_5"), fi.Name));
                         continue;
                     }
                     int userId = KyDataOperation.GetUserId(user);
@@ -116,7 +116,7 @@ namespace KyBll
                             catch (Exception ex)
                             {
                                 MoveErrFile(importDir, fi.FullName);
-                                TCPEvent.OnFSNImportLog(fi.Name + "的设备类别不存在！",ex);
+                                TCPEvent.OnFSNImportLog(string.Format(clsMsg.getMsg("FSNLog_6"), fi.Name), ex);
                                 continue;
 
                             }
@@ -193,17 +193,17 @@ namespace KyBll
                     if (batchId > 0)
                     {
                         File.Delete(fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "导入成功！");
+                        TCPEvent.OnFSNImportLog(string.Format("{0} {1}", fi.Name, clsMsg.getMsg("str_ImportSuccess")));
                     }
                     else
                     {
                         MoveErrFile(importDir, fi.FullName);
-                        TCPEvent.OnFSNImportLog(fi.Name + "导入失败！");
+                        TCPEvent.OnFSNImportLog(string.Format("{0} {1}", fi.Name, clsMsg.getMsg("str_ImportFail")));
                     }
                 }
                 catch (Exception ex)
                 {
-                    TCPEvent.OnFSNImportLog("FSN文件导入异常", ex);
+                    TCPEvent.OnFSNImportLog(clsMsg.getMsg("FSNLog_7"), ex);
                     continue;
                 }
             }
@@ -385,7 +385,6 @@ namespace KyBll
             {
                 fileName = Path.GetFileName(fileName);
                 result = KyDataOperation.InsertImportFile(Convert.ToInt64(batchId), fileName, DateTime.Now, machine.business.ToString(), machine.kNodeId);
-                MyLog.ImportLog(fileName + "的冠字号码时间是" + DateTimeAndTimeStamp.GetTime(batch.kdate.ToString()).ToString("yyyy-MM-dd HH:mm:ss"));
             }
             else
                 batchId = 0;

@@ -15,7 +15,7 @@ namespace KyBll
             _caption = caption;
             _timeoutTimer = new System.Threading.Timer(OnTimerElapsed,
                 null, timeout, System.Threading.Timeout.Infinite);
-            text += "(" + timeout / 1000 + "秒后将自动关闭)";
+            text += string.Format("({0}{1})", timeout / 1000, clsMsg.getMsg("msg_20"));
             MessageBox.Show(text, caption, MessageBoxButtons.OKCancel,
                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }

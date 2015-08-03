@@ -6,7 +6,7 @@ using System.Resources;
 using System.Threading;
 using System.Globalization;
 
-namespace KangYiCollection
+namespace KyBll
 {
    public class clsMsg
     {

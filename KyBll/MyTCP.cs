@@ -64,29 +64,29 @@ namespace KyBll
             string CommandFormat = "";
             if (TCPMessage.Command != null)
             {
-                CommandFormat = " 命令长度 " + TCPMessage.Command.Length ;
+                CommandFormat = string.Format(clsMsg.getMsg("TCPLog_3"), TCPMessage.Command.Length);
                 if (Command)
                     CommandFormat += Environment.NewLine+MyTCP.ByteToStringX2(TCPMessage.Command);
             }
             if (TCPMessage.MessageType == TCPMessageType.NewConnection)
             {
-                message += " 新连接 " + TCPMessage.IpAndPort;
+                message += string.Format(clsMsg.getMsg("TCPLog_4"), TCPMessage.IpAndPort);
             }
             if (TCPMessage.MessageType == TCPMessageType.NoMachineIp)
             {
-                message += TCPMessage.IpAndPort + " IP地址未知,请确认已添加IP地址，再重启客户端或等待5分钟自动更新！";
+                message += string.Format(clsMsg.getMsg("TCPLog_5"),TCPMessage.IpAndPort);
             }
             if (TCPMessage.MessageType == TCPMessageType.ExistConnection)
             {
-                message += TCPMessage.IpAndPort + " 连接已存在！";
+                message += string.Format(clsMsg.getMsg("TCPLog_6"),TCPMessage.IpAndPort );
             }
             if (TCPMessage.MessageType == TCPMessageType.UnknownCommand)
             {
-                message += TCPMessage.IpAndPort + " 未知命令" + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_7"),TCPMessage.IpAndPort,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_SIMPLE)
             {
-                message += TCPMessage.IpAndPort + ", 传输数据请求命令   " + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_8"),TCPMessage.IpAndPort,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_UP)
             {
@@ -97,19 +97,19 @@ namespace KyBll
                     SignLength = BitConverter.ToInt16(TCPMessage.Command, 62);
                     MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
                 }
-                message += TCPMessage.IpAndPort + ", 纸币信息发送命令 数据包长度 " + MsgLength + "  纸币张数 " + SignLength + CommandFormat;
+                message +=string.Format(clsMsg.getMsg("TCPLog_9"),TCPMessage.IpAndPort,MsgLength,SignLength,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CLOSE)
             {
-                message += TCPMessage.IpAndPort + ", 传输数据结束命令 " + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_10"),TCPMessage.IpAndPort,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_TIME)
             {
-                message += TCPMessage.IpAndPort + ",时间同步命令 " + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_11"),TCPMessage.IpAndPort,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.NET_CONTINUE)
             {
-                message += TCPMessage.IpAndPort + ",心跳命令  " + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_12"),TCPMessage.IpAndPort,CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.FILE_TOO_BIG)
             {
@@ -118,15 +118,15 @@ namespace KyBll
                 {
                     MsgLength = BitConverter.ToInt32(TCPMessage.Command, 4);
                 }
-                message += TCPMessage.IpAndPort + ",文件大小" + (MsgLength - 86) + "字节,文件大小超过5M,将关闭连接！ " + CommandFormat;
+                message += string.Format(clsMsg.getMsg("TCPLog_13"),TCPMessage.IpAndPort,(MsgLength - 86),CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.Reach_Max_Connection)
             {
-                message += "达到最大连接数30的限制！";
+                message += clsMsg.getMsg("TCPLog_14");
             }
             if (TCPMessage.MessageType == TCPMessageType.Reach_Max_File)
             {
-                message += TCPMessage.IpAndPort + ",一次请求文件数超过30个，将关闭连接！";
+                message += string.Format(clsMsg.getMsg("TCPLog_15"),TCPMessage.IpAndPort);
             }
             if (TCPMessage.MessageType == TCPMessageType.Exception)
             {
@@ -138,7 +138,7 @@ namespace KyBll
             }
             if (TCPMessage.MessageType == TCPMessageType.Thread_Close)
             {
-                message += TCPMessage.IpAndPort + " 关闭线程!";
+                message += string.Format(clsMsg.getMsg("TCPLog_16"),TCPMessage.IpAndPort);
             }
             if (TCPMessage.MessageType == TCPMessageType.Common_Message)
             {
@@ -222,7 +222,7 @@ namespace KyBll
             }
             catch (Exception ex)
             {
-                MyLog.UnHandleException("记录Amount日志出错", ex);
+                MyLog.UnHandleException(clsMsg.getMsg("TCPLog_17"), ex);
             }
         }
         //日志参数定义
@@ -271,7 +271,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.UnHandleException("记录command日志出错", e);
+                MyLog.UnHandleException(clsMsg.getMsg("TCPLog_18"), e);
             }
         }
         public void OnBussninessLog(string Message)
@@ -283,7 +283,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.UnHandleException("记录bussiness日志出错", e);
+                MyLog.UnHandleException(clsMsg.getMsg("TCPLog_19"), e);
             }
         }
         public void OnFSNImportLog(string Message, Exception ex = null)
@@ -297,7 +297,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.UnHandleException("记录fsn日志出错", e);
+                MyLog.UnHandleException(clsMsg.getMsg("TCPLog_20"), e);
             }
         }
 
@@ -330,7 +330,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.ConnectionException("异步接收命令异常", e);
+                MyLog.ConnectionException(clsMsg.getMsg("TCPLog_1"), e);
                 receiveBuffers = null;
                 return -1;
             }
@@ -348,7 +348,7 @@ namespace KyBll
             }
             catch (Exception e)
             {
-                MyLog.ConnectionException("异步发送命令异常", e);
+                MyLog.ConnectionException(clsMsg.getMsg("TCPLog_2"), e);
             }
         }
 

@@ -126,7 +126,7 @@ namespace KangYiCollection.BaseWinform
                 }
                 else
                 {
-                    MessageBox.Show("其他厂家接入文件夹路径不存在！");
+                    MessageBox.Show(clsMsg.getMsg("msg_17"));
                     flag = false;
                 }
             }
@@ -140,7 +140,7 @@ namespace KangYiCollection.BaseWinform
                 }
                 else
                 {
-                    MessageBox.Show("CRH导出路径不存在！");
+                    MessageBox.Show(clsMsg.getMsg("msg_18"));
                     flag = false;
                 }
             }
@@ -199,10 +199,10 @@ namespace KangYiCollection.BaseWinform
             {
                 foldPath = dialog.SelectedPath;
                 Application.DoEvents();
-                waitingForm.SetText("正在导出CRH...");
+                waitingForm.SetText(clsMsg.getMsg("wf_CRHExport"));
                 new Action(ExportToCRH).BeginInvoke(new AsyncCallback(CloseLoading), null);
                 waitingForm.ShowDialog();
-                if (OnTopMessageBox.Show("导出成功！，是否打开导出目录？", "确认") == DialogResult.OK)
+                if (OnTopMessageBox.Show(clsMsg.getMsg("msg_19"), clsMsg.getMsg("msg_Tip")) == DialogResult.OK)
                 {
                     System.Diagnostics.Process.Start("explorer.exe", foldPath);
                 }
