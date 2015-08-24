@@ -426,6 +426,10 @@ namespace KyModel
                 {
                     sign.Version = 2005;
                 }
+                else if (BitConverter.ToUInt16(bBuffer, 20) == 3)
+                {
+                    sign.Version = 2015;
+                }
                 else
                 {
                     sign.Version = 9999;
