@@ -6,7 +6,7 @@ using System.Resources;
 using System.Threading;
 using System.Globalization;
 
-namespace KyBll
+namespace KyBase
 {
    public class clsMsg
     {

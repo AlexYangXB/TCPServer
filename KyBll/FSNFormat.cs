@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using KyModel.Models;
+using KyBase;
 using KyModel;
+using KyModel.Models;
 namespace KyBll
 {
     public class FSNFormat

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using KangYiCollection.BaseWinform;
+using KyBase;
 using KyBll;
 using KyBll.DBUtility;
 using KyModel;
@@ -20,10 +21,10 @@ namespace KangYiCollection
     public partial class NodeManager : MaterialSkin.Controls.MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
-        private string CurrentLanguage = "zh-TW";
+        
         public NodeManager()
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             showMenu = true;
             InitializeComponent();
             //只显示绑定数据的信息
@@ -327,9 +328,9 @@ namespace KangYiCollection
                 obj["Last"] = e.Amount.LastSign;   //末张冠字号码
                 obj["BundleNumber"] = e.Amount.BundleNumber;   //捆钞序号
                 socket.Emit("SetCount", obj);
-                myTcpServer.TCPEvent.OnBussninessLog("发送机具id" + id + ",总金额" + e.Amount.TotalValue + ",可疑币张数" + e.Amount.TotalErr + ",真币张数"
-                    + e.Amount.TotalTrue + ",第一张冠字号" + e.Amount.FirstSign + ",末张冠字号" + e.Amount.LastSign + "捆钞序号" + e.Amount.BundleNumber);
+                myTcpServer.TCPEvent.OnBussninessLog( string.Format(clsMsg.getMsg("buss_27"), id, e.Amount.TotalValue, e.Amount.TotalErr, e.Amount.TotalTrue, e.Amount.FirstSign, e.Amount.LastSign, e.Amount.BundleNumber));
             }
+           
         }
         /// <summary>
         /// 窗体激活事件
@@ -426,7 +427,7 @@ namespace KangYiCollection
             if (rad_FSN.Checked)
             {
                 OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "纸币冠字号码文件*.FSN|*.FSN";
+                ofd.Filter = clsMsg.getMsg("Filter_1");
                 ofd.Multiselect = true;
                 if (DialogResult.OK == ofd.ShowDialog())
                 {
@@ -442,7 +443,7 @@ namespace KangYiCollection
             else if (rad_GZH.Checked)
             {
                 OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "GZH压缩文件*.ZIP|*.ZIP";
+                ofd.Filter = clsMsg.getMsg("Filter_2");
                 if (DialogResult.OK == ofd.ShowDialog())
                 {
                     string file = ofd.FileName;
@@ -1125,7 +1126,7 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void timer_UpdateMachine_Tick(object sender)
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             if (Monitor.TryEnter(UpdateMachineObj, 500))
             {
                 if (KangYiCollection.Properties.Settings.Default.DeviceIp != "" && KyDataOperation.TestConnectDevice())
@@ -1160,7 +1161,7 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void timer_ImportFSN_Tick(object sender)
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             if (Monitor.TryEnter(ImportFSNObj, 500))
             {
                 bool flag = KangYiCollection.Properties.Settings.Default.OtherFactoryAccess;
@@ -1185,7 +1186,7 @@ namespace KangYiCollection
         /// <param name="e"></param>
         private void timer_ExportCRH_Tick(object sender)
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             if (Monitor.TryEnter(ExportCRHObj, 500))
             {
                 string Time = DateTime.Now.ToString("HH:mm:ss");
@@ -1228,7 +1229,7 @@ namespace KangYiCollection
         /// <param name="sender"></param>
         private void timer_UploadSql_Tick(object sender)
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             if (Monitor.TryEnter(UploadSqlObj, 500))
             {
                 if (KyDataOperation.TestConnectServer())
@@ -1285,7 +1286,7 @@ namespace KangYiCollection
         /// <param name="sender"></param>
         private void timer_UploadPictures_Tick(object sender)
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             if (Monitor.TryEnter(UploadPicturesObj, 500))
             {
                 if (KyDataOperation.TestConnectImage())

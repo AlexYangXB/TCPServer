@@ -1,34 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using KyBll;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
+using KyBase;
 namespace KangYiCollection
 {
     static class Program
     {
+        public static string CurrentLanguage = "zh-TW";
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
         static void Main()
         {
-
-
+            AssemblyName assemName = new AssemblyName();
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-            Process[] updates = Process.GetProcessesByName("KangYiUpdate.exe");
-            if (updates.Length == 0)
+            if (CurrentLanguage == "zh-CN")
             {
-                //调用软件升级程序
-                System.Diagnostics.Process p = new Process();
-                p.StartInfo.FileName = Application.StartupPath + "\\KangYiUpdate.exe";
-                p.Start();
-                updates = Process.GetProcessesByName("KangYiUpdate");
-                p.WaitForExit();
+                Process[] updates = Process.GetProcessesByName("KangYiUpdate.exe");
+                if (updates.Length == 0)
+                {
+                    //调用软件升级程序
+                    System.Diagnostics.Process p = new Process();
+                    p.StartInfo.FileName = Application.StartupPath + "\\KangYiUpdate.exe";
+                    p.Start();
+                    updates = Process.GetProcessesByName("KangYiUpdate");
+                    p.WaitForExit();
+                }
+            }
+            else
+            {
+                Process[] updates = Process.GetProcessesByName("WeiKeUpdate.exe");
+                if (updates.Length == 0)
+                {
+                    //调用软件升级程序
+                    System.Diagnostics.Process p = new Process();
+                    p.StartInfo.FileName = Application.StartupPath + "\\WeiKeUpdate.exe";
+                    p.Start();
+                    updates = Process.GetProcessesByName("WeiKeUpdate");
+                    p.WaitForExit();
+                }
             }
             try
             {
@@ -83,13 +100,14 @@ namespace KangYiCollection
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MyLog.UnHandleException(e.ToString(), e.ExceptionObject as Exception);
-            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg((Exception)e.ExceptionObject, "未知错误！"),"提示",10000);
+            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg((Exception)e.ExceptionObject, clsMsg.getMsg("log_27")), clsMsg.getMsg("msg_Tip"), 10000);
         }
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             MyLog.UnHandleException(e.ToString(), e.Exception);
-            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(e.Exception, "未知错误！"), "提示", 10000);
+            AutoClosingMessageBox.Show(MyLog.GetExceptionMsg(e.Exception, clsMsg.getMsg("log_27")), clsMsg.getMsg("msg_Tip"), 10000);
         }
+        
 
     }
 }

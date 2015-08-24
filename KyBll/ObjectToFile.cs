@@ -32,7 +32,7 @@ namespace KyBll
             }
             catch (Exception ex)
             {
-                //Log exception here
+                MyLog.UnHandleException("", ex);
             }
         }
 
@@ -73,7 +73,7 @@ namespace KyBll
             }
             catch (Exception ex)
             {
-                //Log exception here
+                MyLog.UnHandleException("", ex);
             }
 
             return objectOut;

@@ -118,127 +118,127 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btn_CRHManual" xml:space="preserve">
-    <value>手动导出</value>
+    <value>手動導出</value>
   </data>
   <data name="btn_Login" xml:space="preserve">
-    <value>登录</value>
+    <value>登入</value>
   </data>
   <data name="btn_Look" xml:space="preserve">
-    <value>浏览</value>
+    <value>瀏覽</value>
   </data>
   <data name="buss_1" xml:space="preserve">
-    <value>发送绑定网点id：{0}</value>
+    <value>發送綁定服務據點ID：{0}</value>
   </data>
   <data name="buss_10" xml:space="preserve">
-    <value>业务流水号是：{0}</value>
+    <value>水單編號是：{0}</value>
   </data>
   <data name="buss_11" xml:space="preserve">
-    <value>ATM的id是：{0}</value>
+    <value>ATM的ID是：{0}</value>
   </data>
   <data name="buss_12" xml:space="preserve">
-    <value>钞箱编号的id是：{0}</value>
+    <value>鈔箱編號的ID是：{0}</value>
   </data>
   <data name="buss_13" xml:space="preserve">
-    <value>是否为清分中心：{0}</value>
+    <value>是否為清分中心：{0}</value>
   </data>
   <data name="buss_14" xml:space="preserve">
-    <value>包号是：{0}</value>
+    <value>包號是：{0}</value>
   </data>
   <data name="buss_15" xml:space="preserve">
-    <value>捆钞序号是：{0}</value>
+    <value>綑鈔序號是：{0}</value>
   </data>
   <data name="buss_16" xml:space="preserve">
-    <value>用户已关闭浏览器,用户选择的机具id是：{0}</value>
+    <value>用戶已關閉瀏覽器,用戶選擇的端點設備ID是：{0}</value>
   </data>
   <data name="buss_17" xml:space="preserve">
-    <value>您绑定的网点id是：{0} 已被IP地址是：{1} 绑定了,一分钟后将尝试重连！</value>
+    <value>您綁定的端點設備ID是：{0} 已被IP地址是：{1} 绑定了,一分鐘後將嘗試重新連接！</value>
   </data>
   <data name="buss_18" xml:space="preserve">
-    <value>尝试重连，已等待 {0} 次。</value>
+    <value>嘗試重新連接，已等待 {0} 次。</value>
   </data>
   <data name="buss_19" xml:space="preserve">
-    <value>已断开到推送服务的连接！</value>
+    <value>已斷開到推送服務的連接！</value>
   </data>
   <data name="buss_2" xml:space="preserve">
-    <value>收到开始命令，机具id是：{0} ，业务类型是：{1}，用户id是：{2}</value>
+    <value>收到開始命令，端點設備ID是：{0} ，業務類型是：{1}，用户ID是：{2}</value>
   </data>
   <data name="buss_20" xml:space="preserve">
-    <value>该客户端未绑定网点，请先绑定网点！</value>
+    <value>該客户端未绑定服務據點，请先綁定服務據點！</value>
   </data>
   <data name="buss_21" xml:space="preserve">
-    <value>推送服务器异常！</value>
+    <value>推送服務器異常！</value>
   </data>
   <data name="buss_3" xml:space="preserve">
-    <value>机器上次连接时间：{0}</value>
+    <value>機器上次連接時間：{0}</value>
   </data>
   <data name="buss_4" xml:space="preserve">
-    <value>一批张数是：{0}</value>
+    <value>一批張數是：{0}</value>
   </data>
   <data name="buss_5" xml:space="preserve">
-    <value>解析业务类型为：{0}</value>
+    <value>解析業務類型為：{0}</value>
   </data>
   <data name="buss_6" xml:space="preserve">
-    <value>机具id是：{0} 已失去连接。</value>
+    <value>端點設備ID是：{0} 已失去連接。</value>
   </data>
   <data name="buss_7" xml:space="preserve">
-    <value>机器上次连接时间： {0} 大于当前时间5分钟，视为未连接。</value>
+    <value>機器上次連接時間： {0} 大于當前時間5分鐘，視為未連接。</value>
   </data>
   <data name="buss_8" xml:space="preserve">
-    <value>收到结束命令,机具id是：{0}</value>
+    <value>收到结束命令,端點設備ID是：{0}</value>
   </data>
   <data name="buss_9" xml:space="preserve">
-    <value>收到撤销命令</value>
+    <value>收到撤銷命令</value>
   </data>
   <data name="chk_CRHExport" xml:space="preserve">
-    <value>启用自动导出</value>
+    <value>啟用自動導出</value>
   </data>
   <data name="chk_FactoryAccess" xml:space="preserve">
-    <value>将指定文件夹下的FSN文件导入系统</value>
+    <value>將指定文件夾下的FSN文件導入系统</value>
   </data>
   <data name="CRHCommon_0" xml:space="preserve">
-    <value>记录日期</value>
+    <value>紀錄日期</value>
   </data>
   <data name="CRHCommon_1" xml:space="preserve">
-    <value>报送银行编码</value>
+    <value>發送銀行編碼</value>
   </data>
   <data name="CRHCommon_10" xml:space="preserve">
-    <value>业务关联信息</value>
+    <value>業務關聯訊息</value>
   </data>
   <data name="CRHCommon_2" xml:space="preserve">
-    <value>生成网点编码</value>
+    <value>產生服務據點編碼</value>
   </data>
   <data name="CRHCommon_3" xml:space="preserve">
-    <value>业务类型</value>
+    <value>業務類型</value>
   </data>
   <data name="CRHCommon_4" xml:space="preserve">
-    <value>记录数</value>
+    <value>紀錄數</value>
   </data>
   <data name="CRHCommon_5" xml:space="preserve">
-    <value>现金清分中心</value>
+    <value>現金清分中心</value>
   </data>
   <data name="CRHCommon_6" xml:space="preserve">
     <value>文件版本</value>
   </data>
   <data name="CRHCommon_7" xml:space="preserve">
-    <value>设备类别</value>
+    <value>設備類別</value>
   </data>
   <data name="CRHCommon_8" xml:space="preserve">
-    <value>机型</value>
+    <value>機型</value>
   </data>
   <data name="CRHCommon_9" xml:space="preserve">
-    <value>设备编号</value>
+    <value>設備編號</value>
   </data>
   <data name="CRHRecord_number" xml:space="preserve">
     <value>序号</value>
   </data>
   <data name="CRHRecord_recordsign" xml:space="preserve">
-    <value>冠字号码</value>
+    <value>鈔券票號</value>
   </data>
   <data name="CRHRecord_recordtime" xml:space="preserve">
-    <value>记录时间</value>
+    <value>記錄時間</value>
   </data>
   <data name="CRHRecord_recordvalue" xml:space="preserve">
-    <value>币值</value>
+    <value>面額</value>
   </data>
   <data name="CRHRecord_recordversion" xml:space="preserve">
     <value>版别</value>
@@ -247,148 +247,148 @@
     <value>CRH查看</value>
   </data>
   <data name="gb_BindNode" xml:space="preserve">
-    <value>绑定网点</value>
+    <value>綁定服務據點</value>
   </data>
   <data name="gb_CRH1" xml:space="preserve">
-    <value>功能设置</value>
+    <value>功能設置</value>
   </data>
   <data name="gb_CRH2" xml:space="preserve">
-    <value>数据时间范围设置</value>
+    <value>數據時間範圍設置</value>
   </data>
   <data name="gb_CRH3" xml:space="preserve">
-    <value>自动导出路径设置</value>
+    <value>自動導出路徑設置</value>
   </data>
   <data name="kIpAddress" xml:space="preserve">
-    <value>设备IP</value>
+    <value>設備IP</value>
   </data>
   <data name="kStatus" xml:space="preserve">
-    <value>状态</value>
+    <value>狀態</value>
   </data>
   <data name="kUpdateTime" xml:space="preserve">
-    <value>最近上传时间</value>
+    <value>最近上傳時間</value>
   </data>
   <data name="lab_ATM" xml:space="preserve">
-    <value>ATM编号</value>
+    <value>ATM編號</value>
   </data>
   <data name="lab_BussinessNumber" xml:space="preserve">
-    <value>业务流水号</value>
+    <value>業務流水號</value>
   </data>
   <data name="lab_CashBox" xml:space="preserve">
-    <value>钞箱编号</value>
+    <value>鈔箱編號</value>
   </data>
   <data name="lab_CRHCommon" xml:space="preserve">
-    <value>公共信息部分：</value>
+    <value>公共訊息部分：</value>
   </data>
   <data name="lab_CRHRecord" xml:space="preserve">
-    <value>冠字号码记录部分：</value>
+    <value>鈔券票號紀錄部分：</value>
   </data>
   <data name="lab_DealType" xml:space="preserve">
-    <value>交易类型</value>
+    <value>交易類型</value>
   </data>
   <data name="lab_DeviceIp" xml:space="preserve">
-    <value>设备服务器IP</value>
+    <value>設備服務器IP</value>
   </data>
   <data name="lab_Directory" xml:space="preserve">
-    <value>文件夹：</value>
+    <value>文件夾：</value>
   </data>
   <data name="lab_Factory" xml:space="preserve">
-    <value>所属厂家</value>
+    <value>所屬廠商</value>
   </data>
   <data name="lab_LocalIp" xml:space="preserve">
-    <value>本机IP</value>
+    <value>本機IP</value>
   </data>
   <data name="lab_Node" xml:space="preserve">
-    <value>所属网点</value>
+    <value>服務據點</value>
   </data>
   <data name="lab_OpenMainDir" xml:space="preserve">
-    <value>打开主目录</value>
+    <value>打開主目錄</value>
   </data>
   <data name="lab_Password" xml:space="preserve">
-    <value>密码</value>
+    <value>密碼</value>
   </data>
   <data name="lab_PictureIp" xml:space="preserve">
-    <value>图像数据库IP</value>
+    <value>圖像數據庫IP</value>
   </data>
   <data name="lab_Port" xml:space="preserve">
-    <value>端口</value>
+    <value>連接埠</value>
   </data>
   <data name="lab_PushIp" xml:space="preserve">
-    <value>推送服务器IP</value>
+    <value>推送服務器IP</value>
   </data>
   <data name="lab_ServerIp" xml:space="preserve">
-    <value>数据服务器IP</value>
+    <value>數據服務器IP</value>
   </data>
   <data name="lab_Test" xml:space="preserve">
-    <value>测试</value>
+    <value>測試</value>
   </data>
   <data name="lab_UploadTip" xml:space="preserve">
-    <value>上传提示：</value>
+    <value>上傳提示：</value>
   </data>
   <data name="lab_User" xml:space="preserve">
     <value>用户</value>
   </data>
   <data name="lab_Version" xml:space="preserve">
-    <value>软件版本：1.1.0.1</value>
+    <value>軟體版本：1.2.0.0</value>
   </data>
   <data name="MenuItem_CRHReview" xml:space="preserve">
     <value>CRH查看</value>
   </data>
   <data name="MenuItem_FunctionSetting" xml:space="preserve">
-    <value>功能设置</value>
+    <value>功能設置</value>
   </data>
   <data name="MenuItem_Log" xml:space="preserve">
-    <value>日志</value>
+    <value>連線狀態</value>
   </data>
   <data name="MenuItem_LogOut" xml:space="preserve">
-    <value>注销</value>
+    <value>登出</value>
   </data>
   <data name="MenuItem_ServerSetting" xml:space="preserve">
-    <value>服务器设置</value>
+    <value>服務器設置</value>
   </data>
   <data name="msg_1" xml:space="preserve">
-    <value>无法连接‘设备服务器’，请查看‘服务器设置’是否正确？</value>
+    <value>無法連接‘設備服務器’，請查看‘服務器設置’是否正確？</value>
   </data>
   <data name="msg_10" xml:space="preserve">
-    <value>退出软件后将无法接收纸币数据，是否退出软件？</value>
+    <value>退出軟體後將無法接收鈔券數據，是否退出軟體？</value>
   </data>
   <data name="msg_11" xml:space="preserve">
-    <value>请选择文件所属厂家</value>
+    <value>請選擇文件所屬廠商</value>
   </data>
   <data name="msg_12" xml:space="preserve">
-    <value>请选择所属网点</value>
+    <value>請選擇所屬服務據點</value>
   </data>
   <data name="msg_13" xml:space="preserve">
-    <value>请选择交易类型</value>
+    <value>請選擇交易類型</value>
   </data>
   <data name="msg_14" xml:space="preserve">
-    <value>请选择ATM编号和钞箱编号</value>
+    <value>請選擇ATM編號和鈔箱編號</value>
   </data>
   <data name="msg_15" xml:space="preserve">
-    <value>请填写业务流水号</value>
+    <value>請填寫水單編號</value>
   </data>
   <data name="msg_2" xml:space="preserve">
-    <value>启动监听异常！</value>
+    <value>啟動監聽異常！</value>
   </data>
   <data name="msg_3" xml:space="preserve">
-    <value>无法连接‘推送服务器’，请查看‘服务器设置’是否正确？</value>
+    <value>無法連接‘推送服務器’，請查看‘服務器設置’是否正確？</value>
   </data>
   <data name="msg_4" xml:space="preserve">
-    <value>无法连接‘数据服务器’，请查看‘服务器设置’是否正确？</value>
+    <value>無法連接‘數據服務器’，請查看‘服務器設置’是否正確？</value>
   </data>
   <data name="msg_5" xml:space="preserve">
-    <value>无法连接‘图像数据库’，请查看‘服务器设置’是否正确？</value>
+    <value>無法連接'‘圖像數據庫’，請查看‘服務器設置’是否正確？</value>
   </data>
   <data name="msg_6" xml:space="preserve">
-    <value>服务器还未配置，请在菜单下选择‘服务器设置’进行配置！</value>
+    <value>服務器還未配置，請在選單下選擇‘服務器設置進行配置！</value>
   </data>
   <data name="msg_7" xml:space="preserve">
-    <value>密码错误,请重新输入！</value>
+    <value>密碼錯誤,請重新輸入！</value>
   </data>
   <data name="msg_8" xml:space="preserve">
     <value>用户不存在！</value>
   </data>
   <data name="msg_9" xml:space="preserve">
-    <value>无法连接设备数据库！</value>
+    <value>無法連接設備數據庫！</value>
   </data>
   <data name="msg_Tip" xml:space="preserve">
     <value>提示</value>
@@ -406,333 +406,429 @@
     <value>昨天</value>
   </data>
   <data name="tab_Bussiness" xml:space="preserve">
-    <value>业务日志</value>
+    <value>業務日誌</value>
   </data>
   <data name="tab_Cmd" xml:space="preserve">
-    <value>命令日志</value>
+    <value>命令日誌</value>
   </data>
   <data name="tab_CRHExport" xml:space="preserve">
-    <value>CRH导出</value>
+    <value>CRH導出</value>
   </data>
   <data name="tab_DeviceControl" xml:space="preserve">
-    <value>设备监控</value>
+    <value>設備監控</value>
   </data>
   <data name="tab_FileUpload" xml:space="preserve">
-    <value>文件上传</value>
+    <value>文件上傳</value>
   </data>
   <data name="tab_FsnImport" xml:space="preserve">
-    <value>FSN导入日志</value>
+    <value>FSN導入日誌</value>
   </data>
   <data name="tab_OtherFactoryAccess" xml:space="preserve">
-    <value>他厂接入</value>
+    <value>廠商連接</value>
   </data>
   <data name="tab_UserLogin" xml:space="preserve">
-    <value>用户登录</value>
+    <value>用户登錄</value>
   </data>
   <data name="wf_Login" xml:space="preserve">
-    <value>正在登录...</value>
+    <value>正在登錄...</value>
   </data>
   <data name="wf_SaveFile" xml:space="preserve">
     <value>正在保存文件...</value>
   </data>
   <data name="wf_StartListen" xml:space="preserve">
-    <value>正在启动监听...</value>
+    <value>正在啟動監聽...</value>
   </data>
   <data name="wf_StartPush" xml:space="preserve">
-    <value>正在启动推送...</value>
+    <value>正在啟動推送...</value>
   </data>
   <data name="wf_StopListen" xml:space="preserve">
-    <value>正在停止监听...</value>
+    <value>正在停止監聽...</value>
   </data>
   <data name="wf_StopPush" xml:space="preserve">
     <value>正在停止推送...</value>
   </data>
   <data name="btn_Confirm" xml:space="preserve">
-    <value>确定</value>
+    <value>確定</value>
   </data>
   <data name="btn_CRHOpenFile" xml:space="preserve">
-    <value>打开文件</value>
+    <value>打開文件</value>
   </data>
   <data name="btn_Scan" xml:space="preserve">
-    <value>选择文件</value>
+    <value>選擇文件</value>
   </data>
   <data name="cmb_BusinessType" xml:space="preserve">
-    <value>号码记录,柜面取款,柜面存款,ATM配钞,ATM清钞</value>
+    <value>號碼記錄,櫃台取款,櫃台存款,ATM配钞,ATM清钞</value>
   </data>
   <data name="key" xml:space="preserve">
     <value>字段</value>
   </data>
   <data name="log_1" xml:space="preserve">
-    <value>{0} 路径不存在！</value>
+    <value>{0} 路徑不存在！</value>
   </data>
   <data name="log_2" xml:space="preserve">
-    <value>CRH导出未启用！</value>
+    <value>CRH導出未啟用！</value>
   </data>
   <data name="log_3" xml:space="preserve">
-    <value>当前队列还有{0}条执行语句...</value>
+    <value>當前隊列還有{0} 條執行語句...
+
+</value>
   </data>
   <data name="log_4" xml:space="preserve">
-    <value>当前队列还有{0}个图像文件等待上传...</value>
+    <value>當前隊列還有{0} 個圖像文件等待上傳...</value>
   </data>
   <data name="log_5" xml:space="preserve">
-    <value>{0} 图像文件上传失败,将添加到队列末尾</value>
+    <value>{0} 圖像文件上傳失敗,將添加到隊列末尾</value>
   </data>
   <data name="msg_16" xml:space="preserve">
-    <value>打开日志窗体异常！</value>
+    <value>打開日誌窗體異常！</value>
   </data>
   <data name="str_ImportFail" xml:space="preserve">
-    <value>导入失败！</value>
+    <value>導入失敗！</value>
   </data>
   <data name="str_ImportSuccess" xml:space="preserve">
-    <value>导入成功！</value>
+    <value>導入成功！</value>
   </data>
   <data name="value" xml:space="preserve">
     <value>值</value>
   </data>
   <data name="buss_22" xml:space="preserve">
-    <value>收到文件的第一个冠字号码时间是 {0}</value>
+    <value>收到文件第一個鈔劵號碼時間是 {0}</value>
   </data>
   <data name="buss_23" xml:space="preserve">
-    <value>机具 {0} 正在进行交易控制！</value>
+    <value>端點設備 {0} 正在進行交易控制！</value>
   </data>
   <data name="CRHLog_1" xml:space="preserve">
-    <value>导出CRH开始。</value>
+    <value>導出CRH開始。</value>
   </data>
   <data name="CRHLog_10" xml:space="preserve">
-    <value>无法找到id为 {0} 的非协议机具！</value>
+    <value>無法找到ID為 {0} 的非協議端點設備！</value>
   </data>
   <data name="CRHLog_11" xml:space="preserve">
-    <value>机具id为 {0} 的机型编号为空！</value>
+    <value>端點設備ID為 {0} 的機型編號為空！</value>
   </data>
   <data name="CRHLog_12" xml:space="preserve">
-    <value>无法找到id为 {0} 的网点！</value>
+    <value>無法找到ID為 {0} 的服務據點！</value>
   </data>
   <data name="CRHLog_13" xml:space="preserve">
-    <value>无法找到id为 {0} 的网点所属的银行！</value>
+    <value>無法找到ID為 {0} 的服務據點所屬的銀行！</value>
   </data>
   <data name="CRHLog_2" xml:space="preserve">
-    <value>总共 {0} 个批次需要导出CRH文件。</value>
+    <value>總共 {0} 個批次需要導出CRH文件。</value>
   </data>
   <data name="CRHLog_3" xml:space="preserve">
-    <value>建立临时目录 {0}</value>
+    <value>建立臨時目錄 {0}</value>
   </data>
   <data name="CRHLog_4" xml:space="preserve">
     <value>建立新CRH文件 {0}</value>
   </data>
   <data name="CRHLog_5" xml:space="preserve">
-    <value>生成CRH压缩包 {0}</value>
+    <value>生成CRH壓所包 {0}</value>
   </data>
   <data name="CRHLog_6" xml:space="preserve">
-    <value>银行编码是 {0}</value>
+    <value>銀行編碼是 {0}</value>
   </data>
   <data name="CRHLog_7" xml:space="preserve">
-    <value>无法找到批次信息！</value>
+    <value>無法找到批次訊息！</value>
   </data>
   <data name="CRHLog_8" xml:space="preserve">
-    <value>批次id为 {0} 网点id为 {1} 机具id为 {2} 转CRH发生异常！</value>
+    <value>批次ID為 {0} 服務據點ID為 {1} 端點設備ID為 {2} 轉CRH發生異常！</value>
   </data>
   <data name="CRHLog_9" xml:space="preserve">
-    <value>无法找到id为 {0} 的机具！</value>
+    <value>無法找到ID為 {0} 的端點設備！</value>
   </data>
   <data name="FSNLog_1" xml:space="preserve">
-    <value>{0} 扩展名不是FSN或者fsn，移入ErrFiles文件夹</value>
+    <value>{0} 擴展名不是FSN或者fsn，移入ErrFiles文件夾</value>
   </data>
   <data name="FSNLog_2" xml:space="preserve">
-    <value>{0} 文件格式不正确！</value>
+    <value>{0} 文件格式不正確！</value>
   </data>
   <data name="FSNLog_3" xml:space="preserve">
-    <value>{0} 的文件版本不正确！</value>
+    <value>{0} 的文件版本不正確！</value>
   </data>
   <data name="FSNLog_4" xml:space="preserve">
-    <value>{0} 中的厂家简称不存在！</value>
+    <value>{0} 中的廠商簡稱不存在！</value>
   </data>
   <data name="FSNLog_5" xml:space="preserve">
-    <value>{0} 中的网点编号不存在！</value>
+    <value>{0} 中的服務據點編號不存在！</value>
   </data>
   <data name="FSNLog_6" xml:space="preserve">
-    <value>{0} 的设备类别不存在！</value>
+    <value>{0} 的設備類別不存在！</value>
   </data>
   <data name="FSNLog_7" xml:space="preserve">
-    <value>FSN文件导入异常！</value>
+    <value>FSN文件導入異常！</value>
   </data>
   <data name="log_10" xml:space="preserve">
-    <value>异常文本</value>
+    <value>異常文本
+</value>
   </data>
   <data name="log_11" xml:space="preserve">
-    <value>呈现时候</value>
+    <value>呈現時候</value>
   </data>
   <data name="log_12" xml:space="preserve">
-    <value>异常类型</value>
+    <value>異常類型</value>
   </data>
   <data name="log_13" xml:space="preserve">
-    <value>异常信息</value>
+    <value>異常訊息</value>
   </data>
   <data name="log_14" xml:space="preserve">
-    <value>堆栈调用</value>
+    <value>堆棧調用</value>
   </data>
   <data name="log_15" xml:space="preserve">
-    <value>异常办法</value>
+    <value>異常辦法</value>
   </data>
   <data name="log_16" xml:space="preserve">
-    <value>未处理惩罚异常</value>
+    <value>未處理懲罰異常</value>
   </data>
   <data name="log_17" xml:space="preserve">
-    <value>连接数据服务器异常！</value>
+    <value>連接數據服務器異常！</value>
   </data>
   <data name="log_18" xml:space="preserve">
-    <value>连接设备服务器异常！</value>
+    <value>連接設備服務器異常！</value>
   </data>
   <data name="log_19" xml:space="preserve">
-    <value>连接推送服务器异常！</value>
+    <value>連接推送服務器異常！</value>
   </data>
   <data name="log_20" xml:space="preserve">
-    <value>连接图像服务器异常！</value>
+    <value>連接圖像服務器異常！</value>
   </data>
   <data name="log_6" xml:space="preserve">
-    <value>网络异常！</value>
+    <value>網路異常！</value>
   </data>
   <data name="log_7" xml:space="preserve">
-    <value>通信异常！</value>
+    <value>通訊異常！</value>
   </data>
   <data name="log_8" xml:space="preserve">
-    <value>机具IP地址为为 {0} 上次连接时间为 {1} 大于当前5分钟，将关闭线程！</value>
+    <value>端點設備IP地址為 {0} 上次連接時間為 {1} 大於當前5分鐘，將關閉線程！</value>
   </data>
   <data name="log_9" xml:space="preserve">
-    <value>获取文件中的第一个点钞时间出错！</value>
+    <value>獲取文件中的第一個點鈔時間出錯！</value>
   </data>
   <data name="msg_17" xml:space="preserve">
-    <value>其他厂家接入文件夹路径不存在！</value>
+    <value>其他廠商接入文件夾路徑不存在！</value>
   </data>
   <data name="msg_18" xml:space="preserve">
-    <value>CRH导出路径不存在！</value>
+    <value>CRH導出路徑不存在！</value>
   </data>
   <data name="msg_19" xml:space="preserve">
-    <value>导出成功！是否打开导出目录？</value>
+    <value>導出成功！是否打開導出目錄？</value>
   </data>
   <data name="msg_20" xml:space="preserve">
-    <value>{0} 秒后将自动关闭</value>
+    <value>{0} 秒後將自動關閉</value>
   </data>
   <data name="msg_21" xml:space="preserve">
-    <value>请设置端口号</value>
+    <value>請設置端口號</value>
   </data>
   <data name="msg_22" xml:space="preserve">
-    <value>推送服务器连接成功！</value>
+    <value>推送服務器連接成功！</value>
   </data>
   <data name="msg_23" xml:space="preserve">
-    <value>推送服务器连接失败！</value>
+    <value>推送服務器連接失敗！</value>
   </data>
   <data name="msg_24" xml:space="preserve">
-    <value>图像服务器连接成功！</value>
+    <value>圖像服務器連接成功！</value>
   </data>
   <data name="msg_25" xml:space="preserve">
-    <value>图像服务器连接失败！</value>
+    <value>圖像服務器連接失敗！</value>
   </data>
   <data name="msg_26" xml:space="preserve">
-    <value>设备服务器连接成功！</value>
+    <value>設備服務器連接成功！</value>
   </data>
   <data name="msg_27" xml:space="preserve">
-    <value>设备服务器连接失败！</value>
+    <value>設備服務器連接失敗！</value>
   </data>
   <data name="msg_28" xml:space="preserve">
-    <value>数据服务器连接成功！</value>
+    <value>數據服務器連接成功！</value>
   </data>
   <data name="msg_29" xml:space="preserve">
-    <value>数据服务器连接失败！</value>
+    <value>數據服務器連接失敗！</value>
   </data>
   <data name="msg_30" xml:space="preserve">
-    <value>绑定成功！</value>
+    <value>綁定成功！</value>
   </data>
   <data name="msg_31" xml:space="preserve">
-    <value>绑定失败！</value>
+    <value>綁定失敗！</value>
   </data>
   <data name="msg_32" xml:space="preserve">
-    <value>{0} 已经绑定了IP：{1}</value>
+    <value>{0} 已經綁定了IP：{1}</value>
   </data>
   <data name="msg_33" xml:space="preserve">
-    <value>是否继续？</value>
+    <value>是否繼續？</value>
   </data>
   <data name="msg_Warn" xml:space="preserve">
     <value>警告</value>
   </data>
   <data name="TCPLog_1" xml:space="preserve">
-    <value>异步接收命令异常！</value>
+    <value>異步接收命令異常！</value>
   </data>
   <data name="TCPLog_10" xml:space="preserve">
-    <value>{0}，传输数据结束命令 {1}</value>
+    <value>{0}，傳輸數據結束命令 {1}</value>
   </data>
   <data name="TCPLog_11" xml:space="preserve">
-    <value>{0}，时间同步命令 {1}</value>
+    <value>{0}，時間同步命令 {1}</value>
   </data>
   <data name="TCPLog_12" xml:space="preserve">
     <value>{0}，心跳命令 {1}</value>
   </data>
   <data name="TCPLog_13" xml:space="preserve">
-    <value>{0}，文件大小 {1} 字节,文件大小超过5M,将关闭连接！ {2}</value>
+    <value>{0}，文件大小 {1} 字節,文件大小超過5M,將關閉連接！ {2}</value>
   </data>
   <data name="TCPLog_14" xml:space="preserve">
-    <value>达到最大连接数30的限制！</value>
+    <value>達到最大連接數30的限制！</value>
   </data>
   <data name="TCPLog_15" xml:space="preserve">
-    <value>{0}，一次请求文件数超过30个，将关闭连接！</value>
+    <value>{0}，一次請求文件數超過30個，將關閉連接！</value>
   </data>
   <data name="TCPLog_16" xml:space="preserve">
-    <value>{0}关闭线程！</value>
+    <value>{0}關閉線程！</value>
   </data>
   <data name="TCPLog_17" xml:space="preserve">
-    <value>记录Amount日志异常！</value>
+    <value>紀錄Amount日誌異常！</value>
   </data>
   <data name="TCPLog_18" xml:space="preserve">
-    <value>记录命令日志异常！</value>
+    <value>紀錄命令日誌異常！</value>
   </data>
   <data name="TCPLog_19" xml:space="preserve">
-    <value>记录业务日志异常！</value>
+    <value>紀錄業務日誌異常！</value>
   </data>
   <data name="TCPLog_2" xml:space="preserve">
-    <value>异步发送命令异常！</value>
+    <value>異步發送命令異常！</value>
   </data>
   <data name="TCPLog_20" xml:space="preserve">
-    <value>记录FSN日志异常！</value>
+    <value>紀錄FSN日誌異常！</value>
   </data>
   <data name="TCPLog_3" xml:space="preserve">
-    <value>命令长度 {0}</value>
+    <value>命令長度 {0}</value>
   </data>
   <data name="TCPLog_4" xml:space="preserve">
-    <value>新连接 {0}</value>
+    <value>新連接 {0}</value>
   </data>
   <data name="TCPLog_5" xml:space="preserve">
-    <value>{0}  IP地址未知,请确认已添加IP地址，再重启客户端或等待5分钟自动更新！</value>
+    <value>{0}  IP地址未知,請確認以添加IP地址，再重啟客戶端或等待5分鐘自動更新！</value>
   </data>
   <data name="TCPLog_6" xml:space="preserve">
-    <value>{0} 连接已存在！</value>
+    <value>{0} 連接已存在！</value>
   </data>
   <data name="TCPLog_7" xml:space="preserve">
     <value>{0} 未知命令 {1}</value>
   </data>
   <data name="TCPLog_8" xml:space="preserve">
-    <value>{0}，传输数据请求命令 {1}</value>
+    <value>{0}，傳輸數據請求命令 {1}</value>
   </data>
   <data name="TCPLog_9" xml:space="preserve">
-    <value>{0}，纸币信息发送命令 数据包长度 {1}  纸币张数 {2} {3}</value>
+    <value>{0}，鈔劵訊息發送命令 數據包長度  {1}  鈔劵張數 {2} {3}</value>
   </data>
   <data name="wf_CRHExport" xml:space="preserve">
-    <value>正在导出CRH...</value>
+    <value>正在導出CRH...</value>
   </data>
   <data name="wf_Init" xml:space="preserve">
     <value>正在初始化...</value>
   </data>
   <data name="wf_LoadData" xml:space="preserve">
-    <value>正在载入数据...</value>
+    <value>正在載入數據...</value>
   </data>
   <data name="wf_TestDevice" xml:space="preserve">
-    <value>正在测试设备服务器...</value>
+    <value>正在測試設備服務器...</value>
   </data>
   <data name="wf_TestPicture" xml:space="preserve">
-    <value>正在测试图像服务器...</value>
+    <value>正在測試圖像服務器...</value>
   </data>
   <data name="wf_TestPush" xml:space="preserve">
-    <value>正在测试推送服务器...</value>
+    <value>正在測試推送服務器...</value>
   </data>
   <data name="wf_TestServer" xml:space="preserve">
-    <value>正在测试数据服务器...</value>
+    <value>正在測試數據服務器...</value>
+  </data>
+  <data name="CRH_1" xml:space="preserve">
+    <value>現金收入</value>
+  </data>
+  <data name="CRH_10" xml:space="preserve">
+    <value>ATM取款機</value>
+  </data>
+  <data name="CRH_11" xml:space="preserve">
+    <value>兌換端點設備</value>
+  </data>
+  <data name="CRH_12" xml:space="preserve">
+    <value>其他幣種</value>
+  </data>
+  <data name="CRH_13" xml:space="preserve">
+    <value>無法識別</value>
+  </data>
+  <data name="CRH_2" xml:space="preserve">
+    <value>現金付出</value>
+  </data>
+  <data name="CRH_3" xml:space="preserve">
+    <value>清分業務</value>
+  </data>
+  <data name="CRH_4" xml:space="preserve">
+    <value>未定義</value>
+  </data>
+  <data name="CRH_5" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="CRH_6" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="CRH_7" xml:space="preserve">
+    <value>清分端點設備</value>
+  </data>
+  <data name="CRH_8" xml:space="preserve">
+    <value>存取款一體機</value>
+  </data>
+  <data name="CRH_9" xml:space="preserve">
+    <value>點鈔機</value>
+  </data>
+  <data name="AssemblyCompany" xml:space="preserve">
+    <value>V&amp;T微克股份有限公司</value>
+  </data>
+  <data name="AssemblyCopyright" xml:space="preserve">
+    <value>Copyright © V&amp;T微克股份有限公司 2015</value>
+  </data>
+  <data name="AssemblyDescription" xml:space="preserve">
+    <value>微克服務據點管理端</value>
+  </data>
+  <data name="buss_24" xml:space="preserve">
+    <value>{0} 業務開始,端點設備ip是 {1}</value>
+  </data>
+  <data name="buss_25" xml:space="preserve">
+    <value>{0} 業務結束,端點設備ip是 {1}</value>
+  </data>
+  <data name="buss_26" xml:space="preserve">
+    <value>跨行調款中臨時路徑 {0} 不存在！</value>
+  </data>
+  <data name="log_21" xml:space="preserve">
+    <value>啟動監聽服務異常！</value>
+  </data>
+  <data name="log_22" xml:space="preserve">
+    <value>監聽連接異常！</value>
+  </data>
+  <data name="log_23" xml:space="preserve">
+    <value>啟動接收數據線程異常！</value>
+  </data>
+  <data name="log_24" xml:space="preserve">
+    <value>停止服務異常！</value>
+  </data>
+  <data name="log_25" xml:space="preserve">
+    <value>交易控制異常！</value>
+  </data>
+  <data name="TestLog_1" xml:space="preserve">
+    <value>當前總共 {0} 調收數據線程！</value>
+  </data>
+  <data name="buss_27" xml:space="preserve">
+    <value>發送端點設備id是{0}，總金額是{1}，可疑鈔張數是{2}，真鈔張數是{3}，首張鈔劵票號是{4}，末張鈔劵票號是{5}，捆鈔序號是{6}</value>
+  </data>
+  <data name="Filter_1" xml:space="preserve">
+    <value>鈔劵票號文件*.FSN|*.FSN</value>
+  </data>
+  <data name="Filter_2" xml:space="preserve">
+    <value>GZH壓縮文件*.ZIP|*.ZIP</value>
+  </data>
+  <data name="Filter_3" xml:space="preserve">
+    <value>CRH文件|*.CRH</value>
+  </data>
+  <data name="log_26" xml:space="preserve">
+    <value>日誌輸出異常！</value>
+  </data>
+  <data name="log_27" xml:space="preserve">
+    <value>未知錯誤！</value>
   </data>
 </root>

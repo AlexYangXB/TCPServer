@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Utility.Base;
+using KyBase;
 
 namespace Utility
 {
@@ -12,7 +11,7 @@ namespace Utility
         public static bool FtpConnect(string ip,int port,string dir,string user,string passWord)
         {
             bool result = false;
-            Base.FtpClient ftpClient=new FtpClient();
+            FtpClient ftpClient=new FtpClient();
             try
             {
                 if(user=="")
@@ -43,7 +42,7 @@ namespace Utility
         public static bool FileUpload(string ip,int port,string dir,string user,string passWord,string file)
         {
             bool result = false;
-            Base.FtpClient ftpClient = new FtpClient();
+            FtpClient ftpClient = new FtpClient();
             string fileShortName = Path.GetFileName(file);
             try
             {

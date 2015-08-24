@@ -1,0 +1,4 @@
+1.CustomAssembly.cs
+2.CurrentLanguage
+3.NodeServerAndManager的程序集名称
+4.TCPServer\Lib\config.ini 中的ClientName

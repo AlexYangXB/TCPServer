@@ -79,7 +79,28 @@ namespace KyModel
         /// <summary>
         /// 普通消息
         /// </summary>
-        Common_Message=15
+        Common_Message=15,
+        /// <summary>
+        /// 假币预警版本请求命令
+        /// </summary>
+        NET_FAKE_VER=16,
+        /// <summary>
+        /// 假币预警版本请求回复命令
+        /// </summary>
+        NET_FAKE_VERREPLY=17,
+        /// <summary>
+        /// 假币预警下载请求命令
+        /// </summary>
+        NET_FAKE_DWN=18,
+        /// <summary>
+        /// 假币预警下载请求回复命令
+        /// </summary>
+        NET_FAKE_DWNREPLY=19,
+        /// <summary>
+        /// 假币预警下载完成请求命令
+        /// </summary>
+        NET_FAKE_CMP=20
+
 
         
     }

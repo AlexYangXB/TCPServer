@@ -38,11 +38,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CustomAssembly.cs">
+      <Link>CustomAssembly.cs</Link>
+    </Compile>
     <Compile Include="MyTcpServerSimple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TcpServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KyBase\KyBase.csproj">
+      <Project>{7CA641DA-18EF-4874-836C-861FEFBF60F8}</Project>
+      <Name>KyBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KyBll\KyBll.csproj">
       <Project>{C7334831-CFC3-4201-BA03-B7404A9F5572}</Project>
       <Name>KyBll</Name>

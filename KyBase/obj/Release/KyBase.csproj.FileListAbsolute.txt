@@ -1,0 +1,10 @@
+D:\TCPServer\KyBase\bin\Release\KyBase.dll
+D:\TCPServer\KyBase\bin\Release\KyBase.pdb
+D:\TCPServer\KyBase\bin\Release\ICSharpCode.SharpZipLib.dll
+D:\TCPServer\KyBase\obj\Release\ResolveAssemblyReference.cache
+D:\TCPServer\KyBase\obj\Release\KyBase.Resource.zh_CN.resources
+D:\TCPServer\KyBase\obj\Release\KyBase.Resource.zh_TW.resources
+D:\TCPServer\KyBase\obj\Release\GenerateResource.read.1.tlog
+D:\TCPServer\KyBase\obj\Release\GenerateResource.write.1.tlog
+D:\TCPServer\KyBase\obj\Release\KyBase.dll
+D:\TCPServer\KyBase\obj\Release\KyBase.pdb

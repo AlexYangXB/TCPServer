@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using MaterialSkin;
 using System.IO;
+using System.Windows.Forms;
+using KyBase;
 using KyBll;
-using KyModel;
+using MaterialSkin;
 namespace KangYiCollection.BaseWinform
 {
     public partial class FunctionSettings : MaterialSkin.Controls.MaterialForm

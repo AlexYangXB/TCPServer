@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using KyBase;
 using KyModel;
 using MaterialSkin;
-using KyBll;
 namespace KangYiCollection.BaseWinform
 {
     public partial class CRHReview : MaterialSkin.Controls.MaterialForm
@@ -48,7 +48,7 @@ namespace KangYiCollection.BaseWinform
             OpenFileDialog of = new OpenFileDialog();
             if (Directory.Exists(KangYiCollection.Properties.Settings.Default.CRHDir))
                 of.InitialDirectory = KangYiCollection.Properties.Settings.Default.CRHDir;
-            of.Filter = "CRH文件|*.CRH";
+            of.Filter = clsMsg.getMsg("Filter_3");
             if (of.ShowDialog() == DialogResult.OK)
             {
                 string fileName = of.FileName;

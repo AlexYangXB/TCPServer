@@ -44,6 +44,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CustomAssembly.cs">
+      <Link>CustomAssembly.cs</Link>
+    </Compile>
     <Compile Include="businessControl.cs" />
     <Compile Include="BussinessType.cs" />
     <Compile Include="CRH.cs" />
@@ -87,6 +90,10 @@
     <ProjectReference Include="..\..\SqlFu\SqlFu.csproj">
       <Project>{0A6D3405-840F-46A0-B1D1-5A8058CFED75}</Project>
       <Name>SqlFu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KyBase\KyBase.csproj">
+      <Project>{7CA641DA-18EF-4874-836C-861FEFBF60F8}</Project>
+      <Name>KyBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

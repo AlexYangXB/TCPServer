@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using KyBll.Base;
+using KyBase;
 using KyModel;
 using KyModel.Models;
 namespace KyBll
@@ -218,7 +217,7 @@ namespace KyBll
         {
             try
             {
-                Base.ZipClass zipClass = new ZipClass();
+                ZipClass zipClass = new ZipClass();
                 zipClass.UNZipFile(gzhZip, targetDirectory);
                 return true;
             }

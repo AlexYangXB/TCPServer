@@ -85,7 +85,6 @@ namespace MyTcpServer
             }
             catch (SocketException se)
             {
-                //MessageBox.Show("异常：" + se.Message);
                 return;
             }
             // 设置监听队列的长度；  
@@ -94,7 +93,6 @@ namespace MyTcpServer
             threadWatch = new Thread(WatchConnecting);
             threadWatch.IsBackground = true;
             threadWatch.Start();
-            //ShowMsg("服务器启动监听成功！");
             IsRunning = true;
         }
 
@@ -114,7 +112,6 @@ namespace MyTcpServer
                     // 将与客户端连接的 套接字 对象添加到集合中；
                     if (!dict.ContainsKey(sokConnection.RemoteEndPoint.ToString()))
                         dict.Add(sokConnection.RemoteEndPoint.ToString(), sokConnection);
-                    //ShowMsg("客户端连接成功！");
                     Thread thr = new Thread(RecMsg);
 
                     thr.IsBackground = true;
@@ -243,7 +240,6 @@ namespace MyTcpServer
                 }
                 catch (SocketException se)
                 {
-                    //ShowMsg("异常：" + se.Message);
                     // 从 通信套接字 集合中删除被中断连接的通信套接字；  
                     if (dict.ContainsKey(ipAndPort))
                         dict.Remove(ipAndPort);
@@ -256,7 +252,6 @@ namespace MyTcpServer
                 }
                 catch (Exception e)
                 {
-                    //ShowMsg("异常：" + e.Message);
                     // 从 通信套接字 集合中删除被中断连接的通信套接字；
                     if (dict.ContainsKey(ipAndPort))
                         dict.Remove(ipAndPort);

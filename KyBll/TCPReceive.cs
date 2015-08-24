@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using System.Threading;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using KyBase;
 using KyModel;
 using KyModel.Models;
 
@@ -43,6 +44,8 @@ namespace KyBll
         public Socket sokClient;
         private int ReceiveFileCnt = 0;
         private string ipAndPort = "";
+        private int FakeVer = 0;
+        private List<string> FakeList = new List<string>();
         public void RecMsg(object sokConnectionparn)
         {
             sokClient = sokConnectionparn as Socket;
@@ -134,7 +137,10 @@ namespace KyBll
                                 SendNetReply(cmd, success, machineByte, 0);
                                 byte[] Fsn = new byte[bodyLen];
                                 Array.Copy(bBuffer, 84, Fsn, 0, bodyLen);
-                                CopeWithNetUp(Fsn, ip, machineNo);
+
+                                //获取保留字reserve首字节，作为图像标志位
+                                int imageType = bBuffer[40];
+                                CopeWithNetUp(Fsn, ip, machineNo, imageType);
 
 
                             }
@@ -167,6 +173,49 @@ namespace KyBll
                                     IpAndPort = ipAndPort,
                                     Command = bBuffer.Take(44).ToArray(),
                                     MessageType = TCPMessageType.NET_CLOSE
+                                });
+                                CloseThread();
+                            }
+                            else if (cmd == 0X000D) //假币预警版本请求命令
+                            {
+                                FakeVer = BitConverter.ToInt32(bBuffer, 40);
+                                FakeVer++;
+                                int FakeCnt = 1;
+                                string FakeTime=DateTime.Now.ToString("yyyyMMddHHmmss");
+                                SendNetFakeReply(cmd, success, machineByte, FakeVer, FakeCnt,FakeTime);
+                                TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = ipAndPort,
+                                    Command = bBuffer.Take(46).ToArray(),
+                                    MessageType = TCPMessageType.NET_FAKE_VER
+                                });
+                                CloseThread();
+                            }
+                            else if (cmd == 0X000E) //假币预警下载请求命令
+                            {
+                                FakeVer = BitConverter.ToInt32(bBuffer, 40);
+                                TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = ipAndPort,
+                                    Command = bBuffer.Take(46).ToArray(),
+                                    MessageType = TCPMessageType.NET_FAKE_DWN
+                                });
+                                for (int kk = 0; kk < 1000; kk++)
+                                {
+                                    Guid g = Guid.NewGuid();
+                                    string sign = g.ToString().Replace("-", "").ToUpper().Substring(0, 10);
+                                    FakeList.Add(sign);
+                                }
+                                SendNetFakeDwnReply(cmd, success, machineByte, FakeVer, FakeList);
+                                CloseThread();
+                            }
+                            else if (cmd == 0X000F) //假币预警下载完成请求命令
+                            {
+                                TCPEvent.OnCommandLog(new TCPMessage
+                                {
+                                    IpAndPort = ipAndPort,
+                                    Command = bBuffer.Take(48).ToArray(),
+                                    MessageType = TCPMessageType.NET_FAKE_CMP
                                 });
                                 CloseThread();
                             }
@@ -213,7 +262,7 @@ namespace KyBll
                     TCPEvent.OnCommandLog(new TCPMessage
                     {
                         IpAndPort = ipAndPort,
-                        Message =string.Format(clsMsg.getMsg("log_8"),ipAndPort,machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss")),
+                        Message = string.Format(clsMsg.getMsg("log_8"), ipAndPort, machine[ip].alive.ToString("yyyy-MM-dd HH:mm:ss")),
                         MessageType = TCPMessageType.Out_Of_Date
                     });
                     CloseThread();
@@ -243,18 +292,27 @@ namespace KyBll
         /// <param name="Fsn"></param>
         /// <param name="ip"></param>
         /// <param name="machineNo"></param>
-        public void CopeWithNetUp(byte[] Fsn, string ip, string machineNo)
+        public void CopeWithNetUp(byte[] Fsn, string ip, string machineNo,int imageType)
         {
             DateTime date = DateTime.Now;
             string filePath = DataSaveFolder + "\\" + date.ToString("yyyyMMdd") + "\\" + date.ToString("HH") + "\\";
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
-            string fileName = filePath + date.ToString("mmssfff") +
-                              "-" + machineNo + ".FSN";
+
+            string fileName = "";
+            if (imageType == 0)
+            {
+                fileName=filePath + date.ToString("mmssfff") +"-" + machineNo + ".FSN";
+            }
+            else
+            {
+                fileName = filePath + date.ToString("mmssfff") + "-" + machineNo + ".KY0";
+            }
+            
             //进行了交易控制，即指定了交易类型（如果收到前一天的数据是否应该排除呢？？2015.03.12）
             DateTime fileTime = FSNFormat.GetDateTime(Fsn);
             TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_22"), fileTime.ToString("yyyy-MM-dd HH:mm:ss")));
-            if(machine[ip].startBusinessCtl)
+            if (machine[ip].startBusinessCtl)
                 TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_23"), ip));
             if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
             {
@@ -366,7 +424,7 @@ namespace KyBll
             byte[] returnBytes = new byte[46];
             Array.Copy(start_work, 0, returnBytes, 0, 4);
             Array.Copy(msg_length, 0, returnBytes, 4, 4);
-            Array.Copy(version, 0, returnBytes, 8, 2);//协议版本15
+            Array.Copy(version, 0, returnBytes, 8, 2);//协议版本
             Array.Copy(BitConverter.GetBytes(requestCmd), 0, returnBytes, 10, 2);//requesCmd
             Array.Copy(retCode, 0, returnBytes, 12, 2);//retCode
             Array.Copy(MachineNo, 0, returnBytes, 14, 28);
@@ -391,6 +449,56 @@ namespace KyBll
             string time = DateTime.Now.ToString("yyyyMMddHHmmss");
             byte[] timeBytes = Encoding.ASCII.GetBytes(time);
             Array.Copy(timeBytes, 0, returnBytes, 42, 14);
+            MyTCP.AsyncSendToClient(sokClient, returnBytes);
+        }
+        /// <summary>
+        /// 假币请求回复命令
+        /// </summary>
+        /// <param name="requestCmd">请求命令</param>
+        /// <param name="retCode">状态</param>
+        /// <param name="MachineNo">机具编号</param>
+        /// <param name="packageIndex">文件分次发送时序号</param>
+        public void SendNetFakeReply(short requestCmd, byte[] retCode, byte[] MachineNo, int FakeVer,int FakeCnt,string FakeTime)
+        {
+            byte[] returnBytes = new byte[66];
+            Array.Copy(start_work, 0, returnBytes, 0, 4);
+            Array.Copy(BitConverter.GetBytes(returnBytes.Length), 0, returnBytes, 4, 4);
+            Array.Copy(version, 0, returnBytes, 8, 2);//协议版本
+            Array.Copy(BitConverter.GetBytes(requestCmd), 0, returnBytes, 10, 2);//requesCmd
+            Array.Copy(retCode, 0, returnBytes, 12, 2);//retCode
+            Array.Copy(MachineNo, 0, returnBytes, 14, 28);
+            //保留字 2字节 （42~43）
+            Array.Copy(BitConverter.GetBytes(FakeVer), 0, returnBytes, 44, 4);
+            Array.Copy(BitConverter.GetBytes(FakeCnt), 0, returnBytes, 48, 4);
+            byte[] timeBytes = Encoding.ASCII.GetBytes(FakeTime);
+            Array.Copy(timeBytes, 0, returnBytes, 52, 14);
+            MyTCP.AsyncSendToClient(sokClient, returnBytes);
+        }
+        /// <summary>
+        /// 假币下载请求回复回复命令
+        /// </summary>
+        /// <param name="requestCmd">请求命令</param>
+        /// <param name="retCode">状态</param>
+        /// <param name="MachineNo">机具编号</param>
+        /// <param name="packageIndex">文件分次发送时序号</param>
+        public void SendNetFakeDwnReply(short requestCmd, byte[] retCode, byte[] MachineNo, int FakeVer, List<string> FakeList)
+        {
+            byte[] returnBytes = new byte[56 + FakeList.Count * 14];
+            Array.Copy(start_work, 0, returnBytes, 0, 4);
+            Array.Copy(BitConverter.GetBytes(returnBytes.Length), 0, returnBytes, 4, 4);
+            Array.Copy(version, 0, returnBytes, 8, 2);//协议版本
+            Array.Copy(BitConverter.GetBytes(requestCmd), 0, returnBytes, 10, 2);//requesCmd
+            Array.Copy(retCode, 0, returnBytes, 12, 2);//retCode
+            Array.Copy(MachineNo, 0, returnBytes, 14, 28);
+            //保留字 2字节 （42~43）
+            Array.Copy(BitConverter.GetBytes(FakeVer), 0, returnBytes, 44, 4);
+            Array.Copy(BitConverter.GetBytes(FakeList.Count), 0, returnBytes, 48, 4);//黑名单条数
+            Array.Copy(BitConverter.GetBytes(0), 0, returnBytes, 52, 4);//通配符个数
+            for (int i = 0; i < FakeList.Count; i++)
+            {
+                string sign = string.Format("{0,-12}\r\n", FakeList[i]); 
+                Array.Copy(Encoding.ASCII.GetBytes(sign), 0, returnBytes, 56 + i * 14, 14);//黑名单条数
+            }
             MyTCP.AsyncSendToClient(sokClient, returnBytes);
         }
     }

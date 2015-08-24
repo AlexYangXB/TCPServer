@@ -8,9 +8,9 @@ namespace KyModel
     public class KyDataLayer2
     {
         //各种格式文件的数据大小
-        private const int DatSize = 1632, FsnSize = 1644, Ky0Size = 2156;
+        private const int DatSize = 1632, FsnSize = 1644, KY0size = 2156;
         //各种格式文件的文件头大小
-        private const int DatHead = 12, FsnHead = 32, Ky0Head = 32;
+        private const int DatHead = 12, FsnHead = 32, KY0head = 32;
 
         /// <summary>
         /// 判断是否为正确的文件格式
@@ -162,6 +162,58 @@ namespace KyModel
             return signList;
         }
 
+
+        /// <summary>
+        /// 分页解析KY0文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static List<KYDataLayer1.SignTypeL2> ReadFromKY0InPage(string filePath, int page, int numPerPage, out int totalPage, out int count)
+        {
+            //数据记录数
+            FileInfo fileInfo = new FileInfo(filePath);
+            count = (int)(fileInfo.Length - KY0head) / KY0size;
+            totalPage = (int)(count + (numPerPage - 1)) / numPerPage;
+
+
+            List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                //解析文件头
+                byte[] buf = new byte[KY0head];
+                fs.Read(buf, 0, buf.Length);
+                KYDataLayer1.FSNHead_L2 dataHead = KYDataLayer1.UnPack_FSNHead_L2(KYDataLayer1.UnPack_FSNHead_L1(buf));
+
+                //解析数据
+                byte[] bBuf = new byte[KY0size];
+                if (dataHead.IsFsnFile)
+                {
+                    if (!dataHead.HaveImg)
+                    {
+                        bBuf = new byte[100];
+                    }
+
+                    //count = (int)dataHead.Count;
+                    long offset = (page - 1) * numPerPage * KY0size;
+                    fs.Seek(offset, SeekOrigin.Current);
+                    for (long i = (page - 1) * numPerPage; i < dataHead.Count && i < page * numPerPage; i++)
+                    {
+                        if (fs.Read(bBuf, 0, bBuf.Length) > 0)
+                        {
+                            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, "JPG"));
+                            signList.Add(sign);
+                        }
+                    }
+                }
+                else
+                {
+                    signList = null;
+                    totalPage = 0;
+                    count = 0;
+                }
+            }
+            return signList;
+        }
        
 
         /// <summary>

@@ -9,6 +9,7 @@ using System.Threading;
 using KyBll;
 using KyModel;
 using KyModel.Models;
+using KyBase;
 namespace MyTcpServer
 {
     public class TcpServer
@@ -93,7 +94,7 @@ namespace MyTcpServer
             }
             catch (SocketException e)
             {
-                MyLog.ConnectionException("启动监听服务异常", e);
+                MyLog.ConnectionException(clsMsg.getMsg("log_21"), e);
                 return;
             }
         }
@@ -119,7 +120,7 @@ namespace MyTcpServer
                     }
                     dictThread = tmpDict;
                     if (dictThread.Count > 0)
-                        KyBll.MyLog.TestLog("当前总共 " + dictThread.Count + "条收数据线程!");
+                        KyBll.MyLog.TestLog(string.Format(clsMsg.getMsg("TestLog_1"), dictThread.Count));
                     if (dictThread.Count >= 30)
                     {
                         TCPEvent.OnCommandLog(new TCPMessage
@@ -133,7 +134,7 @@ namespace MyTcpServer
                 }
                 catch (Exception e)
                 {
-                    MyLog.ConnectionException("监听连接异常", e);
+                    MyLog.ConnectionException(clsMsg.getMsg("log_22"), e);
                     continue;
                 }
             }
@@ -188,7 +189,7 @@ namespace MyTcpServer
                 }
                 catch (Exception e)
                 {
-                    MyLog.ConnectionException("启动接收数据线程异常", e);
+                    MyLog.ConnectionException(clsMsg.getMsg("log_23"), e);
                 }
             }
         }
@@ -222,7 +223,7 @@ namespace MyTcpServer
             }
             catch (Exception e)
             {
-                MyLog.ConnectionException("停止服务异常", e);
+                MyLog.ConnectionException(clsMsg.getMsg("log_24"), e);
             }
         }
 
@@ -250,7 +251,7 @@ namespace MyTcpServer
                 switch (myBusinessStatus)
                 {
                     case MyBusinessStatus.Start:
-                        TCPEvent.OnBussninessLog(bControl.business + "业务开始,机具ip为" + bControl.ip);
+                        TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_24"), bControl.business, bControl.ip));
                         if (machine.ContainsKey(bControl.ip))
                         {
                             currentMachine.startBusinessCtl = true;
@@ -264,7 +265,7 @@ namespace MyTcpServer
                         }
                         break;
                     case MyBusinessStatus.End:
-                        TCPEvent.OnBussninessLog(currentMachine.business + "业务结束,机具ip为" + bControl.ip);
+                        TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_25"), currentMachine.business, bControl.ip));
                         if (machine.ContainsKey(bControl.ip))
                         {
                             if (currentMachine.business == BussinessType.CK || currentMachine.business == BussinessType.QK)
@@ -304,9 +305,9 @@ namespace MyTcpServer
                                         {
                                             Directory.Delete(tmpPath, true);
                                         }
-                                    }
+                                    } 
                                     else
-                                        TCPEvent.OnBussninessLog("KHDK中临时路径" + tmpPath + "不存在！");
+                                        TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_26"), tmpPath));
                                 }
                             }
                             currentMachine.business = BussinessType.HM;
@@ -323,7 +324,7 @@ namespace MyTcpServer
             }
             catch (Exception e)
             {
-                MyLog.BussinessLog(MyLog.GetExceptionMsg(e,"交易控制异常"));
+                MyLog.BussinessLog(MyLog.GetExceptionMsg(e, clsMsg.getMsg("log_25")));
             }
         }
     }

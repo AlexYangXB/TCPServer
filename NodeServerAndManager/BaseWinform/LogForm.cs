@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Windows.Forms;
+using KyBase;
 using KyBll;
 using KyModel;
-using MyTcpServer;
-using System.Windows.Forms;
 namespace KangYiCollection.BaseWinform
 {
     public partial class LogForm : MaterialSkin.Controls.MaterialForm
@@ -78,7 +78,7 @@ namespace KangYiCollection.BaseWinform
                 }
                 catch (Exception ex)
                 {
-                    MyLog.ConnectionException("日志输出异常!", ex);
+                    MyLog.ConnectionException(clsMsg.getMsg("log_26"), ex);
                 }
             }
         }

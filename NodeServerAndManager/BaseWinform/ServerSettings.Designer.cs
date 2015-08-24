@@ -106,7 +106,7 @@
             // 
             this.lab_ServerTest.AutoSize = true;
             this.lab_ServerTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_ServerTest.Location = new System.Drawing.Point(439, 30);
+            this.lab_ServerTest.Location = new System.Drawing.Point(466, 30);
             this.lab_ServerTest.Name = "lab_ServerTest";
             this.lab_ServerTest.Size = new System.Drawing.Size(29, 12);
             this.lab_ServerTest.TabIndex = 7;
@@ -117,7 +117,7 @@
             // 
             this.lab_DeviceTest.AutoSize = true;
             this.lab_DeviceTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_DeviceTest.Location = new System.Drawing.Point(438, 66);
+            this.lab_DeviceTest.Location = new System.Drawing.Point(465, 66);
             this.lab_DeviceTest.Name = "lab_DeviceTest";
             this.lab_DeviceTest.Size = new System.Drawing.Size(29, 12);
             this.lab_DeviceTest.TabIndex = 8;
@@ -128,7 +128,7 @@
             // 
             this.lab_PictureTest.AutoSize = true;
             this.lab_PictureTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_PictureTest.Location = new System.Drawing.Point(439, 142);
+            this.lab_PictureTest.Location = new System.Drawing.Point(466, 142);
             this.lab_PictureTest.Name = "lab_PictureTest";
             this.lab_PictureTest.Size = new System.Drawing.Size(29, 12);
             this.lab_PictureTest.TabIndex = 9;
@@ -139,7 +139,7 @@
             // 
             this.cmb_imageServer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_imageServer.FormattingEnabled = true;
-            this.cmb_imageServer.Location = new System.Drawing.Point(94, 137);
+            this.cmb_imageServer.Location = new System.Drawing.Point(102, 137);
             this.cmb_imageServer.Name = "cmb_imageServer";
             this.cmb_imageServer.Size = new System.Drawing.Size(227, 20);
             this.cmb_imageServer.TabIndex = 6;
@@ -148,7 +148,7 @@
             // lab_ServerPort
             // 
             this.lab_ServerPort.AutoSize = true;
-            this.lab_ServerPort.Location = new System.Drawing.Point(327, 31);
+            this.lab_ServerPort.Location = new System.Drawing.Point(343, 31);
             this.lab_ServerPort.Name = "lab_ServerPort";
             this.lab_ServerPort.Size = new System.Drawing.Size(29, 12);
             this.lab_ServerPort.TabIndex = 11;
@@ -156,7 +156,7 @@
             // 
             // txb_SphinxPort
             // 
-            this.txb_SphinxPort.Location = new System.Drawing.Point(361, 25);
+            this.txb_SphinxPort.Location = new System.Drawing.Point(388, 25);
             this.txb_SphinxPort.Name = "txb_SphinxPort";
             this.txb_SphinxPort.Size = new System.Drawing.Size(72, 21);
             this.txb_SphinxPort.TabIndex = 1;
@@ -164,7 +164,7 @@
             // 
             // txb_DevicePort
             // 
-            this.txb_DevicePort.Location = new System.Drawing.Point(361, 61);
+            this.txb_DevicePort.Location = new System.Drawing.Point(388, 61);
             this.txb_DevicePort.Name = "txb_DevicePort";
             this.txb_DevicePort.Size = new System.Drawing.Size(72, 21);
             this.txb_DevicePort.TabIndex = 3;
@@ -173,7 +173,7 @@
             // lab_DevicePort
             // 
             this.lab_DevicePort.AutoSize = true;
-            this.lab_DevicePort.Location = new System.Drawing.Point(327, 67);
+            this.lab_DevicePort.Location = new System.Drawing.Point(343, 67);
             this.lab_DevicePort.Name = "lab_DevicePort";
             this.lab_DevicePort.Size = new System.Drawing.Size(29, 12);
             this.lab_DevicePort.TabIndex = 13;
@@ -181,7 +181,7 @@
             // 
             // txb_ImagePort
             // 
-            this.txb_ImagePort.Location = new System.Drawing.Point(361, 137);
+            this.txb_ImagePort.Location = new System.Drawing.Point(388, 137);
             this.txb_ImagePort.Name = "txb_ImagePort";
             this.txb_ImagePort.Size = new System.Drawing.Size(72, 21);
             this.txb_ImagePort.TabIndex = 7;
@@ -190,7 +190,7 @@
             // lab_PicturePort
             // 
             this.lab_PicturePort.AutoSize = true;
-            this.lab_PicturePort.Location = new System.Drawing.Point(327, 143);
+            this.lab_PicturePort.Location = new System.Drawing.Point(343, 143);
             this.lab_PicturePort.Name = "lab_PicturePort";
             this.lab_PicturePort.Size = new System.Drawing.Size(29, 12);
             this.lab_PicturePort.TabIndex = 15;
@@ -204,7 +204,7 @@
             this.gb_BaseSetting.Controls.Add(this.ipControl_Local);
             this.gb_BaseSetting.Location = new System.Drawing.Point(12, 76);
             this.gb_BaseSetting.Name = "gb_BaseSetting";
-            this.gb_BaseSetting.Size = new System.Drawing.Size(476, 58);
+            this.gb_BaseSetting.Size = new System.Drawing.Size(526, 58);
             this.gb_BaseSetting.TabIndex = 17;
             this.gb_BaseSetting.TabStop = false;
             this.gb_BaseSetting.Text = "基本设置";
@@ -212,7 +212,7 @@
             // lab_LocalPort
             // 
             this.lab_LocalPort.AutoSize = true;
-            this.lab_LocalPort.Location = new System.Drawing.Point(327, 28);
+            this.lab_LocalPort.Location = new System.Drawing.Point(340, 28);
             this.lab_LocalPort.Name = "lab_LocalPort";
             this.lab_LocalPort.Size = new System.Drawing.Size(29, 12);
             this.lab_LocalPort.TabIndex = 6;
@@ -220,7 +220,7 @@
             // 
             // txb_LocalPort
             // 
-            this.txb_LocalPort.Location = new System.Drawing.Point(361, 22);
+            this.txb_LocalPort.Location = new System.Drawing.Point(389, 22);
             this.txb_LocalPort.Name = "txb_LocalPort";
             this.txb_LocalPort.Size = new System.Drawing.Size(72, 21);
             this.txb_LocalPort.TabIndex = 7;
@@ -237,7 +237,7 @@
             // ipControl_Local
             // 
             this.ipControl_Local.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Local.Location = new System.Drawing.Point(83, 14);
+            this.ipControl_Local.Location = new System.Drawing.Point(91, 14);
             this.ipControl_Local.Name = "ipControl_Local";
             this.ipControl_Local.Size = new System.Drawing.Size(248, 39);
             this.ipControl_Local.TabIndex = 4;
@@ -267,7 +267,7 @@
             this.gb_DataSetting.Controls.Add(this.cmb_imageServer);
             this.gb_DataSetting.Location = new System.Drawing.Point(12, 151);
             this.gb_DataSetting.Name = "gb_DataSetting";
-            this.gb_DataSetting.Size = new System.Drawing.Size(476, 175);
+            this.gb_DataSetting.Size = new System.Drawing.Size(526, 175);
             this.gb_DataSetting.TabIndex = 18;
             this.gb_DataSetting.TabStop = false;
             this.gb_DataSetting.Text = "数据库服务器设置";
@@ -275,7 +275,7 @@
             // lab_PushPort
             // 
             this.lab_PushPort.AutoSize = true;
-            this.lab_PushPort.Location = new System.Drawing.Point(327, 104);
+            this.lab_PushPort.Location = new System.Drawing.Point(343, 104);
             this.lab_PushPort.Name = "lab_PushPort";
             this.lab_PushPort.Size = new System.Drawing.Size(29, 12);
             this.lab_PushPort.TabIndex = 20;
@@ -284,7 +284,7 @@
             // ipControl_Push
             // 
             this.ipControl_Push.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Push.Location = new System.Drawing.Point(84, 88);
+            this.ipControl_Push.Location = new System.Drawing.Point(92, 88);
             this.ipControl_Push.Name = "ipControl_Push";
             this.ipControl_Push.Size = new System.Drawing.Size(248, 39);
             this.ipControl_Push.TabIndex = 4;
@@ -292,7 +292,7 @@
             // 
             // txb_PushPort
             // 
-            this.txb_PushPort.Location = new System.Drawing.Point(362, 98);
+            this.txb_PushPort.Location = new System.Drawing.Point(389, 98);
             this.txb_PushPort.Name = "txb_PushPort";
             this.txb_PushPort.Size = new System.Drawing.Size(72, 21);
             this.txb_PushPort.TabIndex = 4;
@@ -311,7 +311,7 @@
             // 
             this.lab_PushTest.AutoSize = true;
             this.lab_PushTest.ForeColor = System.Drawing.Color.Blue;
-            this.lab_PushTest.Location = new System.Drawing.Point(439, 103);
+            this.lab_PushTest.Location = new System.Drawing.Point(466, 103);
             this.lab_PushTest.Name = "lab_PushTest";
             this.lab_PushTest.Size = new System.Drawing.Size(29, 12);
             this.lab_PushTest.TabIndex = 19;
@@ -321,7 +321,7 @@
             // ipControl_Server
             // 
             this.ipControl_Server.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Server.Location = new System.Drawing.Point(84, 15);
+            this.ipControl_Server.Location = new System.Drawing.Point(92, 15);
             this.ipControl_Server.Name = "ipControl_Server";
             this.ipControl_Server.Size = new System.Drawing.Size(248, 39);
             this.ipControl_Server.TabIndex = 0;
@@ -331,7 +331,7 @@
             // ipControl_Device
             // 
             this.ipControl_Device.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipControl_Device.Location = new System.Drawing.Point(84, 51);
+            this.ipControl_Device.Location = new System.Drawing.Point(92, 51);
             this.ipControl_Device.Name = "ipControl_Device";
             this.ipControl_Device.Size = new System.Drawing.Size(248, 39);
             this.ipControl_Device.TabIndex = 2;
@@ -344,7 +344,7 @@
             this.gb_BindNode.Controls.Add(this.chkList_Node);
             this.gb_BindNode.Location = new System.Drawing.Point(18, 332);
             this.gb_BindNode.Name = "gb_BindNode";
-            this.gb_BindNode.Size = new System.Drawing.Size(476, 138);
+            this.gb_BindNode.Size = new System.Drawing.Size(520, 138);
             this.gb_BindNode.TabIndex = 19;
             this.gb_BindNode.TabStop = false;
             this.gb_BindNode.Text = "绑定网点";
@@ -360,7 +360,7 @@
             // lab_BindNode
             // 
             this.lab_BindNode.AutoSize = true;
-            this.lab_BindNode.Location = new System.Drawing.Point(29, 19);
+            this.lab_BindNode.Location = new System.Drawing.Point(16, 21);
             this.lab_BindNode.Name = "lab_BindNode";
             this.lab_BindNode.Size = new System.Drawing.Size(53, 12);
             this.lab_BindNode.TabIndex = 1;
@@ -384,7 +384,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(513, 510);
+            this.ClientSize = new System.Drawing.Size(550, 510);
             this.Controls.Add(this.gb_BindNode);
             this.Controls.Add(this.gb_DataSetting);
             this.Controls.Add(this.gb_BaseSetting);

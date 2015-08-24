@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
-
+using KyBase;
 namespace KyModel
 {
     public struct CRH
@@ -160,28 +158,28 @@ namespace KyModel
            BussinessType = Convert.ToString(bBuffer[index]); index += 1;
            switch (BussinessType)
            {
-               case "1": BussinessType = "现金收入"; break;
-               case "2": BussinessType = "现金付出"; break;
-               case "3": BussinessType = "清分业务"; break;
-               default: BussinessType = "未定义"; break;
+               case "1": BussinessType = clsMsg.getMsg("CRH_1"); break;
+               case "2": BussinessType = clsMsg.getMsg("CRH_2"); break;
+               case "3": BussinessType = clsMsg.getMsg("CRH_3"); break;
+               default: BussinessType = clsMsg.getMsg("CRH_4"); break;
            }
            RecordCount = BitConverter.ToInt32(bBuffer, index); index += 4;
            ClearCenter = Encoding.ASCII.GetString(bBuffer,index,1); index += 1;
            switch (ClearCenter)
            {
-               case "T": ClearCenter = "是"; break;
-               default: ClearCenter = "否"; break;
+               case "T": ClearCenter = clsMsg.getMsg("CRH_5"); break;
+               default: ClearCenter = clsMsg.getMsg("CRH_6"); break;
            }
            FileVersion = Convert.ToString(bBuffer[index]); index += 1;
            MachineType = Convert.ToString(bBuffer[index]); index += 1;
            switch (MachineType)
            {
-               case "1": MachineType = "清分机具"; break;
-               case "2": MachineType = "存取款一体机"; break;
-               case "3": MachineType = "点钞机"; break;
-               case "4": MachineType = "取款机"; break;
-               case "5": MachineType = "兑换机具"; break;
-               default: MachineType = "未定义"; break;
+               case "1": MachineType = clsMsg.getMsg("CRH_7"); break;
+               case "2": MachineType = clsMsg.getMsg("CRH_8"); break;
+               case "3": MachineType = clsMsg.getMsg("CRH_9"); break;
+               case "4": MachineType = clsMsg.getMsg("CRH_10"); break;
+               case "5": MachineType = clsMsg.getMsg("CRH_11"); break;
+               default: MachineType = clsMsg.getMsg("CRH_4"); break;
            }
            MachineModel = Encoding.ASCII.GetString(bBuffer, index, 8).Replace("_", ""); index += 8;
            MachineNumber = Encoding.ASCII.GetString(bBuffer, index, 10).Replace("_", ""); index += 10;
@@ -200,23 +198,23 @@ namespace KyModel
                string RecordVersion = Convert.ToString(bBuffer[index]); index += 2;
                switch (RecordVersion)
                {
-                   case "0": RecordVersion = "1990版"; break;
-                   case "1": RecordVersion = "1999版"; break;
-                   case "2": RecordVersion = "2005版"; break;
-                   case "255": RecordVersion = "其他币种"; break;
-                   default: RecordVersion = "未定义"; break;
+                   case "0": RecordVersion = "1990"; break;
+                   case "1": RecordVersion = "1999"; break;
+                   case "2": RecordVersion = "2005"; break;
+                   case "255": RecordVersion = clsMsg.getMsg("CRH_12"); break;
+                   default: RecordVersion = clsMsg.getMsg("CRH_4"); break;
                }
                string RecordValue = Convert.ToString(bBuffer[index]); index += 3;
                switch (RecordValue)
                {
-                   case "0": RecordValue = "无法识别"; break;
-                   case "1": RecordValue = "1元"; break;
-                   case "2": RecordValue = "5元"; break;
-                   case "3": RecordValue = "10元"; break;
-                   case "4": RecordValue = "20元"; break;
-                   case "5": RecordValue = "50元"; break;
-                   case "6": RecordValue = "100元"; break;
-                   default: RecordValue = "未定义"; break;
+                   case "0": RecordValue = clsMsg.getMsg("CRH_13"); break;
+                   case "1": RecordValue = "1"; break;
+                   case "2": RecordValue = "5"; break;
+                   case "3": RecordValue = "10"; break;
+                   case "4": RecordValue = "20"; break;
+                   case "5": RecordValue = "50"; break;
+                   case "6": RecordValue = "100"; break;
+                   default: RecordValue = clsMsg.getMsg("CRH_4"); break;
                }
                CRHDisplayRecord record = new CRHDisplayRecord
                {

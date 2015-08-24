@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Windows.Forms;
+using KyBase;
 using KyBll;
 using KyBll.DBUtility;
 using KyModel.Models;
-using Newtonsoft.Json;
-using System.Threading;
 namespace KangYiCollection.BaseWinform
 {
     public partial class ServerSettings : MaterialSkin.Controls.MaterialForm

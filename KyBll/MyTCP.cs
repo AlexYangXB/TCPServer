@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using KyModel;
-using System.Net.Sockets;
-using System.Threading;
 using System.Management;
+using System.Net.Sockets;
+using KyBase;
+using KyModel;
 namespace KyBll
 {
     public class MyTCP
@@ -139,6 +136,18 @@ namespace KyBll
             if (TCPMessage.MessageType == TCPMessageType.Thread_Close)
             {
                 message += string.Format(clsMsg.getMsg("TCPLog_16"),TCPMessage.IpAndPort);
+            }
+            if (TCPMessage.MessageType == TCPMessageType.NET_FAKE_VER)
+            {
+                message += string.Format(clsMsg.getMsg("TCPLog_21"), TCPMessage.IpAndPort,CommandFormat);
+            }
+            if (TCPMessage.MessageType == TCPMessageType.NET_FAKE_DWN)
+            {
+                message += string.Format(clsMsg.getMsg("TCPLog_22"), TCPMessage.IpAndPort, CommandFormat);
+            }
+            if (TCPMessage.MessageType == TCPMessageType.NET_FAKE_CMP)
+            {
+                message += string.Format(clsMsg.getMsg("TCPLog_23"), TCPMessage.IpAndPort, CommandFormat);
             }
             if (TCPMessage.MessageType == TCPMessageType.Common_Message)
             {

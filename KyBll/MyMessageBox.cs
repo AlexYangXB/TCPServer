@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
+using KyBase;
 namespace KyBll
 {
     public class AutoClosingMessageBox
@@ -15,7 +12,7 @@ namespace KyBll
             _caption = caption;
             _timeoutTimer = new System.Threading.Timer(OnTimerElapsed,
                 null, timeout, System.Threading.Timeout.Infinite);
-            text += string.Format("({0}{1})", timeout / 1000, clsMsg.getMsg("msg_20"));
+            text += string.Format("(" + clsMsg.getMsg("msg_20") + ")", timeout / 1000);
             MessageBox.Show(text, caption, MessageBoxButtons.OKCancel,
                             MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }

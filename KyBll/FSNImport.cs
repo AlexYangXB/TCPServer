@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using KyBase;
 using KyModel;
 using KyModel.Models;
 using Newtonsoft.Json;
@@ -16,16 +16,16 @@ namespace KyBll
         /// </summary>
         /// <param name="importDir"></param>
         /// <param name="pictureIp"></param>
-        public static void FsnImport(string importDir,string pictureIp,MyTCP TCPEvent)
+        public static void FsnImport(string importDir, string pictureIp, MyTCP TCPEvent)
         {
-            string[] allFiles = Directory.GetFiles(importDir, "*",SearchOption.AllDirectories);
-            List<string> dataFiles=new List<string>();
+            string[] allFiles = Directory.GetFiles(importDir, "*", SearchOption.AllDirectories);
+            List<string> dataFiles = new List<string>();
             foreach (var file in allFiles)
             {
-                if(!file.Contains("ErrFiles"))
+                if (!file.Contains("ErrFiles"))
                     dataFiles.Add(file);
 
-                    
+
             }
             for (int i = 0; i < dataFiles.Count; i++)
             {
@@ -207,7 +207,7 @@ namespace KyBll
                     continue;
                 }
             }
-            
+
         }
         /// <summary>
         /// 将异常文件移入ErrFiles目录
@@ -226,7 +226,7 @@ namespace KyBll
                     File.Move(sourceFile, destFile);
                 else
                 {
-                    string[] errFiles=Directory.GetFiles(errDir);
+                    string[] errFiles = Directory.GetFiles(errDir);
                     int jj = 0;
                     string fileNameWithoutEx = Path.GetFileNameWithoutExtension(sourceFile);
                     string fileEx = Path.GetExtension(sourceFile);
@@ -238,11 +238,11 @@ namespace KyBll
                     } while (File.Exists(file));
                     File.Move(sourceFile, file);
                 }
-                    
+
             }
             catch (Exception ex)
             {
-                throw ex ;
+                throw ex;
             }
         }
         /// <summary>
@@ -259,7 +259,7 @@ namespace KyBll
             long batchId = KyDataLayer2.GuidToLongID();
             List<KYDataLayer1.SignTypeL2> signs = new List<KYDataLayer1.SignTypeL2>();
             ky_batch batch = GenerateBatchFromFsn(batchId, fsnName, machine, out signs);
-            bool result=KyDataOperation.InsertSignBatch(batch);
+            bool result = KyDataOperation.InsertSignBatch(batch);
             if (result)
             {
                 for (int i = 0; i < signs.Count; )
@@ -284,14 +284,15 @@ namespace KyBll
         /// <param name="imgServerId"></param>
         /// <param name="importMachineId"></param>
         /// <returns></returns>
-        public static ky_batch GenerateBatchFromFsn(long batchId, string fileName, ky_machine machine,out List<KYDataLayer1.SignTypeL2> allSigns)
+        public static ky_batch GenerateBatchFromFsn(long batchId, string fileName, ky_machine machine, out List<KYDataLayer1.SignTypeL2> allSigns)
         {
             FileInfo fileInfo = new FileInfo(fileName);
             long fileLenght = fileInfo.Length;
             int signCount = Convert.ToInt32((fileLenght - 32) / 1644);
             ky_batch batch = new ky_batch();
             allSigns = new List<KYDataLayer1.SignTypeL2>();
-            if (signCount > 0 && KyDataLayer2.IsCorrectFileFormat(fileName, ".FSN"))
+            string fileExtension = Path.GetExtension(fileName);
+            if (signCount > 0 && KyDataLayer2.IsCorrectFileFormat(fileName, fileExtension))
             {
                 int pages = (signCount + 999) / 1000;
                 int totalPage, cc;
@@ -300,7 +301,10 @@ namespace KyBll
                 for (int i = 0; i < pages; i++)
                 {
                     List<KYDataLayer1.SignTypeL2> signs = new List<KYDataLayer1.SignTypeL2>();
-                    signs = KyDataLayer2.ReadFromFSNInPage(fileName, i + 1, 1000, out totalPage, out cc);
+                    if (fileExtension == ".FSN")
+                        signs = KyDataLayer2.ReadFromFSNInPage(fileName, i + 1, 1000, out totalPage, out cc);
+                    else if (fileExtension == ".KY0")
+                        signs = KyDataLayer2.ReadFromKY0InPage(fileName, i + 1, 1000, out totalPage, out cc);
                     allSigns.AddRange(signs);
                     //result = KyDataOperation.InsertSign(batchId, i * 1000, signs);
                     if (i == 0)
@@ -372,7 +376,7 @@ namespace KyBll
             result = KyDataOperation.InsertSignBatch(batch);
             if (result)
             {
-                for(int i=0;i<signs.Count;)
+                for (int i = 0; i < signs.Count; )
                 {
                     List<KYDataLayer1.SignTypeL2> splitSigns = signs.Skip(i).Take(1000).ToList();
                     result = KyDataOperation.InsertSign(batchId, i, splitSigns);
