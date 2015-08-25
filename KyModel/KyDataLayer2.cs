@@ -214,14 +214,24 @@ namespace KyModel
             }
             return signList;
         }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath">FSN</param>
+        /// <param name="amount"></param>
+        /// 
        
 
         /// <summary>
-        /// 从FSN文件中获取统计数据
+        /// 从FSN或KY0文件中获取统计数据
         /// </summary>
-        /// <param name="filePath">FSN文件路径</param>
+        /// <param name="filePath">文件路径</param>
         /// <param name="amount">KYDataLayer1.Amount 结构的统计数据</param>
-        public static void GetTotalValueFromFSN(string filePath,out KYDataLayer1.Amount amount)
+        /// <param name="imageType">0代表二值化图，1代表灰度图JPG</param>
+        public static void GetTotalValueFromFile(string filePath, out KYDataLayer1.Amount amount, int imageType)
         {
             //List<KYDataLayer1.SignTypeL2> signList = new List<KYDataLayer1.SignTypeL2>();
             amount=new KYDataLayer1.Amount();
@@ -233,7 +243,11 @@ namespace KyModel
                 KYDataLayer1.FSNHead_L2 dataHead = KYDataLayer1.UnPack_FSNHead_L2(KYDataLayer1.UnPack_FSNHead_L1(buf));
 
                 //解析数据
-                byte[] bBuf = new byte[FsnSize];
+                byte[] bBuf;
+                if (imageType == 1) 
+                    bBuf=new byte[KY0size];
+                else
+                    bBuf = new byte[FsnSize];
                 if (dataHead.IsFsnFile)
                 {
                     if (!dataHead.HaveImg)
@@ -245,7 +259,11 @@ namespace KyModel
                     {
                         if (fs.Read(bBuf, 0, bBuf.Length) > 0)
                         {
-                            KYDataLayer1.SignTypeL2 sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, ""));
+                            KYDataLayer1.SignTypeL2 sign ;
+                            if(imageType==1)
+                                sign= KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, "JPG"));
+                            else
+                                sign = KYDataLayer1.unPack_SignType_L2(KYDataLayer1.UnPack_FSNData(bBuf, ""));
                             if (i == 0)
                                 amount.FirstSign = sign.Sign;
                             if (i == dataHead.Count - 1)

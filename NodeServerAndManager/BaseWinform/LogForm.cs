@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using KyBase;
 using KyBll;
 using KyModel;
+using System.Threading;
 namespace KangYiCollection.BaseWinform
 {
     public partial class LogForm : MaterialSkin.Controls.MaterialForm
@@ -19,6 +20,7 @@ namespace KangYiCollection.BaseWinform
         }
         public void myTcpServer_LogEvent(object sender, MyTCP.LogEventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Program.CurrentLanguage);
             AddLog(e);
 
         }

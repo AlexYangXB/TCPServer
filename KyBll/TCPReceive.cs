@@ -140,6 +140,21 @@ namespace KyBll
 
                                 //获取保留字reserve首字节，作为图像标志位
                                 int imageType = bBuffer[40];
+                                
+                                if ((bodyLen - 32) % 1644 == 0) //FSN
+                                    imageType = 0;
+                                else if ((bodyLen - 32) % 2156 == 0)//KY0
+                                    imageType = 1;
+                                else   //文件长度不对
+                                {
+                                    TCPEvent.OnCommandLog(new TCPMessage
+                                    {
+                                        IpAndPort = ipAndPort,
+                                        Message = clsMsg.getMsg("log_28"),
+                                        MessageType = TCPMessageType.Exception
+                                    });
+                                    continue;
+                                }
                                 CopeWithNetUp(Fsn, ip, machineNo, imageType);
 
 
@@ -314,6 +329,7 @@ namespace KyBll
             TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_22"), fileTime.ToString("yyyy-MM-dd HH:mm:ss")));
             if (machine[ip].startBusinessCtl)
                 TCPEvent.OnBussninessLog(string.Format(clsMsg.getMsg("buss_23"), ip));
+            //一个业务超过2个小时没点结束即视为结束
             if (machine[ip].startBusinessCtl && machine[ip].dateTime.AddHours(-2) < fileTime)
             {
                 if (machine[ip].fileName == null || machine[ip].fileName == "")
@@ -328,12 +344,12 @@ namespace KyBll
                     {
                         Directory.CreateDirectory(tmpPath);
                     }
-                    List<string> modifyFiles = GZHImport.MergeLastFile(Fsn, tmpPath, machine[ip].bundleCount);
+                    List<string> modifyFiles = GZHImport.MergeLastFile(Fsn, tmpPath, machine[ip].bundleCount,imageType);
                     fileName = modifyFiles.FirstOrDefault();
                     foreach (string file in modifyFiles)
                     {
                         KYDataLayer1.Amount amount;
-                        KyDataLayer2.GetTotalValueFromFSN(file, out amount);
+                        KyDataLayer2.GetTotalValueFromFile(file, out amount,imageType);
                         amount.BundleNumber = Convert.ToInt32(Path.GetFileNameWithoutExtension(file));
                         MyTCP.CmdEventArgs e = new MyTCP.CmdEventArgs(ip, amount);
                         TCPEvent.OnAmountCmd(e);
@@ -368,7 +384,7 @@ namespace KyBll
                 if (machine[ip].business != BussinessType.KHDK)
                 {
                     KYDataLayer1.Amount amount;
-                    KyDataLayer2.GetTotalValueFromFSN(fileName, out amount);
+                    KyDataLayer2.GetTotalValueFromFile(fileName, out amount,imageType);
                     amount.BundleNumber = 999999;
                     MyTCP.CmdEventArgs e = new MyTCP.CmdEventArgs(ip, amount);
                     TCPEvent.OnAmountCmd(e);

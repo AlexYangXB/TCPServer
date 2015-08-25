@@ -5,10 +5,13 @@ using System.Text;
 using KyBase;
 using KyModel;
 using KyModel.Models;
+using System.Linq;
 namespace KyBll
 {
     public class GZHImport
     {
+        //各种格式文件的数据大小
+        private const int FsnSize = 1644, KY0size = 2156, FsnHead = 32;
         /// <summary>
         /// 读取GZH文件
         /// </summary>
@@ -92,8 +95,9 @@ namespace KyBll
             bool result = false;
             //获取后缀名为GZH、gzh的文件
             string[] Gzhfiles = Directory.GetFiles(gzhDirectory, "*.GZH");
-            //获取后缀名为FSN、fsn的文件
-            string[] FsnFiles = Directory.GetFiles(gzhDirectory, "*.FSN");
+            //获取后缀名为FSN、fsn、KY0的文件
+
+            string[] FsnFiles = Directory.GetFiles(gzhDirectory, "*.FSN").Union(Directory.GetFiles(gzhDirectory, "*.KY0")).ToArray(); ;
             ky_gzh_package gzh_package = new ky_gzh_package();
 
             if (Gzhfiles.Length == 1) //表示只有一个GZH文件
@@ -107,8 +111,12 @@ namespace KyBll
                     int TotalValue = 0, TotalNumber = 0;
                     for (int i = 0; i < FsnFiles.Length; i++)
                     {
+                        string fileExtension = Path.GetExtension(FsnFiles[i]);
                         KYDataLayer1.Amount amount;
-                        KyDataLayer2.GetTotalValueFromFSN(FsnFiles[i], out amount);
+                        if (fileExtension == ".KY0")
+                            KyDataLayer2.GetTotalValueFromFile(FsnFiles[i], out amount, 1);
+                        else
+                            KyDataLayer2.GetTotalValueFromFile(FsnFiles[i], out amount, 0);
                         TotalValue += amount.TotalValue;
                         TotalNumber += amount.TotalCnt;
                     }
@@ -258,8 +266,12 @@ namespace KyBll
                 int TotalValue = 0, TotalNumber = 0;
                 for (int i = 0; i < FsnFiles.Count; i++)
                 {
+                    string fileExtension = Path.GetExtension(FsnFiles[i]);
                     KYDataLayer1.Amount amount;
-                    KyDataLayer2.GetTotalValueFromFSN(FsnFiles[i], out amount);
+                    if(fileExtension==".KY0")
+                        KyDataLayer2.GetTotalValueFromFile(FsnFiles[i], out amount,1);
+                    else 
+                        KyDataLayer2.GetTotalValueFromFile(FsnFiles[i], out amount, 0);
                     TotalValue += amount.TotalValue;
                     TotalNumber += amount.TotalCnt;
                 }
@@ -292,35 +304,44 @@ namespace KyBll
         /// <param name="desFolder"> </param>
         /// <param name="fileMaxRecord">文件最大记录数</param>
         /// <param name="fsnFiles">分割后的文件名数组</param>
-        public static List<string> MergeLastFile(byte[] fsnByte, string desFolder, int fileMaxRecord)
+        /// <param name="imageType">0代表二值化图，1代表灰度图JPG</param>
+        public static List<string> MergeLastFile(byte[] fsnByte, string desFolder, int fileMaxRecord,int imageType)
         {
+            int HeadSize=FsnHead;
+            int BodySize=FsnSize;
+            string fileExtention = ".FSN";
+            if (imageType == 1)
+            {
+                BodySize = KY0size;
+                fileExtention = ".KY0";
+            }
             List<string> modifyFiles = new List<string>();
-            long totalCount = (fsnByte.Length - 32) / 1644;
+            long totalCount = (fsnByte.Length - HeadSize) / BodySize;
             long Left = totalCount;
             string[] fsnFiles = Directory.GetFiles(desFolder);
-            string LastFile = string.Format("{0}\\{1}.FSN", desFolder, 0);
+            string LastFile = string.Format("{0}\\{1}" + fileExtention, desFolder, 0);
             int FileCount = fsnFiles.Length;
             if (fsnFiles.Length > 0)
-                LastFile = string.Format("{0}\\{1}.FSN", desFolder, fsnFiles.Length - 1);
+                LastFile = string.Format("{0}\\{1}" + fileExtention, desFolder, fsnFiles.Length - 1);
             else
             {
                 using (FileStream fs = new FileStream(LastFile, FileMode.Create, FileAccess.Write, FileShare.Read))
                 {
-                    fs.Write(fsnByte, 0, 32);
+                    fs.Write(fsnByte, 0, HeadSize);
                     FileCount++;
                 }
             }
             FileInfo fileInfo = new FileInfo(LastFile);
-            long Cnt = (fileInfo.Length - 32) / 1644;
+            long Cnt = (fileInfo.Length - HeadSize) / BodySize;
             long LastLestCnt = fileMaxRecord - Cnt;
             if (LastLestCnt > totalCount)
                 LastLestCnt = totalCount;
             if (LastLestCnt > 0)
             {
-                int count = Convert.ToInt32(LastLestCnt * 1644);
+                int count = Convert.ToInt32(LastLestCnt * BodySize);
                 using (FileStream fs = new FileStream(LastFile, FileMode.Append, FileAccess.Write, FileShare.Read))
                 {
-                    fs.Write(fsnByte,32, count);
+                    fs.Write(fsnByte, HeadSize, count);
                 }
                 using (FileStream fs = new FileStream(LastFile, FileMode.Open, FileAccess.Write, FileShare.Read))
                 {
@@ -331,7 +352,7 @@ namespace KyBll
                 }
                 modifyFiles.Add(LastFile);
             }
-            int offset = Convert.ToInt32(LastLestCnt * 1644 + 32);
+            int offset = Convert.ToInt32(LastLestCnt * BodySize + HeadSize);
             Left = totalCount - LastLestCnt;
             int fileCnt = Convert.ToInt32((totalCount - LastLestCnt + fileMaxRecord-1) / fileMaxRecord);
             if (fileCnt > 0)
@@ -339,14 +360,14 @@ namespace KyBll
                 string[] newFiles = new string[fileCnt];
                 for (int i = 0; i < fileCnt; i++)
                 {
-                    LastFile = string.Format("{0}\\{1}.FSN", desFolder, i + FileCount);
+                    LastFile = string.Format("{0}\\{1}" + fileExtention, desFolder, i + FileCount);
                     int writeCount = fileMaxRecord;
                     if (Left < fileMaxRecord)
                         writeCount = Convert.ToInt32(Left);
                     using (FileStream fs = new FileStream(LastFile, FileMode.Create, FileAccess.Write, FileShare.Read))
                     {
-                        fs.Write(fsnByte, 0, 32);
-                        fs.Write(fsnByte, offset, writeCount * 1644);
+                        fs.Write(fsnByte, 0, HeadSize);
+                        fs.Write(fsnByte, offset, writeCount * BodySize);
                     }
                     using (FileStream fs = new FileStream(LastFile, FileMode.Open, FileAccess.Write, FileShare.Read))
                     {
@@ -355,7 +376,7 @@ namespace KyBll
                         fs.Write(tmp, 0, tmp.Length);
                         fs.Close();
                     }
-                    offset += writeCount * 1644;
+                    offset += writeCount * BodySize;
                     Left -= writeCount;
                     modifyFiles.Add(LastFile);
                 }

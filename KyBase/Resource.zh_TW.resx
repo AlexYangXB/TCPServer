@@ -831,4 +831,7 @@
   <data name="log_27" xml:space="preserve">
     <value>未知錯誤！</value>
   </data>
+  <data name="log_28" xml:space="preserve">
+    <value>文件長度不符！</value>
+  </data>
 </root>

@@ -837,4 +837,7 @@
   <data name="TCPLog_23" xml:space="preserve">
     <value>{0}，假币预警下载完成请求命令 {1}</value>
   </data>
+  <data name="log_28" xml:space="preserve">
+    <value>文件长度不符！</value>
+  </data>
 </root>

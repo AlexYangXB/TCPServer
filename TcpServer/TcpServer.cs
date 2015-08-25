@@ -299,6 +299,9 @@ namespace MyTcpServer
                                             string saveFile = tmpPath + "\\" + bundle + ".FSN";
                                             if (File.Exists(saveFile))
                                                 saveFiles.Add(saveFile);
+                                            saveFile = tmpPath + "\\" + bundle + ".KY0";
+                                            if (File.Exists(saveFile))
+                                                saveFiles.Add(saveFile);
                                         }
                                         GZHImport.SaveKHDK(saveFiles, currentMachine);
                                         if (!MySetting.GetProgramValue("SaveFile"))

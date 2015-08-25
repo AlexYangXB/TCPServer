@@ -1330,6 +1330,15 @@ namespace KyBase {
         }
         
         /// <summary>
+        ///   查找类似 文件长度不符！ 的本地化字符串。
+        /// </summary>
+        internal static string log_28 {
+            get {
+                return ResourceManager.GetString("log_28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 当前队列还有{0}条执行语句... 的本地化字符串。
         /// </summary>
         internal static string log_3 {
