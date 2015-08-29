@@ -434,7 +434,10 @@ namespace KyModel
                 {
                     sign.Version = 9999;
                 }
-                sign.Value = BitConverter.ToUInt16(bBuffer, 22);
+                if (sign.True == 0)//疑币或假币的时候，强制将币值置为0
+                    sign.Value = 0;
+                else
+                    sign.Value = BitConverter.ToUInt16(bBuffer, 22);
                 int SignNum = BitConverter.ToUInt16(bBuffer, 24);
                 sign.Sign = Encoding.ASCII.GetString(bBuffer, 26, 24).Replace('\0', ' ').Replace(" ", "");
                 //2015.5.22 将所有数字字母之外的字符替换为'_'

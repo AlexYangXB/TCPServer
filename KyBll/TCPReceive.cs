@@ -44,7 +44,7 @@ namespace KyBll
         public Socket sokClient;
         private int ReceiveFileCnt = 0;
         private string ipAndPort = "";
-        private int FakeVer = 0;
+        private string  FakeVer = "";
         private List<string> FakeList = new List<string>();
         public void RecMsg(object sokConnectionparn)
         {
@@ -193,9 +193,20 @@ namespace KyBll
                             }
                             else if (cmd == 0X000D) //假币预警版本请求命令
                             {
-                                FakeVer = BitConverter.ToInt32(bBuffer, 40);
-                                FakeVer++;
-                                int FakeCnt = 1;
+
+                                FakeVer = Encoding.ASCII.GetString(bBuffer, 40, 4);
+                                if (System.Text.RegularExpressions.Regex.IsMatch(FakeVer, @"^[A-Za-z0-9]+$"))
+                                {
+                                    int VerVal = Convert.ToInt32(FakeVer, 16);
+                                    VerVal++;
+                                    FakeVer = string.Format("{0,4}", Convert.ToString(VerVal, 16)).Replace(" ", "0").ToUpper();
+                                    if (FakeVer.Length > 4)
+                                        FakeVer = FakeVer.Substring(0,4);
+                                }
+                                else
+                                    FakeVer = "0001";
+                        
+                                int FakeCnt = 1000;
                                 string FakeTime=DateTime.Now.ToString("yyyyMMddHHmmss");
                                 SendNetFakeReply(cmd, success, machineByte, FakeVer, FakeCnt,FakeTime);
                                 TCPEvent.OnCommandLog(new TCPMessage
@@ -208,7 +219,7 @@ namespace KyBll
                             }
                             else if (cmd == 0X000E) //假币预警下载请求命令
                             {
-                                FakeVer = BitConverter.ToInt32(bBuffer, 40);
+                                FakeVer = Encoding.ASCII.GetString(bBuffer, 40, 4);
                                 TCPEvent.OnCommandLog(new TCPMessage
                                 {
                                     IpAndPort = ipAndPort,
@@ -474,7 +485,7 @@ namespace KyBll
         /// <param name="retCode">状态</param>
         /// <param name="MachineNo">机具编号</param>
         /// <param name="packageIndex">文件分次发送时序号</param>
-        public void SendNetFakeReply(short requestCmd, byte[] retCode, byte[] MachineNo, int FakeVer,int FakeCnt,string FakeTime)
+        public void SendNetFakeReply(short requestCmd, byte[] retCode, byte[] MachineNo, string FakeVer,int FakeCnt,string FakeTime)
         {
             byte[] returnBytes = new byte[66];
             Array.Copy(start_work, 0, returnBytes, 0, 4);
@@ -484,7 +495,7 @@ namespace KyBll
             Array.Copy(retCode, 0, returnBytes, 12, 2);//retCode
             Array.Copy(MachineNo, 0, returnBytes, 14, 28);
             //保留字 2字节 （42~43）
-            Array.Copy(BitConverter.GetBytes(FakeVer), 0, returnBytes, 44, 4);
+            Array.Copy(Encoding.ASCII.GetBytes(FakeVer), 0, returnBytes, 44, 4);
             Array.Copy(BitConverter.GetBytes(FakeCnt), 0, returnBytes, 48, 4);
             byte[] timeBytes = Encoding.ASCII.GetBytes(FakeTime);
             Array.Copy(timeBytes, 0, returnBytes, 52, 14);
@@ -497,7 +508,7 @@ namespace KyBll
         /// <param name="retCode">状态</param>
         /// <param name="MachineNo">机具编号</param>
         /// <param name="packageIndex">文件分次发送时序号</param>
-        public void SendNetFakeDwnReply(short requestCmd, byte[] retCode, byte[] MachineNo, int FakeVer, List<string> FakeList)
+        public void SendNetFakeDwnReply(short requestCmd, byte[] retCode, byte[] MachineNo, string FakeVer, List<string> FakeList)
         {
             byte[] returnBytes = new byte[56 + FakeList.Count * 14];
             Array.Copy(start_work, 0, returnBytes, 0, 4);
@@ -507,7 +518,7 @@ namespace KyBll
             Array.Copy(retCode, 0, returnBytes, 12, 2);//retCode
             Array.Copy(MachineNo, 0, returnBytes, 14, 28);
             //保留字 2字节 （42~43）
-            Array.Copy(BitConverter.GetBytes(FakeVer), 0, returnBytes, 44, 4);
+            Array.Copy(Encoding.ASCII.GetBytes(FakeVer), 0, returnBytes, 44, 4);
             Array.Copy(BitConverter.GetBytes(FakeList.Count), 0, returnBytes, 48, 4);//黑名单条数
             Array.Copy(BitConverter.GetBytes(0), 0, returnBytes, 52, 4);//通配符个数
             for (int i = 0; i < FakeList.Count; i++)

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using KyBll;
 using KyBase;
+using System.Threading;
 namespace KangYiCollection
 {
     static class Program
@@ -19,6 +20,7 @@ namespace KangYiCollection
         static void Main()
         {
             AssemblyName assemName = new AssemblyName();
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(CurrentLanguage);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             if (CurrentLanguage == "zh-CN")

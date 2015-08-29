@@ -1141,7 +1141,7 @@ namespace KyBase {
         }
         
         /// <summary>
-        ///   查找类似 軟體版本：1.2.0.0 的本地化字符串。
+        ///   查找类似 軟體版本：1.2.0.2 的本地化字符串。
         /// </summary>
         internal static string lab_Version {
             get {

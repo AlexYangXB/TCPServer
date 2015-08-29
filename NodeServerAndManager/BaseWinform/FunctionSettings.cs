@@ -92,7 +92,7 @@ namespace KangYiCollection.BaseWinform
                     }
                 }
             }
-            this.Text = clsMsg.getMsg("MenuItem_CRHReview");
+            this.Text = clsMsg.getMsg("MenuItem_FunctionSetting");
         }
 
         private void SystemSettings_Load(object sender, EventArgs e)

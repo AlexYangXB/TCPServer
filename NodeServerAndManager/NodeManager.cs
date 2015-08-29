@@ -300,6 +300,7 @@ namespace KangYiCollection
             timer_UpdateMachine = new System.Threading.Timer(new TimerCallback(timer_UpdateMachine_Tick), this, 1000, 180000);
             timer_UploadSql = new System.Threading.Timer(new TimerCallback(timer_UploadSql_Tick), this, 1000, 3000);
             timer_UploadPictures = new System.Threading.Timer(new TimerCallback(timer_UploadPictures_Tick), this, 1000, 3000);
+            
         }
         /// <summary>
         /// 发送冠字号信息给SOCKET.IO服务端
@@ -1055,13 +1056,13 @@ namespace KangYiCollection
             if (!bHide)
             {
                 Show();
-                WindowState = FormWindowState.Normal;
+                this.WindowState = FormWindowState.Normal;
                 BringToFront();
             }
             else
             {
                 Hide();
-                WindowState = FormWindowState.Minimized;
+                this.WindowState = FormWindowState.Minimized;
             }
         }
 
@@ -1354,6 +1355,11 @@ namespace KangYiCollection
                 }
                 Monitor.Exit(UploadPicturesObj);
             }
+        }
+
+        private void NodeManager_Shown(object sender, EventArgs e)
+        {
+            switchToTray(true);
         }
 
 

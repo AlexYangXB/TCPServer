@@ -4,9 +4,9 @@
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
 "ProjectName" = "8:WeiKeSetup"
-"LanguageId" = "3:2052"
-"CodePage" = "3:936"
-"UILanguageId" = "3:2052"
+"LanguageId" = "3:1028"
+"CodePage" = "3:950"
+"UILanguageId" = "3:1028"
 "SccProjectName" = "8:"
 "SccLocalPath" = "8:"
 "SccAuxPath" = "8:"
@@ -232,12 +232,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F2EBE0F1B2FB37B0D86B9B2F778BCA57"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BF541DA2EE85415B8F1B0BCD11DF78FE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -319,6 +313,12 @@
         "OwnerKey" = "8:_A7956368E2C565B4529CB57925850631"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F2EBE0F1B2FB37B0D86B9B2F778BCA57"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -337,6 +337,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -488,7 +509,7 @@
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1EE754E088E246D6854AEF8442D7A7DA"
             {
             "SourcePath" = "8:..\\Lib\\网点管理端Server.ico"
-            "TargetName" = "8:网点管理端Server.ico"
+            "TargetName" = "8:服務據點管理端Server.ico"
             "Tag" = "8:"
             "Folder" = "8:_824F2BD1A7CA4FB8AF385175B8061ED9"
             "Condition" = "8:"
@@ -988,7 +1009,7 @@
         }
         "MsiBootstrapper"
         {
-        "LangId" = "3:2052"
+        "LangId" = "3:1028"
         "RequiresElevation" = "11:FALSE"
         }
         "Product"
@@ -996,7 +1017,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:微克服務據點管理端"
         "ProductCode" = "8:{2D7EF858-FDE2-4300-A078-79566CA8CF4E}"
-        "PackageCode" = "8:{D7C2B534-DE77-424C-A7F8-23F23820D11A}"
+        "PackageCode" = "8:{4A6DF6CB-ED5F-48CE-9246-B78E75779180}"
         "UpgradeCode" = "8:{7BA8BD44-AE8E-44F5-AB3A-98EBCEEC4AD7}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1210,7 +1231,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_84763A2E9AA14C4F9A2445C7BAE0A18D"
             {
-            "Name" = "8:管理端卸载"
+            "Name" = "8:服務據點管理端卸載"
             "Arguments" = "8:/x {2D7EF858-FDE2-4300-A078-79566CA8CF4E}"
             "Description" = "8:"
             "ShowCmd" = "3:1"
